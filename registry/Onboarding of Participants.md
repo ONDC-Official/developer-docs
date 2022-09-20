@@ -72,7 +72,7 @@ https://prod.registry.ondc.org/ondc-onboard/ondc/subscribe
 }
 ```
 3.	Check your record in registry lookup <br>
-	3.1	/vlookup For PrePROD ``` https://preprod.registry.ondc.org/ondc/vlookup ``` and for PROD ``` https://prod.registry.ondc.org/ondc-onboard/ondc/vlookup ```
+	3.1	/vlookup For PrePROD ``` https://preprod.registry.ondc.org/ondc/vlookup ``` and for PROD ``` https://prod.registry.ondc.org/vlookup ```
 ```		
 	curl --location --request GET 'https://preprod.registry.ondc.org/ondc/vlookup' \
 		--header 'Content-Type: application/json' \
@@ -90,7 +90,7 @@ https://prod.registry.ondc.org/ondc-onboard/ondc/subscribe
 		}
 ```
 <BR>
-	3.2	/lookup for PrePROD ```	https://preprod.registry.ondc.org/ondc/lookup ```, for PROD ``` https://prod.registry.ondc.org/ondc-onboard/ondc/lookup	```
+	3.2	/lookup for PrePROD ```	https://preprod.registry.ondc.org/ondc/lookup ```, for PROD ``` https://prod.registry.ondc.org/lookup	```
 		
 ```
 	curl --location --request POST 'https://preprod.registry.ondc.org/ondc/lookup' \
