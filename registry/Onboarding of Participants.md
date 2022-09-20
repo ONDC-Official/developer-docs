@@ -16,7 +16,7 @@
 8.	Generate Encryption Key Pair - encryption_public_key and encryption_private_key
 9.	Generate Unique Request ID (request_id). It should be unique for a Network Participant. It can be in any format. For example - it can be UUID or a simple number or alphanumeric format.
 10.	Generate SIGNED_UNIQUE_REQ_ID => ( Sign request_id using signing_private_key generated in step 6 )
-11.	Create ``ondc-site-verification.html`` and place it at subscriber_idby adding SIGNED_UNIQUE_REQ_ID generated in step 9. Registry shall check existence of ondc-site-verification.html at 
+11.	Create ``ondc-site-verification.html`` and place it at subscriber_id by adding SIGNED_UNIQUE_REQ_ID generated in step 9. Registry shall check existence of ondc-site-verification.html at 
 ``https://<subscriber_id>/ondc-site-verification.html``
 ```
 <!--Contents of ondc-site-verification.html. -->
