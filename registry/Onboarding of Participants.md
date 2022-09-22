@@ -53,7 +53,7 @@ https://app.swaggerhub.com/apis-docs/ONDC/ONDC-Registry-Onboarding/2.0.5
 https://preprod.registry.ondc.org/ondc/subscribe
 	
 # For Prod Onboarding
-https://prod.registry.ondc.org/ondc-onboard/ondc/subscribe
+https://prod.registry.ondc.org/subscribe
 ```
 2.  Check if you have received success response . In case if you do not receive a success, then please go through section of listing of possible errors. And if still issue persists, please contact our support desk. Details are mentioned in step 4 below.
 ```
@@ -72,7 +72,7 @@ https://prod.registry.ondc.org/ondc-onboard/ondc/subscribe
 }
 ```
 3.	Check your record in registry lookup <br>
-	3.1	/vlookup For PrePROD ``` https://preprod.registry.ondc.org/ondc/vlookup ``` and for PROD ``` https://prod.registry.ondc.org/vlookup ```
+	3.1	/vlookup For Pre-prod ``` https://preprod.registry.ondc.org/ondc/vlookup ``` and for PROD ``` https://prod.registry.ondc.org/vlookup ```
 ```		
 	curl --location --request GET 'https://preprod.registry.ondc.org/ondc/vlookup' \
 		--header 'Content-Type: application/json' \
@@ -90,7 +90,7 @@ https://prod.registry.ondc.org/ondc-onboard/ondc/subscribe
 		}
 ```
 <BR>
-	3.2	/lookup for PrePROD ```	https://preprod.registry.ondc.org/ondc/lookup ```, for PROD ``` https://prod.registry.ondc.org/lookup	```
+	3.2	/lookup for Pre-prod ```	https://preprod.registry.ondc.org/ondc/lookup ```, for PROD ``` https://prod.registry.ondc.org/lookup	```
 		
 ```
 	curl --location --request POST 'https://preprod.registry.ondc.org/ondc/lookup' \
