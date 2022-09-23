@@ -32,8 +32,7 @@
 	    </body>
 	</html>
 ```
-12.	Configure developed /on_subscribe implementation to use enc_dec_private_key generated in step 7 to decrypt the challenge_string and use below ONDC Public Key to decrypt the encrypted challenge string 
-MCowBQYDK2VuAyEAc2hgiJtuedFDR085tACIg5TmDrfFdt+25ymbhuDskyg=
+12.	Configure developed /on_subscribe implementation to use enc_dec_private_key generated in step 7 to decrypt the challenge_string
 13.	Create /subscribe request as follows
 ```
 1.	subscriber_id= YOUR SUBSCRIBER ID
