@@ -8,7 +8,7 @@
 
 1.	Purchase valid domain name. This becomes part of your subscriber ID. subscriber_id
 2.	Purchase valid SSL certificate for the purchase domain. This will be used while performing Online Certificate Status Protocol check.
-3.	Get your subscriber_id whitelist/approved by ONDC. To do that please reach to Supriyo or Neeraj.
+3.	Get your subscriber_id whitelist/approved by ONDC. To do that please reach to tech@ondc.org.
 4.	Configure your system with domain name and SSL. All communication with ONDC Network should happen through this domain.
 5.	Develop and host /on_subscribe : ``    https://<YourDomain>/<YourCallBackURL>/on_subscribe``
 6.	Refer for Request Body and Response ``https://app.swaggerhub.com/apis-docs/ONDC/ONDC-Registry-Onboarding/2.0.5#/ONDC%20Network%20Participant%20Onboarding/post_subscriber_url_on_subscribe ``
@@ -32,15 +32,17 @@
 	    </body>
 	</html>
 ```
-12.	Configure developed /on_subscribe implementation to use enc_dec_private_key generated in step 8 to decrypt the challenge_string
+12.	Configure developed /on_subscribe implementation to use enc_dec_private_key (generated in step 8) and ONDC public key to decrypt the challenge_string
 13.	Create /subscribe request as follows
 ```
 1.	subscriber_id= YOUR SUBSCRIBER ID
 2.	callback_url= Relative path to on_subscribe implementation
 3.	signing_public_key= <value of sign_public_key generated in step 5>
 4.	encryption_public_key= <value of enc_dec_public_key generated in step 6>
-5.	unique_key_id= <generate a unique number for tracking key pairs>
-6.	For other fields, please refer below swaggerhub link and examples mentioned under heading as ops_no_1, ops_no_2, ops_no_3, ops_no_4 and ops_no_5 
+5.	ONDC public key (prod) = "MCowBQYDK2VuAyEAhX7AySYGXHkpVl5c6q/V51rQVUp6w1QkEtNJhWcVtyo="
+6.	ONDC public key (pre-prod) = "MCowBQYDK2VuAyEAa9Wbpvd9SsrpOZFcynyt/TO3x0Yrqyys4NUGIvyxX2Q="
+7.	unique_key_id= <generate a unique number for tracking key pairs>
+8.	For other fields, please refer below swaggerhub link and examples mentioned under heading as ops_no_1, ops_no_2, ops_no_3, ops_no_4 and ops_no_5 
 https://app.swaggerhub.com/apis-docs/ONDC/ONDC-Registry-Onboarding/2.0.5
 
 ```
