@@ -8,7 +8,7 @@
 
 1.	Purchase valid domain name. This becomes part of your subscriber ID. subscriber_id
 2.	Purchase valid SSL certificate for the purchase domain. This will be used while performing Online Certificate Status Protocol check.
-3.	Get your subscriber_id whitelist/approved by ONDC. To do that please reach to tech@ondc.org.
+3.	Get your subscriber_id whitelist/approved by ONDC. To do that please reach out to tech@ondc.org.
 4.	Configure your system with domain name and SSL. All communication with ONDC Network should happen through this domain.
 5.	Develop and host /on_subscribe : ``    https://<YourDomain>/<YourCallBackURL>/on_subscribe``
 6.	Refer for Request Body and Response ``https://app.swaggerhub.com/apis-docs/ONDC/ONDC-Registry-Onboarding/2.0.5#/ONDC%20Network%20Participant%20Onboarding/post_subscriber_url_on_subscribe ``
