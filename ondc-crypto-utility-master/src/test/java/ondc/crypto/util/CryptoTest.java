@@ -1,4 +1,4 @@
-package ondc.crypto.util;
+package org.ondc.crypto.util;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -41,10 +41,13 @@ public class CryptoTest {
 		System.out.println("\n");
 		
 		CryptoKeyPair signingKeyPair=CryptoFunctions.generateSigningKeyPair();
+		
 		System.out.println("Key Generation :: [OK]");
 		
 		String message="message to be signed";
+		
 		byte[] signature= CryptoFunctions.sign(signingKeyPair.getPrivateKey(), message.getBytes());
+		
 		System.out.println("Signing :: [OK]");
 		
 		System.out.println("\n\n/** Sender Side **/");
@@ -90,6 +93,7 @@ public class CryptoTest {
 		
 		
 		String message="message to be signed";
+		
 		byte[] signature= CryptoFunctions.sign(signingKeyPair.getPrivateKey(), message.getBytes());
 		System.out.println("Signing :: [OK]");
 		
@@ -101,6 +105,7 @@ public class CryptoTest {
 		System.out.println("}\n\n");
 		
 		message="tampered message to be verified";
+		
 		boolean verificationResult=CryptoFunctions.verify(signature, message.getBytes(), signingKeyPair.getPublickKey());
 		
 		System.out.println("\n\n/** Receiver Side **/");
