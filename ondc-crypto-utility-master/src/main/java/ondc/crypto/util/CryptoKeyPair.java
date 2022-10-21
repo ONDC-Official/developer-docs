@@ -1,7 +1,7 @@
 /*
  * 
  */
-package ondc.crypto.util;
+package org.ondc.crypto.util;
 
 
 // TODO: Auto-generated Javadoc
