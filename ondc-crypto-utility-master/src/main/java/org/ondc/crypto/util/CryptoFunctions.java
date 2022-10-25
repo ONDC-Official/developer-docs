@@ -233,6 +233,9 @@ public class CryptoFunctions {
 		 * 
 		 */
 		public static byte[] encryptDecrypt(int mode, byte[] challenge_string,byte[] privateKey, byte[] publicKey) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+			if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
+				Security.addProvider(new BouncyCastleProvider());
+			}
 			KeyAgreement keyAgreement=KeyAgreement.getInstance(X25519, BouncyCastleProvider.PROVIDER_NAME);
 			X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(publicKey);
 			PublicKey publickey = KeyFactory.getInstance(X25519, BouncyCastleProvider.PROVIDER_NAME)
@@ -266,6 +269,9 @@ public class CryptoFunctions {
 		 * @throws Exception the exception
 		 */
 		public static byte[] generateBlakeHash(String req) throws Exception {
+			if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
+				Security.addProvider(new BouncyCastleProvider());
+			}
 			MessageDigest digest = MessageDigest.getInstance(BLAKE2B_512, BouncyCastleProvider.PROVIDER_NAME);
 			digest.reset();
 			digest.update(req.getBytes(StandardCharsets.UTF_8));
