@@ -44,15 +44,13 @@ b. Gateway end point
 
 a. Registry end point
 
-`https://preprod.registry.ondc.org/lookup`
-
-`https://preprod.registry.ondc.org/vlookup`
+`https://pilot-gateway-1.beckn.nsdl.co.in/lookup`
 
 b. Gateway end point
 
-`https://preprod.gateway.ondc.org/search`
+`https://pilot-gateway-1.beckn.nsdl.co.in/search`
 
-`https://preprod.gateway.ondc.org/on_search`
+`https://pilot-gateway-1.beckn.nsdl.co.in/on_search`
 
 ## SwaggerHub links
 
