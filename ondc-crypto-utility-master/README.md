@@ -11,7 +11,7 @@ It covers key generation, signing, verification, encryption and decryption.
 
 ## Documentation
 
-[Java Docs](https://protean-ondc.github.io/ondc-crypto-utility/org/ondc/crypto/util/package-summary.html)
+[Java Docs](https://ondc-official.github.io/developer-docs/org/ondc/crypto/util/package-summary.html)
 
 
 ## Packaging
