@@ -30,7 +30,7 @@ To get started with understanding ONDC technology, please refer to the following
 
 > [Auth header signing & verification](https://docs.google.com/document/d/1-xECuAHxzpfF8FEZw9iN3vT7D3i6yDDB1u2dEApAjPA/edit)
 
-6. [Signing & Verification Utility](https://github.com/ONDC-Official/Pre-production/tree/main/signing_and_verification)
+6. [Signing & Verification Utility](https://github.com/ONDC-Official/developer-docs/tree/main/utilities/signing_and_verification)
 
 7.  [Protean Adapter Interfaces](https://github.com/NSDL-e-Governance/ondc_adaptor)
 
