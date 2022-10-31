@@ -28,7 +28,7 @@ To get started with understanding ONDC technology, please refer to the following
 
 > [Payment & Settlement Protocol](https://docs.google.com/document/d/1iqLdayk488ekEzKrEs-yn6gVrevbxBkILBe5j4oIxMY/edit)
 
-> [Auth header signing & verification](https://docs.google.com/document/d/1-xECuAHxzpfF8FEZw9iN3vT7D3i6yDDB1u2dEApAjPA/edit)
+> [Auth header signing & verification](https://github.com/ONDC-Official/developer-docs/blob/main/Auth%20Header%20-%20signing%20and%20verification.md)
 
 6. [Signing & Verification Utility](https://github.com/ONDC-Official/developer-docs/tree/main/utilities/signing_and_verification)
 
