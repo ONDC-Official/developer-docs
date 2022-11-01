@@ -56,6 +56,4 @@ b. Gateway end point
 
 `https://app.swaggerhub.com/organizations/ONDC`
 
-# Beckn developer docs
 
-`https://github.com/beckn/developer-docs`
