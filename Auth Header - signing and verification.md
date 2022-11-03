@@ -13,7 +13,7 @@ Key pairs, for signing & encryption, can be generated using [libsodium](https://
 # 2.Creating Key Pairs
 - Create key pairs, for signing (ed25519) & encryption (X25519);
 - Update base64 encoded public keys in registry;
-- Utility to generate signing key pairs and test signing & verification is [here](https://github.com/ONDC-Official/Pre-production/tree/main/signing_and_verification);
+- Utility to generate signing key pairs and test signing & verification is [here](https://github.com/ONDC-Official/developer-docs/tree/main/utilities/signing_and_verification);
 
 # 3.Auth Header Signing
 - Generate UTF-8 byte array from json payload;
