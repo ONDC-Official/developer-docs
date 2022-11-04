@@ -1,1 +1,0 @@
-# Taxonomy for fashion
