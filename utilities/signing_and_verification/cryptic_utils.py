@@ -65,7 +65,7 @@ def get_filter_dictionary_or_operation(filter_string):
 def create_authorisation_header(request_body=request_body_json,
                                 created=os.getenv("CREATED",  "1641287875"),
                                 expires=os.getenv("EXPIRES",  "1641291475")):
-    signing_key = create_signing_string(hash_message(json.dumps(request_body, separators=(',', ':'))),
+    signing_key = create_signing_string(hash_message(json.dumps(request_body)),
                                         created=created, expires=expires)
     signature = sign_response(signing_key, private_key=os.getenv("PRIVATE_KEY"))
 
