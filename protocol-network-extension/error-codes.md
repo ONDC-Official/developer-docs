@@ -50,7 +50,6 @@ CC-BY-ND
   |30008|Seller App|Location Serviceability Error|Pickup location not serviceable by Logistics Provider|
   |30009|Seller App|Location Serviceability Error|Dropoff location not serviceable by Logistics Provider|
   |30010|Seller App|Location Serviceability Error|Delivery distance exceeds the maximum serviceability distance|
-  |30011|Seller App|Order Serviceability Error|Delivery Partners not available|
   |30012|Seller App|Invalid cancellation reason|When the Seller App is unable to find the cancellation reason in cancellation_reason_id|
   |30013|Seller App|Update inconsistency|When the Seller App finds changes in the order object other than the update_target|
   |30014|Seller App|Entity to rate not found|When the Seller App is unable to find the entity to rate in id|
