@@ -39,6 +39,7 @@ CC-BY-ND
   |20000|Buyer App|Invalid catalog item|Catalog Item cannot be displayed as it does not meet statutory requirements|
   |20001|Buyer App|Invalid Signature|Cannot verify signature for request|
   |25001|Buyer App|Order Confirm Failure|Buyer App cannot confirm order as no response from Seller App|
+  |27501|Buyer App|Seller App terms not acceptable to Buyer App|
   |30000|Seller App|Invalid request error|Generic invalid request error|
   |30001|Seller App|Provider not found|When Seller App is unable to find the provider id sent by the Buyer App|
   |30002|Seller App|Provider location not found|When Seller App is unable to find the provider location id sent by the Buyer App|
@@ -71,6 +72,7 @@ CC-BY-ND
   |50002|Seller App|Updation not possible|When the Seller App is unable to update the order due to it's updation policy|
   |50003|Seller App|Unsupported rating category|When the Seller App receives an entity to rate which is not supported|
   |50004|Seller App|Support unavailable|When the Seller App receives an object if for which it does not provide support|
+  |50005|Seller App|Terms unacceptable|Buyer App terms not acceptable to Seller App|
   |60001|Logistics|Location Serviceability Error|Pickup location not serviceable by Logistics Provider|
   |60002|Logistics|Location Serviceability Error|Dropoff location not serviceable by Logistics Provider|
   |60003|Logistics|Location Serviceability Error|Delivery distance exceeds the maximum serviceability distance|
