@@ -82,7 +82,10 @@ CC-BY-ND
   |60005|Logistics|Invalid Signature|Cannot verify signature for request|
   |60006|Logistics|Invalid Request|Invalid request, not compliant with API contract|
   |60007|Logistics|Policy Error|Cancellation not possible because of Logistics Provider policy|
+  |62501|Logistics|Terms unacceptable|Logistics Provider terms not acceptable to Logistics Buyer|
+  |62502|Logistics|Order terminated|Order terminated as Logistics Buyer not in agreement with Logistics Provider terms|
   |65001|Logistics|Order Confirm Error|Logistics Provider is unable to confirm the order|
+  |65002|Logistics|Order terminated|Order terminated as Logistics Provider terms not accepted by Logistics Buyer|
 
   ## Acknowledgements
   This document has been adapted from the [Error Codes draft document](https://github.com/beckn/protocol-specifications/blob/draft/docs/protocol-drafts/BECKN-RFC-005-Error-Codes-Draft-01.md) from the Beckn Foundation.
