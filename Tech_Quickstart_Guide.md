@@ -32,34 +32,30 @@ To get started with understanding ONDC technology, please refer to the following
 
 6. [Signing & Verification Utility](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/signing_and_verification)
 
-7.  [Protean Adapter Interfaces](https://github.com/NSDL-e-Governance/ondc_adaptor)
-
-> ONDC APIs Adaptors developed by Protean eGov.
-
-8. [ONDC Buyer Reference Web App - Source Code](https://github.com/ONDC-Official/biap-client-node-js)
+7. [ONDC Buyer Reference Web App - Source Code](https://github.com/ONDC-Official/biap-client-node-js)
 
 > ONDC Buyer Reference App.
 
-9. [ONDC Buyer Reference Mobile App - Source Code](https://github.com/ONDC-Official/ONDC-Mobile-Buyer-App-Private)
+8. [ONDC Buyer Reference Mobile App - Source Code](https://github.com/ONDC-Official/ONDC-Mobile-Buyer-App-Private)
 
 > ONDC Buyer Reference Mobile App Source Code (under development - please contact us at tech@ondc.org with your GitHub ID and we can give you access).
 
-10. [ONDC Buyer Reference App APK](https://github.com/ONDC-Official/ONDC-Reference-Apps-Mobile/tree/main/BuyerApp/apk)
+9. [ONDC Buyer Reference App APK](https://github.com/ONDC-Official/ONDC-Reference-Apps-Mobile/tree/main/BuyerApp/apk)
 
 > ONDC Buyer Reference App APK (under development).
 
-11. [Checklist for sellers](https://docs.google.com/document/d/1m2V3GR6UIjJK65u4JW1r35cihy7lFmuBe8_cv66mVU8/edit#)
+10. [Checklist for sellers](https://docs.google.com/document/d/1m2V3GR6UIjJK65u4JW1r35cihy7lFmuBe8_cv66mVU8/edit#)
 
 > To define what the retail seller needs to do at each step of the transaction flow.
 
-12. **Process for Participants joining ONDC at any time**
+11. **Process for Participants joining ONDC at any time**
 
 > ![Visualising ONDC (19)](https://user-images.githubusercontent.com/95357304/156694718-3d86822e-bf42-4b1d-be73-680235c965d2.jpg)
 >![Visualising ONDC (20)](https://user-images.githubusercontent.com/95357304/156694766-00570ec9-3ae4-41dd-86e4-e91de7247188.jpg)
 
 
 
-13. **Sequence Diagrams**
+12. **Sequence Diagrams**
 
                                         ONDC Product Search Flow
 >![1](https://user-images.githubusercontent.com/95357304/179464543-932fde3e-5358-4d9e-a075-dc7da723f5ff.png)
