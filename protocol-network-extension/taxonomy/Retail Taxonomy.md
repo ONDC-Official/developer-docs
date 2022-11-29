@@ -1,2 +1,0 @@
-# Fashion Taxonomy
-> Fashion Taxonomy
