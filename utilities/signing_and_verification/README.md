@@ -11,7 +11,7 @@ pip3 install -r requirements.txt
 2. Export request body json path:
 this file should be a valid json file
 ```
-export REQUEST_BODY_PATH=<request-body-jon-path>
+export REQUEST_BODY_PATH=<request-body-text-path>
 ```
   eg for json file provided, export REQUEST_BODY_PATH=request_body.json
 

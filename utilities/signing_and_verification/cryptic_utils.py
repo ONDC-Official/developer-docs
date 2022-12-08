@@ -10,9 +10,8 @@ import nacl.hash
 from nacl.bindings import crypto_sign_ed25519_sk_to_seed
 from nacl.signing import SigningKey, VerifyKey
 
-f = open(os.getenv("REQUEST_BODY_PATH", "signing_and_verification/request_body.json"))
-request_body_json = json.load(f)
-
+f = open(os.getenv("REQUEST_BODY_PATH", "utilities/signing_and_verification/request_body_raw_text.txt"), "r")
+request_body_raw_text = f.read()
 
 def hash_message(msg: str):
     HASHER = nacl.hash.blake2b
@@ -62,10 +61,10 @@ def get_filter_dictionary_or_operation(filter_string):
     return filter_dictionary_or_operation
 
 
-def create_authorisation_header(request_body=request_body_json,
-                                created=os.getenv("CREATED",  "1641287875"),
-                                expires=os.getenv("EXPIRES",  "1641291475")):
-    signing_key = create_signing_string(hash_message(json.dumps(request_body, separators=(',', ':'))),
+def create_authorisation_header(request_body=request_body_raw_text, created=None, expires=None):
+    created = int(datetime.datetime.now().timestamp()) if created is None else created
+    expires = int((datetime.datetime.now() + datetime.timedelta(hours=1)).timestamp()) if expires is None else expires
+    signing_key = create_signing_string(hash_message(request_body),
                                         created=created, expires=expires)
     signature = sign_response(signing_key, private_key=os.getenv("PRIVATE_KEY"))
 
@@ -76,7 +75,8 @@ def create_authorisation_header(request_body=request_body_json,
     return header
 
 
-def verify_authorisation_header(auth_header, request_body_str, public_key=os.getenv("PUBLIC_KEY")):
+def verify_authorisation_header(auth_header, request_body_str=request_body_raw_text,
+                                public_key=os.getenv("PUBLIC_KEY")):
     # `request_body_str` should request.data i.e. raw data string
 
     # `public_key` is sender's public key
