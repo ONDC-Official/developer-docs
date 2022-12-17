@@ -84,6 +84,7 @@ CC-BY-ND
   |60007|Logistics|Policy Error|Cancellation not possible because of Logistics Provider policy|
   |62501|Logistics|Terms unacceptable|Logistics Provider terms not acceptable to Logistics Buyer|
   |62502|Logistics|Order terminated|Order terminated as Logistics Buyer not in agreement with Logistics Provider terms|
+  |62503|Logistics|RTO rejected|RTO request rejected as quote does not match the quote provided in catalog|
   |65001|Logistics|Order Confirm Error|Logistics Provider is unable to confirm the order|
   |65002|Logistics|Order terminated|Order terminated as Logistics Provider terms not accepted by Logistics Buyer|
 
