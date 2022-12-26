@@ -63,7 +63,7 @@ CC-BY-ND
   |30020|Seller App|Order Confirm Failure|Seller App cannot confirm order as no response from Buyer App|
   |40000|Seller App|Business Error|Generic business error|
   |40001|Seller App|Action not applicable|When an API endpoint is not implemented by the Seller App as it is not required for their use cases and a Buyer App calls one of these endpoints|
-  |40002|Seller App|Item quantity unavailable|When the Seller App is unable to select the specified number in order.items[].quantity|
+  |40002|Seller App|Item quantity unavailable|When the Seller App is unable to fulfill the required quantity for items in the order|
   |40003|Seller App|Quote unavailable|When the quote sent by the Buyer App is no longer available from the Seller App|
   |40004|Seller App|Payment not supported|When the payment object sent by the Buyer App is not supported by the Seller App|
   |40005|Seller App|Tracking not supported|When the Seller App does not support tracking for the order in order_id|
