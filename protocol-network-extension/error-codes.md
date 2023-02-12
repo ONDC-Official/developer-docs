@@ -38,6 +38,7 @@ CC-BY-ND
   |10002|Gateway|Invalid City Code|Valid city code needs to be passed for search|
   |20000|Buyer App|Invalid catalog item|Catalog Item cannot be displayed as it does not meet statutory requirements|
   |20001|Buyer App|Invalid Signature|Cannot verify signature for request|
+  |20002|Buyer App|Stale Request|Cannot process stale request|
   |25001|Buyer App|Order Confirm Failure|Buyer App cannot confirm order as no response from Seller App|
   |27501|Buyer App|Terms unacceptable|Seller App terms not acceptable to Buyer App|
   |27502|Buyer App|Order terminated|Order terminated as Buyer App terms not accepted by Seller App|
@@ -62,6 +63,7 @@ CC-BY-ND
   |30019|Seller App|Order Confirm Error|Seller App is unable to confirm the order|
   |30020|Seller App|Order Confirm Failure|Seller App cannot confirm order as no response from Buyer App|
   |30021|Seller App|Merchant Inactive|Merchant is inactive|
+  |30022|Seller App|Stale Request|Cannot process stale request|
   |40000|Seller App|Business Error|Generic business error|
   |40001|Seller App|Action not applicable|When an API endpoint is not implemented by the Seller App as it is not required for their use cases and a Buyer App calls one of these endpoints|
   |40002|Seller App|Item quantity unavailable|When the Seller App is unable to fulfill the required quantity for items in the order|
@@ -88,6 +90,7 @@ CC-BY-ND
   |62503|Logistics|RTO rejected|RTO request rejected as quote does not match the quote provided in catalog|
   |65001|Logistics|Order Confirm Error|Logistics Provider is unable to confirm the order|
   |65002|Logistics|Order terminated|Order terminated as Logistics Provider terms not accepted by Logistics Buyer|
+  |65003|Logistics|Stale Request|Cannot process stale request|
 
   ## Acknowledgements
   This document has been adapted from the [Error Codes draft document](https://github.com/beckn/protocol-specifications/blob/draft/docs/protocol-drafts/BECKN-RFC-005-Error-Codes-Draft-01.md) from the Beckn Foundation.
