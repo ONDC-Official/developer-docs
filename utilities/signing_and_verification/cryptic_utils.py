@@ -3,14 +3,17 @@ import datetime
 import os
 import re
 import json
-
 import fire as fire
 import nacl.encoding
 import nacl.hash
 from nacl.bindings import crypto_sign_ed25519_sk_to_seed
 from nacl.signing import SigningKey, VerifyKey
+from cryptography.hazmat.primitives.asymmetric.x25519 import X25519PrivateKey,X25519PublicKey
+from cryptography.hazmat.primitives import serialization
+from Cryptodome.Cipher import AES
+from Cryptodome.Util.Padding import pad,unpad
 
-f = open(os.getenv("REQUEST_BODY_PATH", "utilities/signing_and_verification/request_body_raw_text.txt"), "r")
+f = open(os.getenv("REQUEST_BODY_PATH", "request_body_raw_text.txt"), "r")
 request_body_raw_text = f.read()
 
 def hash_message(msg: str):
@@ -39,7 +42,6 @@ def sign_response(signing_key, private_key):
     signature = base64.b64encode(signed.signature).decode()
     return signature
 
-
 def verify_response(signature, signing_key, public_key):
     try:
         public_key64 = base64.b64decode(public_key)
@@ -67,11 +69,12 @@ def create_authorisation_header(request_body=request_body_raw_text, created=None
     signing_key = create_signing_string(hash_message(request_body),
                                         created=created, expires=expires)
     signature = sign_response(signing_key, private_key=os.getenv("PRIVATE_KEY"))
+    #signature = sign_response(signing_key, private_key="unkLJfHZRmKf88Ac5zv6Wb5caVbYN9Uav0XJ5OOyitdbVo4xZhS8g23JLKY9Ve66uAAL/zrl0PGjpwkvp0d3eA==")
 
     subscriber_id = os.getenv("SUBSCRIBER_ID", "buyer-app.ondc.org")
     unique_key_id = os.getenv("UNIQUE_KEY_ID", "207")
-    header = f'Signature keyId="{subscriber_id}|{unique_key_id}|ed25519",algorithm="ed25519",created=' \
-             f'"{created}",expires="{expires}",headers="(created) (expires) digest",signature="{signature}"'
+    header = f'"Signature keyId=\\"{subscriber_id}|{unique_key_id}|ed25519\\",algorithm=\\"ed25519\\",created=' \
+             f'\\"{created}\\",expires=\\"{expires}\\",headers=\\"(created) (expires) digest\\",signature=\\"{signature}\\""'
     return header
 
 
@@ -96,9 +99,52 @@ def verify_authorisation_header(auth_header, request_body_str=request_body_raw_t
 def generate_key_pairs():
     signing_key = SigningKey.generate()
     private_key = base64.b64encode(signing_key._signing_key).decode()
+    #print(private_key)
     public_key = base64.b64encode(bytes(signing_key.verify_key)).decode()
-    return {"private_key": private_key, "public_key": public_key}
+    inst_private_key = X25519PrivateKey.generate()
+    #print(base64.b64encode(bytes(tcrypto_private_key.).decode()))
+    inst_public_key = inst_private_key.public_key()
+    bytes_private_key = inst_private_key.private_bytes(
+        encoding=serialization.Encoding.DER,
+        format=serialization.PrivateFormat.PKCS8,
+        encryption_algorithm=serialization.NoEncryption()
+    )
+    bytes_public_key = inst_public_key.public_bytes(
+        encoding=serialization.Encoding.DER,
+        format=serialization.PublicFormat.SubjectPublicKeyInfo
+    )
+    crypto_private_key = base64.b64encode(bytes_private_key).decode('utf-8')
+    crypto_public_key = base64.b64encode(bytes_public_key).decode('utf-8')
+    return {"Signing_private_key": private_key,
+            "Signing_public_key": public_key,
+            "Crypto_Privatekey": crypto_private_key,
+            "Crypto_Publickey": crypto_public_key}
 
+def encrypt(crypto_private_key, crypto_public_key):
+    private_key = serialization.load_der_private_key(
+        base64.b64decode(crypto_private_key),
+        password=None
+    )
+    public_key = serialization.load_der_public_key(
+        base64.b64decode(crypto_public_key)
+    )
+    shared_key = private_key.exchange(public_key)
+    cipher = AES.new(shared_key, AES.MODE_ECB)
+    text = b'ONDC is a Great Initiative!'
+    return base64.b64encode(cipher.encrypt(pad(text,AES.block_size))).decode('utf-8')
+
+def decrypt(crypto_private_key, crypto_public_key, cipherstring):
+    private_key = serialization.load_der_private_key(
+        base64.b64decode(crypto_private_key),
+        password=None
+    )
+    public_key = serialization.load_der_public_key(
+        base64.b64decode(crypto_public_key)
+    )
+    shared_key = private_key.exchange(public_key)
+    cipher = AES.new(shared_key, AES.MODE_ECB)
+    ciphertxt = base64.b64decode(cipherstring)
+    return cipher.decrypt(ciphertxt).decode('utf-8')
 
 if __name__ == '__main__':
     fire.Fire()
