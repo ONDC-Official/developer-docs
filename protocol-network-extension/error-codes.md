@@ -48,18 +48,18 @@ CC-BY-ND
   |30003|Seller App|Provider category not found|When Seller App is unable to find the provider category id sent by the Buyer App|
   |30004|Seller App|Item not found|When Seller App is unable to find the item id sent by the Buyer App|
   |30005|Seller App|Category not found|When Seller App is unable to find the category id sent by the Buyer App|
-  |30006|Seller App|Offer not found|When Seller App is unable to find the offer id sent by the Buyer App|
-  |30007|Seller App|Add-on not found|When the Seller App is unable to find the add-on id sent by the Buyer App|
-  |30008|Seller App|Location Serviceability Error|Pickup location not serviceable by Logistics Provider|
-  |30009|Seller App|Location Serviceability Error|Dropoff location not serviceable by Logistics Provider|
-  |30010|Seller App|Location Serviceability Error|Delivery distance exceeds the maximum serviceability distance|
-  |30011|Seller App|Order Serviceability Error|Delivery Partners not available|
+  |30006|Seller App|Offer code invalid|Offer code is not valid anymore|
+  |30007|Seller App|Offer fulfillment error|Offer cannot be fulfilled at this time|
+  |30008|Seller App|Location Serviceability error|Pickup location not serviceable by Logistics Provider|
+  |30009|Seller App|Location Serviceability error|Dropoff location not serviceable by Logistics Provider|
+  |30010|Seller App|Location Serviceability error|Delivery distance exceeds the maximum serviceability distance|
+  |30011|Seller App|Order Serviceability error|Delivery Partners not available|
   |30012|Seller App|Invalid cancellation reason|When the Seller App is unable to find the cancellation reason in cancellation_reason_id|
   |30013|Seller App|Update inconsistency|When the Seller App finds changes in the order object other than the update_target|
   |30014|Seller App|Entity to rate not found|When the Seller App is unable to find the entity to rate in id|
   |30015|Seller App|Invalid rating value|When the Seller App receives an invalid value as the rating value in value|
   |30016|Seller App|Invalid Signature|Cannot verify signature for request|
-  |30017|Seller App|Merchant Unavailable|Merchant is currently not taking orders|
+  |30017|Seller App|Merchant unavailable|Merchant is currently not taking orders|
   |30018|Seller App|Invalid Order|Order not found|
   |30019|Seller App|Order Confirm Error|Seller App is unable to confirm the order|
   |30020|Seller App|Order Confirm Failure|Seller App cannot confirm order as no response from Buyer App|
