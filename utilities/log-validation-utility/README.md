@@ -15,7 +15,7 @@ The tool is a NODE.js based utility to check the conformance and compliance of t
 
 Log Validation Tool requires [Node.js](https://nodejs.org/) to run.
 
-1. Clone the repository, navigate to Log-Validation_Utility and install the dependencies.
+1. Clone the repository, navigate to log-validation-utility and install the dependencies.
 
 ```sh
 
@@ -65,6 +65,8 @@ _Notes:_
 | on_update.json            |
 | support.json              |
 | on_support.json           |
+
+> FAQs for Retail API Contract and Log Validation Utility ([FAQs](https://docs.google.com/document/d/1K-kqoOQ8IB-ywl_4pEiQKttTDk5Co381J07GldEUmD4/edit?usp=sharing))
 
 > Sample payload for search.json is demonstrated below:
 
