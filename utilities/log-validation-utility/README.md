@@ -106,3 +106,4 @@ _Notes:_
   }
 }
 ```
+### FAQs for Retail API Contract and Log Validation Utility ([FAQs](https://docs.google.com/document/d/1K-kqoOQ8IB-ywl_4pEiQKttTDk5Co381J07GldEUmD4/edit?usp=sharing))
