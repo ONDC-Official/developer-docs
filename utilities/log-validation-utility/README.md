@@ -15,7 +15,7 @@ The tool is a NODE.js based utility to check the conformance and compliance of t
 
 Log Validation Tool requires [Node.js](https://nodejs.org/) to run.
 
-1. Clone the repository, navigate to Log-Validation_Utility and install the dependencies.
+1. Clone the repository, navigate to log-validation-utility and install the dependencies.
 
 ```sh
 
