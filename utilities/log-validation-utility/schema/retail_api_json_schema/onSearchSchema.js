@@ -152,50 +152,80 @@ module.exports = {
                         },
                         time: {
                           type: "object",
-                          properties: {
-                            days: {
-                              type: "string",
-                            },
-                            range: {
+
+                          oneOf: [
+                            {
                               type: "object",
                               properties: {
-                                start: {
+                                days: {
                                   type: "string",
-                                  minLength: 4,
-                                  maxLength: 4,
                                 },
-                                end: {
-                                  type: "string",
-                                  minLength: 4,
-                                  maxLength: 4,
+                                range: {
+                                  type: "object",
+                                  properties: {
+                                    start: {
+                                      type: "string",
+                                      minLength: 4,
+                                      maxLength: 4,
+                                    },
+                                    end: {
+                                      type: "string",
+                                      minLength: 4,
+                                      maxLength: 4,
+                                    },
+                                  },
+                                  required: ["start", "end"],
+                                },
+                                schedule: {
+                                  type: "object",
+                                  properties: {
+                                    holidays: {
+                                      type: "array",
+                                      items: {
+                                        type: "string",
+                                      },
+                                    },
+                                  },
+                                  required: ["holidays"],
+                                  additionalProperties: false,
                                 },
                               },
-                              required: ["start", "end"],
+                              required: ["days", "range", "schedule"],
                             },
-                            schedule: {
+                            {
                               type: "object",
                               properties: {
-                                holidays: {
-                                  type: "array",
-                                  items: {
-                                    type: "string",
-                                  },
-                                },
-                                frequency: {
+                                days: {
                                   type: "string",
-                                  format: "duration",
                                 },
-                                times: {
-                                  type: "array",
-                                  items: {
-                                    type: "string",
+
+                                schedule: {
+                                  type: "object",
+                                  properties: {
+                                    holidays: {
+                                      type: "array",
+                                      items: {
+                                        type: "string",
+                                      },
+                                    },
+                                    frequency: {
+                                      type: "string",
+                                      format: "duration",
+                                    },
+                                    times: {
+                                      type: "array",
+                                      items: {
+                                        type: "string",
+                                      },
+                                    },
                                   },
+                                  required: ["holidays", "frequency", "times"],
                                 },
                               },
-                              required: ["holidays"],
+                              required: ["days", "schedule"],
+                              additionalProperties: false,
                             },
-                          },
-                          required: ["days", "schedule"],
+                          ],
                         },
                       },
                       required: ["id", "address", "gps", "time"],

@@ -66,8 +66,6 @@ _Notes:_
 | support.json              |
 | on_support.json           |
 
-> FAQs for Retail API Contract and Log Validation Utility ([FAQs](https://docs.google.com/document/d/1K-kqoOQ8IB-ywl_4pEiQKttTDk5Co381J07GldEUmD4/edit?usp=sharing))
-
 > Sample payload for search.json is demonstrated below:
 
 ```json

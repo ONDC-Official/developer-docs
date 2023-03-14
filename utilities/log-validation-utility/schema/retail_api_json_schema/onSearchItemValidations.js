@@ -10,13 +10,45 @@ onSearchRules = [
   },
 
   {
-    if: { properties: { category_id: { const: "F&B" } } },
+    if: {
+      properties: {
+        category_id: {
+          enum: [
+            "F&B",
+            "Continental",
+            "Middle Eastern",
+            "North Indian",
+            "Pan-Asian",
+            "Regional Indian",
+            "South Indian",
+            "Tex-Mexican",
+            "World Cuisines",
+            "Healthy Food",
+            "Fast Food",
+            "Desserts",
+            "Bakes & Cakes",
+            "Beverages (MTO)",
+          ],
+        },
+      },
+    },
     then: {
       required: ["@ondc/org/fssai_license_no"],
     },
   },
   {
-    if: { properties: { category_id: { const: "Packaged Foods" } } },
+    if: {
+      properties: {
+        category_id: {
+          enum: [
+            "Gourmet & World Foods",
+            "Beverages",
+            "Bakery, Cakes & Dairy",
+            "Snacks & Branded Foods",
+          ],
+        },
+      },
+    },
     then: {
       required: ["@ondc/org/fssai_license_no"],
     },
@@ -33,7 +65,18 @@ onSearchRules = [
     if: {
       properties: {
         category_id: {
-          const: "Packaged Commodities",
+          enum: [
+            "Masala & Seasoning",
+            "Oil & Ghee",
+            "Foodgrains",
+            "Eggs, Meat & Fish",
+            "Cleaning & Household",
+            "Beauty & Hygiene",
+            "Kitchen Accessories",
+            "Baby Care",
+            "Pet Care",
+            "Stationery",
+          ],
         },
       },
     },
@@ -46,7 +89,12 @@ onSearchRules = [
     if: {
       properties: {
         category_id: {
-          const: "Packaged Foods",
+          enum: [
+            "Gourmet & World Foods",
+            "Beverages",
+            "Bakery, Cakes & Dairy",
+            "Snacks & Branded Foods",
+          ],
         },
       },
     },
@@ -58,7 +106,7 @@ onSearchRules = [
     if: {
       properties: {
         category_id: {
-          const: "fruits and vegetables",
+          const: "Fruits and Vegetables",
         },
       },
     },
@@ -68,13 +116,28 @@ onSearchRules = [
   },
 
   {
-    if: { properties: { category_id: { const: "F&B" } } },
-    then: {
-      required: ["tags"],
+    if: {
+      properties: {
+        category_id: {
+          enum: [
+            "Continental",
+            "Middle Eastern",
+            "North Indian",
+            "Pan-Asian",
+            "Regional Indian",
+            "South Indian",
+            "Tex-Mexican",
+            "World Cuisines",
+            "Healthy Food",
+            "Fast Food",
+            "Desserts",
+            "Bakes & Cakes",
+            "Beverages (MTO)",
+            "F&B",
+          ],
+        },
+      },
     },
-  },
-  {
-    if: { properties: { category_id: { const: "Packaged Foods" } } },
     then: {
       required: ["tags"],
     },
@@ -83,7 +146,39 @@ onSearchRules = [
     if: {
       properties: {
         category_id: {
-          const: "f&b",
+          enum: [
+            "Gourmet & World Foods",
+            "Beverages",
+            "Bakery, Cakes & Dairy",
+            "Snacks & Branded Foods",
+          ],
+        },
+      },
+    },
+    then: {
+      required: ["tags"],
+    },
+  },
+  {
+    if: {
+      properties: {
+        category_id: {
+          enum: [
+            "F&B",
+            "Continental",
+            "Middle Eastern",
+            "North Indian",
+            "Pan-Asian",
+            "Regional Indian",
+            "South Indian",
+            "Tex-Mexican",
+            "World Cuisines",
+            "Healthy Food",
+            "Fast Food",
+            "Desserts",
+            "Bakes & Cakes",
+            "Beverages (MTO)",
+          ],
         },
       },
     },
