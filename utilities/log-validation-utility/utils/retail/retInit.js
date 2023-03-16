@@ -128,11 +128,11 @@ const checkInit = (dirPath, msgIdSet) => {
         initObj.bill = `Billing object missing in /${constants.RET_INIT}`;
       } else {
         dao.setValue("billing", init.billing);
-        if (
-          !_.isEqual(init.billing.address.area_code, dao.getValue("buyerAddr"))
-        ) {
-          initObj.billAreaCode = `area_code in billing.address does not match with area_code in /${constants.RET_SELECT}`;
-        }
+        // if (
+        //   !_.isEqual(init.billing.address.area_code, dao.getValue("buyerAddr"))
+        // ) {
+        //   initObj.billAreaCode = `area_code in billing.address does not match with area_code in /${constants.RET_SELECT}`;
+        // }
       }
     } catch (error) {
       console.log(
