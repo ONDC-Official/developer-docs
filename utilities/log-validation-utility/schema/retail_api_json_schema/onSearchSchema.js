@@ -226,6 +226,8 @@ module.exports = {
                               additionalProperties: false,
                             },
                           ],
+                          errorMessage:
+                            "either one of fixed or split timings should be provided",
                         },
                       },
                       required: ["id", "address", "gps", "time"],
