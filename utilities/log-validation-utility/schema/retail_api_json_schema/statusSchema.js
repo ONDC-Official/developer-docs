@@ -1,4 +1,5 @@
 module.exports = {
+  type: "object",
   properties: {
     context: {
       type: "object",

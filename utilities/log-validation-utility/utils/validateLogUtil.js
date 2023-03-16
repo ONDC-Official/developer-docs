@@ -22,7 +22,7 @@ const checkOnSupport = require("./retail/retOnSupport");
 const checkUpdate = require("./retail/retUpdate");
 const checkOnUpdate = require("./retail/retOnUpdate");
 
-//To be developed: TAT in on_select = sumof(time to ship in /on_search and TAT by LSP in logistics /on_search)
+//TAT in on_select = sumof(time to ship in /on_search and TAT by LSP in logistics /on_search)
 // If non-serviceable in /on_select, there should be domain-error
 
 const validateLogs = (dirPath) => {

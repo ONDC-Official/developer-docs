@@ -16,7 +16,10 @@ const updateSchema = require("./updateSchema");
 const cancelSchema = require("./cancelSchema");
 
 const Ajv = require("ajv");
-const ajv = new Ajv({ allErrors: true, strict: "log" });
+const ajv = new Ajv({
+  allErrors: true,
+  strict: "log",
+});
 const addFormats = require("ajv-formats");
 addFormats(ajv);
 
@@ -39,7 +42,16 @@ const formatted_error = (errors) => {
   error_list = [];
   let status = "";
   errors.forEach((error) => {
-    error_dict = { message: error.message, details: error.instancePath };
+    error_dict = {
+      message: `${error.message}${
+        error.params.allowedValues ? ` (${error.params.allowedValues})` : ""
+      }${error.params.allowedValue ? ` (${error.params.allowedValue})` : ""}${
+        error.params.additionalProperty
+          ? ` (${error.params.additionalProperty})`
+          : ""
+      }`,
+      details: error.instancePath,
+    };
     error_list.push(error_dict);
   });
   if (error_list.length === 0) status = "pass";

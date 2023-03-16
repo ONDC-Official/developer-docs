@@ -87,17 +87,17 @@ const checkTrack = (dirPath, msgIdSet) => {
 
     try {
       console.log(
-        `Checking Order Id in /${constants.RET_TRACK} and /${constants.RET_ONCONFIRM}`
+        `Checking Order Id in /${constants.RET_TRACK} and /${constants.RET_CONFIRM}`
       );
-      if (track.order_id != dao.getValue("onCnfrmOrdrId")) {
+      if (track.order_id != dao.getValue("cnfrmOrdrId")) {
         console.log(
-          `Order Id in /${constants.RET_TRACK} and /${constants.RET_ONCONFIRM} do not match`
+          `Order Id in /${constants.RET_TRACK} and /${constants.RET_CONFIRM} do not match`
         );
-        trckObj.trackOrdrId = `Order Id in /${constants.RET_TRACK} and /${constants.RET_ONCONFIRM} do not match`;
+        trckObj.trackOrdrId = `Order Id in /${constants.RET_TRACK} and /${constants.RET_CONFIRM} do not match`;
       }
     } catch (error) {
       console.log(
-        `Error while comparing order id in /${constants.RET_TRACK} and /${constants.RET_ONCONFIRM}`,
+        `Error while comparing order id in /${constants.RET_TRACK} and /${constants.RET_CONFIRM}`,
         error
       );
       // trckObj.trackOrdrId = "Order Id in /${constants.RET_TRACK} and /${constants.RET_ONCONFIRM} do not match";

@@ -117,12 +117,12 @@ const checkOnCancel = (dirPath, msgIdSet) => {
 
     try {
       console.log(
-        `Comparing order id in /${constants.RET_ONCANCEL} and /${constants.RET_ONCONFIRM}`
+        `Comparing order id in /${constants.RET_ONCANCEL} and /${constants.RET_CONFIRM}`
       );
-      if (on_cancel.id != dao.getValue("onCnfrmOrdrId")) {
-        onCnclObj.onCancelId = `Order id in /${constants.RET_ONCANCEL} and /${constants.RET_ONCONFIRM} do not match`;
+      if (on_cancel.id != dao.getValue("cnfrmOrdrId")) {
+        onCnclObj.onCancelId = `Order id in /${constants.RET_ONCANCEL} and /${constants.RET_CONFIRM} do not match`;
         console.log(
-          `Order id in /${constants.RET_ONCANCEL} and /${constants.RET_ONCONFIRM} do not match`
+          `Order id in /${constants.RET_ONCANCEL} and /${constants.RET_CONFIRM} do not match`
         );
       }
     } catch (error) {

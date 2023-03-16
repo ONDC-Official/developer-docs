@@ -94,96 +94,98 @@ module.exports = {
             },
             items: {
               type: "array",
-              items: [
-                {
-                  type: "object",
-                  properties: {
-                    id: {
-                      type: "string",
-                    },
-                    quantity: {
-                      type: "object",
-                      properties: {
-                        count: {
-                          type: "integer",
-                        },
-                      },
-                      required: ["count"],
-                    },
-                    tags: {
-                      type: "object",
-                      properties: {
-                        update_type: {
-                          type: "string",
-                          enum: ["return", "cancel"],
-                        },
-                        reason_code: {
-                          type: "string",
-                          minLength: 3,
-                          maxLength: 3,
-                        },
-                        ttl_approval: {
-                          type: "string",
-                          format: "duration",
-                        },
-                        ttl_reverseqc: {
-                          type: "string",
-                          format: "duration",
-                        },
-                        image: {
-                          type: "string",
-                        },
-                      },
-                      required: ["update_type"],
-                      if: {
-                        properties: {
-                          update_type: {
-                            const: "return",
-                          },
-                        },
-                      },
-                      then: { required: ["reason_code"] },
-                    },
+              items: {
+                type: "object",
+                properties: {
+                  id: {
+                    type: "string",
                   },
-                  required: ["id", "quantity", "tags"],
+                  quantity: {
+                    type: "object",
+                    properties: {
+                      count: {
+                        type: "integer",
+                      },
+                    },
+                    required: ["count"],
+                  },
+                  tags: {
+                    type: "object",
+                    properties: {
+                      update_type: {
+                        type: "string",
+                        enum: ["return", "cancel"],
+                      },
+                      reason_code: {
+                        type: "string",
+                        minLength: 3,
+                        maxLength: 3,
+                      },
+                      ttl_approval: {
+                        type: "string",
+                        format: "duration",
+                      },
+                      ttl_reverseqc: {
+                        type: "string",
+                        format: "duration",
+                      },
+                      image: {
+                        type: "string",
+                      },
+                    },
+                    required: ["update_type"],
+                    allOf: [
+                      {
+                        if: {
+                          properties: {
+                            update_type: {
+                              const: "return",
+                            },
+                            reason_code: { type: "string" },
+                          },
+                          required: ["update_type"],
+                        },
+                        then: { required: ["reason_code"] },
+                      },
+                    ],
+                  },
                 },
-              ],
+                required: ["id", "quantity", "tags"],
+              },
             },
             payment: {
               type: "object",
               properties: {
                 "@ondc/org/settlement_details": {
                   type: "array",
-                  items: [
-                    {
-                      type: "object",
-                      properties: {
-                        settlement_counterparty: {
-                          type: "string",
-                        },
-                        settlement_phase: {
-                          type: "string",
-                        },
-                        settlement_type: {
-                          type: "string",
-                        },
-                        settlement_amount: {
-                          type: "string",
-                        },
-                        settlement_timestamp: {
-                          type: "string",
-                          format: "date-time",
-                        },
+                  items: {
+                    type: "object",
+                    properties: {
+                      settlement_counterparty: {
+                        type: "string",
                       },
-                      required: [
-                        "settlement_counterparty",
-                        "settlement_phase",
-                        "settlement_type",
-                        "settlement_amount",
-                        "settlement_timestamp",
-                      ],
+                      settlement_phase: {
+                        type: "string",
+                      },
+                      settlement_type: {
+                        type: "string",
+                      },
+                      settlement_amount: {
+                        type: "string",
+                      },
+                      settlement_timestamp: {
+                        type: "string",
+                        format: "date-time",
+                      },
                     },
-                  ],
+                    required: [
+                      "settlement_counterparty",
+                      "settlement_phase",
+                      "settlement_type",
+                      "settlement_amount",
+                      "settlement_timestamp",
+                    ],
+                  },
                 },
               },
               required: ["@ondc/org/settlement_details"],

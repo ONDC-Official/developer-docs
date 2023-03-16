@@ -13,10 +13,10 @@ const checkOnSupport = (dirPath, msgIdSet) => {
     let on_support = fs.readFileSync(
       dirPath + `/${constants.RET_ONSUPPORT}.json`
     );
-
-    console.log(`Validating Schema for /${constants.RET_ONSUPPORT} API`);
+    on_support = JSON.parse(on_support);
 
     try {
+      console.log(`Validating Schema for /${constants.RET_ONSUPPORT} API`);
       const vs = validateSchema("retail", constants.RET_ONSUPPORT, on_support);
       if (vs != "error") {
         // console.log(vs);
@@ -28,8 +28,6 @@ const checkOnSupport = (dirPath, msgIdSet) => {
         error
       );
     }
-
-    on_support = JSON.parse(on_support);
 
     try {
       console.log(`Checking context for /${constants.RET_ONSUPPORT} API`); //checking context
