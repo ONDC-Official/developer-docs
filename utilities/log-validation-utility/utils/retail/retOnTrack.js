@@ -9,7 +9,7 @@ const checkOnTrack = (dirPath, msgIdSet) => {
   let onTrckObj = {};
   try {
     let on_track = fs.readFileSync(dirPath + `/${constants.RET_ONTRACK}.json`);
-
+    on_track = JSON.parse(on_track);
     try {
       console.log(`Validating Schema for /${constants.RET_ONTRACK} API`);
       const vs = validateSchema("retail", constants.RET_ONTRACK, on_track);
@@ -23,7 +23,6 @@ const checkOnTrack = (dirPath, msgIdSet) => {
         error
       );
     }
-    on_track = JSON.parse(on_track);
 
     console.log(`Checking context for /${constants.RET_ONTRACK} API`); //checking context
     try {

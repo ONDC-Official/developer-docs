@@ -105,17 +105,17 @@ const checkCancel = (dirPath, msgIdSet) => {
 
     try {
       console.log(
-        `Comparing order Id in /${constants.RET_CANCEL} and /${constants.RET_ONCONFIRM}`
+        `Comparing order Id in /${constants.RET_CANCEL} and /${constants.RET_CONFIRM}`
       );
-      if (cancel.order_id != dao.getValue("onCnfrmOrdrId")) {
-        cnclObj.cancelOrdrId = `Order Id in /${constants.RET_CANCEL} and /${constants.RET_ONCONFIRM} do not match`;
+      if (cancel.order_id != dao.getValue("cnfrmOrdrId")) {
+        cnclObj.cancelOrdrId = `Order Id in /${constants.RET_CANCEL} and /${constants.RET_CONFIRM} do not match`;
         console.log(
-          `Order Id mismatch in /${constants.RET_CANCEL} and /${constants.RET_ONCONFIRM}`
+          `Order Id mismatch in /${constants.RET_CANCEL} and /${constants.RET_CONFIRM}`
         );
       }
     } catch (error) {
       console.log(
-        `Error while comparing order id in /${constants.RET_CANCEL} and /${constants.RET_ONCONFIRM}`,
+        `Error while comparing order id in /${constants.RET_CANCEL} and /${constants.RET_CONFIRM}`,
         error
       );
       // cnclObj.cancelOrdrId =

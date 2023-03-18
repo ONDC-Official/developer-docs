@@ -185,10 +185,10 @@ module.exports = {
                     },
                     type: {
                       type: "string",
+                      const: "Delivery",
                     },
                     tracking: {
                       type: "boolean",
-                      const: "Delivery",
                     },
                     end: {
                       type: "object",
