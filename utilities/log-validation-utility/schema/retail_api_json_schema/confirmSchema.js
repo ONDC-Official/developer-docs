@@ -87,17 +87,15 @@ module.exports = {
                 },
                 locations: {
                   type: "array",
-                  items: [
-                    {
-                      type: "object",
-                      properties: {
-                        id: {
-                          type: "string",
-                        },
+                  items: {
+                    type: "object",
+                    properties: {
+                      id: {
+                        type: "string",
                       },
-                      required: ["id"],
                     },
-                  ],
+                    required: ["id"],
+                  },
                 },
               },
               required: ["id", "locations"],
@@ -174,96 +172,94 @@ module.exports = {
             },
             fulfillments: {
               type: "array",
-              items: [
-                {
-                  type: "object",
-                  properties: {
-                    id: {
-                      type: "string",
-                    },
-                    type: {
-                      type: "string",
-                      const: "Delivery",
-                    },
-                    tracking: {
-                      type: "boolean",
-                    },
-                    end: {
-                      type: "object",
-                      properties: {
-                        person: {
-                          type: "object",
-                          properties: {
-                            name: {
-                              type: "string",
-                            },
-                          },
-                          required: ["name"],
-                        },
-                        contact: {
-                          type: "object",
-                          properties: {
-                            email: {
-                              type: "string",
-                              format: "email",
-                            },
-                            phone: {
-                              type: "string",
-                            },
-                          },
-                          required: ["phone"],
-                        },
-                        location: {
-                          type: "object",
-                          properties: {
-                            gps: {
-                              type: "string",
-                            },
-                            address: {
-                              type: "object",
-                              properties: {
-                                name: {
-                                  type: "string",
-                                },
-                                building: {
-                                  type: "string",
-                                },
-                                locality: {
-                                  type: "string",
-                                },
-                                city: {
-                                  type: "string",
-                                },
-                                state: {
-                                  type: "string",
-                                },
-                                country: {
-                                  type: "string",
-                                },
-                                area_code: {
-                                  type: "string",
-                                },
-                              },
-                              required: [
-                                "name",
-                                "building",
-                                "locality",
-                                "city",
-                                "state",
-                                "country",
-                                "area_code",
-                              ],
-                            },
-                          },
-                          required: ["gps", "address"],
-                        },
-                      },
-                      required: ["person", "contact", "location"],
-                    },
+              items: {
+                type: "object",
+                properties: {
+                  id: {
+                    type: "string",
                   },
-                  required: ["id", "type", "tracking", "end"],
+                  type: {
+                    type: "string",
+                    const: "Delivery",
+                  },
+                  tracking: {
+                    type: "boolean",
+                  },
+                  end: {
+                    type: "object",
+                    properties: {
+                      person: {
+                        type: "object",
+                        properties: {
+                          name: {
+                            type: "string",
+                          },
+                        },
+                        required: ["name"],
+                      },
+                      contact: {
+                        type: "object",
+                        properties: {
+                          email: {
+                            type: "string",
+                            format: "email",
+                          },
+                          phone: {
+                            type: "string",
+                          },
+                        },
+                        required: ["phone"],
+                      },
+                      location: {
+                        type: "object",
+                        properties: {
+                          gps: {
+                            type: "string",
+                          },
+                          address: {
+                            type: "object",
+                            properties: {
+                              name: {
+                                type: "string",
+                              },
+                              building: {
+                                type: "string",
+                              },
+                              locality: {
+                                type: "string",
+                              },
+                              city: {
+                                type: "string",
+                              },
+                              state: {
+                                type: "string",
+                              },
+                              country: {
+                                type: "string",
+                              },
+                              area_code: {
+                                type: "string",
+                              },
+                            },
+                            required: [
+                              "name",
+                              "building",
+                              "locality",
+                              "city",
+                              "state",
+                              "country",
+                              "area_code",
+                            ],
+                          },
+                        },
+                        required: ["gps", "address"],
+                      },
+                    },
+                    required: ["person", "contact", "location"],
+                  },
                 },
-              ],
+                required: ["id", "type", "tracking", "end"],
+              },
             },
             quote: {
               type: "object",

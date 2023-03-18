@@ -134,14 +134,20 @@ module.exports = {
                       },
                     },
                     required: ["update_type"],
-                    if: {
-                      properties: {
-                        update_type: {
-                          const: "return",
+                    allOf: [
+                      {
+                        if: {
+                          properties: {
+                            update_type: {
+                              const: "return",
+                            },
+                            reason_code: { type: "string" },
+                          },
+                          required: ["update_type"],
                         },
+                        then: { required: ["reason_code"] },
                       },
-                    },
-                    then: { required: ["reason_code"] },
+                    ],
                   },
                 },
                 required: ["id", "quantity", "tags"],
@@ -152,36 +158,34 @@ module.exports = {
               properties: {
                 "@ondc/org/settlement_details": {
                   type: "array",
-                  items: [
-                    {
-                      type: "object",
-                      properties: {
-                        settlement_counterparty: {
-                          type: "string",
-                        },
-                        settlement_phase: {
-                          type: "string",
-                        },
-                        settlement_type: {
-                          type: "string",
-                        },
-                        settlement_amount: {
-                          type: "string",
-                        },
-                        settlement_timestamp: {
-                          type: "string",
-                          format: "date-time",
-                        },
+                  items: {
+                    type: "object",
+                    properties: {
+                      settlement_counterparty: {
+                        type: "string",
                       },
-                      required: [
-                        "settlement_counterparty",
-                        "settlement_phase",
-                        "settlement_type",
-                        "settlement_amount",
-                        "settlement_timestamp",
-                      ],
+                      settlement_phase: {
+                        type: "string",
+                      },
+                      settlement_type: {
+                        type: "string",
+                      },
+                      settlement_amount: {
+                        type: "string",
+                      },
+                      settlement_timestamp: {
+                        type: "string",
+                        format: "date-time",
+                      },
                     },
-                  ],
+                    required: [
+                      "settlement_counterparty",
+                      "settlement_phase",
+                      "settlement_type",
+                      "settlement_amount",
+                      "settlement_timestamp",
+                    ],
+                  },
                 },
               },
               required: ["@ondc/org/settlement_details"],
