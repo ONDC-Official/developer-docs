@@ -94,60 +94,58 @@ module.exports = {
             },
             items: {
               type: "array",
-              items: [
-                {
-                  type: "object",
-                  properties: {
-                    id: {
-                      type: "string",
-                    },
-                    quantity: {
-                      type: "object",
-                      properties: {
-                        count: {
-                          type: "integer",
-                        },
+              items: {
+                type: "object",
+                properties: {
+                  id: {
+                    type: "string",
+                  },
+                  quantity: {
+                    type: "object",
+                    properties: {
+                      count: {
+                        type: "integer",
                       },
-                      required: ["count"],
                     },
-                    tags: {
-                      type: "object",
+                    required: ["count"],
+                  },
+                  tags: {
+                    type: "object",
+                    properties: {
+                      update_type: {
+                        type: "string",
+                        enum: ["return", "cancel"],
+                      },
+                      reason_code: {
+                        type: "string",
+                        minLength: 3,
+                        maxLength: 3,
+                      },
+                      ttl_approval: {
+                        type: "string",
+                        format: "duration",
+                      },
+                      ttl_reverseqc: {
+                        type: "string",
+                        format: "duration",
+                      },
+                      image: {
+                        type: "string",
+                      },
+                    },
+                    required: ["update_type"],
+                    if: {
                       properties: {
                         update_type: {
-                          type: "string",
-                          enum: ["return", "cancel"],
-                        },
-                        reason_code: {
-                          type: "string",
-                          minLength: 3,
-                          maxLength: 3,
-                        },
-                        ttl_approval: {
-                          type: "string",
-                          format: "duration",
-                        },
-                        ttl_reverseqc: {
-                          type: "string",
-                          format: "duration",
-                        },
-                        image: {
-                          type: "string",
+                          const: "return",
                         },
                       },
-                      required: ["update_type"],
-                      if: {
-                        properties: {
-                          update_type: {
-                            const: "return",
-                          },
-                        },
-                      },
-                      then: { required: ["reason_code"] },
                     },
+                    then: { required: ["reason_code"] },
                   },
-                  required: ["id", "quantity", "tags"],
                 },
-              ],
+                required: ["id", "quantity", "tags"],
+              },
             },
             payment: {
               type: "object",

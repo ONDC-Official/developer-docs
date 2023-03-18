@@ -104,29 +104,27 @@ module.exports = {
             },
             items: {
               type: "array",
-              items: [
-                {
-                  type: "object",
-                  properties: {
-                    id: {
-                      type: "string",
-                    },
-                    fulfillment_id: {
-                      type: "string",
-                    },
-                    quantity: {
-                      type: "object",
-                      properties: {
-                        count: {
-                          type: "integer",
-                        },
-                      },
-                      required: ["count"],
-                    },
+              items: {
+                type: "object",
+                properties: {
+                  id: {
+                    type: "string",
                   },
-                  required: ["id", "fulfillment_id", "quantity"],
+                  fulfillment_id: {
+                    type: "string",
+                  },
+                  quantity: {
+                    type: "object",
+                    properties: {
+                      count: {
+                        type: "integer",
+                      },
+                    },
+                    required: ["count"],
+                  },
                 },
-              ],
+                required: ["id", "fulfillment_id", "quantity"],
+              },
             },
             billing: {
               type: "object",
