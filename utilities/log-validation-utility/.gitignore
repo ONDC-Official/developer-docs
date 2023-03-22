@@ -8,6 +8,8 @@ verification-logs
 /utils/*.txt
 test_logs
 dbfiles
-log_report.md
 test.js
 public/
+!README.md
+!LICENSE.md
+*.md

@@ -216,7 +216,7 @@ const checkConfirm = (dirPath, msgIdSet) => {
 
         if (
           !_.isEqual(
-            confirm.fulfillments[i].location.gps,
+            confirm.fulfillments[i].end.location.gps,
             dao.getValue("buyerGps")
           )
         ) {
@@ -225,7 +225,7 @@ const checkConfirm = (dirPath, msgIdSet) => {
 
         if (
           !_.isEqual(
-            confirm.fulfillments[i].location.address.area_code,
+            confirm.fulfillments[i].end.location.address.area_code,
             dao.getValue("buyerAddr")
           )
         ) {
@@ -291,13 +291,13 @@ const checkConfirm = (dirPath, msgIdSet) => {
         cnfrmObj.ordertmpstmp = `order created and updated timestamps are mandatory in /${constants.RET_CONFIRM}`;
       } else {
         if (!_.isEqual(confirm.created_at, dao.getValue("tmpstmp"))) {
-          cnfrmObj.orderCrtd = `order.created_at timestamp should be the same as context.timestamp`;
+          cnfrmObj.orderCrtd = `order.created_at timestamp should match context.timestamp`;
         } else {
           dao.setValue("ordrcrtdtmpstmp", confirm.created_at);
         }
 
         if (!_.isEqual(confirm.created_at, confirm.updated_at)) {
-          cnfrmObj.ordrupdtd = `order.updated_at timestamp should be the same as order.created_at timestamp`;
+          cnfrmObj.ordrupdtd = `order.updated_at timestamp should match order.created_at timestamp`;
         } else {
           dao.setValue("ordrupdtdtmpstmp", confirm.updated_at);
         }

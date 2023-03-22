@@ -309,7 +309,7 @@ const checkOnConfirm = (dirPath, msgIdSet) => {
 
         if (
           !_.isEqual(
-            on_confirm.fulfillments[i].location.address.area_code,
+            on_confirm.fulfillments[i].end.location.address.area_code,
             dao.getValue("buyerAddr")
           )
         ) {

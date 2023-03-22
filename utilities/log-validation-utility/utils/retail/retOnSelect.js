@@ -340,7 +340,7 @@ const checkOnSelect = (dirPath, msgIdSet) => {
         }
       });
 
-      dao.setValue("onSelectPrice", onSelectPrice);
+      dao.setValue("onSelectPrice", on_select.quote.price.value);
 
       console.log(
         `Matching quoted Price ${parseFloat(
