@@ -22,6 +22,7 @@ const ajv = new Ajv({
 });
 const addFormats = require("ajv-formats");
 addFormats(ajv);
+require("ajv-errors")(ajv);
 
 // transform_on_search_schema = (payload) => {
 //   transformed_payload = payload;

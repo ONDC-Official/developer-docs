@@ -60,7 +60,7 @@ const checkInit = (dirPath, msgIdSet) => {
       if (_.gte(dao.getValue("tmpstmp"), init.context.timestamp)) {
         initObj.tmpstmp = `Timestamp for  /${constants.RET_ONSELECT} api cannot be greater than or equal to /init api`;
       }
-      dao.setValue(dao.getValue("tmpstmp"), init.context.timestamp);
+      dao.setValue("tmpstmp", init.context.timestamp);
     } catch (error) {
       console.log(
         `!!Error while comparing timestamp for /${constants.RET_ONSELECT} and /${constants.RET_INIT} api`,
@@ -127,7 +127,16 @@ const checkInit = (dirPath, msgIdSet) => {
       if (!init["billing"]) {
         initObj.bill = `Billing object missing in /${constants.RET_INIT}`;
       } else {
-        dao.setValue("billing", init.billing);
+        const billing = init.billing;
+        const tmpstmp = dao.getValue("tmpstmp");
+        dao.setValue("billing", billing);
+        if (!_.isEqual(billing.created_at, tmpstmp)) {
+          initObj.bllngCrtd = `billing.created_at should match context.timestamp`;
+        }
+
+        if (!_.isEqual(init.billing.updated_at, tmpstmp)) {
+          initObj.bllngUptd = `billing.updated_at should match context.timestamp`;
+        }
         // if (
         //   !_.isEqual(init.billing.address.area_code, dao.getValue("buyerAddr"))
         // ) {
