@@ -13,7 +13,7 @@
 5.	Develop and host /on_subscribe : ``    https://<YourDomain>/<YourCallBackURL>/on_subscribe``
 6.	Refer for Request Body and Response ``https://app.swaggerhub.com/apis-docs/ONDC/ONDC-Registry-Onboarding/2.0.5#/ONDC%20Network%20Participant%20Onboarding/post_subscriber_url_on_subscribe ``
 7.	Generate Signing Key Pair - signing_public_key and signing_private_key
-8.	Generate Encryption Key Pair - encryption_public_key and encryption_private_key
+8.	Generate Encryption Key Pair - encryption_public_key and encryption_private_key (Reference utilities here: https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/signing_and_verification)
 9.	Generate Unique Request ID (request_id). It should be unique for a Network Participant. It can be in any format. For example - it can be UUID or a simple number or alphanumeric format.
 10.	Generate SIGNED_UNIQUE_REQ_ID => ( Sign request_id using signing_private_key generated in step 6 )
 11.	Create ``ondc-site-verification.html`` and place it at subscriber_id by adding SIGNED_UNIQUE_REQ_ID generated in step 9. Registry shall check existence of ondc-site-verification.html at 
