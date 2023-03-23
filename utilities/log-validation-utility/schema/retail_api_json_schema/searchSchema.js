@@ -105,7 +105,7 @@ module.exports = {
                           required: ["area_code"],
                         },
                       },
-                      required: ["gps", "address"],
+                      required: ["gps"],
                     },
                   },
                   required: ["location"],

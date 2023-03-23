@@ -39,9 +39,3 @@ const dropDB = () => {
 };
 
 module.exports = { getValue, setValue, dropDB };
-
-// or
-// myDB.transaction(() => {
-//   myDB.put("greeting", { someText: "Hello, World!" });
-//   myDB.get("greeting").someText; // 'Hello, World!'
-// });
