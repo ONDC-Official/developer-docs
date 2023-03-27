@@ -33,7 +33,7 @@ const checkOnSupport = (dirPath, msgIdSet) => {
       console.log(`Checking context for /${constants.RET_ONSUPPORT} API`); //checking context
       res = checkContext(on_support.context, constants.RET_ONSUPPORT);
       if (!res.valid) {
-        onSprtObj = res.ERRORS;
+        Object.assign(onSprtObj, res.ERRORS);
       }
     } catch (error) {
       console.log(

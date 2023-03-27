@@ -29,7 +29,7 @@ const checkConfirm = (dirPath, msgIdSet) => {
       console.log(`Checking context for /${constants.RET_CONFIRM} API`); //checking context
       res = checkContext(confirm.context, constants.RET_CONFIRM);
       if (!res.valid) {
-        cnfrmObj = res.ERRORS;
+        Object.assign(cnfrmObj, res.ERRORS);
       }
     } catch (error) {
       console.log(
@@ -277,7 +277,7 @@ const checkConfirm = (dirPath, msgIdSet) => {
 
       if (
         !_.isEqual(
-          confirm.payment["@ondc/org/settlement_details"],
+          confirm.payment["@ondc/org/settlement_details"][0],
           dao.getValue("sttlmntdtls")
         )
       ) {
@@ -325,7 +325,7 @@ const checkConfirm = (dirPath, msgIdSet) => {
       );
       console.log("confirm quote", confirm.quote);
       if (!_.isEqual(dao.getValue("quoteObj"), confirm.quote)) {
-        cnfrmObj.quoteObj = `Quote Objects in /${constants.RET_ONSELECT} and /${constants.RET_CONFIRM} do not match`;
+        cnfrmObj.quoteObj = `Discrepancies between the quote object in /${constants.RET_ONSELECT} and /${constants.RET_CONFIRM}`;
       }
     } catch (error) {
       console.log(

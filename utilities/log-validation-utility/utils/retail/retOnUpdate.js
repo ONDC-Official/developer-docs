@@ -34,7 +34,7 @@ const checkOnUpdate = (dirPath, msgIdSet) => {
       console.log(`Checking context for /${constants.RET_ONUPDATE} API`); //checking context
       res = checkContext(on_update.context, constants.RET_ONUPDATE);
       if (!res.valid) {
-        onUpdtObj = res.ERRORS;
+        Object.assign(onUpdtObj, res.ERRORS);
       }
     } catch (error) {
       console.log(
@@ -205,7 +205,7 @@ const checkOnUpdate = (dirPath, msgIdSet) => {
             `Comparing individual item's total price and unit price `
           );
           if (!element.hasOwnProperty("item")) {
-            onSlctObj.priceBreakup = `Item's unit price missing in quote.breakup for item id ${element["@ondc/org/item_id"]}`;
+            onUpdtObj.priceBreakup = `Item's unit price missing in quote.breakup for item id ${element["@ondc/org/item_id"]}`;
           } else if (
             parseFloat(element.item.price.value) *
               element["@ondc/org/item_quantity"].count !=

@@ -9,11 +9,25 @@ const checkSupport = (dirPath, msgIdSet) => {
   try {
     var support = fs.readFileSync(dirPath + `/${constants.RET_SUPPORT}.json`);
     support = JSON.parse(support);
-    console.log(`Checking context for /${constants.RET_SUPPORT} API`); //checking context
+
     try {
+      console.log(`Validating Schema for ${constants.RET_SUPPORT} API`);
+      const vs = validateSchema("retail", constants.RET_SUPPORT, support);
+      if (vs != "error") {
+        // console.log(vs);
+        Object.assign(sprtObj, vs);
+      }
+    } catch (error) {
+      console.log(
+        `!!Error occurred while performing schema validation for /${constants.RET_SUPPORT}`,
+        error
+      );
+    }
+    try {
+      console.log(`Checking context for /${constants.RET_SUPPORT} API`); //checking context
       res = checkContext(support.context, constants.RET_SUPPORT);
       if (!res.valid) {
-        sprtObj = res.ERRORS;
+        Object.assign(sprtObj, res.ERRORS);
       }
     } catch (error) {
       console.log(

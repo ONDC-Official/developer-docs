@@ -36,7 +36,7 @@ const checkSelect = (dirPath, msgIdSet) => {
     try {
       res = checkContext(select.context, constants.RET_SELECT);
       if (!res.valid) {
-        slctObj = res.ERRORS;
+        Object.assign(slctObj, res.ERRORS);
       }
     } catch (error) {
       console.log(

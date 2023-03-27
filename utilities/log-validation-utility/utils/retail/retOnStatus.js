@@ -33,7 +33,7 @@ const checkOnStatus = (dirPath, msgIdSet) => {
       console.log("Checking context for /${constants.RET_ONSTATUS} API"); //checking context
       res = checkContext(on_status.context, "on_status");
       if (!res.valid) {
-        onStatObj = res.ERRORS;
+        Object.assign(onStatObj, res.ERRORS);
       }
     } catch (error) {
       console.log(

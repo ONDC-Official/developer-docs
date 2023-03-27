@@ -10,6 +10,25 @@ const checkSearch = (dirPath, msgIdSet) => {
   try {
     let search = fs.readFileSync(dirPath + `/${constants.RET_SEARCH}.json`);
     search = JSON.parse(search);
+
+    try {
+      console.log(`Checking context for ${constants.RET_SEARCH} API`); //context checking
+      res = checkContext(search.context, constants.RET_SEARCH);
+      dao.setValue("tmpstmp", search.context.timestamp);
+      dao.setValue("txnId", search.context.transaction_id);
+      dao.setValue("msgId", search.context.message_id);
+      dao.setValue("city", search.context.city);
+      msgIdSet.add(search.context.message_id);
+      if (!res.valid) {
+        Object.assign(srchObj, res.ERRORS);
+      }
+    } catch (error) {
+      console.log(
+        `!!Some error occurred while checking /${constants.RET_SEARCH} context`,
+        error
+      );
+    }
+
     try {
       console.log(`Validating Schema for ${constants.RET_SEARCH} API`);
       const vs = validateSchema("retail", constants.RET_SEARCH, search);
@@ -20,25 +39,6 @@ const checkSearch = (dirPath, msgIdSet) => {
     } catch (error) {
       console.log(
         `!!Error occurred while performing schema validation for /${constants.RET_SEARCH}`,
-        error
-      );
-    }
-
-    console.log(`Checking context for ${constants.RET_SEARCH} API`); //context checking
-
-    try {
-      res = checkContext(search.context, constants.RET_SEARCH);
-      dao.setValue("tmpstmp", search.context.timestamp);
-      dao.setValue("txnId", search.context.transaction_id);
-      dao.setValue("msgId", search.context.message_id);
-      dao.setValue("city", search.context.city);
-      msgIdSet.add(search.context.message_id);
-      if (!res.valid) {
-        srchObj = res.ERRORS;
-      }
-    } catch (error) {
-      console.log(
-        `!!Some error occurred while checking /${constants.RET_SEARCH} context`,
         error
       );
     }

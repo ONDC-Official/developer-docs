@@ -14,8 +14,8 @@ const checkInit = (dirPath, msgIdSet) => {
     try {
       console.log(`Validating Schema for ${constants.RET_INIT} API`);
       const vs = validateSchema("retail", constants.RET_INIT, init);
+      console.log("DEBUGGG", vs);
       if (vs != "error") {
-        // console.log(vs);
         Object.assign(initObj, vs);
       }
     } catch (error) {
@@ -29,7 +29,7 @@ const checkInit = (dirPath, msgIdSet) => {
       console.log(`Checking context for /${constants.RET_INIT} API`); //checking context
       res = checkContext(init.context, constants.RET_INIT);
       if (!res.valid) {
-        initObj = res.ERRORS;
+        Object.assign(initObj, res.ERRORS);
       }
     } catch (error) {
       console.log(
@@ -255,7 +255,8 @@ const checkInit = (dirPath, msgIdSet) => {
       console.log(`!!File not found for /${constants.RET_INIT} API!`);
     } else {
       console.log(
-        `!!Some error occurred while checking /${constants.RET_INIT} API`
+        `!!Some error occurred while checking /${constants.RET_INIT} API`,
+        err
       );
     }
   }

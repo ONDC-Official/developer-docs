@@ -24,21 +24,6 @@ const addFormats = require("ajv-formats");
 addFormats(ajv);
 require("ajv-errors")(ajv);
 
-// transform_on_search_schema = (payload) => {
-//   transformed_payload = payload;
-//   bpp_providers = transformed_payload["message"]["catalog"]["bpp/providers"];
-//   bpp_providers.forEach((provider) => {
-//     if (provider.hasOwnProperty("@ondc/org/fssai_license_no")) {
-//       fssai = provider["@ondc/org/fssai_license_no"];
-//       items = provider["items"];
-//       items.forEach((item) => {
-//         item["@ondc/org/fssai_license_no"] = fssai;
-//       });
-//     }
-
-//     return transformed_payload;
-//   });
-// };
 const formatted_error = (errors) => {
   error_list = [];
   let status = "";
