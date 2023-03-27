@@ -33,7 +33,7 @@ const checkOnConfirm = (dirPath, msgIdSet) => {
       console.log(`Checking context for /${constants.RET_ONCONFIRM} API`); //checking context
       res = checkContext(on_confirm.context, constants.RET_ONCONFIRM);
       if (!res.valid) {
-        onCnfrmObj = res.ERRORS;
+        Object.assign(onCnfrmObj, res.ERRORS);
       }
     } catch (error) {
       console.log(
@@ -142,9 +142,10 @@ const checkOnConfirm = (dirPath, msgIdSet) => {
         if (
           cnfrmOrdrUpdtd &&
           (!on_confirm.updated_at ||
-            _.gte(cnfrmOrdrUpdtd, on_confirm.updated_at))
+            _.gte(cnfrmOrdrUpdtd, on_confirm.updated_at) ||
+            on_confirm.updated_at != dao.getValue("tmpstmp"))
         ) {
-          onCnfrmObj.updtdtmstmp = `order.updated_at timestamp should be updated (Default fulfillment state is added)`;
+          onCnfrmObj.updtdtmstmp = `order.updated_at timestamp should be updated as per the context.timestamp (since default fulfillment state is added)`;
         }
       }
 
@@ -347,7 +348,7 @@ const checkOnConfirm = (dirPath, msgIdSet) => {
         `Comparing Quote object for /${constants.RET_ONSELECT} and /${constants.RET_ONCONFIRM}`
       );
       if (!_.isEqual(dao.getValue("quoteObj"), on_confirm.quote)) {
-        onCnfrmObj.onQuoteObj = `Quote Object in /${constants.RET_ONSELECT} and /${constants.RET_ONCONFIRM} do not match`;
+        onCnfrmObj.onQuoteObj = `Discrepancies between the quote object /${constants.RET_ONSELECT} and /${constants.RET_ONCONFIRM}`;
       }
     } catch (error) {
       // onCnfrmObj.onQuoteObj = `Quote Object in /on_init and /${constants.RET_ONCONFIRM} mismatch`;
@@ -381,7 +382,7 @@ const checkOnConfirm = (dirPath, msgIdSet) => {
       );
 
       if (!_.isEqual(dao.getValue("cnfrmpymnt"), on_confirm.payment)) {
-        `payment object mismatches in /${constants.RET_CONFIRM} & /${constants.RET_ONCONFIRM}`;
+        onCnfrmObj.pymntObj = `payment object mismatches in /${constants.RET_CONFIRM} & /${constants.RET_ONCONFIRM}`;
       }
     } catch (error) {
       console.log(

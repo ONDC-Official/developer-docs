@@ -9,7 +9,6 @@ verification-logs
 test_logs
 dbfiles
 test.js
-public/
 !README.md
 !LICENSE.md
 *.md

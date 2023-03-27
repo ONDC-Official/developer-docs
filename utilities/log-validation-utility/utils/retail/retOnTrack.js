@@ -28,7 +28,7 @@ const checkOnTrack = (dirPath, msgIdSet) => {
     try {
       res = checkContext(on_track.context, "on_track");
       if (!res.valid) {
-        onTrckObj = res.ERRORS;
+        Object.assign(onTrckObj, res.ERRORS);
       }
     } catch (error) {
       console.log(

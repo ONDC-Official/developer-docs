@@ -12,6 +12,19 @@ const checkOnSelect = (dirPath, msgIdSet) => {
     on_select = fs.readFileSync(dirPath + `/${constants.RET_ONSELECT}.json`);
 
     on_select = JSON.parse(on_select);
+
+    try {
+      console.log(`Checking context for /${constants.RET_ONSELECT} API`); //checking context
+      res = checkContext(on_select.context, constants.RET_ONSELECT);
+      if (!res.valid) {
+        Object.assign(onSlctObj, res.ERRORS);
+      }
+    } catch (error) {
+      console.log(
+        `!!Some error occurred while checking /${constants.RET_ONSELECT} context`,
+        error
+      );
+    }
     try {
       console.log(`Validating Schema for /${constants.RET_ONSELECT} API`);
       const vs = validateSchema("retail", constants.RET_ONSELECT, on_select);
@@ -22,19 +35,6 @@ const checkOnSelect = (dirPath, msgIdSet) => {
     } catch (error) {
       console.log(
         `!!Error occurred while performing schema validation for /${constants.RET_ONSELECT}`,
-        error
-      );
-    }
-
-    try {
-      console.log(`Checking context for /${constants.RET_ONSELECT} API`); //checking context
-      res = checkContext(on_select.context, constants.RET_ONSELECT);
-      if (!res.valid) {
-        onSlctObj = res.ERRORS;
-      }
-    } catch (error) {
-      console.log(
-        `!!Some error occurred while checking /${constants.RET_ONSELECT} context`,
         error
       );
     }
@@ -294,11 +294,14 @@ const checkOnSelect = (dirPath, msgIdSet) => {
           if (element.item.hasOwnProperty("quantity")) {
             if (
               _.gt(
-                element.item.quantity.available.count,
-                element.item.quantity.maximum.count
+                parseFloat(element.item.quantity.available.count),
+                parseFloat(element.item.quantity.maximum.count)
               )
             ) {
-              onSlctObj.qntCnt = `available count can't be greater than maximum count for item id: ${element["@ondc/org/item_id"]}`;
+              let key = `qntcnt${i}`;
+              onSlctObj[
+                key
+              ] = `available count can't be greater than maximum count for item id: ${element["@ondc/org/item_id"]}`;
             }
           }
         }
