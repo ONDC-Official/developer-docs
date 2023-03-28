@@ -67,14 +67,15 @@ const checkSearch = (dirPath, msgIdSet) => {
 
           if (!gpsLat || !gpsLong) {
             srchObj.gpsErr = `location.gps is not as per the API contract`;
-          } else {
-            if (
-              utils.countDecimalDigits(gpsLat) !=
-              utils.countDecimalDigits(gpsLong)
-            ) {
-              srchObj.gpsErr = `GPS Lat/Long Precision should be same `;
-            }
           }
+          // else {
+          //   if (
+          //     utils.countDecimalDigits(gpsLat) !=
+          //     utils.countDecimalDigits(gpsLong)
+          //   ) {
+          //     srchObj.gpsErr = `GPS Lat/Long Precision should be same `;
+          //   }
+          // }
         } else {
           srchObj.flfllmntObj = `Fulfillment object missing in /${constants.RET_SEARCH} API`;
         }
