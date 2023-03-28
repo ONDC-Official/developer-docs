@@ -30,7 +30,7 @@ const checkCancel = (dirPath, msgIdSet) => {
     try {
       res = checkContext(cancel.context, constants.RET_CANCEL);
       if (!res.valid) {
-        cnclObj = res.ERRORS;
+        Object.assign(cnclObj, res.ERRORS);
       }
     } catch (error) {
       console.log(

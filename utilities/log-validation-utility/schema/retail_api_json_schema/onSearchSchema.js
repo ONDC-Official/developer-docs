@@ -55,7 +55,6 @@ module.exports = {
                   type: "array",
                   items: {
                     type: "string",
-                    pattern: "^(?!\\s*$).+\\.(jpeg|jpg|jfif|gif|png|ico)$",
                   },
                 },
               },
@@ -86,8 +85,6 @@ module.exports = {
                         type: "array",
                         items: {
                           type: "string",
-                          pattern:
-                            "^(?!\\s*$).+\\.(jpeg|jpg|jfif|gif|png|ico)$",
                         },
                       },
                     },

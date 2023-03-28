@@ -10,11 +10,25 @@ const checkTrack = (dirPath, msgIdSet) => {
     let track = fs.readFileSync(dirPath + `/${constants.RET_TRACK}.json`);
     track = JSON.parse(track);
 
-    console.log(`Checking context for /${constants.RET_TRACK}rack API`); //checking context
     try {
+      console.log(`Validating Schema for ${constants.RET_TRACK} API`);
+      const vs = validateSchema("retail", constants.RET_TRACK, track);
+      if (vs != "error") {
+        // console.log(vs);
+        Object.assign(trckObj, vs);
+      }
+    } catch (error) {
+      console.log(
+        `!!Error occurred while performing schema validation for /${constants.RET_TRACK}`,
+        error
+      );
+    }
+
+    try {
+      console.log(`Checking context for /${constants.RET_TRACK}rack API`); //checking context
       res = checkContext(track.context, constants.RET_TRACK);
       if (!res.valid) {
-        trckObj = res.ERRORS;
+        Object.assign(trckObj, res.ERRORS);
       }
     } catch (error) {
       console.log(

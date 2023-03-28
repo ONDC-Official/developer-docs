@@ -32,7 +32,7 @@ const checkUpdate = (dirPath, msgIdSet) => {
       console.log(`Checking context for /${constants.RET_UPDATE} API`); //checking context
       res = checkContext(update.context, constants.RET_UPDATE);
       if (!res.valid) {
-        updtObj = res.ERRORS;
+        Object.assign(updtObj, res.ERRORS);
       }
     } catch (error) {
       console.log(

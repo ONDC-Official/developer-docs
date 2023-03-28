@@ -12,9 +12,9 @@ const checkOnInit = (dirPath, msgIdSet) => {
     var on_init = fs.readFileSync(dirPath + `/${constants.RET_ONINIT}.json`);
 
     on_init = JSON.parse(on_init);
-    console.log(`Validating Schema for /${constants.RET_ONINIT} API`);
 
     try {
+      console.log(`Validating Schema for /${constants.RET_ONINIT} API`);
       const vs = validateSchema("retail", constants.RET_ONINIT, on_init);
       if (vs != "error") {
         // console.log(vs);
@@ -31,7 +31,7 @@ const checkOnInit = (dirPath, msgIdSet) => {
     try {
       res = checkContext(on_init.context, constants.RET_ONINIT);
       if (!res.valid) {
-        onInitObj = res.ERRORS;
+        Object.assign(onInitObj, res.ERRORS);
       }
     } catch (error) {
       console.log(
@@ -313,7 +313,7 @@ const checkOnInit = (dirPath, msgIdSet) => {
         `Checking Quote Object in /${constants.RET_ONSELECT} and /${constants.RET_ONINIT}`
       );
       if (!_.isEqual(dao.getValue("quoteObj"), on_init.quote)) {
-        onInitObj.quoteErr = `Quote object mismatches in /${constants.RET_ONSELECT} and /${constants.RET_ONINIT}`;
+        onInitObj.quoteErr = `Discrepancies between the quote object in /${constants.RET_ONSELECT} and /${constants.RET_ONINIT}`;
       }
     } catch (error) {
       console.log(
@@ -361,7 +361,7 @@ const checkOnInit = (dirPath, msgIdSet) => {
         onInitObj.sttlmntcntrparty = `settlement_counterparty is expected to be 'seller-app' in @ondc/org/settlement_details`;
       }
     } catch (error) {
-      console.err(
+      console.log(
         `!!Error while checking payment object in /${constants.RET_ONINIT}`
       );
     }
@@ -373,7 +373,7 @@ const checkOnInit = (dirPath, msgIdSet) => {
       if (on_init.payment.hasOwnProperty("@ondc/org/settlement_details"))
         dao.setValue(
           "sttlmntdtls",
-          on_init.payment["@ondc/org/settlement_details"]
+          on_init.payment["@ondc/org/settlement_details"][0]
         );
       else {
         onInitObj.pymntSttlmntObj = `payment settlement_details missing in /${constants.RET_ONINIT}`;
@@ -390,7 +390,8 @@ const checkOnInit = (dirPath, msgIdSet) => {
       console.log(`!!File not found for /${constants.RET_ONINIT} API!`);
     } else {
       console.log(
-        `!!Some error occurred while checking /${constants.RET_ONINIT} API`
+        `!!Some error occurred while checking /${constants.RET_ONINIT} API`,
+        err
       );
     }
   }

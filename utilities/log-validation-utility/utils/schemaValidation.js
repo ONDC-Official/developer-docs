@@ -5,22 +5,7 @@ const fs = require("fs");
 const validateSchema = (domain, api, data) => {
   console.log(`Inside Schema Validation for domain: ${domain}, api: ${api}`);
   let errObj = {};
-  // data = JSON.parse(data);
-  // const schemaValidator = path.join(
-  //   __dirname,
-  //   "..",
-  //   "schema",
-  //   "ondc-schema-validator",
-  //   "main.py"
-  // );
 
-  // const pySchmaVldtr = spawnSync("python3", [
-  //   schemaValidator,
-  //   "validate_schema_for_retail_json",
-  //   domain,
-  //   api,
-  //   data,
-  // ]);
   const schmaVldtr = schemaValidator(domain, api, data);
 
   const datavld = schmaVldtr;
@@ -34,14 +19,8 @@ const validateSchema = (domain, api, data) => {
       errObj[key] = `${res[i].details} ${res[i].message}`;
       i++;
     }
-
     return errObj;
   } else return "error";
-
-  // pySchmaVldtr.stderr.on("data", (data) => {
-  //   console.log(`ERROR validating schema for ${api} :`, data);
-  //   return "error";
-  // });
 };
 
 module.exports = validateSchema;

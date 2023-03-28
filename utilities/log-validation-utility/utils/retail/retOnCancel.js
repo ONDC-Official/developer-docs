@@ -33,7 +33,7 @@ const checkOnCancel = (dirPath, msgIdSet) => {
       console.log(`Checking context for /${constants.RET_ONCANCEL} API`); //checking context
       res = checkContext(on_cancel.context, constants.RET_ONCANCEL);
       if (!res.valid) {
-        onCnclObj = res.ERRORS;
+        Object.assign(onCnclObj, res.ERRORS);
       }
     } catch (error) {
       console.log(
