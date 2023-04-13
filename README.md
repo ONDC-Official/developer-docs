@@ -18,9 +18,9 @@ b. Gateway end point
 
 a. Registry end point
 
-`https://preprod.registry.ondc.org/lookup`
+`https://preprod.registry.ondc.org/ondc/lookup`
 
-`https://preprod.registry.ondc.org/vlookup`
+`https://preprod.registry.ondc.org/ondc/vlookup`
 
 b. Gateway end point
 
