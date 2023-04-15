@@ -13,12 +13,12 @@ const checkContext = (data, path) => {
   let errObj = {};
 
   //Transaction ID - UUID Validity check
-  if (data.transaction_id) {
-    const result = utils.uuidCheck(data.transaction_id);
-    if (!result) {
-      errObj.tId_err = "Transaction id is not a valid uuid";
-    }
-  }
+  // if (data.transaction_id) {
+  //   const result = utils.uuidCheck(data.transaction_id);
+  //   if (!result) {
+  //     errObj.tId_err = "Transaction id is not a valid uuid";
+  //   }
+  // }
 
   //Transaction ID != Message ID
   if (data.transaction_id === data.message_id) {

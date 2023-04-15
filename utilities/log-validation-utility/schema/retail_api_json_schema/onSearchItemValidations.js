@@ -1,13 +1,13 @@
 onSearchRules = [
-  {
-    if: { properties: { "@ondc/org/returnable": { const: false } } },
-    then: {
-      not: {
-        required: ["@ondc/org/return_window"],
-        error_message: "return window is available when returnable is false",
-      },
-    },
-  },
+  // {
+  //   if: { properties: { "@ondc/org/returnable": { const: false } } },
+  //   then: {
+  //     not: {
+  //       required: ["@ondc/org/return_window"],
+  //       errorMessage: "return window is available when returnable is false",
+  //     },
+  //   },
+  // },
 
   {
     if: {

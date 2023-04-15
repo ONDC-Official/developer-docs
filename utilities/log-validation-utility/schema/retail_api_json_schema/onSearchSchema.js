@@ -13,7 +13,7 @@ module.exports = {
         core_version: { type: "string" },
         bap_id: { type: "string" },
         bap_uri: { type: "string" },
-        transaction_id: { type: "string", format: "uuid" },
+        transaction_id: { type: "string" },
         message_id: { type: "string" },
         timestamp: { type: "string", format: "date-time" },
         ttl: { type: "string", format: "duration" },
@@ -324,7 +324,7 @@ module.exports = {
                             },
                           },
                           required: ["nutritional_info", "additives_info"],
-                          oneOf: [
+                          anyOf: [
                             {
                               required: ["importer_FSSAI_license_no"],
                               properties: {
@@ -416,7 +416,7 @@ module.exports = {
                         },
                       },
 
-                      allOf: onSearchItemValidations.on_search_rules,
+                      allOf: onSearchItemValidations.onSearchRules,
                       required: [
                         "id",
                         "category_id",
