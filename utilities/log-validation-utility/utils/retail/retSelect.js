@@ -194,14 +194,6 @@ const checkSelect = (dirPath, msgIdSet) => {
           if (!gpsLat || !gpsLong) {
             slctObj.gpsErr = `fulfillments location.gps is not as per the API contract`;
           }
-          //  else {
-          //   if (
-          //     utils.countDecimalDigits(gpsLat) !=
-          //     utils.countDecimalDigits(gpsLong)
-          //   ) {
-          //     slctObj.gpsErr = `fulfillments GPS Lat/Long Precision should be same `;
-          //   }
-          // }
 
           if (!ff.end.location.address.hasOwnProperty("area_code")) {
             slctObj.areaCode = `address.area_code is required property in /${constants.RET_SELECT}`;

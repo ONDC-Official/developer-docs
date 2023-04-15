@@ -64,6 +64,7 @@ const validate_schema_search_retail_for_json = (data) => {
 const validate_schema_on_search_retail_for_json = (data) => {
   // transformed_item_data = transform_on_search_schema(data);
   error_list = validate_schema(data, (schema = onSearchSchema));
+  console.log(error_list);
   return formatted_error(error_list);
 };
 

@@ -36,7 +36,6 @@ module.exports = {
         },
         transaction_id: {
           type: "string",
-          format: "uuid",
         },
         message_id: {
           type: "string",
@@ -385,7 +384,7 @@ module.exports = {
                         type: "string",
                         enum: ["upi", "neft", "rtgs"],
                       },
-                      upi_address: { type: "string", pattern: "^(?!s*$).+" },
+                      upi_address: { type: "string" },
                       settlement_bank_account_no: {
                         type: "string",
                         pattern: "^(?!s*$).+",

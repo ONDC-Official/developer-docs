@@ -166,13 +166,13 @@ const cancellation_rid = {
   "018": 0,
 };
 
-const uuidCheck = (data) => {
-  console.log("***UUID Validation Utils***");
-  let uuid =
-    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-  if (!uuid.test(data)) return false;
-  return true;
-};
+// const uuidCheck = (data) => {
+//   console.log("***UUID Validation Utils***");
+//   let uuid =
+//     /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+//   if (!uuid.test(data)) return false;
+//   return true;
+// };
 
 const timestampCheck = (date) => {
   console.log("***Timestamp Check Utils***");
@@ -207,7 +207,6 @@ const countDecimalDigits = (num) => {
 };
 
 module.exports = {
-  uuidCheck,
   timestampCheck,
   rootPath,
   retailAPI,
