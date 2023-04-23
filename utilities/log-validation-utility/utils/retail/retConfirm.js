@@ -323,7 +323,6 @@ const checkConfirm = (dirPath, msgIdSet) => {
       console.log(
         `Comparing Quote object for /${constants.RET_ONSELECT} and /${constants.RET_CONFIRM}`
       );
-      console.log("confirm quote", confirm.quote);
       if (!_.isEqual(dao.getValue("quoteObj"), confirm.quote)) {
         cnfrmObj.quoteObj = `Discrepancies between the quote object in /${constants.RET_ONSELECT} and /${constants.RET_CONFIRM}`;
       }

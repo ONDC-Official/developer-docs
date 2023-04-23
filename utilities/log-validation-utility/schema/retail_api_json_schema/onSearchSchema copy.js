@@ -149,51 +149,14 @@ module.exports = {
                         },
                         time: {
                           type: "object",
-
-                          properties: {
-                            days: {
-                              type: "string",
+                          oneOf: [
+                            {
+                              $ref: "#/components/schemas/fixedTimings",
                             },
-                            range: {
-                              type: "object",
-                              properties: {
-                                start: {
-                                  type: "string",
-                                  minLength: 4,
-                                  maxLength: 4,
-                                },
-                                end: {
-                                  type: "string",
-                                  minLength: 4,
-                                  maxLength: 4,
-                                },
-                              },
-                              required: ["start", "end"],
+                            {
+                              $ref: "#/components/schemas/splitTimings",
                             },
-                            schedule: {
-                              type: "object",
-                              properties: {
-                                holidays: {
-                                  type: "array",
-                                  items: {
-                                    type: "string",
-                                  },
-                                },
-                                frequency: {
-                                  type: "string",
-                                  format: "duration",
-                                },
-                                times: {
-                                  type: "array",
-                                  items: {
-                                    type: "string",
-                                  },
-                                },
-                              },
-                              required: ["holidays"],
-                            },
-                          },
-                          required: ["days", "schedule"],
+                          ],
                         },
                       },
                       required: ["id", "address", "gps", "time"],
@@ -268,6 +231,10 @@ module.exports = {
                           ],
                         },
 
+                        // "@ondc/org/fssai_license_no": {
+                        //   type: "string",
+                        //   pattern: "^[a-zA-Z0-9]+$",
+                        // },
                         fulfillment_id: { type: "string" },
                         location_id: { type: "string" },
                         recommended: { type: "boolean" },
@@ -538,4 +505,79 @@ module.exports = {
     },
   },
   required: ["context", "message"],
+  components: {
+    schemas: {
+      fixedTimings: {
+        type: "object",
+        properties: {
+          days: {
+            type: "string",
+          },
+          range: {
+            type: "object",
+            properties: {
+              start: {
+                type: "string",
+                minLength: 4,
+                maxLength: 4,
+              },
+              end: {
+                type: "string",
+                minLength: 4,
+                maxLength: 4,
+              },
+            },
+            required: ["start", "end"],
+          },
+          schedule: {
+            type: "object",
+            properties: {
+              holidays: {
+                type: "array",
+                items: {
+                  type: "string",
+                },
+              },
+            },
+            required: ["holidays"],
+            additionalProperties: false,
+          },
+        },
+        required: ["days", "range", "schedule"],
+      },
+      splitTimings: {
+        type: "object",
+        properties: {
+          days: {
+            type: "string",
+          },
+
+          schedule: {
+            type: "object",
+            properties: {
+              holidays: {
+                type: "array",
+                items: {
+                  type: "string",
+                },
+              },
+              frequency: {
+                type: "string",
+                format: "duration",
+              },
+              times: {
+                type: "array",
+                items: {
+                  type: "string",
+                },
+              },
+            },
+            required: ["holidays", "frequency", "times"],
+          },
+        },
+        required: ["days", "schedule"],
+        additionalProperties: false,
+      },
+    },
+  },
 };

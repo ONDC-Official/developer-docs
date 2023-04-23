@@ -12,3 +12,4 @@ test.js
 !README.md
 !LICENSE.md
 *.md
+.DS_Store

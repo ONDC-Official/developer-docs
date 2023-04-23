@@ -105,12 +105,12 @@ const checkSelect = (dirPath, msgIdSet) => {
       );
     }
 
-    let order = select.message.order;
+    let select = select.message.order;
 
     let onSearch = dao.getValue("onSearch");
 
     let provider = onSearch["bpp/providers"].filter(
-      (provider) => provider.id === order.provider.id
+      (provider) => provider.id === select.provider.id
     );
 
     if (provider[0]) {
@@ -122,7 +122,7 @@ const checkSelect = (dirPath, msgIdSet) => {
         console.log(
           `Comparing provider location in /${constants.RET_ONSEARCH} and /${constants.RET_SELECT}`
         );
-        if (provider.locations[0].id != order.provider.locations[0].id) {
+        if (provider.locations[0].id != select.provider.locations[0].id) {
           slctObj.prvdLoc = `provider.locations[0].id ${provider.locations[0].id} mismatches in /${constants.RET_ONSEARCH} and /${constants.RET_SELECT}`;
         }
       } catch (error) {
@@ -136,7 +136,7 @@ const checkSelect = (dirPath, msgIdSet) => {
         `Mapping Item Ids with their counts, categories and prices /${constants.RET_ONSEARCH} and /${constants.RET_SELECT}`
       );
       try {
-        order.items.forEach((item) => {
+        select.items.forEach((item) => {
           let itemOnSearch = provider.items.find((it) => it.id === item.id);
 
           if (!itemOnSearch) {
@@ -177,11 +177,11 @@ const checkSelect = (dirPath, msgIdSet) => {
       console.log(
         `Provider Ids in /${constants.RET_ONSEARCH} and /${constants.RET_SELECT} mismatch`
       );
-      slctObj.prvdrIdMatch = `Provider Id ${order.provider.id} in /${constants.RET_SELECT} does not exist in /${constants.RET_ONSEARCH}`;
+      slctObj.prvdrIdMatch = `Provider Id ${select.provider.id} in /${constants.RET_SELECT} does not exist in /${constants.RET_ONSEARCH}`;
     }
 
     try {
-      order.fulfillments.forEach((ff, indx) => {
+      select.fulfillments.forEach((ff, indx) => {
         console.log(`Checking GPS Precision in /${constants.RET_SELECT}`);
 
         if (ff.hasOwnProperty("end")) {

@@ -57,8 +57,15 @@ const checkOnSelect = (dirPath, msgIdSet) => {
       console.log(
         `Comparing timestamp of /${constants.RET_SELECT} and /${constants.RET_ONSELECT}`
       );
-      if (_.gte(dao.getValue("tmpstmp"), on_select.context.timestamp)) {
+      const tmpstmp = dao.getValue("tmpstmp");
+      if (_.gte(tmpstmp, on_select.context.timestamp)) {
         onSlctObj.tmpstmp = `Timestamp for /${constants.RET_SELECT} api cannot be greater than or equal to /${constants.RET_ONSELECT} api`;
+      } else {
+        const timeDiff = utils.timeDiff(on_select.context.timestamp, tmpstmp);
+        console.log(timeDiff);
+        if (timeDiff > 5000) {
+          onSlctObj.tmpstmp = `context/timestamp difference between /${constants.RET_ONSELECT} and /${constants.RET_SELECT} should be smaller than 5 sec`;
+        }
       }
       dao.setValue("tmpstmp", on_select.context.timestamp);
     } catch (error) {
