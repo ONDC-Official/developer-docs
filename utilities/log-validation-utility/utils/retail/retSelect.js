@@ -16,7 +16,7 @@ const checkSelect = (dirPath, msgIdSet) => {
   let slctObj = {};
 
   try {
-    select = fs.readFileSync(dirPath + `/${constants.RET_SELECT}.json`); //testing
+    let select = fs.readFileSync(dirPath + `/${constants.RET_SELECT}.json`); //testing
     select = JSON.parse(select);
     try {
       console.log(`Validating Schema for ${constants.RET_SELECT} API`);
@@ -105,7 +105,7 @@ const checkSelect = (dirPath, msgIdSet) => {
       );
     }
 
-    let select = select.message.order;
+    select = select.message.order;
 
     let onSearch = dao.getValue("onSearch");
 

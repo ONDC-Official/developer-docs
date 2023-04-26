@@ -8,7 +8,7 @@ const validateSchema = require("../schemaValidation");
 const checkConfirm = (dirPath, msgIdSet) => {
   let cnfrmObj = {};
   try {
-    var confirm = fs.readFileSync(dirPath + `/${constants.RET_CONFIRM}.json`);
+    let confirm = fs.readFileSync(dirPath + `/${constants.RET_CONFIRM}.json`);
     confirm = JSON.parse(confirm);
 
     try {
