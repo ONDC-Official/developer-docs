@@ -8,7 +8,7 @@ const validateSchema = require("../schemaValidation");
 const checkConfirm = (dirPath, msgIdSet) => {
   let cnfrmObj = {};
   try {
-    var confirm = fs.readFileSync(dirPath + `/${constants.RET_CONFIRM}.json`);
+    let confirm = fs.readFileSync(dirPath + `/${constants.RET_CONFIRM}.json`);
     confirm = JSON.parse(confirm);
 
     try {
@@ -323,7 +323,6 @@ const checkConfirm = (dirPath, msgIdSet) => {
       console.log(
         `Comparing Quote object for /${constants.RET_ONSELECT} and /${constants.RET_CONFIRM}`
       );
-      console.log("confirm quote", confirm.quote);
       if (!_.isEqual(dao.getValue("quoteObj"), confirm.quote)) {
         cnfrmObj.quoteObj = `Discrepancies between the quote object in /${constants.RET_ONSELECT} and /${constants.RET_CONFIRM}`;
       }

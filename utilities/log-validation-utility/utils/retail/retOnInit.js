@@ -2,6 +2,7 @@ const fs = require("fs");
 const _ = require("lodash");
 const { checkContext } = require("../../services/service");
 const dao = require("../../dao/dao");
+const utils = require("../utils");
 const validateSchema = require("../schemaValidation");
 const constants = require("../constants");
 
@@ -58,9 +59,17 @@ const checkOnInit = (dirPath, msgIdSet) => {
       console.log(
         `Comparing timestamp of ${constants.RET_INIT} & ${constants.RET_ONINIT}`
       );
-      if (_.gte(dao.getValue("tmpstmp"), on_init.context.timestamp)) {
+      const tmpstmp = dao.getValue("tmpstmp");
+      if (_.gte(tmpstmp, on_init.context.timestamp)) {
         onInitObj.tmpstmp = `Timestamp for ${constants.RET_INIT} api cannot be greater than or equal to ${constants.RET_ONINIT} api`;
+      } else {
+        const timeDiff = utils.timeDiff(on_init.context.timestamp, tmpstmp);
+        console.log(timeDiff);
+        if (timeDiff > 5000) {
+          onInitObj.tmpstmp = `context/timestamp difference between /${constants.RET_ONINIT} and /${constants.RET_INIT} should be smaller than 5 sec`;
+        }
       }
+
       dao.setValue("tmpstmp", on_init.context.timestamp);
     } catch (error) {
       console.log(

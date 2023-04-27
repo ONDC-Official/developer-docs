@@ -30,7 +30,6 @@ module.exports = {
         },
         transaction_id: {
           type: "string",
-          format: "uuid",
         },
         message_id: {
           type: "string",

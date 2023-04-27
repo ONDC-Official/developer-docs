@@ -57,8 +57,15 @@ const checkOnSelect = (dirPath, msgIdSet) => {
       console.log(
         `Comparing timestamp of /${constants.RET_SELECT} and /${constants.RET_ONSELECT}`
       );
-      if (_.gte(dao.getValue("tmpstmp"), on_select.context.timestamp)) {
+      const tmpstmp = dao.getValue("tmpstmp");
+      if (_.gte(tmpstmp, on_select.context.timestamp)) {
         onSlctObj.tmpstmp = `Timestamp for /${constants.RET_SELECT} api cannot be greater than or equal to /${constants.RET_ONSELECT} api`;
+      } else {
+        const timeDiff = utils.timeDiff(on_select.context.timestamp, tmpstmp);
+        console.log(timeDiff);
+        if (timeDiff > 5000) {
+          onSlctObj.tmpstmp = `context/timestamp difference between /${constants.RET_ONSELECT} and /${constants.RET_SELECT} should be smaller than 5 sec`;
+        }
       }
       dao.setValue("tmpstmp", on_select.context.timestamp);
     } catch (error) {
@@ -218,19 +225,32 @@ const checkOnSelect = (dirPath, msgIdSet) => {
           item["@ondc/org/item_id"] in itemsIdList &&
           item["@ondc/org/title_type"] === "item"
         ) {
+          // if (
+          //   itemsIdList[item["@ondc/org/item_id"]] ===
+          //     item["@ondc/org/item_quantity"].count ||
+          //   (itemsIdList[item["@ondc/org/item_id"]] >
+          //     item["@ondc/org/item_quantity"].count &&
+          //     on_select_error &&
+          //     on_select_error.type === "DOMAIN-ERROR" &&
+          //     on_select_error.code === "400002")
+          // ) {
+          //   console.log(
+          //     `count of item with id: ${item["@ondc/org/item_id"]} is as per the API contract`
+          //   );
+          // } else {
+          //   let cntkey = `cnt${item["@ondc/org/item_id"]}`;
+          //   onSlctObj[
+          //     cntkey
+          //   ] = `Warning: Count of item with id: ${item["@ondc/org/item_id"]} does not match in ${constants.RET_SELECT} & ${constants.RET_ONSELECT} (suitable domain error should be provided)`;
+          // }
+
           if (
-            itemsIdList[item["@ondc/org/item_id"]] ===
-              item["@ondc/org/item_quantity"].count ||
-            (itemsIdList[item["@ondc/org/item_id"]] >
+            itemsIdList[item["@ondc/org/item_id"]] !=
               item["@ondc/org/item_quantity"].count &&
-              on_select_error &&
-              on_select_error.type === "DOMAIN-ERROR" &&
-              on_select_error.code === "400002")
+            (!on_select_error ||
+              on_select_error.type != "DOMAIN-ERROR" ||
+              on_select_error.code != "40002")
           ) {
-            console.log(
-              `count of item with id: ${item["@ondc/org/item_id"]} is as per the API contract`
-            );
-          } else {
             let cntkey = `cnt${item["@ondc/org/item_id"]}`;
             onSlctObj[
               cntkey

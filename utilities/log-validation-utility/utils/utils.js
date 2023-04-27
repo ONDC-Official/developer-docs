@@ -94,15 +94,6 @@ const logOrderState = [
 ];
 
 const bpp_fulfillments = ["Delivery", "Pickup", "Delivery and Pickup"]; //id =1,2,3
-const bpp_provider_days = [
-  "1",
-  "1,2",
-  "1,2,3",
-  "1,2,3,4",
-  "1,2,3,4,5",
-  "1,2,3,4,5,6",
-  "1,2,3,4,5,6,7",
-];
 
 const grocery_categories_id = [
   "Fruits and Vegetables",
@@ -166,13 +157,13 @@ const cancellation_rid = {
   "018": 0,
 };
 
-const uuidCheck = (data) => {
-  console.log("***UUID Validation Utils***");
-  let uuid =
-    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-  if (!uuid.test(data)) return false;
-  return true;
-};
+// const uuidCheck = (data) => {
+//   console.log("***UUID Validation Utils***");
+//   let uuid =
+//     /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+//   if (!uuid.test(data)) return false;
+//   return true;
+// };
 
 const timestampCheck = (date) => {
   console.log("***Timestamp Check Utils***");
@@ -206,8 +197,49 @@ const countDecimalDigits = (num) => {
   return num.toString().split(".")[1].length;
 };
 
+const emailRegex = (email) => {
+  const emailRE = /^\S+@\S+\.\S+$/;
+  return emailRE.test(email);
+};
+
+const timeDiff = (time1, time2) => {
+  const dtime1 = new Date(time1);
+  const dtime2 = new Date(time2);
+
+  if (isNaN(dtime1 - dtime2)) return 0;
+  else return dtime1 - dtime2;
+};
+
+const isoDurToSec = (duration) => {
+  let durRE =
+    /P((\d+)Y)?((\d+)M)?((\d+)W)?((\d+)D)?T?((\d+)H)?((\d+)M)?((\d+)S)?/;
+
+  const splitTime = durRE.exec(duration);
+  if (!splitTime) {
+    return 0;
+  }
+
+  const years = Number(splitTime?.[2]) || 0;
+  const months = Number(splitTime?.[4]) || 0;
+  const weeks = Number(splitTime?.[6]) || 0;
+  const days = Number(splitTime?.[8]) || 0;
+  const hours = Number(splitTime?.[10]) || 0;
+  const minutes = Number(splitTime?.[12]) || 0;
+  const seconds = Number(splitTime?.[14]) || 0;
+
+  const result =
+    years * 31536000 +
+    months * 2628288 +
+    weeks * 604800 +
+    days * 86400 +
+    hours * 3600 +
+    minutes * 60 +
+    seconds;
+
+  return result;
+};
+
 module.exports = {
-  uuidCheck,
   timestampCheck,
   rootPath,
   retailAPI,
@@ -216,7 +248,6 @@ module.exports = {
   logFulfillmentState,
   logOrderState,
   bpp_fulfillments,
-  bpp_provider_days,
   cancellation_rid,
   getObjValues,
   retailPaymentType,
@@ -226,4 +257,7 @@ module.exports = {
   countDecimalDigits,
   grocery_categories_id,
   fnb_categories_id,
+  emailRegex,
+  isoDurToSec,
+  timeDiff,
 };

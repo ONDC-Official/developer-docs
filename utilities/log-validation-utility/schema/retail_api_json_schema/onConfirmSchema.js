@@ -136,10 +136,10 @@ module.exports = {
                         format: "date-time",
                       },
                     },
-                    required: ["start", "end"],
+                    // required: ["start", "end"],
                   },
                 },
-                required: ["range"],
+                // required: ["range"],
               },
               instructions: {
                 type: "object",
@@ -157,7 +157,7 @@ module.exports = {
                 required: ["phone"],
               },
             },
-            required: ["location", "time", "contact"],
+            required: ["location", "contact"],
           },
           end: {
             type: "object",
@@ -205,10 +205,10 @@ module.exports = {
                         format: "date-time",
                       },
                     },
-                    required: ["start", "end"],
+                    // required: ["start", "end"],
                   },
                 },
-                required: ["range"],
+                // required: ["range"],
               },
               instructions: {
                 type: "object",
@@ -225,7 +225,7 @@ module.exports = {
                 required: ["phone"],
               },
             },
-            required: ["location", "time", "contact"],
+            required: ["location", "contact"],
           },
         },
         required: [

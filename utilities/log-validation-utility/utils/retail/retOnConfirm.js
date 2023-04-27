@@ -60,11 +60,18 @@ const checkOnConfirm = (dirPath, msgIdSet) => {
       console.log(
         `Comparing timestamp of /${constants.RET_CONFIRM} and /${constants.RET_ONCONFIRM}`
       );
-      if (_.gte(dao.getValue("tmpstmp"), on_confirm.context.timestamp)) {
+      const tmpstmp = dao.getValue("tmpstmp");
+      if (_.gte(tmpstmp, on_confirm.context.timestamp)) {
         onCnfrmObj.tmpstmp = `Timestamp for /${constants.RET_CONFIRM} api cannot be greater than or equal to /${constants.RET_ONCONFIRM} api`;
+      } else {
+        const timeDiff = utils.timeDiff(on_confirm.context.timestamp, tmpstmp);
+        console.log(timeDiff);
+        if (timeDiff > 5000) {
+          onCnfrmObj.tmpstmp = `context/timestamp difference between /${constants.RET_ONCONFIRM} and /${constants.RET_CONFIRM} should be smaller than 5 sec`;
+        }
       }
-      tmpstmp = on_confirm.context.timestamp;
-      dao.setValue("tmpstmp", tmpstmp);
+
+      dao.setValue("tmpstmp", on_confirm.context.timestamp);
     } catch (error) {
       console.log(
         `Error while comparing timestamp for /${constants.RET_CONFIRM} and /${constants.RET_ONCONFIRM} api`,
