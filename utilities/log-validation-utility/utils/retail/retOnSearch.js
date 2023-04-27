@@ -292,6 +292,33 @@ const checkOnSearch = (dirPath, msgIdSet) => {
             console.log(`Checking category_id for item id: ${item.id}`);
             if ("category_id" in item) {
               ctgryId.add(item.category_id);
+              const categoryList = [
+                "F&B",
+                "Continental",
+                "Middle Eastern",
+                "North Indian",
+                "Pan-Asian",
+                "Regional Indian",
+                "South Indian",
+                "Tex-Mexican",
+                "World Cuisines",
+                "Healthy Food",
+                "Fast Food",
+                "Desserts",
+                "Bakes & Cakes",
+                "Beverages (MTO)",
+                "Gourmet & World Foods",
+                "Beverages",
+                "Bakery, Cakes & Dairy",
+                "Snacks & Branded Foods",
+              ];
+              try {
+                if (categoryList.includes(item.category_id)) {
+                  if (!prvdr["@ondc/org/fssai_license_no"]) {
+                    onSrchObj.fssaiLiceNo = `@ondc/org/fssai_license_no is mandatory for category_id ${item.category_id}`;
+                  }
+                }
+              } catch (error) {}
             }
 
             console.log(`Checking fulfillment_id for item id: ${item.id}`);

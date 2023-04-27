@@ -1,65 +1,55 @@
 onSearchRules = [
   // {
-  //   if: { properties: { "@ondc/org/returnable": { const: false } } },
-  //   then: {
-  //     not: {
-  //       required: ["@ondc/org/return_window"],
-  //       errorMessage: "return window is available when returnable is false",
+  //   if: {
+  //     properties: {
+  //       category_id: {
+  //         enum: [
+  //           "F&B",
+  //           "Continental",
+  //           "Middle Eastern",
+  //           "North Indian",
+  //           "Pan-Asian",
+  //           "Regional Indian",
+  //           "South Indian",
+  //           "Tex-Mexican",
+  //           "World Cuisines",
+  //           "Healthy Food",
+  //           "Fast Food",
+  //           "Desserts",
+  //           "Bakes & Cakes",
+  //           "Beverages (MTO)",
+  //         ],
+  //       },
   //     },
+  //   },
+  //   then: {
+  //     required: ["@ondc/org/fssai_license_no"],
+  //   },
+  // },
+  // {
+  //   if: {
+  //     properties: {
+  //       category_id: {
+  //         enum: [
+  //           "Gourmet & World Foods",
+  //           "Beverages",
+  //           "Bakery, Cakes & Dairy",
+  //           "Snacks & Branded Foods",
+  //         ],
+  //       },
+  //     },
+  //   },
+  //   then: {
+  //     required: ["@ondc/org/fssai_license_no"],
   //   },
   // },
 
-  {
-    if: {
-      properties: {
-        category_id: {
-          enum: [
-            "F&B",
-            "Continental",
-            "Middle Eastern",
-            "North Indian",
-            "Pan-Asian",
-            "Regional Indian",
-            "South Indian",
-            "Tex-Mexican",
-            "World Cuisines",
-            "Healthy Food",
-            "Fast Food",
-            "Desserts",
-            "Bakes & Cakes",
-            "Beverages (MTO)",
-          ],
-        },
-      },
-    },
-    then: {
-      required: ["@ondc/org/fssai_license_no"],
-    },
-  },
-  {
-    if: {
-      properties: {
-        category_id: {
-          enum: [
-            "Gourmet & World Foods",
-            "Beverages",
-            "Bakery, Cakes & Dairy",
-            "Snacks & Branded Foods",
-          ],
-        },
-      },
-    },
-    then: {
-      required: ["@ondc/org/fssai_license_no"],
-    },
-  },
-
-  {
-    if: { properties: { "@ondc/org/returnable": { const: false } } },
-    then: {
-      required: ["@ondc/org/return_window"],
-    },
-  },
+  // {
+  //   if: { properties: { "@ondc/org/returnable": { const: false } } },
+  //   then: {
+  //     required: ["@ondc/org/return_window"],
+  //   },
+  // },
 
   {
     if: {
