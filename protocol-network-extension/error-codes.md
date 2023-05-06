@@ -41,7 +41,7 @@ CC-BY-ND
   |20002|Buyer App|Stale Request|Cannot process stale request|
   |25001|Buyer App|Order Confirm Failure|Buyer App cannot confirm order as no response from Seller App|
   |27501|Buyer App|Terms unacceptable|Seller App terms not acceptable to Buyer App|
-  |27502|Buyer App|Order terminated|Order terminated as Buyer App terms not accepted by Seller App|
+  |27502|Buyer App|Order terminated|Order terminated as Seller App did not accept terms proposed by Buyer App|
   |30000|Seller App|Invalid request error|Generic invalid request error|
   |30001|Seller App|Provider not found|When Seller App is unable to find the provider id sent by the Buyer App|
   |30002|Seller App|Provider location not found|When Seller App is unable to find the provider location id sent by the Buyer App|
@@ -78,7 +78,7 @@ CC-BY-ND
   |50003|Seller App|Unsupported rating category|When the Seller App receives an entity to rate which is not supported|
   |50004|Seller App|Support unavailable|When the Seller App receives an object if for which it does not provide support|
   |50005|Seller App|Terms unacceptable|Buyer App terms not acceptable to Seller App|
-  |50006|Seller App|Order terminated|Order terminated as Seller App terms not accepted by Buyer App|
+  |50006|Seller App|Order terminated|Order terminated as Buyer App did not accept terms proposed by Seller App|
   |60001|Logistics|Location Serviceability Error|Pickup location not serviceable by Logistics Provider|
   |60002|Logistics|Location Serviceability Error|Dropoff location not serviceable by Logistics Provider|
   |60003|Logistics|Location Serviceability Error|Delivery distance exceeds the maximum serviceability distance|
