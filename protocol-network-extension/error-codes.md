@@ -70,7 +70,7 @@ CC-BY-ND
   |40002|Seller App|Item quantity unavailable|When the Seller App is unable to fulfill the required quantity for items in the order|
   |40003|Seller App|Quote unavailable|When the quote sent by the Buyer App is no longer available from the Seller App|
   |40004|Seller App|Payment not supported|When the payment object sent by the Buyer App is not supported by the Seller App|
-  |40005|Seller App|Tracking not supported|When the Seller App does not support tracking for the order in order_id|
+  |40005|Seller App|Tracking not enabled|Tracking not enabled for any fulfillment in the order|
   |40006|Seller App|Fulfilment agent unavailable|When an agent for fulfilment is not available|
   |50000|Seller App|Policy Error|Generic Policy Error|
   |50001|Seller App|Cancellation not possible|When the Seller App is unable to cancel the order due to it's cancellation policy|
