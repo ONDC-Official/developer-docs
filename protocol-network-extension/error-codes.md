@@ -87,11 +87,12 @@ CC-BY-ND
   |60006|Logistics Provider|Invalid Request|Invalid request, not compliant with API contract|
   |60007|Logistics Provider|Policy Error|Cancellation not possible because of Logistics Provider policy|
   |62501|Logistics Buyer|Terms unacceptable|Logistics Provider terms not acceptable to Logistics Buyer|
-  |62502|Logistics Buyer|Order terminated|Order terminated as Logistics Buyer not in agreement with Logistics Provider terms|
+  |62502|Logistics Buyer|Order terminated|Order terminated as Logistics Provider did not accept terms proposed by Logistics Buyer|
   |62503|Logistics Buyer|RTO rejected|RTO request rejected as quote does not match the quote provided in catalog|
   |65001|Logistics Provider|Order Confirm Error|Logistics Provider is unable to confirm the order|
-  |65002|Logistics Provider|Order terminated|Order terminated as Logistics Provider terms not accepted by Logistics Buyer|
+  |65002|Logistics Provider|Order terminated|Order terminated as Logistics Buyer did not accept terms proposed by Logistics Provider|
   |65003|Logistics Provider|Stale Request|Cannot process stale request|
+  |65004|Logistics Provider|Terms unacceptable|Logistics Buyer terms not acceptable to Logistics Provider|
 
   ## Acknowledgements
   This document has been adapted from the [Error Codes draft document](https://github.com/beckn/protocol-specifications/blob/draft/docs/protocol-drafts/BECKN-RFC-005-Error-Codes-Draft-01.md) from the Beckn Foundation.
