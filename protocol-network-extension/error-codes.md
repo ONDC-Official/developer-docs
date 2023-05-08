@@ -79,19 +79,19 @@ CC-BY-ND
   |50004|Seller App|Support unavailable|When the Seller App receives an object if for which it does not provide support|
   |50005|Seller App|Terms unacceptable|Buyer App terms not acceptable to Seller App|
   |50006|Seller App|Order terminated|Order terminated as Buyer App did not accept terms proposed by Seller App|
-  |60001|Logistics|Location Serviceability Error|Pickup location not serviceable by Logistics Provider|
-  |60002|Logistics|Location Serviceability Error|Dropoff location not serviceable by Logistics Provider|
-  |60003|Logistics|Location Serviceability Error|Delivery distance exceeds the maximum serviceability distance|
-  |60004|Logistics|Order Serviceability Error|Delivery Partners not available|
-  |60005|Logistics|Invalid Signature|Cannot verify signature for request|
-  |60006|Logistics|Invalid Request|Invalid request, not compliant with API contract|
-  |60007|Logistics|Policy Error|Cancellation not possible because of Logistics Provider policy|
-  |62501|Logistics|Terms unacceptable|Logistics Provider terms not acceptable to Logistics Buyer|
-  |62502|Logistics|Order terminated|Order terminated as Logistics Buyer not in agreement with Logistics Provider terms|
-  |62503|Logistics|RTO rejected|RTO request rejected as quote does not match the quote provided in catalog|
-  |65001|Logistics|Order Confirm Error|Logistics Provider is unable to confirm the order|
-  |65002|Logistics|Order terminated|Order terminated as Logistics Provider terms not accepted by Logistics Buyer|
-  |65003|Logistics|Stale Request|Cannot process stale request|
+  |60001|Logistics Provider|Location Serviceability Error|Pickup location not serviceable by Logistics Provider|
+  |60002|Logistics Provider|Location Serviceability Error|Dropoff location not serviceable by Logistics Provider|
+  |60003|Logistics Provider|Location Serviceability Error|Delivery distance exceeds the maximum serviceability distance|
+  |60004|Logistics Provider|Order Serviceability Error|Delivery Partners not available|
+  |60005|Logistics Provider|Invalid Signature|Cannot verify signature for request|
+  |60006|Logistics Provider|Invalid Request|Invalid request, not compliant with API contract|
+  |60007|Logistics Provider|Policy Error|Cancellation not possible because of Logistics Provider policy|
+  |62501|Logistics Buyer|Terms unacceptable|Logistics Provider terms not acceptable to Logistics Buyer|
+  |62502|Logistics Buyer|Order terminated|Order terminated as Logistics Buyer not in agreement with Logistics Provider terms|
+  |62503|Logistics Buyer|RTO rejected|RTO request rejected as quote does not match the quote provided in catalog|
+  |65001|Logistics Provider|Order Confirm Error|Logistics Provider is unable to confirm the order|
+  |65002|Logistics Provider|Order terminated|Order terminated as Logistics Provider terms not accepted by Logistics Buyer|
+  |65003|Logistics Provider|Stale Request|Cannot process stale request|
 
   ## Acknowledgements
   This document has been adapted from the [Error Codes draft document](https://github.com/beckn/protocol-specifications/blob/draft/docs/protocol-drafts/BECKN-RFC-005-Error-Codes-Draft-01.md) from the Beckn Foundation.
