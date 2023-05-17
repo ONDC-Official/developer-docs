@@ -39,7 +39,7 @@
 2.	callback_url= Relative path to on_subscribe implementation
 3.	signing_public_key= <value of sign_public_key generated in step 5>
 4.	encryption_public_key= <value of enc_dec_public_key generated in step 6>
-5.	ONDC public key (prod) = "MCowBQYDK2VuAyEAhX7AySYGXHkpVl5c6q/V51rQVUp6w1QkEtNJhWcVtyo="
+5.	ONDC public key (prod) = "MCowBQYDK2VuAyEAvVEyZY91O2yV8w8/CAwVDAnqIZDJJUPdLUUKwLo3K0M="
 6.	ONDC public key (pre-prod) = "MCowBQYDK2VuAyEAa9Wbpvd9SsrpOZFcynyt/TO3x0Yrqyys4NUGIvyxX2Q="
 7.	unique_key_id= <generate a unique number for tracking key pairs>
 8.	For other fields, please refer below swaggerhub link and examples mentioned under heading as ops_no_1, ops_no_2, ops_no_3, ops_no_4 and ops_no_5 
