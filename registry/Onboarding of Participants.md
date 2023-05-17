@@ -20,17 +20,15 @@
 ``https://<subscriber_id>/ondc-site-verification.html``
 ```
 <!--Contents of ondc-site-verification.html. -->
-	<!--Please replace SIGNED_UNIQUE_REQ_ID with actual value-->
-	<html>
-	  <head>
-	    <metaname='ondc-site-verification'
-	     content='SIGNED_UNIQUE_REQ_ID' />
-	   </head>
-	      ondc-site-verification.html
-	    <body>
-	        ONDC Site Verification Page
-	    </body>
-	</html>
+<!--Please replace SIGNED_UNIQUE_REQ_ID with an actual value-->
+<html>
+    <head>
+        <meta name='ondc-site-verification' content='SIGNED_UNIQUE_REQ_ID' />
+    </head>
+    <body>
+        ONDC Site Verification Page
+    </body>
+</html>
 ```
 12.	Configure developed /on_subscribe implementation to use enc_dec_private_key (generated in step 8) and ONDC public key to decrypt the challenge_string
 13.	Create /subscribe request as follows
