@@ -40,6 +40,8 @@ CC-BY-ND
   |20001|Buyer App|Invalid Signature|Cannot verify signature for request|
   |20002|Buyer App|Stale Request|Cannot process stale request|
   |22501|Buyer App|Part Fill Unacceptable|Buyer doesn't accept part fill for the order, wants to cancel the order|
+  |22502|Buyer App|Cancellation unacceptable|Invalid cancellation reason|
+  |22503|Buyer App|Cancellation unacceptable|Updated quote does not match original order value and cancellation terms|
   |25001|Buyer App|Order Confirm Failure|Buyer App cannot confirm order as no response from Seller App|
   |27501|Buyer App|Terms unacceptable|Seller App terms not acceptable to Buyer App|
   |27502|Buyer App|Order terminated|Order terminated as Seller App did not accept terms proposed by Buyer App|
