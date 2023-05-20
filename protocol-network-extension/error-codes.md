@@ -58,9 +58,9 @@ CC-BY-ND
   |30009|Seller App|Location Serviceability error|Dropoff location not serviceable by Logistics Provider|
   |30010|Seller App|Location Serviceability error|Delivery distance exceeds the maximum serviceability distance|
   |30011|Seller App|Order Serviceability error|Delivery Partners not available|
-  |30012|Seller App|Invalid cancellation reason|When the Seller App is unable to find the cancellation reason in cancellation_reason_id|
+  |30012|Seller App|Invalid cancellation reason|Cancellation reason is invalid|
   |30013|Seller App|Invalid Fulfillment TAT|Fulfillment TAT is different from what was quoted earlier|
-  |30014|Seller App|Entity to rate not found|When the Seller App is unable to find the entity to rate in id|
+  |30014|Seller App|Cancellation unacceptable|Cancellation request is rejected as fulfillment TAT is not breached|
   |30015|Seller App|Invalid rating value|When the Seller App receives an invalid value as the rating value in value|
   |30016|Seller App|Invalid Signature|Cannot verify signature for request|
   |30017|Seller App|Merchant unavailable|Merchant is currently not taking orders|
