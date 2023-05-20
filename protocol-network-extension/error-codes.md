@@ -42,6 +42,7 @@ CC-BY-ND
   |22501|Buyer App|Part Fill Unacceptable|Buyer doesn't accept part fill for the order, wants to cancel the order|
   |22502|Buyer App|Cancellation unacceptable|Invalid cancellation reason|
   |22503|Buyer App|Cancellation unacceptable|Updated quote does not match original order value and cancellation terms|
+  |22504|Buyer App|Invalid Fulfillment TAT|Fulfillment TAT is different from what was quoted earlier|
   |25001|Buyer App|Order Confirm Failure|Buyer App cannot confirm order as no response from Seller App|
   |27501|Buyer App|Terms unacceptable|Seller App terms not acceptable to Buyer App|
   |27502|Buyer App|Order terminated|Order terminated as Seller App did not accept terms proposed by Buyer App|
@@ -58,7 +59,7 @@ CC-BY-ND
   |30010|Seller App|Location Serviceability error|Delivery distance exceeds the maximum serviceability distance|
   |30011|Seller App|Order Serviceability error|Delivery Partners not available|
   |30012|Seller App|Invalid cancellation reason|When the Seller App is unable to find the cancellation reason in cancellation_reason_id|
-  |30013|Seller App|Update inconsistency|When the Seller App finds changes in the order object other than the update_target|
+  |30013|Seller App|Invalid Fulfillment TAT|Fulfillment TAT is different from what was quoted earlier|
   |30014|Seller App|Entity to rate not found|When the Seller App is unable to find the entity to rate in id|
   |30015|Seller App|Invalid rating value|When the Seller App receives an invalid value as the rating value in value|
   |30016|Seller App|Invalid Signature|Cannot verify signature for request|
