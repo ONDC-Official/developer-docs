@@ -51,14 +51,14 @@ CC-BY-ND
   |30002|Seller App|Provider location not found|When Seller App is unable to find the provider location id sent by the Buyer App|
   |30003|Seller App|Provider category not found|When Seller App is unable to find the provider category id sent by the Buyer App|
   |30004|Seller App|Item not found|When Seller App is unable to find the item id sent by the Buyer App|
-  |30005|Seller App|Category not found|When Seller App is unable to find the category id sent by the Buyer App|
+  |30005|Seller App|Invalid return request|Return reason is invalid|
   |30006|Seller App|Offer code invalid|Offer code is not valid anymore|
   |30007|Seller App|Offer fulfillment error|Offer cannot be fulfilled at this time|
   |30008|Seller App|Location Serviceability error|Pickup location not serviceable by Logistics Provider|
   |30009|Seller App|Location Serviceability error|Dropoff location not serviceable by Logistics Provider|
   |30010|Seller App|Location Serviceability error|Delivery distance exceeds the maximum serviceability distance|
   |30011|Seller App|Order Serviceability error|Delivery Partners not available|
-  |30012|Seller App|Invalid cancellation reason|Cancellation reason is invalid|
+  |30012|Seller App|Invalid cancellation request|Cancellation reason is invalid|
   |30013|Seller App|Invalid Fulfillment TAT|Fulfillment TAT is different from what was quoted earlier|
   |30014|Seller App|Cancellation unacceptable|Cancellation request is rejected as fulfillment TAT is not breached|
   |30015|Seller App|Invalid rating value|When the Seller App receives an invalid value as the rating value in value|
