@@ -44,8 +44,8 @@ CC-BY-ND
   |22503|Buyer App|Cancellation unacceptable|Updated quote does not match original order value and cancellation terms|
   |22504|Buyer App|Invalid Fulfillment TAT|Fulfillment TAT is different from what was quoted earlier|
   |25001|Buyer App|Order Confirm Failure|Buyer App cannot confirm order as no response from Seller App|
-  |27501|Buyer App|Terms unacceptable|Seller App terms not acceptable to Buyer App|
-  |27502|Buyer App|Order terminated|Order terminated as Seller App did not accept terms proposed by Buyer App|
+  |27501|Buyer App|Terms and Conditions unacceptable|Seller App terms and conditions not acceptable to Buyer App|
+  |27502|Buyer App|Order terminated|Order terminated as Seller App did not accept terms and conditions proposed by Buyer App|
   |30000|Seller App|Invalid request error|Generic invalid request error|
   |30001|Seller App|Provider not found|When Seller App is unable to find the provider id sent by the Buyer App|
   |30002|Seller App|Provider location not found|When Seller App is unable to find the provider location id sent by the Buyer App|
@@ -81,7 +81,7 @@ CC-BY-ND
   |50002|Seller App|Updation not possible|When the Seller App is unable to update the order due to it's updation policy|
   |50003|Seller App|Unsupported rating category|When the Seller App receives an entity to rate which is not supported|
   |50004|Seller App|Support unavailable|When the Seller App receives an object if for which it does not provide support|
-  |50005|Seller App|Terms unacceptable|Buyer App terms not acceptable to Seller App|
+  |50005|Seller App|Terms and Conditions unacceptable|Buyer App terms and conditions not acceptable to Seller App|
   |50006|Seller App|Order terminated|Order terminated as Buyer App did not accept terms proposed by Seller App|
   |60001|Logistics Provider|Location Serviceability Error|Pickup location not serviceable by Logistics Provider|
   |60002|Logistics Provider|Location Serviceability Error|Dropoff location not serviceable by Logistics Provider|
@@ -90,10 +90,11 @@ CC-BY-ND
   |60005|Logistics Provider|Invalid Signature|Cannot verify signature for request|
   |60006|Logistics Provider|Invalid Request|Invalid request, not compliant with API contract|
   |60007|Logistics Provider|Policy Error|Cancellation not possible because of Logistics Provider policy|
-  |62501|Logistics Buyer|Terms unacceptable|Logistics Provider terms not acceptable to Logistics Buyer|
+  |62501|Logistics Buyer|Terms and Conditions unacceptable|Logistics Provider terms & conditions not acceptable to Logistics Buyer|
   |62502|Logistics Buyer|Order terminated|Order terminated as Logistics Provider did not accept terms proposed by Logistics Buyer|
   |62503|Logistics Buyer|RTO rejected|RTO request rejected as quote does not match the quote provided in catalog|
   |62504|Logistics Buyer|Weight differential cost rejected|Weight differential cost is rejected|
+  |62505|Logistics Buyer|Cancellation terms unacceptable|Logistics Provider cancellation terms not acceptable to Logistics Buyer|
   |65001|Logistics Provider|Order Confirm Error|Logistics Provider is unable to confirm the order|
   |65002|Logistics Provider|Order terminated|Order terminated as Logistics Buyer did not accept terms proposed by Logistics Provider|
   |65003|Logistics Provider|Stale Request|Cannot process stale request|
