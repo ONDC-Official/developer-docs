@@ -91,6 +91,8 @@ CC-BY-ND
   |60006|Logistics Provider|Invalid Request|Invalid request, not compliant with API contract|
   |60007|Logistics Provider|Policy Error|Cancellation not possible because of Logistics Provider policy|
   |60008|Logistics Provider|Invalid Fulfillment TAT|Fulfillment TAT is different from what was quoted earlier|
+  |60009|Logistics Provider|Invalid cancellation request|Cancellation reason is invalid|
+  |60010|Logistics Provider|Cancellation unacceptable|Cancellation request is rejected as fulfillment TAT is not breached|
   |62501|Logistics Buyer|Terms and Conditions unacceptable|Logistics Provider terms & conditions not acceptable to Logistics Buyer|
   |62502|Logistics Buyer|Order terminated|Order terminated as Logistics Provider did not accept terms proposed by Logistics Buyer|
   |62503|Logistics Buyer|RTO rejected|RTO request rejected as quote does not match the quote provided in catalog|
