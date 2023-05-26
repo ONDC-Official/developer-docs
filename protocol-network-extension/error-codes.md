@@ -93,13 +93,14 @@ CC-BY-ND
   |60008|Logistics Provider|Invalid Fulfillment TAT|Fulfillment TAT is different from what was quoted earlier|
   |60009|Logistics Provider|Invalid cancellation request|Cancellation reason is invalid|
   |60010|Logistics Provider|Cancellation unacceptable|Cancellation request is rejected as fulfillment TAT is not breached|
-  |60011|Logistics Provider|Difference in packaging details|Weight and / or dimensions provided is different from what was initially provided|
+  |60011|Logistics Provider|Difference in packaging details|Weight and / or dimensions provided is different from what was originally provided|
   |62501|Logistics Buyer|Terms and Conditions unacceptable|Logistics Provider terms & conditions not acceptable to Logistics Buyer|
   |62502|Logistics Buyer|Order terminated|Order terminated as Logistics Provider did not accept terms proposed by Logistics Buyer|
   |62503|Logistics Buyer|RTO rejected|RTO request rejected as quote does not match the quote provided in catalog|
   |62504|Logistics Buyer|Weight differential cost rejected|Weight differential cost is rejected|
   |62505|Logistics Buyer|Cancellation terms unacceptable|Logistics Provider cancellation terms not acceptable to Logistics Buyer|
   |62506|Logistics Buyer|Invalid Fulfillment TAT|Fulfillment TAT is different from what was quoted earlier|
+  |62507|Logistics Buyer|Difference in packaging details|Weight and / or dimensions provided is different from what was originally provided|
   |65001|Logistics Provider|Order Confirm Error|Logistics Provider is unable to confirm the order|
   |65002|Logistics Provider|Order terminated|Order terminated as Logistics Buyer did not accept terms proposed by Logistics Provider|
   |65003|Logistics Provider|Stale Request|Cannot process stale request|
