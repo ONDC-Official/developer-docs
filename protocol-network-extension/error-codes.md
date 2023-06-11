@@ -96,6 +96,7 @@ CC-BY-ND
   |60009|Logistics Provider|Invalid cancellation request|Cancellation reason is invalid|
   |60010|Logistics Provider|Cancellation unacceptable|Cancellation request is rejected as fulfillment TAT is not breached|
   |60011|Logistics Provider|Difference in packaging details|Weight and / or dimensions provided is different from what was originally provided|
+  |60012|Logistics Provider|Tracking not enabled|Tracking not enabled for any fulfillment in the order|
   |62501|Logistics Buyer|Terms and Conditions unacceptable|Logistics Provider terms & conditions not acceptable to Logistics Buyer|
   |62502|Logistics Buyer|Order terminated|Order terminated as Logistics Provider did not accept terms proposed by Logistics Buyer|
   |62503|Logistics Buyer|RTO rejected|RTO request rejected as quote does not match the quote provided in catalog|
@@ -113,4 +114,4 @@ CC-BY-ND
   ## Acknowledgements
   This document has been adapted from the [Error Codes draft document](https://github.com/beckn/protocol-specifications/blob/draft/docs/protocol-drafts/BECKN-RFC-005-Error-Codes-Draft-01.md) from the Beckn Foundation.
 
-*Copyright (c) 2022 ONDC. All rights reserved.*
+*Copyright (c) 2023 ONDC. All rights reserved.*
