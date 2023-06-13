@@ -15,7 +15,7 @@ const loggerOpts = {
   },
   file: {
     filename: log_dir + "/validations.log",
-    level: "error",
+    level: "info",
     format: combine(timestamp(), loggerFormat),
     options: { flags: "w" },
   },
