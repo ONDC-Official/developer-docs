@@ -4,6 +4,7 @@ const utils = require("../utils");
 const constants = require("../constants");
 const { checkContext } = require("../../services/service");
 const validateSchema = require("../schemaValidation");
+const logger = require("../logger");
 
 const checkSearch = (dirPath, msgIdSet) => {
   let srchObj = {};
@@ -12,7 +13,7 @@ const checkSearch = (dirPath, msgIdSet) => {
     search = JSON.parse(search);
 
     try {
-      console.log(`Checking context for ${constants.RET_SEARCH} API`); //context checking
+      logger.info(`Checking context for ${constants.RET_SEARCH} API`); //context checking
       res = checkContext(search.context, constants.RET_SEARCH);
       dao.setValue("tmpstmp", search.context.timestamp);
       dao.setValue("txnId", search.context.transaction_id);
@@ -23,73 +24,60 @@ const checkSearch = (dirPath, msgIdSet) => {
         Object.assign(srchObj, res.ERRORS);
       }
     } catch (error) {
-      console.log(
-        `!!Some error occurred while checking /${constants.RET_SEARCH} context`,
-        error
+      logger.error(
+        `!!Some error occurred while checking /${constants.RET_SEARCH} context, ${error.stack}`
       );
     }
 
     try {
-      console.log(`Validating Schema for ${constants.RET_SEARCH} API`);
+      logger.info(`Validating Schema for ${constants.RET_SEARCH} API`);
       const vs = validateSchema("retail", constants.RET_SEARCH, search);
       if (vs != "error") {
-        // console.log(vs);
+        // logger.info(vs);
         Object.assign(srchObj, vs);
       }
     } catch (error) {
-      console.log(
-        `!!Error occurred while performing schema validation for /${constants.RET_SEARCH}`,
-        error
+      logger.error(
+        `!!Error occurred while performing schema validation for /${constants.RET_SEARCH}, ${error.stack}`
       );
     }
 
     search = search.message.intent;
     try {
-      console.log("Getting Buyer App finder fee amount");
-      if (search.payment["@ondc/org/buyer_app_finder_fee_type"] != "percent") {
-        srchObj.bffTyp = `Buyer app finder fee type should be "percent"`;
-      }
+      logger.info("Getting Buyer App finder fee amount");
+      // if (search.payment["@ondc/org/buyer_app_finder_fee_type"] != "percent") {
+      //   srchObj.bffTyp = `Buyer app finder fee type should be "percent"`;
+      // }
       var buyerFF = parseFloat(
         search.payment["@ondc/org/buyer_app_finder_fee_amount"]
       );
       dao.setValue("buyerFF", buyerFF);
     } catch (error) {
-      console.log("!!Error while fetching buyer app finder fee amount", error);
+      logger.error("!!Error while fetching buyer app finder fee amount", error);
     }
 
     try {
-      console.log("Checking GPS Precision in /search");
-      if (search.hasOwnProperty("item")) {
-        if (search.hasOwnProperty("fulfillment")) {
-          const gps = search.fulfillment.end.location.gps.split(",");
-          const gpsLat = gps[0];
-          const gpsLong = gps[1];
+      logger.info("Checking GPS Precision in /search");
+      const has = Object.prototype.hasOwnProperty;
+      if (has.call(search, "item")) {
+        if (has.call(search, "fulfillment")) {
+          const gps = search.fulfillment.end.location.gps;
 
-          if (!gpsLat || !gpsLong) {
-            srchObj.gpsErr = `location.gps is not as per the API contract`;
+          if (!utils.checkGpsPrecision(gps)) {
+            srchObj.gpsPrecision = `fulfillment/end/location/gps coordinates must be specified with at least six decimal places of precision.`;
           }
-          // else {
-          //   if (
-          //     utils.countDecimalDigits(gpsLat) !=
-          //     utils.countDecimalDigits(gpsLong)
-          //   ) {
-          //     srchObj.gpsErr = `GPS Lat/Long Precision should be same `;
-          //   }
-          // }
-        } else {
-          srchObj.flfllmntObj = `Fulfillment object missing in /${constants.RET_SEARCH} API`;
         }
       }
     } catch (error) {
-      console.log("!!Error while checking GPS Precision", error);
+      logger.error("!!Error while checking GPS Precision", error);
     }
 
-    dao.setValue("srchObj", srchObj);
+    return srchObj;
   } catch (err) {
     if (err.code === "ENOENT") {
-      console.log(`!!File not found for /${constants.RET_SEARCH} API!`);
+      logger.info(`!!File not found for /${constants.RET_SEARCH} API!`);
     } else {
-      console.log(
+      logger.error(
         `!!Some error occurred while checking /${constants.RET_SEARCH} API`,
         err
       );

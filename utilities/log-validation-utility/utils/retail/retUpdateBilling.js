@@ -2,18 +2,18 @@ const fs = require("fs");
 const _ = require("lodash");
 const dao = require("../../dao/dao");
 const { checkContext } = require("../../services/service");
+const validateSchema = require("../schemaValidation");
 const utils = require("../utils");
+const constants = require("../constants");
 const logger = require("../logger");
 
-const validateSchema = require("../schemaValidation");
-const constants = require("../constants");
-
-const checkUpdate = (dirPath, msgIdSet) => {
+const checkUpdateBilling = (dirPath, msgIdSet) => {
   let updtObj = {};
-  let itemsUpdt = {};
 
   try {
-    let update = fs.readFileSync(dirPath + `/${constants.RET_UPDATE}.json`);
+    let update = fs.readFileSync(
+      dirPath + `/${constants.RET_UPDATE}_billing.json`
+    );
     update = JSON.parse(update);
 
     try {
@@ -55,16 +55,18 @@ const checkUpdate = (dirPath, msgIdSet) => {
     }
 
     try {
+      const refundTriggering = dao.getValue("refundTriggering");
+      const refundState = Object.keys(refundTriggering)[0];
+      const refundTime = refundTriggering[refundState];
       logger.info(
-        `Comparing timestamp of /${constants.RET_UPDATE} and /${constants.RET_ONCONFIRM}`
+        `Comparing timestamp of /${constants.RET_UPDATE} and /${constants.RET_ONUPDATE}_${refundState}`
       );
-      if (_.gte(dao.getValue("tmpstmp"), update.context.timestamp)) {
-        dao.setValue("updtTmpstmp", update.context.timestamp);
-        updtObj.tmpstmp = `Timestamp for /${constants.RET_ONCONFIRM} api cannot be greater than or equal to /${constants.RET_UPDATE} api`;
+      if (_.lte(update.context.timestamp, refundTime)) {
+        updtObj.tmpstmp = `/update for refund should only be triggered after the triggering state ${refundState} `;
       }
     } catch (error) {
       logger.info(
-        `Error while comparing timestamp for /${constants.RET_ONCONFIRM} and /${constants.RET_UPDATE} api, ${error.stack}`
+        `Error while comparing timestamp for /${constants.RET_ONCONFIRM} and /${constants.RET_ONUPDATE}_${refundState} api, ${error.stack}`
       );
     }
 
@@ -77,7 +79,7 @@ const checkUpdate = (dirPath, msgIdSet) => {
       }
     } catch (error) {
       logger.error(
-        `!!Error while comparing transaction ids for /${constants.RET_SELECT} and /${constants.RET_UPDATE} api`
+        `!!Error while comparing transaction ids for /${constants.RET_SELECT} and /${constants.RET_UPDATE} api, ${error.stack}`
       );
     }
     try {
@@ -100,36 +102,53 @@ const checkUpdate = (dirPath, msgIdSet) => {
 
     update = update.message.order;
 
+    // dao.setValue("updtObj", updtObj);
+
     try {
-      logger.info(`Saving items update_type in /${constants.RET_UPDATE}`);
-      update.items.forEach((item, i) => {
-        if (item.hasOwnProperty("tags")) {
-          if (item.tags.update_type === "return") {
-            itemsUpdt[item.id] = item.quantity.count;
-          } else {
-            updtObj.updtTypeErr = `items[${i}].tags.update_type can't be ${item.tags.update_type}`;
+      logger.info(
+        `Checking refund settlement amount in /${constants.RET_UPDATE}_billing`
+      );
+
+      const updatedPrice = parseFloat(dao.getValue("updatedQuotePrice"));
+      const actualQuotePrice = parseFloat(dao.getValue("quotePrice"));
+
+      const refundAmount = _.subtract(actualQuotePrice, updatedPrice);
+
+      const has = Object.prototype.hasOwnProperty;
+      if (!has.call(update, "payment")) {
+        updtObj.pymnt = `/payment object is mandatory for settlement of refund`;
+      } else {
+        if (!has.call(update.payment, "@ondc/org/settlement_details")) {
+          updtObj.pymnt = `@ondc/org/settlement_details in /payment is mandatory for settlement of refund`;
+        } else {
+          const settlementAmount = parseFloat(
+            update.payment["@ondc/org/settlement_details"][0][
+              "settlement_amount"
+            ]
+          );
+
+          if (!_.isEqual(settlementAmount, refundAmount)) {
+            updtObj.refundAmountMismatch = `Inaccurate calculation of refund amount (pls check the quote price in refund triggering state)`;
           }
         }
-      });
-      dao.setValue("itemsUpdt", itemsUpdt);
+      }
     } catch (error) {
       logger.error(
-        `!!Error while saving items update_type in /${constants.RET_UPDATE}, ${error.stack}`
+        `!!Error while checking refund settlement amount in /${constants.RET_UPDATE}_billing, ${error.stack}`
       );
     }
 
-    // dao.setValue("updtObj", updtObj);
     return updtObj;
   } catch (err) {
     if (err.code === "ENOENT") {
-      logger.info(`!!File not found for /${constants.RET_UPDATE} API!`);
+      logger.info(`!!File not found for /${constants.RET_UPDATE}_billing API!`);
     } else {
       logger.error(
-        `!!Some error occurred while checking /${constants.RET_UPDATE} API`,
+        `!!Some error occurred while checking /${constants.RET_UPDATE}_billing API`,
         err
       );
     }
   }
 };
 
-module.exports = checkUpdate;
+module.exports = checkUpdateBilling;

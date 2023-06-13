@@ -4,6 +4,7 @@ const dao = require("../../dao/dao");
 const { checkContext } = require("../../services/service");
 const constants = require("../constants");
 const validateSchema = require("../schemaValidation");
+const logger = require("../logger");
 
 const checkInit = (dirPath, msgIdSet) => {
   let initObj = {};
@@ -12,34 +13,31 @@ const checkInit = (dirPath, msgIdSet) => {
     init = JSON.parse(init);
 
     try {
-      console.log(`Validating Schema for ${constants.RET_INIT} API`);
+      logger.info(`Validating Schema for ${constants.RET_INIT} API`);
       const vs = validateSchema("retail", constants.RET_INIT, init);
-      console.log("DEBUGGG", vs);
       if (vs != "error") {
         Object.assign(initObj, vs);
       }
     } catch (error) {
-      console.log(
-        `!!Error occurred while performing schema validation for /${constants.RET_INIT}`,
-        error
+      logger.error(
+        `!!Error occurred while performing schema validation for /${constants.RET_INIT}, ${error.stack}`
       );
     }
 
     try {
-      console.log(`Checking context for /${constants.RET_INIT} API`); //checking context
+      logger.info(`Checking context for /${constants.RET_INIT} API`); //checking context
       res = checkContext(init.context, constants.RET_INIT);
       if (!res.valid) {
         Object.assign(initObj, res.ERRORS);
       }
     } catch (error) {
-      console.log(
-        `!!Some error occurred while checking /${constants.RET_INIT} context`,
-        error
+      logger.error(
+        `!!Some error occurred while checking /${constants.RET_INIT} context, ${error.stack}`
       );
     }
 
     try {
-      console.log(
+      logger.info(
         `Comparing city of /${constants.RET_SEARCH} and /${constants.RET_INIT}`
       );
 
@@ -47,14 +45,13 @@ const checkInit = (dirPath, msgIdSet) => {
         initObj.city = `City code mismatch in /${constants.RET_SEARCH} and /${constants.RET_INIT}`;
       }
     } catch (error) {
-      console.log(
-        `Error while comparing city in /${constants.RET_SEARCH} and /${constants.RET_INIT}`,
-        error
+      logger.info(
+        `Error while comparing city in /${constants.RET_SEARCH} and /${constants.RET_INIT}, ${error.stack}`
       );
     }
 
     try {
-      console.log(
+      logger.info(
         `Comparing timestamp of /${constants.RET_ONSELECT} and /${constants.RET_INIT}`
       );
       if (_.gte(dao.getValue("tmpstmp"), init.context.timestamp)) {
@@ -62,28 +59,26 @@ const checkInit = (dirPath, msgIdSet) => {
       }
       dao.setValue("tmpstmp", init.context.timestamp);
     } catch (error) {
-      console.log(
-        `!!Error while comparing timestamp for /${constants.RET_ONSELECT} and /${constants.RET_INIT} api`,
-        error
+      logger.error(
+        `!!Error while comparing timestamp for /${constants.RET_ONSELECT} and /${constants.RET_INIT} api, ${error.stack}`
       );
     }
 
     try {
-      console.log(
+      logger.info(
         `Comparing transaction Ids of /${constants.RET_SELECT} and /${constants.RET_INIT}`
       );
       if (!_.isEqual(dao.getValue("txnId"), init.context.transaction_id)) {
         initObj.txnId = `Transaction Id should be same from /${constants.RET_SELECT} onwards`;
       }
     } catch (error) {
-      console.log(
-        `!!Error while comparing transaction ids for /${constants.RET_SELECT} and /${constants.RET_INIT} api`,
-        error
+      logger.error(
+        `!!Error while comparing transaction ids for /${constants.RET_SELECT} and /${constants.RET_INIT} api, ${error.stack}`
       );
     }
 
     try {
-      console.log(`Checking Message Ids of /${constants.RET_INIT}`);
+      logger.info(`Checking Message Ids of /${constants.RET_INIT}`);
       // if (!_.isEqual(msgId, onSelect.context.message_id)) {
       //   onSlctObj.msgId =
       //     "Message Id for /select and /on_select api should be same";
@@ -95,16 +90,15 @@ const checkInit = (dirPath, msgIdSet) => {
       dao.setValue("msgId", init.context.message_id);
       // msgIdSet.add(onSelect.context.message_id);
     } catch (error) {
-      console.log(
-        `Error while checking message id for /${constants.RET_INIT}`,
-        error
+      logger.info(
+        `Error while checking message id for /${constants.RET_INIT}, ${error.stack}`
       );
     }
 
     init = init.message.order;
 
     try {
-      console.log(
+      logger.info(
         `Comparing provider object in /${constants.RET_SELECT} and /${constants.RET_INIT}`
       );
 
@@ -116,14 +110,13 @@ const checkInit = (dirPath, msgIdSet) => {
         initObj.prvdfrLoc = `Provider.locations[0].id mismatches in /${constants.RET_SELECT} and /${constants.RET_INIT}`;
       }
     } catch (error) {
-      console.log(
-        `!!Error while checking provider object in /${constants.RET_SELECT} and /${constants.RET_INIT}`,
-        error
+      logger.error(
+        `!!Error while checking provider object in /${constants.RET_SELECT} and /${constants.RET_INIT}, ${error.stack}`
       );
     }
 
     try {
-      console.log(`Checking billing object in /${constants.RET_INIT}`);
+      logger.info(`Checking billing object in /${constants.RET_INIT}`);
       if (!init["billing"]) {
         initObj.bill = `Billing object missing in /${constants.RET_INIT}`;
       } else {
@@ -131,11 +124,11 @@ const checkInit = (dirPath, msgIdSet) => {
         const tmpstmp = dao.getValue("tmpstmp");
         dao.setValue("billing", billing);
         if (!_.isEqual(billing.created_at, tmpstmp)) {
-          initObj.bllngCrtd = `billing.created_at should match context.timestamp`;
+          initObj.bllngCrtd = `billing/created_at should match context.timestamp`;
         }
 
         if (!_.isEqual(init.billing.updated_at, tmpstmp)) {
-          initObj.bllngUptd = `billing.updated_at should match context.timestamp`;
+          initObj.bllngUptd = `billing/updated_at should match context.timestamp`;
         }
         // if (
         //   !_.isEqual(init.billing.address.area_code, dao.getValue("buyerAddr"))
@@ -144,14 +137,53 @@ const checkInit = (dirPath, msgIdSet) => {
         // }
       }
     } catch (error) {
-      console.log(
-        `!!Error while checking billing object in /${constants.RET_INIT}`,
-        error
+      logger.error(
+        `!!Error while checking billing object in /${constants.RET_INIT}, ${error.stack}`
       );
     }
 
     try {
-      console.log(
+      //checking address components length
+      const noOfFulfillments = init.fulfillments.length; //will be 1 ideally
+      let i = 0;
+      while (i < noOfFulfillments) {
+        const address = init.fulfillments[i].end.location.address;
+
+        const lenName = address.name.length;
+        const lenBuilding = address.building.length;
+        const lenLocality = address.locality.length;
+
+        if (lenName + lenBuilding + lenLocality >= 190) {
+          initObj.addressLen = `address.name + address.building + address.locality should be less than 190 chars;`;
+        }
+        if (lenBuilding <= 3) {
+          initObj.lenBuilding = `address.building should be more than 3 chars`;
+        }
+        if (lenName <= 3) {
+          initObj.lenName = `address.name should be more than 3 chars`;
+        }
+        if (lenLocality <= 3) {
+          initObj.lenLocality = `address.locality should be more than 3 chars`;
+        }
+
+        if (
+          address.building === address.locality ||
+          address.name === address.building ||
+          address.name === address.locality
+        ) {
+          initObj.addressComponents = `value of address.name, address.building and address.locality should be unique`;
+        }
+
+        i++;
+      }
+    } catch (error) {
+      logger.error(
+        `!!Error while checking address components in /${constants.RET_INIT}, ${error.stack}`
+      );
+    }
+
+    try {
+      logger.info(
         `Comparing item Ids and fulfillment ids in /${constants.RET_ONSELECT} and /${constants.RET_INIT}`
       );
       const itemFlfllmnts = dao.getValue("itemFlfllmnts");
@@ -180,13 +212,13 @@ const checkInit = (dirPath, msgIdSet) => {
         i++;
       }
     } catch (error) {
-      console.log(
+      logger.error(
         `!!Error while comparing Item and Fulfillment Id in /${constants.RET_ONSELECT} and /${constants.RET_INIT}`
       );
     }
 
     try {
-      console.log(`Checking fulfillments objects in /${constants.RET_INIT}`);
+      logger.info(`Checking fulfillments objects in /${constants.RET_INIT}`);
       const itemFlfllmnts = dao.getValue("itemFlfllmnts");
       let i = 0;
       const len = init.fulfillments.length;
@@ -243,18 +275,18 @@ const checkInit = (dirPath, msgIdSet) => {
         i++;
       }
     } catch (error) {
-      console.log(
-        `!!Error while checking fulfillments object in /${constants.RET_INIT}`,
-        error
+      logger.error(
+        `!!Error while checking fulfillments object in /${constants.RET_INIT}, ${error.stack}`
       );
     }
 
-    dao.setValue("initObj", initObj);
+    // dao.setValue("initObj", initObj);
+    return initObj;
   } catch (err) {
     if (err.code === "ENOENT") {
-      console.log(`!!File not found for /${constants.RET_INIT} API!`);
+      logger.info(`!!File not found for /${constants.RET_INIT} API!`);
     } else {
-      console.log(
+      logger.error(
         `!!Some error occurred while checking /${constants.RET_INIT} API`,
         err
       );

@@ -5,6 +5,7 @@ const dao = require("../../dao/dao");
 const utils = require("../utils");
 const validateSchema = require("../schemaValidation");
 const constants = require("../constants");
+const logger = require("../logger");
 
 const checkOnInit = (dirPath, msgIdSet) => {
   let onInitObj = {};
@@ -15,48 +16,45 @@ const checkOnInit = (dirPath, msgIdSet) => {
     on_init = JSON.parse(on_init);
 
     try {
-      console.log(`Validating Schema for /${constants.RET_ONINIT} API`);
+      logger.info(`Validating Schema for /${constants.RET_ONINIT} API`);
       const vs = validateSchema("retail", constants.RET_ONINIT, on_init);
       if (vs != "error") {
-        // console.log(vs);
+        // logger.info(vs);
         Object.assign(onInitObj, vs);
       }
     } catch (error) {
-      console.log(
-        `!!Error occurred while performing schema validation for /${constants.RET_ONINIT}`,
-        error
+      logger.error(
+        `!!Error occurred while performing schema validation for /${constants.RET_ONINIT}, ${error.stack}`
       );
     }
 
-    console.log(`Checking context for /${constants.RET_ONINIT} API`); //checking context
+    logger.info(`Checking context for /${constants.RET_ONINIT} API`); //checking context
     try {
       res = checkContext(on_init.context, constants.RET_ONINIT);
       if (!res.valid) {
         Object.assign(onInitObj, res.ERRORS);
       }
     } catch (error) {
-      console.log(
-        `!!Some error occurred while checking /${constants.RET_ONINIT} context`,
-        error
+      logger.error(
+        `!!Some error occurred while checking /${constants.RET_ONINIT} context, ${error.stack}`
       );
     }
 
     try {
-      console.log(
+      logger.info(
         `Comparing city of ${constants.RET_SEARCH} & ${constants.RET_ONINIT}`
       );
       if (!_.isEqual(dao.getValue("city"), on_init.context.city)) {
         onInitObj.city = `City code mismatch in ${constants.RET_SEARCH} & ${constants.RET_ONINIT}`;
       }
     } catch (error) {
-      console.log(
-        `Error while comparing city in ${constants.RET_SEARCH} & ${constants.RET_ONINIT}`,
-        error
+      logger.info(
+        `Error while comparing city in ${constants.RET_SEARCH} & ${constants.RET_ONINIT}, ${error.stack}`
       );
     }
 
     try {
-      console.log(
+      logger.info(
         `Comparing timestamp of ${constants.RET_INIT} & ${constants.RET_ONINIT}`
       );
       const tmpstmp = dao.getValue("tmpstmp");
@@ -64,7 +62,7 @@ const checkOnInit = (dirPath, msgIdSet) => {
         onInitObj.tmpstmp = `Timestamp for ${constants.RET_INIT} api cannot be greater than or equal to ${constants.RET_ONINIT} api`;
       } else {
         const timeDiff = utils.timeDiff(on_init.context.timestamp, tmpstmp);
-        console.log(timeDiff);
+        logger.info(timeDiff);
         if (timeDiff > 5000) {
           onInitObj.tmpstmp = `context/timestamp difference between /${constants.RET_ONINIT} and /${constants.RET_INIT} should be smaller than 5 sec`;
         }
@@ -72,28 +70,26 @@ const checkOnInit = (dirPath, msgIdSet) => {
 
       dao.setValue("tmpstmp", on_init.context.timestamp);
     } catch (error) {
-      console.log(
-        `!!Error while comparing timestamp for /${constants.RET_INIT} and /${constants.RET_ONINIT} api`,
-        error
+      logger.error(
+        `!!Error while comparing timestamp for /${constants.RET_INIT} and /${constants.RET_ONINIT} api, ${error.stack}`
       );
     }
 
     try {
-      console.log(
+      logger.info(
         `Comparing transaction Ids of /${constants.RET_SELECT} & /${constants.RET_ONINIT}`
       );
       if (!_.isEqual(dao.getValue("txnId"), on_init.context.transaction_id)) {
         onInitObj.txnId = `Transaction Id should be same from /${constants.RET_SELECT} onwards`;
       }
     } catch (error) {
-      console.log(
-        `!!Error while comparing transaction ids for /${constants.RET_SELECT} & /${constants.RET_ONINIT} api`,
-        error
+      logger.error(
+        `!!Error while comparing transaction ids for /${constants.RET_SELECT} & /${constants.RET_ONINIT} api, ${error.stack}`
       );
     }
 
     try {
-      console.log(
+      logger.info(
         `Comparing Message Ids of /${constants.RET_INIT} and /${constants.RET_ONINIT}`
       );
       if (!_.isEqual(dao.getValue("msgId"), on_init.context.message_id)) {
@@ -106,16 +102,15 @@ const checkOnInit = (dirPath, msgIdSet) => {
       // msgId = select.context.message_id;
       msgIdSet.add(on_init.context.message_id);
     } catch (error) {
-      console.log(
-        `!!Error while checking message id for /${constants.RET_INIT}`,
-        error
+      logger.error(
+        `!!Error while checking message id for /${constants.RET_INIT}, ${error.stack}`
       );
     }
 
     on_init = on_init.message.order;
 
     try {
-      console.log(
+      logger.info(
         `Checking provider Id and provider_location Id in /${constants.RET_ONSEARCH} and /${constants.RET_ONINIT}`
       );
       if (
@@ -135,14 +130,13 @@ const checkOnInit = (dirPath, msgIdSet) => {
         onInitObj.prvdrloc = `provider_location object is missing in /${constants.RET_ONINIT}`;
       }
     } catch (error) {
-      console.log(
-        `!!Error while comparing provider Id and location Id in /${constants.RET_ONSEARCH} and /${constants.RET_ONINIT}`,
-        error
+      logger.error(
+        `!!Error while comparing provider Id and location Id in /${constants.RET_ONSEARCH} and /${constants.RET_ONINIT}, ${error.stack}`
       );
     }
 
     try {
-      console.log(
+      logger.info(
         `Comparing item Ids and fulfillment Ids in /${constants.RET_ONSELECT} and /${constants.RET_ONINIT}`
       );
       const itemFlfllmnts = dao.getValue("itemFlfllmnts");
@@ -172,29 +166,29 @@ const checkOnInit = (dirPath, msgIdSet) => {
         i++;
       }
     } catch (error) {
-      console.log(
-        `!!Error while comparing Item and Fulfillment Id in /${constants.RET_ONSELECT} and /${constants.RET_ONINIT}`,
-        error
+      logger.error(
+        `!!Error while comparing Item and Fulfillment Id in /${constants.RET_ONSELECT} and /${constants.RET_ONINIT}, ${error.stack}`
       );
     }
 
     try {
-      console.log(
+      logger.info(
         `Comparing billing object in /${constants.RET_INIT} and /${constants.RET_ONINIT}`
       );
       const billing = dao.getValue("billing");
-      if (!_.isEqual(billing, on_init.billing)) {
-        onInitObj.bill = `Billing object mismatches in /${constants.RET_INIT} and /${constants.RET_ONINIT}`;
+
+      if (utils.isObjectEqual(billing, on_init.billing).length>0) {
+        const billingMismatch= utils.isObjectEqual(billing, on_init.billing);
+        onInitObj.bill = `${billingMismatch.join(", ")} mismatches in /billing in /${constants.RET_INIT} and /${constants.RET_ONINIT}`;
       }
     } catch (error) {
-      console.log(
-        `!!Error while comparing billing object in /${constants.RET_INIT} and /${constants.RET_ONINIT}`,
-        error
+      logger.error(
+        `!!Error while comparing billing object in /${constants.RET_INIT} and /${constants.RET_ONINIT}, ${error.stack}`
       );
     }
 
     try {
-      console.log(`Checking fulfillments objects in /${constants.RET_ONINIT}`);
+      logger.info(`Checking fulfillments objects in /${constants.RET_ONINIT}`);
       const itemFlfllmnts = dao.getValue("itemFlfllmnts");
       let i = 0;
       const len = on_init.fulfillments.length;
@@ -251,53 +245,52 @@ const checkOnInit = (dirPath, msgIdSet) => {
         i++;
       }
     } catch (error) {
-      console.log(
-        `!!Error while checking fulfillments object in /${constants.RET_ONINIT}`,
-        error
+      logger.error(
+        `!!Error while checking fulfillments object in /${constants.RET_ONINIT}, ${error.stack}`
       );
     }
 
     let initQuotePrice = 0;
     let initBreakupPrice = 0;
     // dao.setValue("onInitQuote", on_init.quote);
-    console.log(`Calculating Net /${constants.RET_ONINIT} Price breakup`);
+    logger.info(`Calculating Net /${constants.RET_ONINIT} Price breakup`);
     on_init.quote.breakup.forEach((element) => {
       initBreakupPrice += parseFloat(element.price.value);
     });
-    console.log(`/${constants.RET_ONINIT} Price Breakup: ${initBreakupPrice}`);
+    logger.info(`/${constants.RET_ONINIT} Price Breakup: ${initBreakupPrice}`);
 
     initQuotePrice = parseFloat(on_init.quote.price.value);
 
-    console.log(`/${constants.RET_ONINIT} Quoted Price: ${initQuotePrice}`);
+    logger.info(`/${constants.RET_ONINIT} Quoted Price: ${initQuotePrice}`);
 
-    console.log(
+    logger.info(
       `Comparing /${constants.RET_ONINIT} Quoted Price and Net Price Breakup`
     );
     if (initQuotePrice != initBreakupPrice) {
-      console.log(
+      logger.info(
         `Quoted Price in /${constants.RET_ONINIT} is not equal to the Net Breakup Price`
       );
       onInitObj.onInitPriceErr = `Quoted Price ${initQuotePrice} does not match with Net Breakup Price ${initBreakupPrice} in /${constants.RET_ONINIT}`;
     }
 
-    console.log(
+    logger.info(
       `Comparing /${constants.RET_ONINIT} Quoted Price and /${constants.RET_ONSELECT} Quoted Price`
     );
     const onSelectPrice = dao.getValue("onSelectPrice");
     if (onSelectPrice != initQuotePrice) {
-      console.log(
+      logger.info(
         `Quoted Price in /${constants.RET_ONINIT} is not equal to the quoted price in /${constants.RET_ONSELECT}`
       );
       onInitObj.onInitPriceErr2 = `Quoted Price in /${constants.RET_ONINIT} INR ${initQuotePrice} does not match with the quoted price in /${constants.RET_ONSELECT} INR ${onSelectPrice}`;
     }
 
-    console.log(`Checking Payment Object for  /${constants.RET_ONINIT}`);
+    logger.info(`Checking Payment Object for  /${constants.RET_ONINIT}`);
     if (!on_init.payment) {
       onInitObj.pymntOnInitObj = `Payment Object can't be null in /${constants.RET_ONINIT}`;
     }
 
     try {
-      console.log(
+      logger.info(
         `Checking Buyer App finder fee amount in /${constants.RET_ONINIT}`
       );
       const buyerFF = dao.getValue("buyerFF");
@@ -308,31 +301,30 @@ const checkOnInit = (dirPath, msgIdSet) => {
           buyerFF
       ) {
         onInitObj.buyerFF = `Buyer app finder fee can't change in /${constants.RET_ONINIT}`;
-        // console.log(`Buyer app finder fee amount can't change in /on_init`);
+        // logger.info(`Buyer app finder fee amount can't change in /on_init`);
       }
     } catch (error) {
-      console.log(
-        `!!Error while checking buyer app finder fee in /${constants.RET_ONINIT}`,
-        error
+      logger.error(
+        `!!Error while checking buyer app finder fee in /${constants.RET_ONINIT}, ${error.stack}`
       );
     }
 
     try {
-      console.log(
+      logger.info(
         `Checking Quote Object in /${constants.RET_ONSELECT} and /${constants.RET_ONINIT}`
       );
       if (!_.isEqual(dao.getValue("quoteObj"), on_init.quote)) {
         onInitObj.quoteErr = `Discrepancies between the quote object in /${constants.RET_ONSELECT} and /${constants.RET_ONINIT}`;
       }
     } catch (error) {
-      console.log(
+      logger.error(
         `!!Error while checking quote object in /${constants.RET_ONSELECT} and /${constants.RET_ONINIT}`
       );
     }
 
     //CHECKING PAYMENT OBJECT IN /ON_INIT
     // try {
-    //   console.log("checking payment object in /on_init");
+    //   logger.info("checking payment object in /on_init");
     //   if (
     //     on_init.payment.collected_by === "BAP" &&
     //     on_init.payment["@ondc/org/settlement_details"][0][
@@ -354,14 +346,14 @@ const checkOnInit = (dirPath, msgIdSet) => {
     //   dao.setValue("paymentType", on_init.payment.type);
     //   dao.setValue("pymntCollectedBy", on_init.payment.collected_by);
     // } catch (error) {
-    //   console.log(
+    //   logger.info(
     //     `!!Error while checking payment object in /${constants.RET_ONINIT}`,
     //     error
     //   );
     // }
 
     try {
-      console.log(`checking payment object in /${constants.RET_ONINIT}`);
+      logger.info(`checking payment object in /${constants.RET_ONINIT}`);
       if (
         on_init.payment["@ondc/org/settlement_details"][0][
           "settlement_counterparty"
@@ -370,13 +362,13 @@ const checkOnInit = (dirPath, msgIdSet) => {
         onInitObj.sttlmntcntrparty = `settlement_counterparty is expected to be 'seller-app' in @ondc/org/settlement_details`;
       }
     } catch (error) {
-      console.log(
+      logger.error(
         `!!Error while checking payment object in /${constants.RET_ONINIT}`
       );
     }
 
     try {
-      console.log(
+      logger.info(
         `storing payment settlement details in /${constants.RET_ONINIT}`
       );
       if (on_init.payment.hasOwnProperty("@ondc/org/settlement_details"))
@@ -388,17 +380,18 @@ const checkOnInit = (dirPath, msgIdSet) => {
         onInitObj.pymntSttlmntObj = `payment settlement_details missing in /${constants.RET_ONINIT}`;
       }
     } catch (error) {
-      console.log(
+      logger.error(
         `!!Error while storing payment settlement details in /${constants.RET_ONINIT}`
       );
     }
 
-    dao.setValue("onInitObj", onInitObj);
+    // dao.setValue("onInitObj", onInitObj);
+    return onInitObj;
   } catch (err) {
     if (err.code === "ENOENT") {
-      console.log(`!!File not found for /${constants.RET_ONINIT} API!`);
+      logger.info(`!!File not found for /${constants.RET_ONINIT} API!`);
     } else {
-      console.log(
+      logger.error(
         `!!Some error occurred while checking /${constants.RET_ONINIT} API`,
         err
       );

@@ -12,7 +12,7 @@ const checkOnInit = require("./retail/retOnInit");
 const checkConfirm = require("./retail/retConfirm");
 const checkOnConfirm = require("./retail/retOnConfirm");
 const checkStatus = require("./retail/retStatus");
-const checkOnStatus = require("./retail/retOnStatus");
+// const checkOnStatus = require("./retail/retOnStatus");
 const checkTrack = require("./retail/retTrack");
 const checkOnTrack = require("./retail/retOnTrack");
 const checkCancel = require("./retail/retCancel");
@@ -20,8 +20,10 @@ const checkOnCancel = require("./retail/retOnCancel");
 const checkSupport = require("./retail/retSupport");
 const checkOnSupport = require("./retail/retOnSupport");
 const checkUpdate = require("./retail/retUpdate");
-const checkOnUpdate = require("./retail/retOnUpdate");
-
+const checkUnsolicitedStatus = require("./retail/retUnsolicitedOnStatus");
+const logger = require("./logger");
+const checkUnsolicitedOnUpdate = require("./retail/retUnsolicitedOnUpdate");
+const checkUpdateBilling = require("./retail/retUpdateBilling");
 //TAT in on_select = sumof(time to ship in /on_search and TAT by LSP in logistics /on_search)
 // If non-serviceable in /on_select, there should be domain-error
 
@@ -67,7 +69,8 @@ const validateLogs = (dirPath) => {
 
   // //ON_STATUS API
 
-  let onStatResp = checkOnStatus(dirPath, msgIdSet);
+  // let onStatResp = checkOnStatus(dirPath, msgIdSet);
+  let onStatResp = checkUnsolicitedStatus(dirPath, msgIdSet);
 
   // //UPDATE API
 
@@ -75,7 +78,10 @@ const validateLogs = (dirPath) => {
 
   // //ON_UPDATE API
 
-  let onUpdtResp = checkOnUpdate(dirPath, msgIdSet);
+  let onUpdtResp = checkUnsolicitedOnUpdate(dirPath, msgIdSet);
+
+  // //UPDATE REFUND API
+  let updtRfndResp = checkUpdateBilling(dirPath, msgIdSet);
 
   // //TRACK API
 
@@ -101,105 +107,124 @@ const validateLogs = (dirPath) => {
 
   let logReport = "";
 
-  let srchObj = dao.getValue("srchObj");
-  let onSrchObj = dao.getValue("onSrchObj");
-  let slctObj = dao.getValue("slctObj");
-  let onSlctObj = dao.getValue("onSlctObj");
-  let initObj = dao.getValue("initObj");
-  let onInitObj = dao.getValue("onInitObj");
-  let cnfrmObj = dao.getValue("cnfrmObj");
-  let onCnfrmObj = dao.getValue("onCnfrmObj");
-  let cnclObj = dao.getValue("cnclObj");
-  let onCnclObj = dao.getValue("onCnclObj");
-  let trckObj = dao.getValue("trckObj");
-  let onTrckObj = dao.getValue("onTrckObj");
-  let sprtObj = dao.getValue("sprtObj");
-  let onSprtObj = dao.getValue("onSprtObj");
-  let updtObj = dao.getValue("updtObj");
-  let onUpdtObj = dao.getValue("onUpdtObj");
-  let statObj = dao.getValue("statObj");
-  let onStatObj = dao.getValue("onStatObj");
-
   try {
-    console.log("Flushing DB Data");
+    logger.info("Flushing DB Data");
     dao.dropDB();
   } catch (error) {
-    console.log("Error while removing LMDB");
+    logger.error("!!Error while removing LMDB", error);
   }
 
-  if (!_.isEmpty(srchObj)) {
-    logReport += `**/search**\n${getObjValues(srchObj)}\n`;
+  if (!_.isEmpty(srchResp)) {
+    logReport += `**/search**\n${getObjValues(srchResp)}\n`;
   }
 
-  if (!_.isEmpty(onSrchObj)) {
-    logReport += `**/on_search**\n${getObjValues(onSrchObj)}\n`;
+  if (!_.isEmpty(onSrchResp)) {
+    logReport += `**/on_search**\n${getObjValues(onSrchResp)}\n`;
   }
 
-  if (!_.isEmpty(slctObj)) {
-    logReport += `**/select**\n${getObjValues(slctObj)}\n`;
+  if (!_.isEmpty(slctResp)) {
+    logReport += `**/select**\n${getObjValues(slctResp)}\n`;
   }
 
-  if (!_.isEmpty(onSlctObj)) {
-    logReport += `**/on_select**\n${getObjValues(onSlctObj)}\n`;
+  if (!_.isEmpty(onSlctResp)) {
+    logReport += `**/on_select**\n${getObjValues(onSlctResp)}\n`;
   }
 
-  if (!_.isEmpty(initObj)) {
-    logReport += `**/init**\n${getObjValues(initObj)}\n`;
+  if (!_.isEmpty(initResp)) {
+    logReport += `**/init**\n${getObjValues(initResp)}\n`;
   }
 
-  if (!_.isEmpty(onInitObj)) {
-    logReport += `**/on_init**\n${getObjValues(onInitObj)}\n`;
+  if (!_.isEmpty(onInitResp)) {
+    logReport += `**/on_init**\n${getObjValues(onInitResp)}\n`;
   }
 
-  if (!_.isEmpty(cnfrmObj)) {
-    logReport += `**/confirm**\n${getObjValues(cnfrmObj)}\n`;
+  if (!_.isEmpty(cnfrmResp)) {
+    logReport += `**/confirm**\n${getObjValues(cnfrmResp)}\n`;
   }
 
-  if (!_.isEmpty(onCnfrmObj)) {
-    logReport += `**/on_confirm**\n${getObjValues(onCnfrmObj)}\n`;
+  if (!_.isEmpty(onCnfrmResp)) {
+    logReport += `**/on_confirm**\n${getObjValues(onCnfrmResp)}\n`;
   }
 
-  if (!_.isEmpty(cnclObj)) {
-    logReport += `**/cancel**\n${getObjValues(cnclObj)}\n`;
+  if (!_.isEmpty(cnclResp)) {
+    logReport += `**/cancel**\n${getObjValues(cnclResp)}\n`;
   }
 
-  if (!_.isEmpty(onCnclObj)) {
-    logReport += `**/on_cancel**\n${getObjValues(onCnclObj)}\n`;
+  if (!_.isEmpty(onCnclResp)) {
+    logReport += `**/on_cancel**\n${getObjValues(onCnclResp)}\n`;
   }
 
-  if (!_.isEmpty(trckObj)) {
-    logReport += `**/track**\n${getObjValues(trckObj)}\n`;
+  if (!_.isEmpty(trckResp)) {
+    logReport += `**/track**\n${getObjValues(trckResp)}\n`;
   }
 
-  if (!_.isEmpty(onTrckObj)) {
-    logReport += `**/on_track**\n${getObjValues(onTrckObj)}\n`;
+  if (!_.isEmpty(onTrckResp)) {
+    logReport += `**/on_track**\n${getObjValues(onTrckResp)}\n`;
   }
 
-  if (!_.isEmpty(statObj)) {
-    logReport += `**/status**\n${getObjValues(statObj)}\n`;
+  if (!_.isEmpty(statResp)) {
+    logReport += `**/status**\n${getObjValues(statResp)}\n`;
   }
-  if (!_.isEmpty(onStatObj)) {
-    logReport += `**/on_status**\n${getObjValues(onStatObj)}\n`;
+  if (!_.isEmpty(onStatResp.pending)) {
+    logReport += `**/on_status (Pending)**\n${getObjValues(
+      onStatResp.pending
+    )}\n`;
+  }
+  if (!_.isEmpty(onStatResp.picked)) {
+    logReport += `**/on_status (Order-picked-up)**\n${getObjValues(
+      onStatResp.picked
+    )}\n`;
+  }
+  if (!_.isEmpty(onStatResp.delivered)) {
+    logReport += `**/on_status (Order-Delivered)**\n${getObjValues(
+      onStatResp.delivered
+    )}\n`;
   }
 
-  if (!_.isEmpty(updtObj)) {
-    logReport += `**/update**\n${getObjValues(updtObj)}\n`;
+  if (!_.isEmpty(updtResp)) {
+    logReport += `**/update**\n${getObjValues(updtResp)}\n`;
   }
-  if (!_.isEmpty(onUpdtObj)) {
-    logReport += `**/on_update**\n${getObjValues(onUpdtObj)}\n`;
+  if (!_.isEmpty(onUpdtResp.initiated)) {
+    logReport += `**/on_update (Initiated)**\n${getObjValues(
+      onUpdtResp.initiated
+    )}\n`;
+  }
+  if (!_.isEmpty(onUpdtResp.liquidated)) {
+    logReport += `**/on_update (Liquidated)**\n${getObjValues(
+      onUpdtResp.liquidated
+    )}\n`;
+  }
+  if (!_.isEmpty(onUpdtResp.rejected)) {
+    logReport += `**/on_update (Rejected)**\n${getObjValues(
+      onUpdtResp.rejected
+    )}\n`;
+  }
+  if (!_.isEmpty(onUpdtResp.return_approved)) {
+    logReport += `**/on_update (Return_Approved)**\n${getObjValues(
+      onUpdtResp.return_approved
+    )}\n`;
+  }
+  if (!_.isEmpty(onUpdtResp.return_delivered)) {
+    logReport += `**/on_update (Return_Delivered)**\n${getObjValues(
+      onUpdtResp.return_delivered
+    )}\n`;
   }
 
-  if (!_.isEmpty(sprtObj)) {
-    logReport += `**/support**\n${getObjValues(sprtObj)}\n`;
+  if (!_.isEmpty(updtRfndResp)) {
+    logReport += `**/update (Refund)**\n${getObjValues(updtRfndResp)}\n`;
   }
 
-  if (!_.isEmpty(onSprtObj)) {
-    logReport += `**/on_support** \n${getObjValues(onSprtObj)}\n`;
+  if (!_.isEmpty(sprtResp)) {
+    logReport += `**/support**\n${getObjValues(sprtResp)}\n`;
+  }
+
+  if (!_.isEmpty(onSprtResp)) {
+    logReport += `**/on_support** \n${getObjValues(onSprtResp)}\n`;
   }
 
   fs.writeFileSync("log_report.md", logReport);
 
-  console.log("Report Generated Successfully!!");
+  logger.info("Report Generated Successfully!!");
 };
 
 module.exports = { validateLogs };

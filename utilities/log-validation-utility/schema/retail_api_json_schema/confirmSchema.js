@@ -149,7 +149,7 @@ module.exports = {
                   ],
                 },
                 email: { type: "string", format: "email" },
-                phone: { type: "string" },
+                phone: { type: "string", minLength: 10, maxLength: 11 },
                 created_at: {
                   type: "string",
                   format: "date-time",
@@ -205,6 +205,8 @@ module.exports = {
                           },
                           phone: {
                             type: "string",
+                            minLength: 10,
+                            maxLength: 11,
                           },
                         },
                         required: ["phone"],
@@ -257,7 +259,7 @@ module.exports = {
                     required: ["person", "contact", "location"],
                   },
                 },
-                required: ["id", "type", "tracking", "end"],
+                required: ["id", "type", "end"],
               },
             },
             quote: {
@@ -387,11 +389,9 @@ module.exports = {
                       upi_address: { type: "string" },
                       settlement_bank_account_no: {
                         type: "string",
-                        pattern: "^(?!s*$).+",
                       },
                       settlement_ifsc_code: {
                         type: "string",
-                        pattern: "^(?!s*$).+",
                       },
                       bank_name: { type: "string" },
                       beneficiary_name: {
@@ -399,11 +399,6 @@ module.exports = {
                       },
                       branch_name: { type: "string" },
                     },
-                    required: [
-                      "settlement_counterparty",
-                      "settlement_phase",
-                      "settlement_type",
-                    ],
                     allOf: [
                       {
                         if: {
@@ -414,6 +409,11 @@ module.exports = {
                           },
                         },
                         then: {
+                          properties: {
+                            upi_address: {
+                              type: "string",
+                            },
+                          },
                           required: ["upi_address"],
                         },
                       },
@@ -421,28 +421,21 @@ module.exports = {
                         if: {
                           properties: {
                             settlement_type: {
-                              const: "rtgs",
+                              enum: ["rtgs", "neft"],
                             },
                           },
                         },
                         then: {
-                          required: [
-                            "settlement_ifsc_code",
-                            "settlement_bank_account_no",
-                            "bank_name",
-                            "branch_name",
-                          ],
-                        },
-                      },
-                      {
-                        if: {
                           properties: {
-                            settlement_type: {
-                              const: "neft",
+                            settlement_bank_account_no: {
+                              type: "string",
                             },
+                            settlement_ifsc_code: {
+                              type: "string",
+                            },
+                            bank_name: { type: "string" },
+                            branch_name: { type: "string" },
                           },
-                        },
-                        then: {
                           required: [
                             "settlement_ifsc_code",
                             "settlement_bank_account_no",
@@ -451,6 +444,11 @@ module.exports = {
                           ],
                         },
                       },
+                    ],
+                    required: [
+                      "settlement_counterparty",
+                      "settlement_phase",
+                      "settlement_type",
                     ],
                   },
                 },

@@ -1,9 +1,10 @@
 const { validateLog } = require("./services/cbCheck.service");
 const fs = require("fs");
-
+require("dotenv").config();
+const logger = require("./utils/logger");
 try {
   if (process.argv.length < 3) {
-    console.log(
+    logger.error(
       "Need arguments in the format: node index.js 'domain' '/path/to/logs/folder/'"
     );
     return;
@@ -15,16 +16,19 @@ try {
   fs.readdir(path, function (err, files) {
     try {
       if (err) {
-        console.log(`Some error occurred while reading files from ${path}`);
+        logger.error(
+          `Some error occurred while reading files from ${path}`,
+          err
+        );
       } else if (!files.length) {
-        console.log(`${path} folder is empty!!`);
+        logger.error(`${path} folder is empty!!`);
       } else {
         validateLog(domain, path);
       }
     } catch (error) {
-      console.log(`Error while reading logs folder`, error);
+      logger.error(`Error while reading logs folder`, error);
     }
   });
 } catch (error) {
-  console.log("!!Some Unexpected Error Occurred", error);
+  logger.error(`!!Some Unexpected Error Occurred, ${error.stack}`);
 }

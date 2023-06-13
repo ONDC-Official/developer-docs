@@ -5,6 +5,8 @@ const constants = require("../constants");
 const utils = require("../utils");
 const { checkContext } = require("../../services/service");
 const validateSchema = require("../schemaValidation");
+const logger = require("../logger");
+// const address = require("../reverseGeocodeUtil");
 
 const checkOnSearch = (dirPath, msgIdSet) => {
   let onSrchObj = {};
@@ -13,59 +15,55 @@ const checkOnSearch = (dirPath, msgIdSet) => {
     let onSearch = fs.readFileSync(dirPath + `/${constants.RET_ONSEARCH}.json`);
     onSearch = JSON.parse(onSearch);
     try {
-      console.log(`Validating Schema for ${constants.RET_ONSEARCH} API`);
+      logger.info(`Validating Schema for ${constants.RET_ONSEARCH} API`);
       const vs = validateSchema("retail", constants.RET_ONSEARCH, onSearch);
       if (vs != "error") {
-        // console.log(vs);
+        // logger.info(vs);
         Object.assign(onSrchObj, vs);
       }
     } catch (error) {
-      console.log(
-        `!!Error occurred while performing schema validation for /${constants.RET_ONSEARCH}`,
-        error
+      logger.error(
+        `!!Error occurred while performing schema validation for /${constants.RET_ONSEARCH}, ${error.stack}`
       );
     }
 
     try {
-      console.log(`Storing BAP_ID and BPP_ID in /${constants.RET_ONSEARCH}`);
+      logger.info(`Storing BAP_ID and BPP_ID in /${constants.RET_ONSEARCH}`);
       dao.setValue("bapId", onSearch.context.bap_id);
       dao.setValue("bppId", onSearch.context.bpp_id);
     } catch (error) {
-      console.log(
-        `!!Error while storing BAP and BPP Ids in /${constants.RET_ONSEARCH}`,
-        error
+      logger.error(
+        `!!Error while storing BAP and BPP Ids in /${constants.RET_ONSEARCH}, ${error.stack}`
       );
     }
 
     try {
-      console.log(`Checking context for ${constants.RET_ONSEARCH} API`);
+      logger.info(`Checking context for ${constants.RET_ONSEARCH} API`);
       res = checkContext(onSearch.context, constants.RET_ONSEARCH);
       if (!res.valid) {
         Object.assign(onSrchObj, res.ERRORS);
       }
     } catch (error) {
-      console.log(
-        `Some error occurred while checking /${constants.RET_ONSEARCH} context`,
-        error
+      logger.info(
+        `Some error occurred while checking /${constants.RET_ONSEARCH} context, ${error.stack}`
       );
     }
 
     try {
-      console.log(
+      logger.info(
         `Comparing city of /${constants.RET_SEARCH} and /${constants.RET_ONSEARCH}`
       );
       if (!_.isEqual(dao.getValue("city"), onSearch.context.city)) {
         onSrchObj.city = `City code mismatch in /${constants.RET_SEARCH} and /${constants.RET_ONSEARCH}`;
       }
     } catch (error) {
-      console.log(
-        `Error while comparing city in /${constants.RET_SEARCH} and /${constants.RET_ONSEARCH}`,
-        error
+      logger.info(
+        `Error while comparing city in /${constants.RET_SEARCH} and /${constants.RET_ONSEARCH}, ${error.stack}`
       );
     }
 
     try {
-      console.log(
+      logger.info(
         `Comparing timestamp of /${constants.RET_SEARCH} and /${constants.RET_ONSEARCH}`
       );
       const tmpstmp = dao.getValue("tmpstmp");
@@ -73,7 +71,7 @@ const checkOnSearch = (dirPath, msgIdSet) => {
         onSrchObj.tmpstmp = `Context timestamp for /${constants.RET_SEARCH} api cannot be greater than or equal to /${constants.RET_ONSEARCH} api`;
       } else {
         const timeDiff = utils.timeDiff(onSearch.context.timestamp, tmpstmp);
-        console.log(timeDiff);
+        logger.info(timeDiff);
         if (timeDiff > 5000) {
           onSrchObj.tmpstmp = `context/timestamp difference between /${constants.RET_ONSEARCH} and /${constants.RET_SEARCH} should be smaller than 5 sec`;
         }
@@ -81,13 +79,13 @@ const checkOnSearch = (dirPath, msgIdSet) => {
 
       dao.setValue("tmpstmp", onSearch.context.timestamp);
     } catch (error) {
-      console.log(
+      logger.info(
         `Error while comparing timestamp for /${constants.RET_SEARCH} and /${constants.RET_ONSEARCH} api`
       );
     }
 
     try {
-      console.log(
+      logger.info(
         `Comparing transaction Ids of /${constants.RET_SEARCH} and /${constants.RET_ONSEARCH}`
       );
       if (!_.isEqual(dao.getValue("txnId"), onSearch.context.transaction_id)) {
@@ -95,14 +93,13 @@ const checkOnSearch = (dirPath, msgIdSet) => {
       }
       // dao.setValue("txnId", onSearch.context.transaction_id);
     } catch (error) {
-      console.log(
-        `Error while comparing transaction ids for /${constants.RET_SEARCH} and /${constants.RET_ONSEARCH} api`,
-        error
+      logger.info(
+        `Error while comparing transaction ids for /${constants.RET_SEARCH} and /${constants.RET_ONSEARCH} api, ${error.stack}`
       );
     }
 
     try {
-      console.log(
+      logger.info(
         `Comparing Message Ids of /${constants.RET_SEARCH} and /${constants.RET_ONSEARCH}`
       );
       if (!_.isEqual(dao.getValue("msgId"), onSearch.context.message_id)) {
@@ -110,9 +107,8 @@ const checkOnSearch = (dirPath, msgIdSet) => {
       }
       msgIdSet.add(onSearch.context.message_id);
     } catch (error) {
-      console.log(
-        `Error while comparing message ids for /${constants.RET_SEARCH} and /${constants.RET_ONSEARCH} api`,
-        error
+      logger.info(
+        `Error while comparing message ids for /${constants.RET_SEARCH} and /${constants.RET_ONSEARCH} api, ${error.stack}`
       );
     }
 
@@ -121,7 +117,7 @@ const checkOnSearch = (dirPath, msgIdSet) => {
     let prvdrsId = new Set();
 
     try {
-      console.log(
+      logger.info(
         `Saving static fulfillment ids in /${constants.RET_ONSEARCH}`
       );
 
@@ -133,14 +129,13 @@ const checkOnSearch = (dirPath, msgIdSet) => {
         i++;
       }
     } catch (error) {
-      console.log(
-        `Error while saving static fulfillment ids in /${constants.RET_ONSEARCH}`,
-        error
+      logger.info(
+        `Error while saving static fulfillment ids in /${constants.RET_ONSEARCH}, ${error.stack}`
       );
     }
 
     try {
-      console.log(
+      logger.info(
         `Checking Providers info (bpp/providers) in /${constants.RET_ONSEARCH}`
       );
       let i = 0;
@@ -152,7 +147,7 @@ const checkOnSearch = (dirPath, msgIdSet) => {
         let prvdrLocId = new Set();
         let ctgryId = new Set();
 
-        console.log(
+        logger.info(
           `Validating uniqueness for provider id in bpp/providers[${i}]...`
         );
         let prvdr = bppPrvdrs[i];
@@ -166,15 +161,35 @@ const checkOnSearch = (dirPath, msgIdSet) => {
           prvdrsId.add(prvdr.id);
         }
 
-        console.log(
+        logger.info(
           `Checking store enable/disable timestamp in bpp/providers[${i}]`
         );
         if (!_.isEqual(prvdr.time.timestamp, tmpstmp)) {
           onSrchObj.storeEnblDsbl = `store enable/disable timestamp (/bpp/providers/time/timestamp) must match context.timestamp`;
         }
-        console.log(`Checking store timings in bpp/providers[${i}]`);
+        logger.info(`Checking store timings in bpp/providers[${i}]`);
 
         prvdr.locations.forEach((loc, iter) => {
+          try {
+            logger.info(
+              `Checking gps precision of store location in /bpp/providers[${i}]/locations[${iter}]`
+            );
+            const has = Object.prototype.hasOwnProperty;
+            if (has.call(loc, "gps")) {
+              if (!utils.checkGpsPrecision(loc.gps)) {
+                onSrchObj.gpsPrecision = `/bpp/providers[${i}]/locations[${iter}]/gps coordinates must be specified with at least six decimal places of precision.`;
+              }
+            }
+
+            // const addr = address.getReverseGeocode(lat, long);
+            // console.log("DDRESS", addr);
+          } catch (error) {
+            logger.error(
+              `!!Error while checking gps precision of store location in /bpp/providers[${i}]/locations[${iter}]`,
+              error
+            );
+          }
+
           if (prvdrLocId.has(loc.id)) {
             const key = `prvdr${i}${loc.id}${iter}`;
             onSrchObj[
@@ -184,7 +199,7 @@ const checkOnSearch = (dirPath, msgIdSet) => {
             prvdrLocId.add(loc.id);
           }
 
-          console.log("Checking store days...");
+          logger.info("Checking store days...");
           const days = loc.time.days.split(",");
           days.forEach((day) => {
             day = parseInt(day);
@@ -196,7 +211,7 @@ const checkOnSearch = (dirPath, msgIdSet) => {
             }
           });
 
-          console.log("Checking fixed or split timings");
+          logger.info("Checking fixed or split timings");
           //scenario 1: range =1 freq/times =1
           if (
             loc.time.range &&
@@ -220,7 +235,7 @@ const checkOnSearch = (dirPath, msgIdSet) => {
 
           //scenario 3: range=1 (start and end not compliant) frequency=0;
           if ("range" in loc.time) {
-            console.log("checking range (fixed timings) start and end");
+            logger.info("checking range (fixed timings) start and end");
             const startTime =
               "start" in loc.time.range ? parseInt(loc.time.range.start) : "";
             const endTime =
@@ -237,14 +252,14 @@ const checkOnSearch = (dirPath, msgIdSet) => {
         });
 
         try {
-          console.log(
+          logger.info(
             `Checking items for provider (${prvdr.id}) in bpp/providers[${i}]`
           );
           let j = 0;
           const items = onSearch["bpp/providers"][i]["items"];
           const iLen = items.length;
           while (j < iLen) {
-            console.log(
+            logger.info(
               `Validating uniqueness for item id in bpp/providers[${i}].items[${j}]...`
             );
             let item = items[j];
@@ -258,7 +273,7 @@ const checkOnSearch = (dirPath, msgIdSet) => {
               itemsId.add(item.id);
             }
 
-            console.log(
+            logger.info(
               `Checking available and maximum count for item id: ${item.id}`
             );
             if ("available" in item.quantity && "maximum" in item.quantity) {
@@ -273,7 +288,7 @@ const checkOnSearch = (dirPath, msgIdSet) => {
               }
             }
 
-            console.log(
+            logger.info(
               `Checking selling price and maximum price for item id: ${item.id}`
             );
 
@@ -289,7 +304,7 @@ const checkOnSearch = (dirPath, msgIdSet) => {
               }
             }
 
-            console.log(`Checking category_id for item id: ${item.id}`);
+            logger.info(`Checking category_id for item id: ${item.id}`);
             if ("category_id" in item) {
               ctgryId.add(item.category_id);
               const categoryList = [
@@ -316,12 +331,22 @@ const checkOnSearch = (dirPath, msgIdSet) => {
                 if (categoryList.includes(item.category_id)) {
                   if (!prvdr["@ondc/org/fssai_license_no"]) {
                     onSrchObj.fssaiLiceNo = `@ondc/org/fssai_license_no is mandatory for category_id ${item.category_id}`;
+                  } else if (
+                    prvdr.hasOwnProperty("@ondc/org/fssai_license_no")
+                  ) {
+                    if (prvdr["@ondc/org/fssai_license_no"].length != 14) {
+                      onSrchObj.fssaiLiceNo = `@ondc/org/fssai_license_no must contain a valid 14 digit FSSAI No.`;
+                    }
                   }
                 }
-              } catch (error) {}
+              } catch (error) {
+                logger.info(
+                  `!!Error occurred while checking fssai license no for provider ${prvdr.id}`
+                );
+              }
             }
 
-            console.log(`Checking fulfillment_id for item id: ${item.id}`);
+            logger.info(`Checking fulfillment_id for item id: ${item.id}`);
 
             if (!onSearchFFIds.has(item.fulfillment_id)) {
               const key = `prvdr${i}item${j}ff`;
@@ -330,7 +355,7 @@ const checkOnSearch = (dirPath, msgIdSet) => {
               ] = `fulfillment_id in /bpp/providers[${i}]/items[${j}] should map to one of the fulfillments id in bpp/fulfillments`;
             }
 
-            console.log(`Checking location_id for item id: ${item.id}`);
+            logger.info(`Checking location_id for item id: ${item.id}`);
 
             if (!prvdrLocId.has(item.location_id)) {
               const key = `prvdr${i}item${j}loc`;
@@ -339,31 +364,38 @@ const checkOnSearch = (dirPath, msgIdSet) => {
               ] = `location_id in /bpp/providers[${i}]/items[${j}] should be one of the locations id in /bpp/providers[${i}]/locations`;
             }
 
-            console.log(
+            logger.info(
               `Checking consumer care details for item id: ${item.id}`
             );
             if ("@ondc/org/contact_details_consumer_care" in item) {
               let consCare = item["@ondc/org/contact_details_consumer_care"];
               consCare = consCare.split(",");
-              checkEmail = utils.emailRegex(consCare[1].trim());
-              if (isNaN(consCare[2].trim()) || !checkEmail) {
+              if (consCare.length < 3) {
                 const key = `prvdr${i}consCare`;
                 onSrchObj[
                   key
                 ] = `@ondc/org/contact_details_consumer_care should be in the format "name,email,contactno" in /bpp/providers[${i}]/items`;
+              } else {
+                checkEmail = utils.emailRegex(consCare[1].trim());
+                if (isNaN(consCare[2].trim()) || !checkEmail) {
+                  const key = `prvdr${i}consCare`;
+                  onSrchObj[
+                    key
+                  ] = `@ondc/org/contact_details_consumer_care should be in the format "name,email,contactno" in /bpp/providers[${i}]/items`;
+                }
               }
             }
             j++;
           }
         } catch (error) {
-          console.log(
+          logger.error(
             `!!Errors while checking items in bpp/providers[${i}]`,
             error
           );
         }
 
         try {
-          console.log(
+          logger.info(
             `Checking serviceability construct for bpp/providers[${i}]`
           );
 
@@ -576,7 +608,7 @@ const checkOnSearch = (dirPath, msgIdSet) => {
             }
           });
         } catch (error) {
-          console.log(
+          logger.error(
             `!!Error while checking serviceability construct for bpp/providers[${i}]`,
             error
           );
@@ -585,20 +617,20 @@ const checkOnSearch = (dirPath, msgIdSet) => {
         i++;
       }
     } catch (error) {
-      console.log(
-        `!!Error while checking Providers info in /${constants.RET_ONSEARCH}`,
-        error
+      logger.error(
+        `!!Error while checking Providers info in /${constants.RET_ONSEARCH}, ${error.stack}`
       );
     }
 
     dao.setValue("onSearch", onSearch);
-    console.log(onSrchObj);
-    dao.setValue("onSrchObj", onSrchObj);
+
+    // dao.setValue("onSrchObj", onSrchObj);
+    return onSrchObj;
   } catch (err) {
     if (err.code === "ENOENT") {
-      console.log(`!!File not found for ${constants.RET_ONSEARCH} API!`);
+      logger.info(`!!File not found for ${constants.RET_ONSEARCH} API!`);
     } else {
-      console.log(
+      logger.error(
         `!!Some error occurred while checking /${constants.RET_ONSEARCH} API`
       );
     }

@@ -5,6 +5,7 @@ const dao = require("../../dao/dao");
 const utils = require("../utils");
 const validateSchema = require("../schemaValidation");
 const constants = require("../constants");
+const logger = require("../logger");
 
 const checkOnSelect = (dirPath, msgIdSet) => {
   let onSlctObj = {};
@@ -14,47 +15,44 @@ const checkOnSelect = (dirPath, msgIdSet) => {
     on_select = JSON.parse(on_select);
 
     try {
-      console.log(`Checking context for /${constants.RET_ONSELECT} API`); //checking context
+      logger.info(`Checking context for /${constants.RET_ONSELECT} API`); //checking context
       res = checkContext(on_select.context, constants.RET_ONSELECT);
       if (!res.valid) {
         Object.assign(onSlctObj, res.ERRORS);
       }
     } catch (error) {
-      console.log(
-        `!!Some error occurred while checking /${constants.RET_ONSELECT} context`,
-        error
+      logger.error(
+        `!!Some error occurred while checking /${constants.RET_ONSELECT} context, ${error.stack}`
       );
     }
     try {
-      console.log(`Validating Schema for /${constants.RET_ONSELECT} API`);
+      logger.info(`Validating Schema for /${constants.RET_ONSELECT} API`);
       const vs = validateSchema("retail", constants.RET_ONSELECT, on_select);
       if (vs != "error") {
-        // console.log(vs);
+        // logger.info(vs);
         Object.assign(onSlctObj, vs);
       }
     } catch (error) {
-      console.log(
-        `!!Error occurred while performing schema validation for /${constants.RET_ONSELECT}`,
-        error
+      logger.error(
+        `!!Error occurred while performing schema validation for /${constants.RET_ONSELECT}, ${error.stack}`
       );
     }
 
     try {
-      console.log(
+      logger.info(
         `Comparing city of /${constants.RET_SEARCH} and /${constants.RET_ONSELECT}`
       );
       if (!_.isEqual(dao.getValue("city"), on_select.context.city)) {
         onSlctObj.city = `City code mismatch in /${constants.RET_SEARCH} and /${constants.RET_ONSELECT}`;
       }
     } catch (error) {
-      console.log(
-        `!!Error while comparing city in /${constants.RET_SEARCH} and /${constants.RET_ONSELECT}`,
-        error
+      logger.error(
+        `!!Error while comparing city in /${constants.RET_SEARCH} and /${constants.RET_ONSELECT}, ${error.stack}`
       );
     }
 
     try {
-      console.log(
+      logger.info(
         `Comparing timestamp of /${constants.RET_SELECT} and /${constants.RET_ONSELECT}`
       );
       const tmpstmp = dao.getValue("tmpstmp");
@@ -62,35 +60,33 @@ const checkOnSelect = (dirPath, msgIdSet) => {
         onSlctObj.tmpstmp = `Timestamp for /${constants.RET_SELECT} api cannot be greater than or equal to /${constants.RET_ONSELECT} api`;
       } else {
         const timeDiff = utils.timeDiff(on_select.context.timestamp, tmpstmp);
-        console.log(timeDiff);
+        logger.info(timeDiff);
         if (timeDiff > 5000) {
           onSlctObj.tmpstmp = `context/timestamp difference between /${constants.RET_ONSELECT} and /${constants.RET_SELECT} should be smaller than 5 sec`;
         }
       }
       dao.setValue("tmpstmp", on_select.context.timestamp);
     } catch (error) {
-      console.log(
-        `!!Error while comparing timestamp for /${constants.RET_SELECT} and /${constants.RET_ONSELECT}`,
-        error
+      logger.error(
+        `!!Error while comparing timestamp for /${constants.RET_SELECT} and /${constants.RET_ONSELECT}, ${error.stack}`
       );
     }
 
     try {
-      console.log(
+      logger.info(
         `Comparing transaction Ids of /${constants.RET_SELECT} and /${constants.RET_ONSELECT}`
       );
       if (!_.isEqual(dao.getValue("txnId"), on_select.context.transaction_id)) {
         onSlctObj.txnId = `Transaction Id should be same from /${constants.RET_SELECT} onwards`;
       }
     } catch (error) {
-      console.log(
-        `!!Error while comparing transaction ids for /${constants.RET_SELECT} and /${constants.RET_ONSELECT} api`,
-        error
+      logger.error(
+        `!!Error while comparing transaction ids for /${constants.RET_SELECT} and /${constants.RET_ONSELECT} api, ${error.stack}`
       );
     }
 
     try {
-      console.log(
+      logger.info(
         `Comparing Message Ids of /${constants.RET_SELECT} and /${constants.RET_ONSELECT}`
       );
       if (!_.isEqual(dao.getValue("msgId"), on_select.context.message_id)) {
@@ -104,22 +100,20 @@ const checkOnSelect = (dirPath, msgIdSet) => {
       // msgId = select.context.message_id;
       msgIdSet.add(on_select.context.message_id);
     } catch (error) {
-      console.log(
-        `Error while comparing message ids for /${constants.RET_SELECT} and /${constants.RET_ONSELECT} api`,
-        error
+      logger.info(
+        `Error while comparing message ids for /${constants.RET_SELECT} and /${constants.RET_ONSELECT} api, ${error.stack}`
       );
     }
 
     let on_select_error = {};
     try {
-      console.log(`Checking domain-error in /${constants.RET_ONSELECT}`);
+      logger.info(`Checking domain-error in /${constants.RET_ONSELECT}`);
       if (on_select.hasOwnProperty("error")) {
         on_select_error = on_select.error;
       }
     } catch (error) {
-      console.log(
-        `Error while checking domain-error in /${constants.RET_ONSELECT}`,
-        error
+      logger.info(
+        `Error while checking domain-error in /${constants.RET_ONSELECT}, ${error.stack}`
       );
     }
 
@@ -127,21 +121,20 @@ const checkOnSelect = (dirPath, msgIdSet) => {
     let itemFlfllmnts = {};
 
     try {
-      console.log(
+      logger.info(
         `Checking provider id in /${constants.RET_ONSEARCH} and /${constants.RET_ONSELECT}`
       );
       if (dao.getValue("providerId") != on_select.provider.id) {
         onSlctObj.prvdrId = `provider.id mismatches in /${constants.RET_ONSEARCH} and /${constants.RET_ONSELECT}`;
       }
     } catch (error) {
-      console.log(
-        `Error while comparing provider ids in /${constants.RET_ONSEARCH} and /${constants.RET_ONSELECT}`,
-        error
+      logger.info(
+        `Error while comparing provider ids in /${constants.RET_ONSEARCH} and /${constants.RET_ONSELECT}, ${error.stack}`
       );
     }
 
     try {
-      console.log(`Item Id and Fulfillment Id Mapping in /on_select`);
+      logger.info(`Item Id and Fulfillment Id Mapping in /on_select`);
       let i = 0;
       const len = on_select.items.length;
       while (i < len) {
@@ -157,14 +150,13 @@ const checkOnSelect = (dirPath, msgIdSet) => {
         i++;
       }
     } catch (error) {
-      console.log(
-        `!!Error while checking Item Id and Fulfillment Id Mapping in /${constants.RET_ONSELECT}`,
-        error
+      logger.error(
+        `!!Error while checking Item Id and Fulfillment Id Mapping in /${constants.RET_ONSELECT}, ${error.stack}`
       );
     }
 
     try {
-      console.log("Mapping and storing item Id and fulfillment Id");
+      logger.info("Mapping and storing item Id and fulfillment Id");
       let i = 0;
       const len = on_select.items.length;
       while (i < len) {
@@ -174,23 +166,42 @@ const checkOnSelect = (dirPath, msgIdSet) => {
       }
       dao.setValue("itemFlfllmnts", itemFlfllmnts);
     } catch (error) {
-      console.log(
-        "!!Error occurred while mapping and storing item Id and fulfillment Id",
-        error
+      logger.error(
+        `!!Error occurred while mapping and storing item Id and fulfillment Id, ${error.stack}`
       );
     }
 
     try {
-      console.log(`Checking fulfillments' state in ${constants.RET_ONSELECT}`);
-      let nonServiceableFlag = 0;
+      logger.info(`Checking TAT and TTS in /${constants.RET_ONSELECT}`);
+      const tts = dao.getValue("timeToShip");
+      on_select.fulfillments.forEach((ff, indx) => {
+        const tat = utils.isoDurToSec(ff["@ondc/org/TAT"]);
+
+        if (tat < tts) {
+          onSlctObj.ttstat = `/fulfillments[${indx}]/@ondc/org/TAT (O2D) in /${constants.RET_ONSELECT} can't be smaller than @ondc/org/time_ship (O2S) in /${constants.RET_ONSEARCH}`;
+        }
+        if (tat === tts) {
+          onSlctObj.ttstat = `/fulfillments[${indx}]/@ondc/org/TAT (O2D) in /${constants.RET_ONSELECT} can't be equal to @ondc/org/time_ship (O2S) in /${constants.RET_ONSEARCH}`;
+        }
+
+        logger.info(tat, "asdfasdf", tts);
+      });
+    } catch (error) {
+      logger.error(
+        `!!Error while checking TAT and TTS in /${constants.RET_ONSELECT}`
+      );
+    }
+
+    let nonServiceableFlag = 0;
+    try {
+      logger.info(`Checking fulfillments' state in ${constants.RET_ONSELECT}`);
       const ffState = on_select.fulfillments.every((ff) => {
         const ffDesc = ff.state.descriptor;
-        if (ffDesc.code.toLowerCase() === "non-serviceable") {
+        if (ffDesc.code === "Non-serviceable") {
           nonServiceableFlag = 1;
         }
         return ffDesc.hasOwnProperty("code")
-          ? ffDesc.code.toLowerCase() === "serviceable" ||
-              ffDesc.code.toLowerCase() === "non-serviceable"
+          ? ffDesc.code === "Serviceable" || ffDesc.code === "Non-serviceable"
           : false;
       });
 
@@ -205,9 +216,8 @@ const checkOnSelect = (dirPath, msgIdSet) => {
         onSlctObj.notServiceable = `Non Serviceable Domain error should be provided when fulfillment is not serviceable`;
       }
     } catch (error) {
-      console.log(
-        `!!Error while checking fulfillments' state in /${constants.RET_ONSELECT}`,
-        error
+      logger.error(
+        `!!Error while checking fulfillments' state in /${constants.RET_ONSELECT}, ${error.stack}`
       );
     }
 
@@ -215,35 +225,16 @@ const checkOnSelect = (dirPath, msgIdSet) => {
     let onSelectItemsPrice = 0; //Price of only items in /on_select
 
     try {
-      console.log(
+      logger.info(
         `Comparing count of items in ${constants.RET_SELECT} and ${constants.RET_ONSELECT}`
       );
       let itemsIdList = dao.getValue("itemsIdList");
-      console.log(itemsIdList);
+      logger.info(itemsIdList);
       on_select.quote.breakup.forEach((item) => {
         if (
           item["@ondc/org/item_id"] in itemsIdList &&
           item["@ondc/org/title_type"] === "item"
         ) {
-          // if (
-          //   itemsIdList[item["@ondc/org/item_id"]] ===
-          //     item["@ondc/org/item_quantity"].count ||
-          //   (itemsIdList[item["@ondc/org/item_id"]] >
-          //     item["@ondc/org/item_quantity"].count &&
-          //     on_select_error &&
-          //     on_select_error.type === "DOMAIN-ERROR" &&
-          //     on_select_error.code === "400002")
-          // ) {
-          //   console.log(
-          //     `count of item with id: ${item["@ondc/org/item_id"]} is as per the API contract`
-          //   );
-          // } else {
-          //   let cntkey = `cnt${item["@ondc/org/item_id"]}`;
-          //   onSlctObj[
-          //     cntkey
-          //   ] = `Warning: Count of item with id: ${item["@ondc/org/item_id"]} does not match in ${constants.RET_SELECT} & ${constants.RET_ONSELECT} (suitable domain error should be provided)`;
-          // }
-
           if (
             itemsIdList[item["@ondc/org/item_id"]] !=
               item["@ondc/org/item_quantity"].count &&
@@ -265,23 +256,22 @@ const checkOnSelect = (dirPath, msgIdSet) => {
       });
     } catch (error) {
       // onSlctObj.countErr = `Count of item does not match with the count in /select`;
-      console.log(
-        `!!Error while comparing count items in ${constants.RET_SELECT} and ${constants.RET_ONSELECT}`,
-        error
+      logger.error(
+        `!!Error while comparing count items in ${constants.RET_SELECT} and ${constants.RET_ONSELECT}, ${error.stack}`
       );
     }
 
     try {
-      console.log(
+      logger.info(
         `-x-x-x-x-Quote Breakup ${constants.RET_ONSELECT} all checks-x-x-x-x`
       );
       let itemsIdList = dao.getValue("itemsIdList");
       let itemsCtgrs = dao.getValue("itemsCtgrs");
       on_select.quote.breakup.forEach((element, i) => {
         let titleType = element["@ondc/org/title_type"];
-        // console.log(element.price.value);
+        // logger.info(element.price.value);
 
-        console.log(
+        logger.info(
           `Calculating quoted Price Breakup for element ${element.title}`
         );
         onSelectPrice += parseFloat(element.price.value);
@@ -294,7 +284,7 @@ const checkOnSelect = (dirPath, msgIdSet) => {
             ] = `item with id: ${element["@ondc/org/item_id"]} in quote.breakup[${i}] does not exist in items[]`;
           }
 
-          console.log(
+          logger.info(
             `Comparing individual item's total price and unit price `
           );
           if (!element.hasOwnProperty("item")) {
@@ -307,7 +297,7 @@ const checkOnSelect = (dirPath, msgIdSet) => {
             onSlctObj.priceBreakup = `Item's unit and total price mismatch for id: ${element["@ondc/org/item_id"]}`;
           }
 
-          console.log(
+          logger.info(
             `checking available and maximum count in ${constants.RET_ONSELECT}`
           );
 
@@ -326,7 +316,7 @@ const checkOnSelect = (dirPath, msgIdSet) => {
           }
         }
 
-        console.log(`Calculating Items' prices in /${constants.RET_ONSELECT}`);
+        logger.info(`Calculating Items' prices in /${constants.RET_ONSELECT}`);
         if (element["@ondc/org/item_id"] in itemsIdList) {
           if (
             titleType === "item" ||
@@ -343,7 +333,15 @@ const checkOnSelect = (dirPath, msgIdSet) => {
             let brkupitemsid = `brkupitemstitles${i}`;
             onSlctObj[
               brkupitemsid
-            ] = `item with id: ${element["@ondc/org/item_id"]} in quote.breakup[${i}] does not exist in items[]`;
+            ] = `item with id: ${element["@ondc/org/item_id"]} in quote.breakup[${i}] does not exist in items[] (should be a valid item id)`;
+          }
+        }
+        if (["tax", "discount", "packing", "misc"].includes(titleType)) {
+          if (parseFloat(element.price.value) == 0) {
+            let key = `breakupItem${titletype}`;
+            onSlctObj[
+              key
+            ] = `${titleType} line item should not be present if price=0`;
           }
         }
 
@@ -358,14 +356,14 @@ const checkOnSelect = (dirPath, msgIdSet) => {
             let brkupffid = `brkupfftitles${i}`;
             onSlctObj[
               brkupffid
-            ] = `${titleType} with id: ${element["@ondc/org/item_id"]} in quote.breakup[${i}] does not exist in fulfillments[]`;
+            ] = `invalid  id: ${element["@ondc/org/item_id"]} in ${titleType} line item (should be a valid fulfillment_id)`;
           }
         }
       });
 
       dao.setValue("onSelectPrice", on_select.quote.price.value);
 
-      console.log(
+      logger.info(
         `Matching quoted Price ${parseFloat(
           on_select.quote.price.value
         )} with Breakup Price ${onSelectPrice}`
@@ -374,23 +372,38 @@ const checkOnSelect = (dirPath, msgIdSet) => {
         onSlctObj.quoteBrkup = `quote.price.value ${on_select.quote.price.value} does not match with the price breakup ${onSelectPrice}`;
       }
       let selectedPrice = dao.getValue("selectedPrice");
-      console.log(
+      logger.info(
         `Matching price breakup of items ${onSelectItemsPrice} (/${constants.RET_ONSELECT}) with selected items price ${selectedPrice} (${constants.RET_SELECT})`
       );
 
       if (onSelectItemsPrice != selectedPrice) {
         onSlctObj.priceErr = `Warning: Quoted Price in /${constants.RET_ONSELECT} INR ${onSelectItemsPrice} does not match with the total price of items in /${constants.RET_SELECT} INR ${selectedPrice}`;
-        console.log("Quoted Price and Selected Items price mismatch");
+        logger.info("Quoted Price and Selected Items price mismatch");
       }
     } catch (error) {
-      console.log(
-        `!!Error while checking and comparing the quoted price in /${constants.RET_ONSELECT}`,
-        error
+      logger.error(
+        `!!Error while checking and comparing the quoted price in /${constants.RET_ONSELECT}, ${error.stack}`
       );
     }
 
     try {
-      console.log(
+      // checking if delivery line item present in case of Serviceable
+      const quoteBreakup = on_select.quote.breakup;
+      const deliveryItems = quoteBreakup.filter(
+        (item) => item["@ondc/org/title_type"] === "delivery"
+      );
+      const noOfDeliveries = deliveryItems.length;
+      if (!noOfDeliveries && !nonServiceableFlag) {
+        onSlctObj.deliveryLineItem = `delivery line item must be present in quote/breakup (if location is serviceable)`;
+      }
+    } catch (error) {
+      logger.info(
+        `!!Error occurred while checking delivery line item in /${constants.RET_ONSELECT}`
+      );
+    }
+
+    try {
+      logger.info(
         `Checking payment breakup title & type in /${constants.RET_ONSELECT}`
       );
       on_select.quote.breakup.forEach((item) => {
@@ -421,42 +434,41 @@ const checkOnSelect = (dirPath, msgIdSet) => {
         }
       });
     } catch (error) {
-      console.log(
-        `!!Error while checking payment breakup title & type in /${constants.RET_ONSELECT}`,
-        error
+      logger.error(
+        `!!Error while checking payment breakup title & type in /${constants.RET_ONSELECT}, ${error.stack}`
       );
     }
 
     try {
       //matching fulfillments TAT
-      console.log("Checking Fulfillment TAT...");
+      logger.info("Checking Fulfillment TAT...");
       on_select.fulfillments.forEach((ff) => {
         if (!ff["@ondc/org/TAT"]) {
-          console.log(
+          logger.info(
             `Fulfillment TAT must be present for Fulfillment ID: ${ff.id}`
           );
           onSlctObj.ffTAT = `Fulfillment TAT must be present for fulfillment ID: ${ff.id}`;
         }
       });
     } catch (error) {
-      console.log(
+      logger.info(
         `Error while checking fulfillments TAT in /${constants.RET_ONSELECT}`
       );
     }
 
     try {
-      console.log("Checking quote validity quote.ttl");
+      logger.info("Checking quote validity quote.ttl");
       if (!on_select.quote.hasOwnProperty("ttl")) {
         onSlctObj.qtTtl = "quote.ttl: Validity of the quote is missing";
       }
     } catch (error) {
-      console.log(
+      logger.error(
         `!!Error while checking quote.ttl in /${constants.RET_ONSELECT}`
       );
     }
 
     try {
-      console.log(`Storing Quote object in /${constants.RET_ONSELECT}`);
+      logger.info(`Storing Quote object in /${constants.RET_ONSELECT}`);
       on_select.quote.breakup.forEach((element) => {
         if (element["@ondc/org/title_type"] === "item") {
           if (element.hasOwnProperty("item")) {
@@ -467,20 +479,20 @@ const checkOnSelect = (dirPath, msgIdSet) => {
       //saving on select quote
       dao.setValue("quoteObj", on_select.quote);
     } catch (error) {
-      console.log(
-        `!!Error while storing quote object in /${constants.RET_ONSELECT}`,
-        error
+      logger.error(
+        `!!Error while storing quote object in /${constants.RET_ONSELECT}, ${error.stack}`
       );
     }
 
-    dao.setValue("onSlctObj", onSlctObj);
+    // dao.setValue("onSlctObj", onSlctObj);
+    logger.info(onSlctObj);
+    return onSlctObj;
   } catch (err) {
     if (err.code === "ENOENT") {
-      console.log(`!!File not found for /${constants.RET_ONSELECT} API`);
+      logger.info(`!!File not found for /${constants.RET_ONSELECT} API`);
     } else {
-      console.log(
-        `!!Some error occurred while checking /${constants.RET_ONSELECT} API`,
-        error
+      logger.error(
+        `!!Some error occurred while checking /${constants.RET_ONSELECT} API, ${error.stack}`
       );
     }
   }

@@ -1,5 +1,6 @@
 const { open } = require("lmdb");
 const constants = require("../utils/constants");
+const logger = require("../utils/logger");
 
 const getConnection = () => {
   let myDB = open({
@@ -30,10 +31,10 @@ const dropDB = () => {
     myDB
       .drop()
       .then((res) => {
-        console.log("DB Dropped Successfully!!", res);
+        logger.info("DB Dropped Successfully!!", res);
       })
       .catch((err) => {
-        console.log("!!Error while removing LMDB");
+        logger.error("!!Error while removing LMDB");
       });
   });
 };
