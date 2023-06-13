@@ -13,3 +13,6 @@ test.js
 !LICENSE.md
 *.md
 .DS_Store
+validations.log
+playground.js
+reverseGeocodeUtil.js

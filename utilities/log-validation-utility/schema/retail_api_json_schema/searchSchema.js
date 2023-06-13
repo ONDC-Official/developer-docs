@@ -117,7 +117,7 @@ module.exports = {
               properties: {
                 "@ondc/org/buyer_app_finder_fee_type": {
                   type: "string",
-                  enum: ["percent", "amount"],
+                  const: "percent",
                 },
                 "@ondc/org/buyer_app_finder_fee_amount": {
                   type: "string",

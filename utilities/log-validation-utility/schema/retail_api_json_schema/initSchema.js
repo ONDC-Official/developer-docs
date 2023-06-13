@@ -166,9 +166,8 @@ module.exports = {
                   type: "string",
                   format: "email",
                 },
-                phone: {
-                  type: "string",
-                },
+                phone: { type: "string", minLength: 10, maxLength: 11 },
+
                 created_at: {
                   type: "string",
                   format: "date-time",
@@ -212,12 +211,15 @@ module.exports = {
                             properties: {
                               name: {
                                 type: "string",
+                                minLength: 3,
                               },
                               building: {
                                 type: "string",
+                                minLength: 3,
                               },
                               locality: {
                                 type: "string",
+                                minLength: 3,
                               },
                               city: {
                                 type: "string",
@@ -250,6 +252,8 @@ module.exports = {
                         properties: {
                           phone: {
                             type: "string",
+                            minLength: 10,
+                            maxLength: 11,
                           },
                         },
                         required: ["phone"],

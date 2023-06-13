@@ -70,7 +70,7 @@ module.exports = {
       properties: {
         update_target: {
           type: "string",
-          enum: ["item", "payment"],
+          enum: ["item", "billing"],
         },
         order: {
           type: "object",
@@ -113,7 +113,7 @@ module.exports = {
                     properties: {
                       update_type: {
                         type: "string",
-                        enum: ["return", "cancel"],
+                        const: "return",
                       },
                       reason_code: {
                         type: "string",
@@ -162,9 +162,11 @@ module.exports = {
                     properties: {
                       settlement_counterparty: {
                         type: "string",
+                        const: "buyer",
                       },
                       settlement_phase: {
                         type: "string",
+                        const: "refund",
                       },
                       settlement_type: {
                         type: "string",

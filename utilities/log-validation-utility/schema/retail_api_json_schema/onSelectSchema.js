@@ -14,7 +14,7 @@ module.exports = {
         type: "object",
         properties: {
           id: { type: "string", minLength: 1 },
-          fulfillment_id: { type: "string", pattern: "^(?!s*$).+" },
+          fulfillment_id: { type: "string" },
         },
         required: ["id", "fulfillment_id"],
       },

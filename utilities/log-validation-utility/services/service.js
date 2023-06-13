@@ -2,10 +2,12 @@ const config = require("../config/config");
 const constants = require("../utils/constants");
 const validateSchema = require("../utils/schemaValidation");
 const utils = require("../utils/utils");
+const logger = require("../utils/logger");
+
 const _ = require("lodash");
 
 const checkContext = (data, path) => {
-  console.log(
+  logger.info(
     `Inside Context Validation Check....\n*** Validating context for ${path} ***`
   );
 
@@ -46,11 +48,12 @@ const checkContext = (data, path) => {
 
   if (_.isEmpty(errObj)) {
     const result = { valid: true, SUCCESS: "Context Valid" };
-    console.log(result);
+    logger.info(JSON.stringify(result));
     return result;
   } else {
     const result = { valid: false, ERRORS: errObj };
-    console.error(result);
+
+    logger.warn(JSON.stringify(result));
     return result;
   }
 };

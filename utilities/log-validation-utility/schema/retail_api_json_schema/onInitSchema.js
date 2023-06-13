@@ -59,7 +59,7 @@ module.exports = {
           ],
         },
         email: { type: "string", format: "email" },
-        phone: { type: "string" },
+        phone: { type: "string", minLength: 10, maxLength: 11 },
         created_at: { type: "string", format: "date-time" },
         updated_at: { type: "string", format: "date-time" },
       },
@@ -108,7 +108,7 @@ module.exports = {
               contact: {
                 type: "object",
                 properties: {
-                  phone: { type: "string" },
+                  phone: { type: "string", minLength: 10, maxLength: 11 },
                   email: { type: "string", format: "email" },
                 },
                 required: ["phone"],
@@ -227,19 +227,18 @@ module.exports = {
               },
               settlement_phase: {
                 type: "string",
+                const: "sale-amount",
               },
               settlement_type: {
                 type: "string",
                 enum: ["upi", "neft", "rtgs"],
               },
-              upi_address: { type: "string", pattern: "^(?!s*$).+" },
+              upi_address: { type: "string" },
               settlement_bank_account_no: {
                 type: "string",
-                pattern: "^(?!s*$).+",
               },
               settlement_ifsc_code: {
                 type: "string",
-                pattern: "^(?!s*$).+",
               },
               bank_name: { type: "string" },
               beneficiary_name: {
@@ -257,6 +256,11 @@ module.exports = {
                   },
                 },
                 then: {
+                  properties: {
+                    upi_address: {
+                      type: "string",
+                    },
+                  },
                   required: ["upi_address"],
                 },
               },
@@ -264,28 +268,21 @@ module.exports = {
                 if: {
                   properties: {
                     settlement_type: {
-                      const: "rtgs",
+                      enum: ["rtgs", "neft"],
                     },
                   },
                 },
                 then: {
-                  required: [
-                    "settlement_ifsc_code",
-                    "settlement_bank_account_no",
-                    "bank_name",
-                    "branch_name",
-                  ],
-                },
-              },
-              {
-                if: {
                   properties: {
-                    settlement_type: {
-                      const: "neft",
+                    settlement_bank_account_no: {
+                      type: "string",
                     },
+                    settlement_ifsc_code: {
+                      type: "string",
+                    },
+                    bank_name: { type: "string" },
+                    branch_name: { type: "string" },
                   },
-                },
-                then: {
                   required: [
                     "settlement_ifsc_code",
                     "settlement_bank_account_no",
@@ -294,6 +291,23 @@ module.exports = {
                   ],
                 },
               },
+              // {
+              //   if: {
+              //     properties: {
+              //       settlement_type: {
+              //         const: "neft",
+              //       },
+              //     },
+              //   },
+              //   then: {
+              //     required: [
+              //       "settlement_ifsc_code",
+              //       "settlement_bank_account_no",
+              //       "bank_name",
+              //       "branch_name",
+              //     ],
+              //   },
+              // },
             ],
             required: [
               "settlement_counterparty",

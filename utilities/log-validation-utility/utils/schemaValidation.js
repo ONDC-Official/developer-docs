@@ -1,9 +1,10 @@
 const schemaValidator = require("../schema/main");
 const path = require("path");
 const fs = require("fs");
+const logger = require("./logger");
 
 const validateSchema = (domain, api, data) => {
-  console.log(`Inside Schema Validation for domain: ${domain}, api: ${api}`);
+  logger.info(`Inside Schema Validation for domain: ${domain}, api: ${api}`);
   let errObj = {};
 
   const schmaVldtr = schemaValidator(domain, api, data);
