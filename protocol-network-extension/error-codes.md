@@ -45,6 +45,7 @@ CC-BY-ND
   |22504|Buyer App|Invalid Fulfillment TAT|Fulfillment TAT is different from what was quoted earlier|
   |22505|Buyer App|Invalid Cancellation Terms|Cancellation terms are different from what was quoted earlier|
   |22506|Buyer App|Invalid Terms of Reference|Terms of Reference are different from what was quoted earlier|
+  |22507|Buyer App|Invalid Quote|Quote is invalid as it does not meet the API contract specifications|
   |25001|Buyer App|Order Confirm Failure|Buyer App cannot confirm order as no response from Seller App|
   |27501|Buyer App|Terms and Conditions unacceptable|Seller App terms and conditions not acceptable to Buyer App|
   |27502|Buyer App|Order terminated|Order terminated as Seller App did not accept terms and conditions proposed by Buyer App|
