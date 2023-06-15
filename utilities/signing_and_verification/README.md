@@ -31,7 +31,7 @@ python cryptic_utils.py generate_key_pairs
 ```
 export PRIVATE_KEY=<private_key>
 export PUBLIC_KEY=<public_key>
-export CRYPTO_PRIVATE_KEY=<Crypto_Privatekey>. 
+export CRYPTO_PRIVATE_KEY=<Crypto_Privatekey>
 export CRYPTO_PUBLIC_KEY=<Crypto_Publickey>
 ```
 
