@@ -11,9 +11,9 @@ pip3 install -r requirements.txt
 2. Export request body json path:
 this file should be a valid json file
 ```
-export REQUEST_BODY_PATH=<request-body-text-path>
+export REQUEST_BODY_PATH=<request_body_raw_text.txt-path>
 ```
-  eg for json file provided, export REQUEST_BODY_PATH=request_body.json
+  eg if you rename the file ie request_body_raw_text.txt -> request_body.json , export REQUEST_BODY_PATH=request_body.json
 
 3. Generate key-pairs
 ```
@@ -39,7 +39,7 @@ export CRYPTO_PUBLIC_KEY=<Crypto_Publickey>
 ```
 python cryptic_utils.py create_authorisation_header
 ```
-output will be like 
+output will be 'auth_header' like 
 ```shell
 Signature keyId="buyer-app.ondc.org|207|ed25519",algorithm="ed25519",created="1641287875",expires="1641291475",headers="(created) (expires) digest",signature="fKQWvXhln4UdyZdL87ViXQObdBme0dHnsclD2LvvnHoNxIgcvAwUZOmwAnH5QKi9Upg5tRaxpoGhCFGHD+d+Bw=="
 ```
