@@ -73,11 +73,11 @@ const checkUpdate = (dirPath, msgIdSet) => {
         `Comparing transaction Ids of /${constants.RET_SELECT} and /${constants.RET_UPDATE}`
       );
       if (!_.isEqual(dao.getValue("txnId"), update.context.transaction_id)) {
-        statObj.txnId = `Transaction Id should be same from /${constants.RET_SELECT} onwards`;
+        updtObj.txnId = `Transaction Id should be same from /${constants.RET_SELECT} onwards`;
       }
     } catch (error) {
       logger.error(
-        `!!Error while comparing transaction ids for /${constants.RET_SELECT} and /${constants.RET_UPDATE} api`
+        `!!Error while comparing transaction ids for /${constants.RET_SELECT} and /${constants.RET_UPDATE} api, ${error.stack}`
       );
     }
     try {

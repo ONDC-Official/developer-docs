@@ -338,7 +338,7 @@ const checkOnSelect = (dirPath, msgIdSet) => {
         }
         if (["tax", "discount", "packing", "misc"].includes(titleType)) {
           if (parseFloat(element.price.value) == 0) {
-            let key = `breakupItem${titletype}`;
+            let key = `breakupItem${titleType}`;
             onSlctObj[
               key
             ] = `${titleType} line item should not be present if price=0`;

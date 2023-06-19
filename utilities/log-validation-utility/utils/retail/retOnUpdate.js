@@ -376,9 +376,11 @@ const checkOnUpdate = (msgIdSet, on_update, state) => {
       //Checking if item can be updated? (if update_type is return, fulfillment state should be Order-delivered )
 
       let itemff = on_update.fulfillments.find(
-        (ff) => ff.id === itemFulfillmentId
+        (ff) => ff.id === itemFulfillmentId && ff.type === "Delivery"
       );
+
       if (
+        itemff &&
         itemff.type === "Delivery" &&
         itemff.state.descriptor.code != "Order-delivered"
       ) {
@@ -479,7 +481,7 @@ const checkOnUpdate = (msgIdSet, on_update, state) => {
     }
 
     if (_.gte(on_update.created_at, on_update.updated_at)) {
-      onStatObj.ordrTmstmp = `order created_at timestamp must always be earlier than the updated_at timestamp`;
+      onUpdtObj.ordrTmstmp = `order created_at timestamp must always be earlier than the updated_at timestamp`;
     }
   } catch (error) {
     logger.error(

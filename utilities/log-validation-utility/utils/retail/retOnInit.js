@@ -150,7 +150,7 @@ const checkOnInit = (dirPath, msgIdSet) => {
             let itemkey = `item_FFErr${i}`;
             onInitObj[
               itemkey
-            ] = `items[${i}].fulfillment_id mismatches for Item ${itemId}} in /${constants.RET_ONSELECT} and /${constants.RET_ONINIT}`;
+            ] = `items[${i}].fulfillment_id mismatches for Item ${itemId} in /${constants.RET_ONSELECT} and /${constants.RET_ONINIT}`;
           }
         } else {
           let itemkey = `item_FFErr${i}`;
@@ -177,9 +177,13 @@ const checkOnInit = (dirPath, msgIdSet) => {
       );
       const billing = dao.getValue("billing");
 
-      if (utils.isObjectEqual(billing, on_init.billing).length>0) {
-        const billingMismatch= utils.isObjectEqual(billing, on_init.billing);
-        onInitObj.bill = `${billingMismatch.join(", ")} mismatches in /billing in /${constants.RET_INIT} and /${constants.RET_ONINIT}`;
+      if (utils.isObjectEqual(billing, on_init.billing).length > 0) {
+        const billingMismatch = utils.isObjectEqual(billing, on_init.billing);
+        onInitObj.bill = `${billingMismatch.join(
+          ", "
+        )} mismatches in /billing in /${constants.RET_INIT} and /${
+          constants.RET_ONINIT
+        }`;
       }
     } catch (error) {
       logger.error(
