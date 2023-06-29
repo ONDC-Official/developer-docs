@@ -127,8 +127,7 @@ const checkSelect = (dirPath, msgIdSet) => {
           }
         } catch (error) {
           logger.error(
-            `!!Error while comparing provider's location id in /${constants.RET_ONSEARCH} and /${constants.RET_SELECT}`,
-            error
+            `!!Error while comparing provider's location id in /${constants.RET_ONSEARCH} and /${constants.RET_SELECT}, ${error.stack}`
           );
         }
 
@@ -188,8 +187,7 @@ const checkSelect = (dirPath, msgIdSet) => {
           );
         } catch (error) {
           logger.error(
-            `!!Error while Comparing and Mapping Items in /${constants.RET_ONSEARCH} and /${constants.RET_SELECT}`,
-            error
+            `!!Error while Comparing and Mapping Items in /${constants.RET_ONSEARCH} and /${constants.RET_SELECT}, ${error.stack}`
           );
         }
       } else {

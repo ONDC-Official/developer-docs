@@ -228,6 +228,7 @@ module.exports = {
                               },
                             },
                           },
+                          required: ["available", "maximum"],
                         },
                         category_id: {
                           type: "string",
@@ -438,6 +439,7 @@ module.exports = {
 
                       required: [
                         "id",
+                        "quantity",
                         "category_id",
                         "@ondc/org/contact_details_consumer_care",
                         "price",

@@ -56,9 +56,9 @@ const checkCancel = (dirPath, msgIdSet) => {
         `Comparing timestamp of /${constants.RET_CANCEL} and /${constants.RET_ONCONFIRM}`
       );
       if (_.gte(dao.getValue("tmpstmp"), cancel.context.timestamp)) {
-        dao.setValue("cnclTmpstmp", cancel.context.timestamp);
         cnclObj.tmpstmp = `Timestamp for /${constants.RET_ONCONFIRM} api cannot be greater than or equal to /${constants.RET_CANCEL} api`;
       }
+      dao.setValue("cnclTmpstmp", cancel.context.timestamp);
     } catch (error) {
       logger.error(
         `!!Error while comparing timestamp for /${constants.RET_ONCONFIRM} and /${constants.RET_CANCEL} api, ${error.stack}`

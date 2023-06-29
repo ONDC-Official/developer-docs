@@ -362,6 +362,7 @@ const checkOnSelect = (dirPath, msgIdSet) => {
       });
 
       dao.setValue("onSelectPrice", on_select.quote.price.value);
+      onSelectPrice = onSelectPrice.toFixed(2);
 
       logger.info(
         `Matching quoted Price ${parseFloat(

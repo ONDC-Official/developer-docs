@@ -204,6 +204,12 @@ const validateLogs = (dirPath) => {
       onUpdtResp.return_approved
     )}\n`;
   }
+  if (!_.isEmpty(onUpdtResp.return_picked)) {
+    logReport += `**/on_update (Return_Picked)**\n${getObjValues(
+      onUpdtResp.return_picked
+    )}\n`;
+  }
+
   if (!_.isEmpty(onUpdtResp.return_delivered)) {
     logReport += `**/on_update (Return_Delivered)**\n${getObjValues(
       onUpdtResp.return_delivered

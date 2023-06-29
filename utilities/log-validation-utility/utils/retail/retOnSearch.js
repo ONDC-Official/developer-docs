@@ -389,8 +389,7 @@ const checkOnSearch = (dirPath, msgIdSet) => {
           }
         } catch (error) {
           logger.error(
-            `!!Errors while checking items in bpp/providers[${i}]`,
-            error
+            `!!Errors while checking items in bpp/providers[${i}], ${error.stack}`
           );
         }
 
@@ -609,8 +608,7 @@ const checkOnSearch = (dirPath, msgIdSet) => {
           });
         } catch (error) {
           logger.error(
-            `!!Error while checking serviceability construct for bpp/providers[${i}]`,
-            error
+            `!!Error while checking serviceability construct for bpp/providers[${i}], ${error.stack}`
           );
         }
 

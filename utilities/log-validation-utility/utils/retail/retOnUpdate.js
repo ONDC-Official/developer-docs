@@ -96,7 +96,7 @@ const checkOnUpdate = (msgIdSet, on_update, state) => {
       error
     );
   }
-
+  const contextTime = on_update.context.timestamp;
   on_update = on_update.message.order;
 
   try {
@@ -471,6 +471,20 @@ const checkOnUpdate = (msgIdSet, on_update, state) => {
   } catch (error) {
     logger.error(
       `Error while checking pickup and delivery timestamp in ${constants.RET_ONUPDATE}_${state}, ${error.stack}`
+    );
+  }
+
+  try {
+    logger.info(
+      `Checking order/updated_at timestamp in /${constants.RET_ONUPDATE}_${state}`
+    );
+
+    if (!_.gte(contextTime, on_update.updated_at)) {
+      onUpdtObj.updatedAtTmpstmp = `order/updated_at timestamp can't be future dated (should match context/timestamp)`;
+    }
+  } catch (error) {
+    logger.error(
+      `!! Error while checking order/updated_at timestamp in /${constants.RET_ONUPDATE}_${state}, ${error.stack}`
     );
   }
 
