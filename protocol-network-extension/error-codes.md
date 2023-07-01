@@ -65,7 +65,7 @@ CC-BY-ND
   |30013|Seller App|Invalid Fulfillment TAT|Fulfillment TAT is different from what was quoted earlier|
   |30014|Seller App|Cancellation unacceptable|Cancellation request is rejected as fulfillment TAT is not breached|
   |30015|Seller App|Invalid rating value|When the Seller App receives an invalid value as the rating value in value|
-  |30016|Seller App|Invalid Signature|Cannot verify signature for request|
+  |30016|Seller App|Minimum order value error|Cart value is less than minimum order value|
   |30017|Seller App|Merchant unavailable|Merchant is currently not taking orders|
   |30018|Seller App|Invalid Order|Order not found|
   |30019|Seller App|Order Confirm Error|Seller App is unable to confirm the order|
