@@ -36,7 +36,7 @@ CC-BY-ND
   |10000|Gateway|Bad or Invalid request error|Generic bad or invalid request error|
   |10001|Gateway|Invalid Signature|Cannot verify signature for request|
   |10002|Gateway|Invalid City Code|Valid city code needs to be passed for search|
-  |20000|Buyer App|Invalid catalog|Catalog cannot be displayed as it does not meet compliance requirements|
+  |20000|Buyer App|Invalid catalog|Catalog refresh is invalid|
   |20001|Buyer App|Invalid Signature|Cannot verify signature for request|
   |20002|Buyer App|Stale Request|Cannot process stale request|
   |22501|Buyer App|Part Fill Unacceptable|Buyer doesn't accept part fill for the order, wants to cancel the order|
