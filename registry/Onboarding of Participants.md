@@ -248,5 +248,24 @@ Resolution
 a.Incorrect type mentioned in JSON. E.g. for Option 1 where NP is registering and type is set sellerApp then the above error will be shown.  The value should be according to option set here.
 b.for option 3 instead of MSN set to true, it has been put as false and vice versa for non msn the flag is set true.
 
-
+### Network participant's ondc-site-verification.html's encrypted signature verification failed
+```
+{
+    "message": {
+        "ack": {
+            "status": "NACK"
+        }
+    },
+    "error": {
+        "type": "DOMAIN-ERROR",
+        "code": "129",
+        "path": null,
+        "message": "https://{{netowrk_participant_subsctiber_id}} : Domain verification is failed "
+    }
+}
+```
+Resolution
+a. Use Plain Request_ID: Network Participant use plain request_id, without applying any hashing on request_id, while generating signature 
+b. Ensure Consistent Request_ID: Network Participant use same request_id in request body which they used while generating signature. The request_id used during signature generation must match the one used during verification to ensure successful validation. 
+c. Ensure signing public_key: signing publick_key is correct which is mentioned in the request body.
 
