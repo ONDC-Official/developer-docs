@@ -245,8 +245,29 @@ Need to register Encrypted private key and ondc public key and need to consume t
 }
 ```
 Resolution
-a.Incorrect type mentioned in JSON. E.g. for Option 1 where NP is registering and type is set sellerApp then the above error will be shown.  The value should be according to option set here.
-b.for option 3 instead of MSN set to true, it has been put as false and vice versa for non msn the flag is set true.
+- Incorrect type mentioned in JSON. E.g. for Option 1 where NP is registering and type is set sellerApp then the above error will be shown.  The value should be according to option set here.
+- for option 3 instead of MSN set to true, it has been put as false and vice versa for non msn the flag is set true.
 
 
+
+### Network participant's ondc-site-verification.html's encrypted signature verification failed
+```
+{
+    "message": {
+        "ack": {
+            "status": "NACK"
+        }
+    },
+    "error": {
+        "type": "DOMAIN-ERROR",
+        "code": "129",
+        "path": null,
+        "message": "https://{{netowrk_participant_subsctiber_id}} : Domain verification is failed "
+    }
+}
+```
+Resolution
+- Use Plain Request_ID: Network Participant should use plain request_id while generating signature, without applying any hashing on the request_id
+- Ensure Consistent Request_ID: Network Participant should use the same request_id in request body which they used while generating the signature. The request_id used during signature generation must match the one used during verification to ensure successful validation
+- Ensure signing public key: Network Participant should send the same signing public key in the request body, who's corresnponding signing private key was used for signing.
 
