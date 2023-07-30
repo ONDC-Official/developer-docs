@@ -69,13 +69,14 @@ CC-BY-ND
   |30013|Seller App|Invalid Fulfillment TAT|Fulfillment TAT is different from what was quoted earlier|
   |30014|Seller App|Cancellation unacceptable|Cancellation request is rejected as fulfillment TAT is not breached|
   |30015|Seller App|Invalid rating value|When the Seller App receives an invalid value as the rating value in value|
-  |30016|Seller App|Minimum order value error|Cart value is less than minimum order value|
+  |30016|Seller App|Invalid Signature|Cannot verify signature for request|
   |30017|Seller App|Merchant unavailable|Merchant is currently not taking orders|
   |30018|Seller App|Invalid Order|Order not found|
   |30019|Seller App|Order Confirm Error|Seller App is unable to confirm the order|
   |30020|Seller App|Order Confirm Failure|Seller App cannot confirm order as no response from Buyer App|
   |30021|Seller App|Merchant Inactive|Merchant is inactive|
   |30022|Seller App|Stale Request|Cannot process stale request|
+  |30023|Seller App|Minimum order value error|Cart value is less than minimum order value|
   |40000|Seller App|Business Error|Generic business error|
   |40001|Seller App|Action not applicable|When an API endpoint is not implemented by the Seller App as it is not required for their use cases and a Buyer App calls one of these endpoints|
   |40002|Seller App|Item quantity unavailable|When the Seller App is unable to fulfill the required quantity for items in the order|
