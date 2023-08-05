@@ -114,6 +114,8 @@ CC-BY-ND
   |62507|Logistics Buyer|Difference in packaging details|Weight and / or dimensions provided is different from what was originally provided|
   |62508|Logistics Buyer|Quote difference|Total price is different from what was originally provided|
   |62509|Logistics Buyer|Invalid Cancellation Terms|Cancellation terms are different from what was quoted earlier|
+  |62510|Logistics Buyer|Expired OTP|OTP code has expired|
+  |62511|Logistics Buyer|Invalid OTP|OTP code is invalid|
   |65001|Logistics Provider|Order Confirm Error|Logistics Provider is unable to confirm the order|
   |65002|Logistics Provider|Order terminated|Order terminated as Logistics Buyer did not accept terms proposed by Logistics Provider|
   |65003|Logistics Provider|Stale Request|Cannot process stale request|
