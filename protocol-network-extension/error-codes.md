@@ -84,6 +84,8 @@ CC-BY-ND
   |40004|Seller App|Payment not supported|When the payment object sent by the Buyer App is not supported by the Seller App|
   |40005|Seller App|Tracking not enabled|Tracking not enabled for any fulfillment in the order|
   |40006|Seller App|Fulfilment agent unavailable|When an agent for fulfilment is not available|
+  |40007|Seller App|Expired OTP|OTP code has expired|
+  |40008|Seller App|Invalid OTP|OTP code is invalid|
   |50000|Seller App|Policy Error|Generic Policy Error|
   |50001|Seller App|Cancellation not possible|When the Seller App is unable to cancel the order due to it's cancellation policy|
   |50002|Seller App|Updation not possible|When the Seller App is unable to update the order due to it's updation policy|
