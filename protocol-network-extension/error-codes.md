@@ -84,8 +84,8 @@ CC-BY-ND
   |40004|Seller App|Payment not supported|When the payment object sent by the Buyer App is not supported by the Seller App|
   |40005|Seller App|Tracking not enabled|Tracking not enabled for any fulfillment in the order|
   |40006|Seller App|Fulfilment agent unavailable|When an agent for fulfilment is not available|
-  |40007|Seller App|Expired OTP|OTP code has expired|
-  |40008|Seller App|Invalid OTP|OTP code is invalid|
+  |40007|Seller App|Expired authorization|Authorization code has expired|
+  |40008|Seller App|Invalid authorization|Authorization code is invalid|
   |50000|Seller App|Policy Error|Generic Policy Error|
   |50001|Seller App|Cancellation not possible|When the Seller App is unable to cancel the order due to it's cancellation policy|
   |50002|Seller App|Updation not possible|When the Seller App is unable to update the order due to it's updation policy|
@@ -114,8 +114,8 @@ CC-BY-ND
   |62507|Logistics Buyer|Difference in packaging details|Weight and / or dimensions provided is different from what was originally provided|
   |62508|Logistics Buyer|Quote difference|Total price is different from what was originally provided|
   |62509|Logistics Buyer|Invalid Cancellation Terms|Cancellation terms are different from what was quoted earlier|
-  |62510|Logistics Buyer|Expired OTP|OTP code has expired|
-  |62511|Logistics Buyer|Invalid OTP|OTP code is invalid|
+  |62510|Logistics Buyer|Expired authorization|Authorization code has expired|
+  |62511|Logistics Buyer|Invalid authorization|Authorization code is invalid|
   |65001|Logistics Provider|Order Confirm Error|Logistics Provider is unable to confirm the order|
   |65002|Logistics Provider|Order terminated|Order terminated as Logistics Buyer did not accept terms proposed by Logistics Provider|
   |65003|Logistics Provider|Stale Request|Cannot process stale request|
