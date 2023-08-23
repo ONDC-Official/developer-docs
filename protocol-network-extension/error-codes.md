@@ -42,6 +42,7 @@ CC-BY-ND
   |20003|Buyer App|Provider not found|Provider not found|
   |20004|Buyer App|Provider location not found|Provider location not found|
   |20005|Buyer App|Item not found|Item not found|
+  |20006|Buyer App|Version not supported|Request version not supported|
   |22501|Buyer App|Part Fill Unacceptable|Buyer doesn't accept part fill for the order, wants to cancel the order|
   |22502|Buyer App|Cancellation unacceptable|Invalid cancellation reason|
   |22503|Buyer App|Cancellation unacceptable|Updated quote does not match original order value and cancellation terms|
@@ -85,6 +86,7 @@ CC-BY-ND
   |40005|Seller App|Tracking not enabled|Tracking not enabled for any fulfillment in the order|
   |40006|Seller App|Fulfilment agent unavailable|When an agent for fulfilment is not available|
   |40007|Seller App|Finder fee not acceptable|Buyer finder fee is not acceptable|
+  |40008|Seller App|Version not supported|Request version not supported|
   |50000|Seller App|Policy Error|Generic Policy Error|
   |50001|Seller App|Cancellation not possible|When the Seller App is unable to cancel the order due to it's cancellation policy|
   |50002|Seller App|Updation not possible|When the Seller App is unable to update the order due to it's updation policy|
