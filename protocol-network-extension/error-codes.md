@@ -82,7 +82,7 @@ CC-BY-ND
   |40001|Seller App|Action not applicable|When an API endpoint is not implemented by the Seller App as it is not required for their use cases and a Buyer App calls one of these endpoints|
   |40002|Seller App|Item quantity unavailable|When the Seller App is unable to fulfill the required quantity for items in the order|
   |40003|Seller App|Quote unavailable|When the quote sent by the Buyer App is no longer available from the Seller App|
-  |40004|Seller App|Payment not supported|When the payment object sent by the Buyer App is not supported by the Seller App|
+  |40004|Seller App|Payment type not supported|Payment type not supported|
   |40005|Seller App|Tracking not enabled|Tracking not enabled for any fulfillment in the order|
   |40006|Seller App|Fulfilment agent unavailable|When an agent for fulfilment is not available|
   |40007|Seller App|Finder fee not acceptable|Buyer finder fee is not acceptable|
