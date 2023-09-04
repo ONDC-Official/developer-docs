@@ -51,6 +51,7 @@ CC-BY-ND
   |22506|Buyer App|Invalid Terms of Reference|Terms of Reference are different from what was quoted earlier|
   |22507|Buyer App|Invalid Quote|Quote is invalid as it does not meet the API contract specifications|
   |22508|Buyer App|Invalid Part Cancel Request|Part cancel request is invalid|
+  |23001|Buyer App|Internal Error|Cannot process response due to internal error|
   |25001|Buyer App|Order Confirm Failure|Buyer App cannot confirm order as no response from Seller App|
   |27501|Buyer App|Terms and Conditions unacceptable|Seller App terms and conditions not acceptable to Buyer App|
   |27502|Buyer App|Order terminated|Order terminated as Seller App did not accept terms and conditions proposed by Buyer App|
@@ -78,6 +79,7 @@ CC-BY-ND
   |30021|Seller App|Merchant Inactive|Merchant is inactive|
   |30022|Seller App|Stale Request|Cannot process stale request|
   |30023|Seller App|Minimum order value error|Cart value is less than minimum order value|
+  |31001|Seller App|Internal Error|Cannot process request due to internal error|
   |40000|Seller App|Business Error|Generic business error|
   |40001|Seller App|Action not applicable|When an API endpoint is not implemented by the Seller App as it is not required for their use cases and a Buyer App calls one of these endpoints|
   |40002|Seller App|Item quantity unavailable|When the Seller App is unable to fulfill the required quantity for items in the order|
@@ -106,6 +108,7 @@ CC-BY-ND
   |60010|Logistics Provider|Cancellation unacceptable|Cancellation request is rejected as fulfillment TAT is not breached|
   |60011|Logistics Provider|Difference in packaging details|Weight and / or dimensions provided is different from what was originally provided|
   |60012|Logistics Provider|Tracking not enabled|Tracking not enabled for any fulfillment in the order|
+  |61001|Logistics Provider|Internal Error|Cannot process request due to internal error|
   |62501|Logistics Buyer|Terms and Conditions unacceptable|Logistics Provider terms & conditions not acceptable to Logistics Buyer|
   |62502|Logistics Buyer|Order terminated|Order terminated as Logistics Provider did not accept terms proposed by Logistics Buyer|
   |62503|Logistics Buyer|RTO rejected|RTO request rejected as quote does not match the quote provided in catalog|
@@ -117,6 +120,7 @@ CC-BY-ND
   |62509|Logistics Buyer|Invalid Cancellation Terms|Cancellation terms are different from what was quoted earlier|
   |62510|Logistics Buyer|Expired authorization|Authorization code has expired|
   |62511|Logistics Buyer|Invalid authorization|Authorization code is invalid|
+  |63001|Logistics Buyer|Internal Error|Cannot process response due to internal error|
   |65001|Logistics Provider|Order Confirm Error|Logistics Provider is unable to confirm the order|
   |65002|Logistics Provider|Order terminated|Order terminated as Logistics Buyer did not accept terms proposed by Logistics Provider|
   |65003|Logistics Provider|Stale Request|Cannot process stale request|
