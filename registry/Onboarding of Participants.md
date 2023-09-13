@@ -37,8 +37,8 @@
 ```
 1.	subscriber_id= YOUR SUBSCRIBER ID
 2.	callback_url= Relative path to on_subscribe implementation
-3.	signing_public_key= <value of sign_public_key generated in step 5>
-4.	encryption_public_key= <value of enc_dec_public_key generated in step 6>
+3.	signing_public_key= <value of sign_public_key generated in step 7>
+4.	encryption_public_key= <value of enc_dec_public_key generated in step 8>
 5.	ONDC public key (prod) = "MCowBQYDK2VuAyEAvVEyZY91O2yV8w8/CAwVDAnqIZDJJUPdLUUKwLo3K0M="
 6.	ONDC public key (pre-prod) = "MCowBQYDK2VuAyEAa9Wbpvd9SsrpOZFcynyt/TO3x0Yrqyys4NUGIvyxX2Q="
 7.	unique_key_id= <generate a unique number for tracking key pairs>
