@@ -28,7 +28,11 @@ b. Gateway end point
 
 `https://preprod.gateway.ondc.org/on_search`
 
-## Configuration settings for ONDC Staging Environment
+c. Reference buyer app
+
+`https://buyer-app-preprod.ondc.org/login`
+
+# Configuration settings for ONDC Staging Environment
 
 a. Registry end point
 
@@ -39,6 +43,10 @@ b. Gateway end point
 `https://pilot-gateway-1.beckn.nsdl.co.in/search`
 
 `https://pilot-gateway-1.beckn.nsdl.co.in/on_search`
+
+c. Reference buyer app
+
+`https://buyer-app.ondc.org/`
 
 ## SwaggerHub links
 
