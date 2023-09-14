@@ -59,7 +59,7 @@ CC-BY-ND
   |30001|Seller App|Provider not found|When Seller App is unable to find the provider id sent by the Buyer App|
   |30002|Seller App|Provider location not found|When Seller App is unable to find the provider location id sent by the Buyer App|
   |30003|Seller App|Provider category not found|When Seller App is unable to find the provider category id sent by the Buyer App|
-  |30004|Seller App|Item not found|When Seller App is unable to find the item id sent by the Buyer App|
+  |30004|Seller App|Item not found|Unable to find details for item, may have been deleted|
   |30005|Seller App|Invalid return request|Return reason is invalid|
   |30006|Seller App|Offer code invalid|Offer code is not valid anymore|
   |30007|Seller App|Offer fulfillment error|Offer cannot be fulfilled at this time|
