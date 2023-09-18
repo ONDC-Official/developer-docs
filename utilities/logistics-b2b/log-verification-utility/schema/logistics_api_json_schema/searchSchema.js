@@ -97,6 +97,9 @@ module.exports = {
                   properties: {
                     days: {
                       type: "string",
+                      pattern: "^(?!.*(\\d).*\\1)[1-7](?:,[1-7])*(?![1-7])$",
+                      errorMessage:
+                        "Days format not correct. Ref footnote 9 of 1.1",
                     },
                     schedule: {
                       type: "object",
@@ -116,6 +119,8 @@ module.exports = {
                           type: "array",
                           items: {
                             type: "string",
+                            pattern: "^(?:[01][0-9]|2[0-3])[0-5][0-9]$",
+                            errorMessage: "Must be a valid 24 hour time",
                           },
                         },
                       },
@@ -126,11 +131,16 @@ module.exports = {
                       properties: {
                         start: {
                           type: "string",
+                          pattern: "^(?:[01][0-9]|2[0-3])[0-5][0-9]$",
                         },
                         end: {
                           type: "string",
+                          pattern: "^(?:[01][0-9]|2[0-3])[0-5][0-9]$",
                         },
                       },
+                      isEndTimeGreater: true,
+                      errorMessage: 'The "end" time must be greater than the "start" time. Ref footnote 12 of v1.1 .',
+                      required: ["start", "end"],
                     },
                   },
                   oneOf: [

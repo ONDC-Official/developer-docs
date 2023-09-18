@@ -2,8 +2,7 @@ node_modules
 package-lock.json
 *.env
 .vscode
-/public/logs/*.json
-/public/*
+/public/logs/*
 verification-logs
 /utils/*.json
 /utils/*.txt

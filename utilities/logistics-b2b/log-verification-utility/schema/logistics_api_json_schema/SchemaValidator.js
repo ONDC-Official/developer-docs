@@ -16,7 +16,6 @@ const cancelSchema = require("./cancelSchema");
 const supportSchema = require("./supportSchema");
 const trackSchema = require("./trackSchema");
 const fs = require("fs");
-//const async = require("async");
 const path = require("path");
 
 const Ajv = require("ajv");
@@ -30,7 +29,6 @@ const ajv = new Ajv({
 });
 
 const addFormats = require("ajv-formats");
-//const masterSchemacopy = require("./masterSchemacopy");
 
 addFormats(ajv);
 require("ajv-errors")(ajv);
@@ -57,6 +55,12 @@ const formatted_error = (errors) => {
   return error_json;
 };
 
+function isEndTimeGreater(data) {
+  const startTime = parseInt(data.start);
+  const endTime = parseInt(data.end);
+  return startTime < endTime
+}
+
 const validate_schema = (data, schema) => {
   let error_list = [];
   try {
@@ -76,7 +80,10 @@ const validate_schema = (data, schema) => {
       .addSchema(trackSchema)
       .addSchema(onTrackSchema)
       .addSchema(cancelSchema)
-      .addSchema(onCancelSchema);
+      .addSchema(onCancelSchema)
+      .addKeyword("isEndTimeGreater", {
+        validate: (schema, data) => isEndTimeGreater(data)
+      });
 
     validate = validate.compile(schema);
 
