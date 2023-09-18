@@ -2,7 +2,7 @@
 
 ### APIs Log Validation tool for Pre-Prod participants
 
-The tool is a NODE.js based utility to check the conformance and compliance of the API logs for [logistics](https://docs.google.com/document/d/10GpEuKZE2g96DFJT3HKq6wIEMhPC-kkMZhXNn2jHHXc/edit?pli=1) and [B2B](https://github.com/ONDC-Official/ONDC-RET-Specifications) based on the examples in the API Contract.
+The tool is a NODE.js based utility to check the conformance and compliance of the API logs for [logistics v1.0](https://docs.google.com/document/d/10GpEuKZE2g96DFJT3HKq6wIEMhPC-kkMZhXNn2jHHXc/edit?pli=1) and [B2B v2.0.1](https://github.com/ONDC-Official/ONDC-RET-Specifications) based on the examples in the API Contract.
 
 ### Tech
 
