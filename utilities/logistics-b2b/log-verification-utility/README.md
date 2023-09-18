@@ -49,6 +49,8 @@ _Notes:_
 
 > Test cases to be referred here -> [logsitics](https://docs.google.com/document/d/1ttixilM-I6dutEdHL10uzqRFd8RcJlEO_9wBUijtdDc/edit) and [B2B](https://docs.google.com/document/d/10ouiTKLY4dm1KnXCuhFwK38cYd9_aDQ30bklkqnPRkM/edit)
 
+> **Community contributions are welcomed to enhance this utility for future releases.**
+
 > Sample payload for search.json is demonstrated below:
 
 ```json
@@ -130,7 +132,3 @@ _Notes:_
   }
 }
 ```
-
-### N.B.
-
-> - Community contributions are welcomed to enhance this utility for future releases.
