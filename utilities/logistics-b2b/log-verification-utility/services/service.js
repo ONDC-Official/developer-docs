@@ -1,0 +1,15 @@
+const { logisticsVal } = require("../utils/logistics/msgValidator");
+const { b2bVal } = require("../utils/b2b/msgValidator");
+const _ = require("lodash");
+
+const checkMessage = (domain, element, action, msgIdSet) => {
+  const busnsErr = {};
+  switch (domain) {
+    case "logistics":
+      return logisticsVal(element, msgIdSet);
+    case "b2b":
+      return b2bVal(element, msgIdSet);
+  }
+  return busnsErr;
+};
+module.exports = { checkMessage };
