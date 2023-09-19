@@ -43,7 +43,7 @@ CC-BY-ND
   |20004|Buyer App|Provider location not found|Provider location not found|
   |20005|Buyer App|Item not found|Item not found|
   |20006|Buyer App|Feature not supported|Feature not supported|
-  |20007|Buyer App|Invalid response|Invalid API response|
+  |20007|Buyer App|Invalid response|Invalid API response does not meet API contract specifications|
   |22501|Buyer App|Part Fill Unacceptable|Buyer doesn't accept part fill for the order, wants to cancel the order|
   |22502|Buyer App|Cancellation unacceptable|Invalid cancellation reason|
   |22503|Buyer App|Cancellation unacceptable|Updated quote does not match original order value and cancellation terms|
