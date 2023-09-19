@@ -37,7 +37,7 @@ CC-BY-ND
   |10001|Gateway|Invalid Signature|Cannot verify signature for request|
   |10002|Gateway|Invalid City Code|Valid city code needs to be passed for search|
   |20000|Buyer App|Invalid catalog|Catalog refresh is invalid|
-  |20001|Buyer App|Invalid Signature|Cannot verify signature for request|
+  |20001|Buyer App|Invalid Signature|Cannot verify signature for API response|
   |20002|Buyer App|Stale Request|Cannot process stale request|
   |20003|Buyer App|Provider not found|Provider not found|
   |20004|Buyer App|Provider location not found|Provider location not found|
