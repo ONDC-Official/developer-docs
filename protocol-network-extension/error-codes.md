@@ -56,7 +56,7 @@ CC-BY-ND
   |25001|Buyer App|Order Confirm Failure|Buyer App cannot confirm order as no response from Seller App|
   |27501|Buyer App|Terms and Conditions unacceptable|Seller App terms and conditions not acceptable to Buyer App|
   |27502|Buyer App|Order terminated|Order terminated as Seller App did not accept terms and conditions proposed by Buyer App|
-  |30000|Seller App|Invalid request error|Generic invalid request error|
+  |30000|Seller App|Invalid request|Invalid API request does not meet API contract specifications|
   |30001|Seller App|Provider not found|When Seller App is unable to find the provider id sent by the Buyer App|
   |30002|Seller App|Provider location not found|When Seller App is unable to find the provider location id sent by the Buyer App|
   |30003|Seller App|Provider category not found|When Seller App is unable to find the provider category id sent by the Buyer App|
