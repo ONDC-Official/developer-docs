@@ -37,13 +37,13 @@ CC-BY-ND
   |10001|Gateway|Invalid Signature|Cannot verify signature for request|
   |10002|Gateway|Invalid City Code|Valid city code needs to be passed for search|
   |20000|Buyer App|Invalid catalog|Catalog refresh is invalid|
-  |20001|Buyer App|Invalid Signature|Cannot verify signature for API response|
+  |20001|Buyer App|Invalid Signature|Cannot verify signature for response|
   |20002|Buyer App|Stale Request|Cannot process stale request|
   |20003|Buyer App|Provider not found|Provider not found|
   |20004|Buyer App|Provider location not found|Provider location not found|
   |20005|Buyer App|Item not found|Item not found|
   |20006|Buyer App|Feature not supported|Feature not supported|
-  |20007|Buyer App|Invalid response|Invalid API response does not meet API contract specifications|
+  |20007|Buyer App|Invalid response|Invalid response does not meet API contract specifications|
   |22501|Buyer App|Part Fill Unacceptable|Buyer doesn't accept part fill for the order, wants to cancel the order|
   |22502|Buyer App|Cancellation unacceptable|Invalid cancellation reason|
   |22503|Buyer App|Cancellation unacceptable|Updated quote does not match original order value and cancellation terms|
@@ -56,7 +56,7 @@ CC-BY-ND
   |25001|Buyer App|Order Confirm Failure|Buyer App cannot confirm order as no response from Seller App|
   |27501|Buyer App|Terms and Conditions unacceptable|Seller App terms and conditions not acceptable to Buyer App|
   |27502|Buyer App|Order terminated|Order terminated as Seller App did not accept terms and conditions proposed by Buyer App|
-  |30000|Seller App|Invalid request|Invalid API request does not meet API contract specifications|
+  |30000|Seller App|Invalid request|Invalid request does not meet API contract specifications|
   |30001|Seller App|Provider not found|When Seller App is unable to find the provider id sent by the Buyer App|
   |30002|Seller App|Provider location not found|When Seller App is unable to find the provider location id sent by the Buyer App|
   |30003|Seller App|Provider category not found|When Seller App is unable to find the provider category id sent by the Buyer App|
