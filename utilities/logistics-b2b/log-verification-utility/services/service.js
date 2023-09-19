@@ -6,9 +6,9 @@ const checkMessage = (domain, element, action, msgIdSet) => {
   const busnsErr = {};
   switch (domain) {
     case "logistics":
-      return logisticsVal(element, msgIdSet);
+      return logisticsVal(element, action, msgIdSet);
     case "b2b":
-      return b2bVal(element, msgIdSet);
+      return b2bVal(element, action, msgIdSet);
   }
   return busnsErr;
 };
