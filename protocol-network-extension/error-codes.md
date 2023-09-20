@@ -112,7 +112,7 @@ CC-BY-ND
   |60010|Logistics Provider|Cancellation unacceptable|Cancellation request is rejected as fulfillment TAT is not breached|
   |60011|Logistics Provider|Difference in packaging details|Weight and / or dimensions provided is different from what was originally provided|
   |60012|Logistics Provider|Tracking not enabled|Tracking not enabled for any fulfillment in the order|
-  |61001|Logistics Provider|Internal Error|Cannot process request due to internal error, please retry|
+  |61001|Logistics Provider|Feature not supported|Feature not supported|
   |62501|Logistics Buyer|Terms and Conditions unacceptable|Logistics Provider terms & conditions not acceptable to Logistics Buyer|
   |62502|Logistics Buyer|Order terminated|Order terminated as Logistics Provider did not accept terms proposed by Logistics Buyer|
   |62503|Logistics Buyer|RTO rejected|RTO request rejected as quote does not match the quote provided in catalog|
@@ -125,10 +125,12 @@ CC-BY-ND
   |62510|Logistics Buyer|Expired authorization|Authorization code has expired|
   |62511|Logistics Buyer|Invalid authorization|Authorization code is invalid|
   |63001|Logistics Buyer|Internal Error|Cannot process response due to internal error, please retry|
+  |64001|Logistics Buyer|Feature not supported|Feature not supported|
   |65001|Logistics Provider|Order Confirm Error|Logistics Provider is unable to confirm the order|
   |65002|Logistics Provider|Order terminated|Order terminated as Logistics Buyer did not accept terms proposed by Logistics Provider|
   |65003|Logistics Provider|Stale Request|Cannot process stale request|
   |65004|Logistics Provider|Terms unacceptable|Logistics Buyer terms not acceptable to Logistics Provider|
+  |66001|Logistics Provider|Internal Error|Cannot process request due to internal error, please retry|
 
   ## Acknowledgements
   This document has been adapted from the [Error Codes draft document](https://github.com/beckn/protocol-specifications/blob/draft/docs/protocol-drafts/BECKN-RFC-005-Error-Codes-Draft-01.md) from the Beckn Foundation.
