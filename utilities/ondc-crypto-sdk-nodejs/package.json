@@ -1,0 +1,44 @@
+{
+  "name": "ondc-crypto-sdk-nodejs",
+  "version": "1.0.1",
+  "description": "A crypto utility for exposing signing and verification functions by ONDC",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
+  },
+  "keywords": [
+    "ondc",
+    "signing",
+    "verification",
+    "utility",
+    "crypto"
+  ],
+  "author": "Abhijeet Singh Rathor",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/libsodium-wrappers": "^0.7.10",
+    "@types/lodash": "^4.14.195",
+    "@types/uuid": "^9.0.2",
+    "prettier": "^2.8.8",
+    "tslint": "^6.1.3",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^5.1.3"
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "dependencies": {
+    "libsodium-wrappers": "^0.7.11",
+    "lodash": "^4.17.21",
+    "uuid": "^9.0.0"
+  }
+}
