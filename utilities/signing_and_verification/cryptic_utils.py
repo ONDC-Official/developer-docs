@@ -120,7 +120,7 @@ def generate_key_pairs():
             "Crypto_Privatekey": crypto_private_key,
             "Crypto_Publickey": crypto_public_key}
 
-def encrypt(crypto_private_key, crypto_public_key):
+def encrypt(crypto_private_key, crypto_public_key, null):
     private_key = serialization.load_der_private_key(
         base64.b64decode(crypto_private_key),
         password=None
@@ -130,7 +130,7 @@ def encrypt(crypto_private_key, crypto_public_key):
     )
     shared_key = private_key.exchange(public_key)
     cipher = AES.new(shared_key, AES.MODE_ECB)
-    text = b'ONDC is a Great Initiative!'
+    text = b'ONDC is a Great Initiative!!'
     return base64.b64encode(cipher.encrypt(pad(text,AES.block_size))).decode('utf-8')
 
 def decrypt(crypto_private_key, crypto_public_key, cipherstring):
@@ -144,7 +144,8 @@ def decrypt(crypto_private_key, crypto_public_key, cipherstring):
     shared_key = private_key.exchange(public_key)
     cipher = AES.new(shared_key, AES.MODE_ECB)
     ciphertxt = base64.b64decode(cipherstring)
-    return cipher.decrypt(ciphertxt).decode('utf-8')
+    # print(AES.block_size, len(ciphertxt))
+    return unpad(cipher.decrypt(ciphertxt), AES.block_size).decode('utf-8')
 
 if __name__ == '__main__':
     fire.Fire()
