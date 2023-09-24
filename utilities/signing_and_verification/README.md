@@ -64,7 +64,7 @@ eg usage
 python cryptic_utils.py encrypt "MC4CAQAwBQYDK2VuBCIEIOgl3rf3arbk1PvIe0C9TZp7ImR71NSQdvuSu+zzY6xo" "MCowBQYDK2VuAyEAi801MjVpgFOXHjliyT6Nb14HkS5dj1p41qbeyU6/SC8="
 ```
 
-Output will be base64 encoded string like "MCowBQYDK2VuAyEAi801MjVpgFOXHjliyT6Nb14HkS5dj1p41qbeyU6/SC8="
+Output will be base64 encoded string like "CrwN248HS4CIYsUvxtrK0pWCBaoyZh4LnWtGqeH7Mpc="
 
 8. Decrypt Payload
 ```
