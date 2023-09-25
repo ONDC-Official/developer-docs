@@ -44,7 +44,7 @@ CC-BY-ND
   |20005|Buyer App|Item not found|Item not found|
   |20006|Buyer App|Invalid response|Invalid response does not meet API contract specifications|
   |20007|Buyer App|Change in item quantity|Change in item quantity|
-  |20008|Buyer App|Change in quote|Change in quote|
+  |20008|Buyer App|Change in item quote|Change in item quote without change in quantity|
   |21001|Buyer App|Feature not supported|Feature not supported|
   |22501|Buyer App|Part Fill Unacceptable|Buyer doesn't accept part fill for the order, wants to cancel the order|
   |22502|Buyer App|Cancellation unacceptable|Invalid cancellation reason|
