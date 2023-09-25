@@ -44,6 +44,8 @@ CC-BY-ND
   |20005|Buyer App|Item not found|Item not found|
   |20006|Buyer App|Invalid response|Invalid response does not meet API contract specifications|
   |20007|Buyer App|Invalid order state|Order/fulfillment state is stale or not valid|
+  |20008|Buyer App|Response out of sequence|Callback received prior to ACK for request or out of sequence|
+  |20009|Buyer App|Timeout|Callback received late, session timed out|
   |21001|Buyer App|Feature not supported|Feature not supported|
   |21002|Buyer App|Increase in item quantity|Increase in item quantity|
   |21003|Buyer App|Change in item quote|Change in item quote without change in quantity|
