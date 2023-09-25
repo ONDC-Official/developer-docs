@@ -58,6 +58,7 @@ CC-BY-ND
   |22507|Buyer App|Invalid Quote|Quote is invalid as it does not meet the API contract specifications|
   |22508|Buyer App|Invalid Part Cancel Request|Part cancel request is invalid|
   |23001|Buyer App|Internal Error|Cannot process response due to internal error, please retry|
+  |23002|Buyer App|Order validation failure|Order validation failure|
   |25001|Buyer App|Order Confirm Failure|Buyer App cannot confirm order as no response from Seller App|
   |27501|Buyer App|Terms and Conditions unacceptable|Seller App terms and conditions not acceptable to Buyer App|
   |27502|Buyer App|Order terminated|Order terminated as Seller App did not accept terms and conditions proposed by Buyer App|
@@ -86,6 +87,7 @@ CC-BY-ND
   |30022|Seller App|Stale Request|Cannot process stale request|
   |30023|Seller App|Minimum order value error|Cart value is less than minimum order value|
   |31001|Seller App|Internal Error|Cannot process request due to internal error, please retry|
+  |31002|Seller App|Order validation failure|Order validation failure|
   |40000|Seller App|Business Error|Generic business error|
   |40001|Seller App|Feature not supported|Feature not supported|
   |40002|Seller App|Item quantity unavailable|When the Seller App is unable to fulfill the required quantity for items in the order|
@@ -129,11 +131,13 @@ CC-BY-ND
   |62511|Logistics Buyer|Invalid authorization|Authorization code is invalid|
   |63001|Logistics Buyer|Internal Error|Cannot process response due to internal error, please retry|
   |64001|Logistics Buyer|Feature not supported|Feature not supported|
+  |64002|Logistics Buyer|Order validation failure|Order validation failure|
   |65001|Logistics Provider|Order Confirm Error|Logistics Provider is unable to confirm the order|
   |65002|Logistics Provider|Order terminated|Order terminated as Logistics Buyer did not accept terms proposed by Logistics Provider|
   |65003|Logistics Provider|Stale Request|Cannot process stale request|
   |65004|Logistics Provider|Terms unacceptable|Logistics Buyer terms not acceptable to Logistics Provider|
   |66001|Logistics Provider|Internal Error|Cannot process request due to internal error, please retry|
+  |66002|Logistics Provider|Order validation failure|Order validation failure|
 
   ## Acknowledgements
   This document has been adapted from the [Error Codes draft document](https://github.com/beckn/protocol-specifications/blob/draft/docs/protocol-drafts/BECKN-RFC-005-Error-Codes-Draft-01.md) from the Beckn Foundation.
