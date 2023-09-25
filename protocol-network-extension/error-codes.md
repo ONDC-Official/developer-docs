@@ -43,9 +43,10 @@ CC-BY-ND
   |20004|Buyer App|Provider location not found|Provider location not found|
   |20005|Buyer App|Item not found|Item not found|
   |20006|Buyer App|Invalid response|Invalid response does not meet API contract specifications|
-  |20007|Buyer App|Increase in item quantity|Increase in item quantity|
-  |20008|Buyer App|Change in item quote|Change in item quote without change in quantity|
+  |20007|Buyer App|Invalid order state|Order/fulfillment state is stale or not valid|
   |21001|Buyer App|Feature not supported|Feature not supported|
+  |21002|Buyer App|Increase in item quantity|Increase in item quantity|
+  |21003|Buyer App|Change in item quote|Change in item quote without change in quantity|
   |22501|Buyer App|Part Fill Unacceptable|Buyer doesn't accept part fill for the order, wants to cancel the order|
   |22502|Buyer App|Cancellation unacceptable|Invalid cancellation reason|
   |22503|Buyer App|Cancellation unacceptable|Updated quote does not match original order value and cancellation terms|
