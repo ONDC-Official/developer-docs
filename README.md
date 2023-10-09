@@ -28,7 +28,7 @@ b. Gateway end point
 
 `https://preprod.gateway.ondc.org/on_search`
 
-c. Reference buyer app
+c. Retail reference buyer app
 
 `https://buyer-app-preprod-v2.ondc.org/login`
 
@@ -44,7 +44,7 @@ b. Gateway end point
 
 `https://staging.gateway.proteantech.in/search`
 
-c. Reference buyer app
+c. Retail reference buyer app
 
 `https://ref-app-buyer-staging-v2.ondc.org/login`
 
