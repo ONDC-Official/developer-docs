@@ -88,6 +88,7 @@ CC-BY-ND
   |30023|Seller App|Minimum order value error|Cart value is less than minimum order value|
   |31001|Seller App|Internal Error|Cannot process request due to internal error, please retry|
   |31002|Seller App|Order validation failure|Order validation failure|
+  |31003|Seller App|Order processing in progress|Order processing in progress|
   |40000|Seller App|Business Error|Generic business error|
   |40001|Seller App|Feature not supported|Feature not supported|
   |40002|Seller App|Item quantity unavailable|When the Seller App is unable to fulfill the required quantity for items in the order|
@@ -130,6 +131,7 @@ CC-BY-ND
   |62510|Logistics Buyer|Expired authorization|Authorization code has expired|
   |62511|Logistics Buyer|Invalid authorization|Authorization code is invalid|
   |63001|Logistics Buyer|Internal Error|Cannot process response due to internal error, please retry|
+  |63002|Logistics Buyer|Order validation failure|Order validation failure|
   |64001|Logistics Buyer|Feature not supported|Feature not supported|
   |64002|Logistics Buyer|Order validation failure|Order validation failure|
   |65001|Logistics Provider|Order Confirm Error|Logistics Provider is unable to confirm the order|
@@ -138,6 +140,8 @@ CC-BY-ND
   |65004|Logistics Provider|Terms unacceptable|Logistics Buyer terms not acceptable to Logistics Provider|
   |66001|Logistics Provider|Internal Error|Cannot process request due to internal error, please retry|
   |66002|Logistics Provider|Order validation failure|Order validation failure|
+  |66003|Logistics Provider|Order processing in progress|Order processing in progress|
+  |66004|Logistics Provider|Invalid Order|Order not found|
 
   ## Acknowledgements
   This document has been adapted from the [Error Codes draft document](https://github.com/beckn/protocol-specifications/blob/draft/docs/protocol-drafts/BECKN-RFC-005-Error-Codes-Draft-01.md) from the Beckn Foundation.
