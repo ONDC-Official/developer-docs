@@ -28,11 +28,27 @@ b. Gateway end point
 
 `https://preprod.gateway.ondc.org/on_search`
 
-c. Reference buyer app
+c. Retail reference buyer app
 
-`https://buyer-app-preprod.ondc.org/login`
+`https://buyer-app-preprod-v2.ondc.org/login`
 
-# Configuration settings for ONDC Staging Environment
+# Configuration settings for ONDC New Staging Environment
+
+a. Registry end point
+
+`https://staging.registry.ondc.org/lookup`
+
+`https://staging.registry.ondc.org/vlookup`
+
+b. Gateway end point
+
+`https://staging.gateway.proteantech.in/search`
+
+c. Retail reference buyer app
+
+`https://ref-app-buyer-staging-v2.ondc.org/login`
+
+# Configuration settings for ONDC Old Staging Environment (To be deprecated)
 
 a. Registry end point
 
