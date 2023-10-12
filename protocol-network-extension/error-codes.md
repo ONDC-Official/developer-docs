@@ -74,7 +74,7 @@ CC-BY-ND
   |30009|Seller App|Location Serviceability error|Dropoff location not serviceable by Logistics Provider|
   |30010|Seller App|Location Serviceability error|Delivery distance exceeds the maximum serviceability distance|
   |30011|Seller App|Order Serviceability error|Delivery Partners not available|
-  |30012|Seller App|Invalid cancellation request|Cancellation reason is invalid|
+  |30012|Seller App|Invalid cancellation reason|Cancellation reason is invalid|
   |30013|Seller App|Invalid Fulfillment TAT|Fulfillment TAT is different from what was quoted earlier|
   |30014|Seller App|Cancellation unacceptable|Cancellation request is rejected as fulfillment TAT is not breached|
   |30015|Seller App|Invalid rating value|When the Seller App receives an invalid value as the rating value in value|
@@ -98,6 +98,7 @@ CC-BY-ND
   |40006|Seller App|Fulfilment agent unavailable|When an agent for fulfilment is not available|
   |40007|Seller App|Change in item quantity|Change in item quantity|
   |40008|Seller App|Change in quote|Change in quote|
+  |40009|Seller App|Maximum order qty exceeded|Maximum order qty exceeded|
   |41001|Seller App|Finder fee not acceptable|Buyer finder fee is not acceptable|
   |50000|Seller App|Policy Error|Generic Policy Error|
   |50001|Seller App|Cancellation not possible|When the Seller App is unable to cancel the order due to it's cancellation policy|
