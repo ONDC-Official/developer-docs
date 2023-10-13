@@ -41,8 +41,9 @@
 4.	encryption_public_key= <value of enc_dec_public_key generated in step 8>
 5.	ONDC public key (prod) = "MCowBQYDK2VuAyEAvVEyZY91O2yV8w8/CAwVDAnqIZDJJUPdLUUKwLo3K0M="
 6.	ONDC public key (pre-prod) = "MCowBQYDK2VuAyEAa9Wbpvd9SsrpOZFcynyt/TO3x0Yrqyys4NUGIvyxX2Q="
-7.	unique_key_id= <generate a unique number for tracking key pairs>
-8.	For other fields, please refer below swaggerhub link and examples mentioned under heading as ops_no_1, ops_no_2, ops_no_3, ops_no_4 and ops_no_5 
+7.	ONDC public key (staging) = "MCowBQYDK2VuAyEAduMuZgmtpjdCuxv+Nc49K0cB6tL/Dj3HZetvVN7ZekM="
+8.	unique_key_id= <generate a unique number for tracking key pairs>
+9.	For other fields, please refer below swaggerhub link and examples mentioned under heading as ops_no_1, ops_no_2, ops_no_3, ops_no_4 and ops_no_5 
 https://app.swaggerhub.com/apis-docs/ONDC/ONDC-Registry-Onboarding/2.0.5
 
 ```
@@ -50,6 +51,9 @@ https://app.swaggerhub.com/apis-docs/ONDC/ONDC-Registry-Onboarding/2.0.5
 
 1.	Send created request to URL for /subscribe is as below 
 ```
+# For Staging Onboarding
+https://staging.registry.ondc.org/subscribe
+
 # For PreProd Onboarding
 https://preprod.registry.ondc.org/ondc/subscribe
 	
@@ -73,7 +77,7 @@ https://prod.registry.ondc.org/subscribe
 }
 ```
 3.	Check your record in registry lookup <br>
-	3.1	/vlookup For Pre-prod ``` https://preprod.registry.ondc.org/ondc/vlookup ``` and for PROD ``` https://prod.registry.ondc.org/vlookup ```
+	3.1	/vlookup For Staging ``` https://staging.registry.ondc.org/vlookup ``` , for Pre-prod ``` https://preprod.registry.ondc.org/ondc/vlookup ``` and for PROD ``` https://prod.registry.ondc.org/vlookup ```
 ```		
 	curl --location --request GET 'https://preprod.registry.ondc.org/ondc/vlookup' \
 		--header 'Content-Type: application/json' \
@@ -84,14 +88,22 @@ https://prod.registry.ondc.org/subscribe
 		    "signature": "UNC7Wy8WZ5iQYNBUnHu1wsCtRhZ0P+I4NO5CpP03cNZ+jYuVtXyeMKQs1coU9Q9fpXIJupB8uRVJ5KPbl/x3Bg==",
 		    "search_parameters": {
 			"country": "IND",
-			"domain": "nic2004:52110",
-			"subscriber_id": "pilot-gateway-1.beckn.nsdl.co.in/option8"
-
+			"domain": "ONDC:RET10",
+			"type": "sellerApp",
+			"city":"std:080",
+			"subscriber_id": "ondc.org"
 		    }
 		}
+
+- sender_subscriber_id: subscriber id of request initiator
+- request_id: unique identifier for request
+- timestamp: timestamp in RFC3339 format
+- signature: search_parameters signed using private key of request initiator: sign(country|domain|type|city|subscriber_id) => - sign(IND|ONDC:RET10|sellerApp|std:080|ondc.org)
+- type: enums are "buyerApp", "sellerApp", "gateway"
+
 ```
 <BR>
-	3.2	/lookup for Pre-prod ```	https://preprod.registry.ondc.org/ondc/lookup ```, for PROD ``` https://prod.registry.ondc.org/lookup	```
+	3.2	/lookup for Staging ``` https://staging.registry.ondc.org/lookup ```, for Pre-prod ```	https://preprod.registry.ondc.org/ondc/lookup ```and for PROD ``` https://prod.registry.ondc.org/lookup	```
 		
 ```
 	curl --location --request POST 'https://preprod.registry.ondc.org/ondc/lookup' \
@@ -99,7 +111,7 @@ https://prod.registry.ondc.org/subscribe
 	--data-raw '{
 
 	    "country": "IND",
-	    "domain":"nic2004:52110"
+	    "domain":"ONDC:RET10"
 
 	}'
 ```
