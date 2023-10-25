@@ -1,8 +1,11 @@
-# ONDC-LOG-VALIDATION
+# ONDC-LOG-VERIFICATION-SERVER
 
-### APIs Log Validation tool for Pre-Prod participants
+### APIs Log Verification tool for Pre-Prod participants
 
-The tool is a NODE.js based utility to check the conformance and compliance of the API logs for [logistics v1.0](https://docs.google.com/document/d/10GpEuKZE2g96DFJT3HKq6wIEMhPC-kkMZhXNn2jHHXc/edit?pli=1) and [B2B v2.0.1](https://github.com/ONDC-Official/ONDC-RET-Specifications) based on the examples in the API Contract.
+The tool is a NODE.js based server to check the conformance and compliance of the API logs for [logistics](https://docs.google.com/document/d/10GpEuKZE2g96DFJT3HKq6wIEMhPC-kkMZhXNn2jHHXc/edit?pli=1) and [B2B](https://github.com/ONDC-Official/ONDC-RET-Specifications) based on the examples in the API Contract.
+
+The Log Verification Server is a tool designed to validate log files. It offers an endpoint `/validate/<domain name>` that allows users to send a directory path containing log files for verification. The directory can have single log file or all the log files for the complete flow. In case of single log files, if sent in sequence will validate the complete flow for same transaction id.
+The server responds with a log report, indicating any errors found in the log files.
 
 ### Tech
 
@@ -11,45 +14,85 @@ The tool is a NODE.js based utility to check the conformance and compliance of t
 - [[lodash](https://www.npmjs.com/package/lodash)]
 - [[ajv](https://ajv.js.org/)]
 
-## Steps to run the utility
+## Steps to run the server
 
-Log Validation Tool requires [Node.js](https://nodejs.org/) to run.
+Log Verification Server requires [Node.js](https://nodejs.org/) to run.
 
-1. Clone the repository, navigate to log-validation-utility and install the dependencies.
+1. Clone the repository, navigate to log-verification-utility and install the dependencies.
 
 ```sh
 
-cd log-validation-utility
+cd log-verification-utility
 
 npm i
 ```
 
-2. Move all the API payloads inside "/public/logs" folder or mention the path to the logs folder as demonstrated in the next step.
+2. Set up the .env file in root directory with the following configuration:
 
-3. Run the utility in the following format
+```code
+MAPPLS_API_KEY=<api_key_value>
+PORT=<port>
+```
+To get the api_key, refer to this link: https://developer.mappls.com/mapping/reverse-geocoding-api
 
-   > node index.js "domain" "/path/to/logs/folder/"
+3. Start the server with the following command:
 
 ```sh
-node index.js logistics ./public/logs/
-node index.js b2b ./public/logs/
+npm run server:start
+```
+The server will be up and running at `http://localhost:3000`  
+
+4. The server provides an HTTP endpoint for log file verification:
+
+```code
+http://localhost:3000/validate/<domainName>
 ```
 
-4. A text report (**log_report.json**) will be generated upon successful execution of the utility.
-<!-- 5. An error handling txt file (error_report.txt) will also be generated to catch all the errors occurred during the execution. -->
+Example endpoint for Logistics
+
+**``
+http://localhost:3000/validate/logistics
+``**
+
+Example endpoint for B2B
+
+**``
+http://localhost:3000/validate/b2b
+``**
+
+5. Send a POST request to the endpoint with the following parameters:
+
+```code
+logPath: <The path to the directory containing the log files>
+```
+
+6. Example using Postman:
+
+```
+Url: http://localhost:3000/validate/logistics
+Request body json: {
+    "logPath": "Documents/projects/v1.2.0-logs/Ref-logistics-app/flow2"
+}
+```
+
+7. Example user cURL:
+
+```
+curl -X POST -d "logPath=/path/to/log/files" http://localhost:3000/validate/logistics
+```
+
+8. Upon successful validation, the server will respond with a log report in JSON format. The log report will indicate any errors found in the log files.
 
 _Notes:_
 
 > There must be a separate payload for every API.
 
-> The utility validates all the payloads as documented in the examples for respective domains:
+> The server validates all the payloads as documented in the examples for respective domains:
 * [logistics](https://docs.google.com/document/d/10GpEuKZE2g96DFJT3HKq6wIEMhPC-kkMZhXNn2jHHXc/edit?pli=1)
 
 * [B2B](https://github.com/ONDC-Official/ONDC-RET-Specifications)
 
 > Test cases to be referred here -> [logsitics](https://docs.google.com/document/d/1ttixilM-I6dutEdHL10uzqRFd8RcJlEO_9wBUijtdDc/edit) and [B2B](https://docs.google.com/document/d/10ouiTKLY4dm1KnXCuhFwK38cYd9_aDQ30bklkqnPRkM/edit)
-
-> **Community contributions are welcomed to enhance this utility for future releases.**
 
 > Sample payload for search.json is demonstrated below:
 
@@ -132,3 +175,7 @@ _Notes:_
   }
 }
 ```
+
+### N.B.
+
+> - Community contributions are welcomed to enhance this server for future releases.

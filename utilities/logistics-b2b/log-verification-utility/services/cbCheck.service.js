@@ -4,9 +4,9 @@ const vl = require("../utils/validateLogUtil");
 const fs = require("fs");
 
 const validateLog = async (domain, dirPath) => {
-  console.log("Inside Log Validation Service...");
+  console.log("Inside Log Validation Service...", dirPath);
   const logsPath = path.join(__dirname, "..", dirPath);
-      vl.validateLogs(domain, logsPath);
+  await vl.validateLogs(domain, logsPath);
 };
 
 module.exports = { validateLog };

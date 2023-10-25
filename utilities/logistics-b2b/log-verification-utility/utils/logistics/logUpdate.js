@@ -6,13 +6,28 @@ const utils = require("../utils.js");
 const checkUpdate = (data, msgIdSet) => {
   let updtObj = {};
   let update = data;
+  let version = update.context.core_version;
   let p2h2p = dao.getValue("p2h2p");
   let awbNo= dao.getValue("awbNo");
 
   dao.setValue("updateApi",true)
 
   update = update.message.order;
-  let rts = update?.fulfillments[0]?.tags["@ondc/org/order_ready_to_ship"];
+  if (version === "1.1.0")
+  rts = update?.fulfillments[0]?.tags["@ondc/org/order_ready_to_ship"];
+else {
+  let fulTags = update?.fulfillments[0].tags;
+  fulTags.forEach((tag) => {
+    if (tag.code === "state") {
+      const lists = tag.list;
+      lists.forEach((list) => {
+        if (list.code === "ready_to_ship") {
+          rts = list.value;
+        }
+      });
+    }
+  });
+}
   dao.setValue("rts", rts);
   let items = update.items;
   let fulfillments = update.fulfillments;

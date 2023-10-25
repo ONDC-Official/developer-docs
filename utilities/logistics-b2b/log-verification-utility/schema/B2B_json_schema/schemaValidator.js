@@ -16,19 +16,6 @@ const fs = require("fs");
 //const async = require("async");
 const path = require("path");
 
-const Ajv = require("ajv");
-const ajv = new Ajv({
-  allErrors: true,
-  strict: false,
-  strictRequired: false,
-  strictTypes: false,
-  $data: true,
-});
-const addFormats = require("ajv-formats");
-
-addFormats(ajv);
-require("ajv-errors")(ajv);
-
 const formatted_error = (errors) => {
   error_list = [];
   let status = "";
@@ -52,26 +39,36 @@ const formatted_error = (errors) => {
 };
 
 const validate_schema = (data, schema) => {
+  const Ajv = require("ajv");
+  const ajv = new Ajv({
+    allErrors: true,
+    strict: false,
+    strictRequired: false,
+    strictTypes: false,
+    $data: true,
+  });
+  const addFormats = require("ajv-formats");
+
+  addFormats(ajv);
+  require("ajv-errors")(ajv);
   let error_list = [];
   try {
     validate = ajv
-    .addSchema(searchSchema)
-    .addSchema(onSearchSchema)
-    .addSchema(selectSchema)
-    .addSchema(onSelectSchema)
-    .addSchema(initSchema)
-    .addSchema(onInitSchema)
-    .addSchema(confirmSchema)
-    .addSchema(onConfirmSchema)
-    .addSchema(updateSchema)
-    .addSchema(onUpdateSchema)
-    .addSchema(statusSchema)
-    .addSchema(onStatusSchema)
+      .addSchema(searchSchema)
+      .addSchema(onSearchSchema)
+      .addSchema(selectSchema)
+      .addSchema(onSelectSchema)
+      .addSchema(initSchema)
+      .addSchema(onInitSchema)
+      .addSchema(confirmSchema)
+      .addSchema(onConfirmSchema)
+      .addSchema(updateSchema)
+      .addSchema(onUpdateSchema)
+      .addSchema(statusSchema)
+      .addSchema(onStatusSchema);
 
+    validate = validate.compile(schema);
 
-  
-  validate = validate.compile(schema);
-  
     const valid = validate(data);
     if (!valid) {
       error_list = validate.errors;
@@ -89,5 +86,5 @@ const validate_schema_b2b_master = (data) => {
 };
 
 module.exports = {
-  validate_schema_b2b_master
+  validate_schema_b2b_master,
 };

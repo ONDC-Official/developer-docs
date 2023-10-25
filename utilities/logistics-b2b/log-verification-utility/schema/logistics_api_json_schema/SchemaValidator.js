@@ -1,37 +1,9 @@
-const onConfirmSchema = require("./onConfirmSchema");
-const onInitSchema = require("./onInitSchema");
-const onSearchSchema = require("./onSearchSchema");
-const onTrackSchema = require("./onTrackSchema");
-const onSupportSchema = require("./onSupportSchema");
-const onStatusSchema = require("./onStatusSchema");
-const onCancelSchema = require("./onCancelSchema");
-const onUpdateSchema = require("./onUpdateSchema");
-const searchSchema = require("./searchSchema");
-const initSchema = require("./initSchema");
-const masterSchema = require("./masterSchema");
-const confirmSchema = require("./confirmSchema");
-const statusSchema = require("./statusSchema");
-const updateSchema = require("./updateSchema");
-const cancelSchema = require("./cancelSchema");
-const supportSchema = require("./supportSchema");
-const trackSchema = require("./trackSchema");
 const fs = require("fs");
-const path = require("path");
-
-const Ajv = require("ajv");
-const ajv = new Ajv({
-  allErrors: true,
-  strict: false,
-  strictRequired: false,
-  strictTypes: false,
-  verbose: true,
-  $data: true,
-});
-
-const addFormats = require("ajv-formats");
-
-addFormats(ajv);
-require("ajv-errors")(ajv);
+//const async = require("async");
+const { isLengthValid } = require("./v1.2/keywords/init");
+const { isQuoteMatching } = require("./v1.2/keywords/onInit");
+const { isFutureDated } = require("./v1.2/keywords/confirm");
+const { isEndTimeGreater } = require("./v1.2/keywords/search");
 
 const formatted_error = (errors) => {
   error_list = [];
@@ -55,13 +27,57 @@ const formatted_error = (errors) => {
   return error_json;
 };
 
-function isEndTimeGreater(data) {
-  const startTime = parseInt(data.start);
-  const endTime = parseInt(data.end);
-  return startTime < endTime
-}
+const loadSchema = (schemaType, version) => {
+  try {
+    return require(`./${version}/${schemaType}Schema.js`);
+  } catch (error) {
+    console.log("Error Occurred while importing", error);
+  }
+};
 
-const validate_schema = (data, schema) => {
+const validate_schema = (data, schema, version) => {
+  const searchSchema = loadSchema("search", version);
+  const onSearchSchema = loadSchema("onSearch", version);
+
+  const initSchema = loadSchema("init", version);
+  const onInitSchema = loadSchema("onInit", version);
+
+  const confirmSchema = loadSchema("confirm", version);
+  const onConfirmSchema = loadSchema("onConfirm", version);
+
+  const updateSchema = loadSchema("update", version);
+  const onUpdateSchema = loadSchema("onUpdate", version);
+
+  const statusSchema = loadSchema("status", version);
+  const onStatusSchema = loadSchema("onStatus", version);
+
+  const supportSchema = loadSchema("support", version);
+  const onSupportSchema = loadSchema("onSupport", version);
+
+  const trackSchema = loadSchema("track", version);
+  const onTrackSchema = loadSchema("onTrack", version);
+
+  const cancelSchema = loadSchema("cancel", version);
+  const onCancelSchema = loadSchema("onCancel", version);
+
+  const commonSchemaV1_2 = require("./v1.2/common/commonSchema");
+
+  const Ajv = require("ajv");
+  const ajv = new Ajv({
+    allErrors: true,
+    strict: false,
+    strictRequired: false,
+    strictTypes: false,
+    verbose: true,
+    $data: true,
+    schemaIs: "id",
+  });
+
+  const addFormats = require("ajv-formats");
+
+  addFormats(ajv);
+  require("ajv-errors")(ajv);
+  require('ajv-merge-patch')(ajv);
   let error_list = [];
   try {
     validate = ajv
@@ -82,7 +98,17 @@ const validate_schema = (data, schema) => {
       .addSchema(cancelSchema)
       .addSchema(onCancelSchema)
       .addKeyword("isEndTimeGreater", {
-        validate: (schema, data) => isEndTimeGreater(data)
+        validate: (schema, data) => isEndTimeGreater(data),
+      })
+      .addSchema(commonSchemaV1_2)
+      .addKeyword("isQuoteMatching", {
+        validate: (schema, data) => isQuoteMatching(data),
+      })
+      .addKeyword("isFutureDated", {
+        validate: (schema, data) => isFutureDated(data),
+      })
+      .addKeyword("isLengthValid", {
+        validate: (schema, data) => isLengthValid(data),
       });
 
     validate = validate.compile(schema);
@@ -99,8 +125,9 @@ const validate_schema = (data, schema) => {
   return error_list;
 };
 
-const validate_schema_master = (data) => {
-  error_list = validate_schema(data, masterSchema);
+const validate_schema_master = (data, version) => {
+  const masterSchema = loadSchema("master", version);
+  error_list = validate_schema(data, masterSchema, version);
   return formatted_error(error_list);
 };
 

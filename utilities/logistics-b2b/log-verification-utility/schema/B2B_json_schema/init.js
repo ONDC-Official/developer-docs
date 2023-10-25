@@ -410,7 +410,7 @@ module.exports = {
                                 properties: {
                                   code: {
                                     type: "string",
-                                    enum: ["INCOTERMS", "DELIVERY_DUTY"],
+                                    enum: ["INCOTERMS", "NAMED_PLACE_OF_DELIVERY"],
                                   },
                                 },
                                 required: ["code"],

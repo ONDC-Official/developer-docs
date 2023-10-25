@@ -64,7 +64,7 @@ module.exports = {
           type: "string",
           allOf: [
             {
-              const: { $data: "/init/0/context/message_id" },
+              const: { $data: "/confirm/0/context/message_id" },
               errorMessage:
                 "Message ID for on_action API should be same as action API: ${/init/0/context/message_id}",
             },

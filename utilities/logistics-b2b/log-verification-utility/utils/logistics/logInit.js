@@ -4,6 +4,13 @@ const constants = require("../constants");
 const utils = require("../utils");
 
 const checkInit = (data, msgIdSet) => {
+  const billing = data.message.order.billing
+  const billingAdd= billing.address
+  const len = billingAdd.name.length + billingAdd.building.length +billingAdd.locality.length
+  console.log(billingAdd.name.length,billingAdd.building.length,billingAdd.locality.length);
+  console.log("length",len);
+  if (billingAdd.name.length + billingAdd.building.length +billingAdd.locality.length > 190) return true
+  else false
   const initObj = {};
   let init = data;
   let p2h2p = false;
@@ -20,10 +27,10 @@ const checkInit = (data, msgIdSet) => {
     console.log(`Comparing provider object in /init and /on_search`);
     if (init.provider) {
       onSearchitemsArr = dao.getValue(`${init.provider.id}itemsArr`);
-      let providerObj = providersArr.filter(
+      let providerObj = providersArr?.filter(
         (prov) => prov.id === init.provider.id
       );
-      if (providerObj?.length < 1) {
+      if (!providerObj || providerObj?.length < 1) {
         initObj.prvdrErr = `Provider with id '${init.provider.id}' does not exist in the catalog provided in /on_search`;
       } else {
         if (
@@ -63,11 +70,11 @@ const checkInit = (data, msgIdSet) => {
     console.log(`Comparing item object in /init and /on_search`);
     let itemExists = false;
 
-    itemsArr.forEach((item, i) => {
+    itemsArr?.forEach((item, i) => {
       if (item.descriptor.code === "P2H2P") {
         p2h2p = true;
       }
-      onSearchitemsArr.forEach((element) => {
+      onSearchitemsArr?.forEach((element) => {
         if (item.id === element.id) itemExists = true;
         console.log(item.id, element.id);
       });
@@ -98,10 +105,10 @@ const checkInit = (data, msgIdSet) => {
               itemkey
             ] = `Fulfillment id '${fulfillment.id}' for item with id '${item.id}' does not match with the catalog provided in /on_search`;
           } else {
-            let bppfulfillment = bppFulfillmentsArr.find(
+            let bppfulfillment = bppFulfillmentsArr?.find(
               (element) => element.id === fulfillment.id
             );
-            if (fulfillment.type !== bppfulfillment.type) {
+            if (fulfillment.type !== bppfulfillment?.type) {
               let itemkey = `flfillmentTypeErr${i}`;
               initObj[
                 itemkey

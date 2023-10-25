@@ -1,7 +1,7 @@
 const { validateLogsUtil } = require("./validateLogUtil");
 
-const validateLogs = (domain) => {
-  validateLogsUtil(domain);
+const validateLogs = async (domain) => {
+  await validateLogsUtil(domain);
 };
 
 module.exports = { validateLogs };

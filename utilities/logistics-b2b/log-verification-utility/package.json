@@ -4,7 +4,11 @@
   "description": "Log Verification ONDC",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server:dev": "nodemon ./server/server.js --ignore public/",
+    "server:start": "node ./server/server.js",
+    "verify:logistics": "node index.js logistics",
+    "verify:retail": "node index.js retail",
+    "verify:b2b": "node index.js b2b"
   },
   "repository": {
     "type": "git",
@@ -20,8 +24,14 @@
     "ajv": "^8.12.0",
     "ajv-errors": "^3.0.0",
     "ajv-formats": "^2.1.1",
+    "ajv-merge-patch": "^5.0.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
     "lmdb": "^2.7.5",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "multer": "^1.4.5-lts.1",
+    "node-fetch": "^2.6.1",
+    "nodemon": "^3.0.1"
   },
   "keywords": []
 }

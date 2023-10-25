@@ -6,10 +6,11 @@ const checkOnSearch = require("./logOnSearch");
 const checkOnUpdate = require("./logOnUpdate");
 const checkUpdate = require("./logUpdate");
 const checkOnStatus = require("./logOnStatus");
+const checkOnCancel = require("./logOnCancel");
 const checkSearch = require("./logSearch");
 const _ = require("lodash");
 
-const logisticsVal = (element, action, msgIdSet) => {
+const logisticsVal = async (element, action, msgIdSet) => {
   const busnsErr = {};
   switch (action) {
     case "search":
@@ -38,6 +39,9 @@ const logisticsVal = (element, action, msgIdSet) => {
 
     case "on_status":
       return checkOnStatus(element,msgIdSet)
+
+      case "on_cancel":
+      return checkOnCancel(element,msgIdSet)
   }
   return busnsErr;
 };

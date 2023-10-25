@@ -1,6 +1,7 @@
 const { validateLog } = require("./services/cbCheck.service");
 const fs = require("fs");
 const path = require("path");
+require("dotenv").config();
 
 try {
   if (process.argv.length < 3) {
@@ -15,14 +16,15 @@ try {
   const logpath = process.argv[3] || "./public/logs/";
 
   //Read Log directory
-  fs.readdir(logpath, (err, files) =>{
+  fs.readdir(logpath, (err, files) => {
     try {
       if (err) {
         console.log(`Some error occurred while reading files from ${path}`);
       } else if (!files.length) {
         console.log(`${path} folder is empty!!`);
       } else {
-            validateLog(domain, logpath);
+        console.log("INDEX", logpath);
+        validateLog(domain, logpath);
       }
     } catch (error) {
       console.log(`Error while reading logs folder`, error);

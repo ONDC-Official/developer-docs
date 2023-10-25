@@ -18,11 +18,13 @@ const checkOnConfirm = (data, msgIdSet) => {
     console.log(`checking start and end time range in fulfillments`);
     fulfillments.forEach((fulfillment) => {
       if(fulfillment["@ondc/org/awb_no"] && p2h2p) awbNo= true;
-      console.log(rts)
-      if (rts === "yes" && !fulfillment?.start?.time?.range && dao.getValue("updateApi")===false) {
+      console.log("rts",rts)
+   
+      if (rts === "yes" && !fulfillment?.start?.time?.range) {
+       
         onCnfrmObj.strtRangeErr = `start/time/range is required in /fulfillments when ready_to_ship = yes in /confirm`;
       }
-      if (rts === "yes" && !fulfillment?.end?.time?.range && dao.getValue("updateApi")===false) {
+      if (rts === "yes" && !fulfillment?.end?.time?.range) {
         onCnfrmObj.endRangeErr = `end/time/range is required in /fulfillments when ready_to_ship = yes in /confirm`;
       }
     });
