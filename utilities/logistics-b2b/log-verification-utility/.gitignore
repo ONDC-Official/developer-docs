@@ -1,0 +1,15 @@
+node_modules
+package-lock.json
+*.env
+.vscode
+/public/logs/*
+verification-logs
+/utils/*.json
+/utils/*.txt
+test_logs
+dbfiles
+test.js
+!LICENSE.md
+logFlow*.json
+.DS_Store
+log_report.json
