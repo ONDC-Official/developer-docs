@@ -30,11 +30,11 @@ const b2bVal = (element, action, msgIdSet) => {
     case "on_confirm":
       return checkOnConfirm(element, msgIdSet);
 
-    case "update":
-      return checkUpdate(element,msgIdSet);
+    // case "update":
+    //   return checkUpdate(element,msgIdSet);
 
-    case "on_update":
-      return checkOnUpdate(element,msgIdSet)
+    // case "on_update":
+    //   return checkOnUpdate(element,msgIdSet)
 
     case "on_status":
       return checkOnStatus(element,msgIdSet)

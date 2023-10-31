@@ -42,7 +42,7 @@ const checkConfirm = (data, msgIdSet) => {
           if (provider.id === provId) {
             const onSearchItemsObj = provider.items;
             onSearchItemsObj.forEach((onSrchItem) => {
-              console.log(onSrchItem);
+              //console.log(onSrchItem);
               if (onSrchItem.id === item.id) {
                 if (onSrchItem?.time?.duration !== item?.time?.duration)
                   cnfrmObj.itemDurationErr = `item duration does not match with the one provided in /on_search (LSP can send NACK)`;

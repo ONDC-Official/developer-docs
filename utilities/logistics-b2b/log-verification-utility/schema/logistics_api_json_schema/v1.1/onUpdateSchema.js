@@ -123,6 +123,9 @@ module.exports = {
                 properties: {
                   id: {
                     type: "string",
+                    const: {
+                      $data: "/confirm/0/message/order/fulfillments/0/id",
+                    },
                   },
                   type: {
                     type: "string",

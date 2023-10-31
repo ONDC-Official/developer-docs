@@ -27,10 +27,10 @@ const checkOnSearch = (data, msgIdSet) => {
           const nextDate = new Date(dateObj.setDate(dateObj.getDate() + 1)).toISOString().split('T')[0];
           const categoryTimestamp = core_version == "1.1.0" ? categoryTime?.timestamp?.split('T')[0] : categoryTime?.timestamp;
           if((catName == 'Same Day Delivery' || catName == 'Immediate Delivery') && categoryTimestamp && categoryTimestamp != currentDate){
-            onSrchObj.TAT = `For Same Day Delivery/Immediate Delivery, TAT date should be the same date i.e. ${currentDate}`
+            onSrchObj.catTAT = `For Same Day Delivery/Immediate Delivery, TAT date should be the same date i.e. ${currentDate}`
           }
           if(catName == 'Next Day Delivery' && categoryTimestamp && categoryTimestamp != nextDate){
-            onSrchObj.TAT = `For Next Day Delivery, TAT date should be the next date i.e. ${nextDate}`
+            onSrchObj.catTAT = `For Next Day Delivery, TAT date should be the next date i.e. ${nextDate}`
           }
           provider.items.forEach((item) => {
             const catId = item.category_id;
@@ -39,10 +39,10 @@ const checkOnSearch = (data, msgIdSet) => {
             if (catName === catId && !categoryTime && !itemTime)
               onSrchObj.TAT = `Either Category level TAT or Item level TAT should be given in ${constants.LOG_ONSEARCH} api for category "${catName}"`;
               if((catId == 'Same Day Delivery' || catId == 'Immediate Delivery') && itemTimestamp && itemTimestamp != currentDate){
-                onSrchObj.TAT = `For Same Day Delivery/Immediate Delivery, TAT date should be the same date i.e. ${currentDate}`
+                onSrchObj.itemTAT = `For Same Day Delivery/Immediate Delivery, TAT date should be the same date i.e. ${currentDate}`
               }
               if(catId == 'Next Day Delivery' && itemTimestamp && itemTimestamp != nextDate){
-                onSrchObj.TAT = `For Next Day Delivery, TAT date should be the next date i.e. ${nextDate}`
+                onSrchObj.itemTAT = `For Next Day Delivery, TAT date should be the next date i.e. ${nextDate}`
               }  
           });
         });

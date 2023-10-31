@@ -130,7 +130,12 @@ module.exports = {
                   id: {
                     type: "string",
                   },
-                  fulfillment_id: { type: "string" },
+                  fulfillment_id: {
+                    type: "string",
+                    const: {
+                      $data: "/init/0/message/order/items/0/fulfillment_id",
+                    },
+                  },
                   category_id: {
                     type: "string",
                   },

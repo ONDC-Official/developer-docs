@@ -18,7 +18,7 @@ const checkInit = (data, msgIdSet) => {
     console.log(`Comparing provider object in /init and /on_search`);
     if (init.provider) {
       onSearchitemsArr = dao.getValue(`${init.provider.id}itemsArr`);
-      let providerObj = providersArr.filter(
+      let providerObj = providersArr?.filter(
         (prov) => prov.id === init.provider.id
       );
       if (providerObj?.length < 1) {
