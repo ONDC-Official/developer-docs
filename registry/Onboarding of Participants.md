@@ -81,8 +81,10 @@ https://prod.registry.ondc.org/subscribe
 ```
 # For Staging 
 https://staging.registry.ondc.org/vlookup
+
 # For Pre-prod
 https://preprod.registry.ondc.org/ondc/vlookup
+
 # For PROD
 https://prod.registry.ondc.org/vlookup
 ```
@@ -112,7 +114,17 @@ https://prod.registry.ondc.org/vlookup
 
 ```
 <BR>
-	3.2	/lookup for Staging ``` https://staging.registry.ondc.org/lookup ```, for Pre-prod ```	https://preprod.registry.ondc.org/ondc/lookup ```and for PROD ``` https://prod.registry.ondc.org/lookup	```
+	3.2	/lookup 
+ 
+``` 
+# For Staging
+https://staging.registry.ondc.org/lookup
+
+# For Pre-prod 
+https://preprod.registry.ondc.org/ondc/lookup
+# For PROD
+https://prod.registry.ondc.org/lookup
+```
 		
 ```
 	curl --location --request POST 'https://preprod.registry.ondc.org/ondc/lookup' \
