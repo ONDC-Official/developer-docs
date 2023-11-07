@@ -79,12 +79,13 @@ https://prod.registry.ondc.org/subscribe
 3.	Check your record in registry lookup <br>
 	3.1	/vlookup
 ```
-  	# For Staging 
-  		https://staging.registry.ondc.org/vlookup
-   	# For Pre-prod
-   		https://preprod.registry.ondc.org/ondc/vlookup
-   	# For PROD
-   		https://prod.registry.ondc.org/vlookup ```
+# For Staging 
+https://staging.registry.ondc.org/vlookup
+# For Pre-prod
+https://preprod.registry.ondc.org/ondc/vlookup
+# For PROD
+https://prod.registry.ondc.org/vlookup
+```
 
 ```		
 	curl --location --request GET 'https://preprod.registry.ondc.org/ondc/vlookup' \
