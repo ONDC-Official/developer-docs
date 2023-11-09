@@ -4,7 +4,7 @@
 
 ```
 - PRIVATE_KEY_1 = "NP's encryption private key"
-- PUBLIC_KEY_1 = "Registry's encryption public key"
+- PUBLIC_KEY_1 = "Registry's encryption public key which is available in NP On-Boarding on Staging doc (staging key: MCowBQYDK2VuAyEAduMuZgmtpjdCuxv+Nc49K0cB6tL/Dj3HZetvVN7ZekM=)" 
 - REQUEST_ID = "request_id which is sent in /subscribe"
 - SIGNING_PRIVATE_KEY = "NP's signing private key"
 ```
