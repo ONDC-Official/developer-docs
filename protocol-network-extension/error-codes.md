@@ -99,6 +99,8 @@ CC-BY-ND
   |40007|Seller App|Change in item quantity|Change in item quantity|
   |40008|Seller App|Change in quote|Change in quote|
   |40009|Seller App|Maximum order qty exceeded|Maximum order qty exceeded|
+  |40010|Seller App|Expired authorization|Authorization code has expired|
+  |40011|Seller App|Invalid authorization|Authorization code is invalid|
   |41001|Seller App|Finder fee not acceptable|Buyer finder fee is not acceptable|
   |50000|Seller App|Policy Error|Generic Policy Error|
   |50001|Seller App|Cancellation not possible|When the Seller App is unable to cancel the order due to it's cancellation policy|
