@@ -69,12 +69,11 @@ def create_authorisation_header(request_body=request_body_raw_text, created=None
     signing_key = create_signing_string(hash_message(request_body),
                                         created=created, expires=expires)
     signature = sign_response(signing_key, private_key=os.getenv("PRIVATE_KEY"))
-    #signature = sign_response(signing_key, private_key="unkLJfHZRmKf88Ac5zv6Wb5caVbYN9Uav0XJ5OOyitdbVo4xZhS8g23JLKY9Ve66uAAL/zrl0PGjpwkvp0d3eA==")
 
     subscriber_id = os.getenv("SUBSCRIBER_ID", "buyer-app.ondc.org")
     unique_key_id = os.getenv("UNIQUE_KEY_ID", "207")
-    header = f'"Signature keyId=\\"{subscriber_id}|{unique_key_id}|ed25519\\",algorithm=\\"ed25519\\",created=' \
-             f'\\"{created}\\",expires=\\"{expires}\\",headers=\\"(created) (expires) digest\\",signature=\\"{signature}\\""'
+    header = f'"Signature keyId="{subscriber_id}|{unique_key_id}|ed25519",algorithm="ed25519",created=' \
+             f'"{created}",expires="{expires}",headers="(created) (expires) digest",signature="{signature}""'
     return header
 
 
@@ -120,6 +119,7 @@ def generate_key_pairs():
             "Crypto_Privatekey": crypto_private_key,
             "Crypto_Publickey": crypto_public_key}
 
+
 def encrypt(crypto_private_key, crypto_public_key, null):
     private_key = serialization.load_der_private_key(
         base64.b64decode(crypto_private_key),
@@ -132,6 +132,7 @@ def encrypt(crypto_private_key, crypto_public_key, null):
     cipher = AES.new(shared_key, AES.MODE_ECB)
     text = b'ONDC is a Great Initiative!!'
     return base64.b64encode(cipher.encrypt(pad(text,AES.block_size))).decode('utf-8')
+
 
 def decrypt(crypto_private_key, crypto_public_key, cipherstring):
     private_key = serialization.load_der_private_key(
@@ -146,6 +147,7 @@ def decrypt(crypto_private_key, crypto_public_key, cipherstring):
     ciphertxt = base64.b64decode(cipherstring)
     # print(AES.block_size, len(ciphertxt))
     return unpad(cipher.decrypt(ciphertxt), AES.block_size).decode('utf-8')
+
 
 if __name__ == '__main__':
     fire.Fire()
