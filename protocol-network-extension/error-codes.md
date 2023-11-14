@@ -57,6 +57,7 @@ CC-BY-ND
   |22506|Buyer App|Invalid Terms of Reference|Terms of Reference are different from what was quoted earlier|
   |22507|Buyer App|Invalid Quote|Quote is invalid as it does not meet the API contract specifications|
   |22508|Buyer App|Invalid Part Cancel Request|Part cancel request is invalid|
+  |22509|Buyer App|Cancel Return Request|Buyer cancelling return request|
   |23001|Buyer App|Internal Error|Cannot process response due to internal error, please retry|
   |23002|Buyer App|Order validation failure|Order validation failure|
   |25001|Buyer App|Order Confirm Failure|Buyer App cannot confirm order as no response from Seller App|
