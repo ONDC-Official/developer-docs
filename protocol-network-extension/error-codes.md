@@ -110,6 +110,8 @@ CC-BY-ND
   |50004|Seller App|Support unavailable|When the Seller App receives an object if for which it does not provide support|
   |50005|Seller App|Terms and Conditions unacceptable|Buyer App terms and conditions not acceptable to Seller App|
   |50006|Seller App|Order terminated|Order terminated as Buyer App did not accept terms proposed by Seller App|
+  |50007|Seller App|Fulfillment not found|Fulfillment not found|
+  |50008|Seller App|Fulfillment cannot be updated|Fulfillment has reached terminal state, cannot be updated|
   |60001|Logistics Provider|Location Serviceability Error|Pickup location not serviceable by Logistics Provider|
   |60002|Logistics Provider|Location Serviceability Error|Dropoff location not serviceable by Logistics Provider|
   |60003|Logistics Provider|Location Serviceability Error|Delivery distance exceeds the maximum serviceability distance|
