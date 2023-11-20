@@ -93,7 +93,7 @@ CC-BY-ND
   |40000|Seller App|Business Error|Generic business error|
   |40001|Seller App|Feature not supported|Feature not supported|
   |40002|Seller App|Item quantity unavailable|When the Seller App is unable to fulfill the required quantity for items in the order|
-  |40003|Seller App|Quote unavailable|When the quote sent by the Buyer App is no longer available from the Seller App|
+  |40003|Seller App|Quote unavailable|Quote sent no longer valid|
   |40004|Seller App|Payment type not supported|Payment type not supported|
   |40005|Seller App|Tracking not enabled|Tracking not enabled for any fulfillment in the order|
   |40006|Seller App|Fulfilment agent unavailable|When an agent for fulfilment is not available|
@@ -148,6 +148,7 @@ CC-BY-ND
   |66002|Logistics Provider|Order validation failure|Order validation failure|
   |66003|Logistics Provider|Order processing in progress|Order processing in progress|
   |66004|Logistics Provider|Invalid Order|Order not found|
+  |60005|Logistics Provider|Quote unavailable|Quote sent no longer valid|
 
   ## Acknowledgements
   This document has been adapted from the [Error Codes draft document](https://github.com/beckn/protocol-specifications/blob/draft/docs/protocol-drafts/BECKN-RFC-005-Error-Codes-Draft-01.md) from the Beckn Foundation.
