@@ -464,7 +464,7 @@ module.exports = {
             },
           },
           additionalProperties: false,
-          required: ["provider", "items", "fulfillments", "billing"],
+          required: ["provider", "items", "fulfillments", "billing","payment"],
         },
       },
       required: ["order"],

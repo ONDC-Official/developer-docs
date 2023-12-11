@@ -77,7 +77,7 @@ const validate_schema = (data, schema, version) => {
 
   addFormats(ajv);
   require("ajv-errors")(ajv);
-  require('ajv-merge-patch')(ajv);
+  require("ajv-merge-patch")(ajv);
   let error_list = [];
   try {
     validate = ajv

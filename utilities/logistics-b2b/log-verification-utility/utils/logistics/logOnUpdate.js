@@ -29,6 +29,7 @@ const checkOnUpdate = (data, msgIdSet) => {
       `Checking if start and end time range required in /on_update api`
     );
     fulfillments.forEach((fulfillment) => {
+      const ffState = fulfillment?.state?.descriptor?.code
       if (fulfillment["@ondc/org/awb_no"]) {
         awbNo = true;
       }
@@ -42,6 +43,9 @@ const checkOnUpdate = (data, msgIdSet) => {
       }
       if (rts === "yes" && !fulfillment?.start?.time?.range) {
         onUpdtObj.strtRangeErr = `start/time/range is required in /fulfillments when ready_to_ship = yes in /update`;
+      }
+      if (fulfillment?.start?.time?.timestamp || fulfillment?.end?.time?.timestamp) {
+        onUpdtObj.tmpstmpErr = `start/time/timestamp or end/time/timestamp cannot be provided in /fulfillments when fulfillment state is ${ffState}`;
       }
       if (rts === "yes" && !fulfillment?.end?.time?.range) {
         onUpdtObj.endRangeErr = `end/time/range is required in /fulfillments when ready_to_ship = yes in /update`;

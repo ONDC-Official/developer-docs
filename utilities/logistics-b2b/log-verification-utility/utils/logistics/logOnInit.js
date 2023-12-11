@@ -14,6 +14,11 @@ const checkOnInit = (data, msgIdSet) => {
 
   let onSearchProvArr = dao.getValue("providersArr");
 
+  console.log(dao.getValue("providerLoc"),on_init.provider_location);
+  if(dao.getValue("providerLoc")===false && on_init.provider_location){
+   onInitObj.prvdrLocErr=`Provider location should be provided only if returned in /on_search, also it is used where the shipment has to be dropped at LSP location` 
+  }
+
   try {
     console.log(
       `Comparing order quote price and break up  in ${constants.LOG_ONINIT}`
@@ -32,33 +37,39 @@ const checkOnInit = (data, msgIdSet) => {
           ] = `Price value for '${breakup["@ondc/org/title_type"]}' should not have more than 2 decimal places`;
         }
         totalBreakup += parseFloat(breakup.price.value);
-        
+
         onSearchProvArr?.forEach((provider) => {
-         
           if (provider.id === provId) {
             provider?.items.forEach((item, i) => {
-            
               if (
                 item.id === breakup["@ondc/org/item_id"] &&
-                (breakup["@ondc/org/title_type"] === "delivery")
+                breakup["@ondc/org/title_type"] === "delivery"
               ) {
-                if (parseFloat(on_init.quote.price.value) !== parseFloat(item.price.value)) {
+                if (
+                  parseFloat(on_init.quote.price.value) !==
+                  parseFloat(item.price.value)
+                ) {
                   let itemKey = `priceArr${i}`;
-                  onInitObj[
-                    itemKey
-                  ] = `Quote price ${parseFloat(on_init.quote.price.value)} for item id '${breakup["@ondc/org/item_id"]}' does not match item price ${item.price.value} in /on_search`;
+                  onInitObj[itemKey] = `Quote price ${parseFloat(
+                    on_init.quote.price.value
+                  )} for item id '${
+                    breakup["@ondc/org/item_id"]
+                  }' does not match item price ${
+                    item.price.value
+                  } in /on_search`;
                 }
               }
-             
             });
-           
-           
           }
         });
       });
 
       if (parseFloat(on_init.quote.price.value) !== totalBreakup)
-        onInitObj.quotePriceErr = `Quote price ${parseFloat(on_init.quote.price.value)} does not match the breakup total  ${totalBreakup} in ${constants.LOG_ONINIT}`;
+        onInitObj.quotePriceErr = `Quote price ${parseFloat(
+          on_init.quote.price.value
+        )} does not match the breakup total  ${totalBreakup} in ${
+          constants.LOG_ONINIT
+        }`;
     }
   } catch (err) {
     console.log(

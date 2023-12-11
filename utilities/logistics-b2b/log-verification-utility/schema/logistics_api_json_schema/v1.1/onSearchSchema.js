@@ -40,8 +40,7 @@ module.exports = {
           type: "string",
           const: { $data: "/search/0/context/transaction_id" },
           errorMessage:
-                "Transaction ID should be same across the transaction: ${/search/0/context/transaction_id}",
-
+            "Transaction ID should be same across the transaction: ${/search/0/context/transaction_id}",
         },
         message_id: {
           type: "string",
@@ -58,7 +57,7 @@ module.exports = {
               errorMessage:
                 "Message ID should not be equal to transaction_id: ${1/transaction_id}",
             },
-          ]
+          ],
         },
         timestamp: {
           type: "string",
@@ -283,6 +282,9 @@ module.exports = {
                             },
                             value: {
                               type: "string",
+                              pattern: "^[0-9]+(\\.[0-9]{1,2})?$",
+                              errorMessage:
+                                "precision for all prices in quote can be maximum of 2 decimal digits",
                             },
                           },
                           required: ["currency", "value"],
@@ -297,11 +299,11 @@ module.exports = {
                             duration: {
                               type: "string",
                               format: "duration",
-                              errorMessage: "${2/time/duration}",
                             },
                             timestamp: {
                               type: "string",
-                              format: "date-time",
+                              pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
                             },
                           },
                           required: ["label", "duration", "timestamp"],
@@ -317,45 +319,44 @@ module.exports = {
                     },
                   },
                 },
-                if: 
-                  {
-                    properties: {
-                      categories: {
-                        type: "array",
-                        items: {
-                          type: "object",
-                          properties: {
-                            id: { const: "Immediate Delivery" },
-                          },
+                if: {
+                  properties: {
+                    categories: {
+                      type: "array",
+                      items: {
+                        type: "object",
+                        properties: {
+                          id: { const: "Immediate Delivery" },
                         },
                       },
                     },
-                    not: {
-                      required: ["locations"],
-                    },
                   },
-                  // {
-                  //   not: {
-                  //     properties: {
-                  //       categories: {
-                  //         type: "array",
-                  //         items: {
-                  //           type: "object",
-                  //           properties: {
-                  //             id: { const: "Immediate Delivery" },
-                  //           },
-                  //         },
-                  //       },
-                  //     },
-                  //   },
-                  // },
-                else:{
-                required: ["id", "descriptor", "categories", "items"],
-                }
+                  not: {
+                    required: ["locations"],
+                  },
+                },
+                // {
+                //   not: {
+                //     properties: {
+                //       categories: {
+                //         type: "array",
+                //         items: {
+                //           type: "object",
+                //           properties: {
+                //             id: { const: "Immediate Delivery" },
+                //           },
+                //         },
+                //       },
+                //     },
+                //   },
+                // },
+                else: {
+                  required: ["id", "descriptor", "categories", "items"],
+                },
               },
             },
           },
-          additionalProperties:false,
+          additionalProperties: false,
           required: ["bpp/fulfillments", "bpp/descriptor", "bpp/providers"],
         },
       },

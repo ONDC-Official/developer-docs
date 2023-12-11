@@ -120,9 +120,11 @@ module.exports = Object.freeze({
   PCC_CODE: ["1", "2", "3", "4"],
   DCC_CODE: ["1", "2", "3"],
   FULFILLMENT_TAGS_CODE: ["state", "rto_action","weather_check"],
-  FULFILLMENT_TAGS_LIST_CODE: ["ready_to_ship", "return_to_origin"],
+  FULFILLMENT_TAGS_LIST_CODE: ["ready_to_ship", "return_to_origin","raining"],
   FULFILLMENT_TAGS_LIST_VALUE: ["yes", "no"],
   TRACKING_STATUS: ["active", "inactive"],
+  TRACK_TAGS_CODE:["config","order","path"],
+  TRACK_TAGS_LIST_CODE:["id","attr","type","lat_lng","sequence"],
   ORDER_STATE: ["Created", "Accepted", "Cancelled", "In-progress","Completed"],
   CANCELLATION_CODE: [
     "001",

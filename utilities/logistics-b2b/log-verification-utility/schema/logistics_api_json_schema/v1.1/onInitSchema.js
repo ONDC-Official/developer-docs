@@ -236,6 +236,21 @@ module.exports = {
                   },
                 },
               },
+              if: {
+                properties: {
+                  type: { enum: ["ON-ORDER", "POST-FULFILLMENT"] },
+                },
+              },
+              then: {
+                properties: {
+                  collected_by: { const: "BAP" },
+                },
+              },
+              else: {
+                properties: {
+                  collected_by: { const: "BPP" },
+                },
+              },
               required: ["type", "collected_by"],
             },
           },

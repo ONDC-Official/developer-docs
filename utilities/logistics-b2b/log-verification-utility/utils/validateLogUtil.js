@@ -5,7 +5,6 @@ const path = require("path");
 const { getObjValues } = require("./utils");
 const { sortMerge } = require("./mergeSort");
 const Validate = require("./schemaVal");
-//const flowVal = require("./retail/businessVal");
 const clean = require("./clean");
 
 const validateLogs = async (domain, dirPath, outputDestination = "") => {

@@ -163,6 +163,9 @@ module.exports = {
                     },
                     value: {
                       type: "string",
+                      pattern: "^[0-9]+(\\.[0-9]{1,2})?$",
+                      errorMessage:
+                        "precision for all prices in quote can be maximum of 2 decimal digits",
                     },
                   },
                   required: ["currency", "value"],
@@ -186,19 +189,21 @@ module.exports = {
                           },
                           value: {
                             type: "string",
+                            pattern: "^[0-9]+(\\.[0-9]{1,2})?$",
+                            errorMessage:
+                              "precision for all prices in quote can be maximum of 2 decimal digits",
                           },
                         },
                         required: ["currency", "value"],
                       },
                     },
-                    required: [
-                      "@ondc/org/item_id",
-                      "@ondc/org/title_type",
-                      "price",
-                    ],
+                    required: ["@ondc/org/title_type", "price"],
                   },
                 },
               },
+              isQuoteMatching: true,
+              errorMessage:
+                "price is not matching with the total breakup price",
               required: ["price", "breakup"],
             },
             fulfillments: {
@@ -253,9 +258,17 @@ module.exports = {
                             properties: {
                               start: {
                                 type: "string",
+                                pattern:
+                                  "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:
+                                  "should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format",
                               },
                               end: {
                                 type: "string",
+                                pattern:
+                                  "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:
+                                  "should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format",
                               },
                             },
                             required: ["start", "end"],
@@ -301,9 +314,17 @@ module.exports = {
                             properties: {
                               start: {
                                 type: "string",
+                                pattern:
+                                  "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:
+                                  "should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format",
                               },
                               end: {
                                 type: "string",
+                                pattern:
+                                  "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:
+                                  "should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format",
                               },
                             },
                             required: ["start", "end"],
@@ -455,12 +476,19 @@ module.exports = {
                   },
                 },
               },
-              if: { properties: { type: { const: "ON-FULFILLMENT" } } },
+              if: {
+                properties: {
+                  type: { enum: ["ON-ORDER", "POST-FULFILLMENT"] },
+                },
+              },
               then: {
                 properties: {
-                  collected_by: {
-                    const: "BPP",
-                  },
+                  collected_by: { const: "BAP" },
+                },
+              },
+              else: {
+                properties: {
+                  collected_by: { const: "BPP" },
                 },
               },
               required: ["type", "collected_by"],

@@ -255,6 +255,7 @@ module.exports = {
                   },
                 },
               },
+              additionalProperties: false,
               required: ["price", "breakup"],
             },
             fulfillments: {
@@ -415,6 +416,36 @@ module.exports = {
                           },
                         },
                         required: ["code", "short_desc"],
+                        allOf: [
+                          {
+                            if: { properties: { code: { const: "1" } } },
+                            then: {
+                              properties: {
+                                short_desc: {
+                                  minLength: 10,
+                                  maxLength: 10,
+                                  pattern: "^[0-9]{10}$",
+                                  errorMessage: "should be a 10 digit number",
+                                },
+                              },
+                            },
+                          },
+                          {
+                            if: {
+                              properties: { code: { enum: ["2", "3", "4"] } },
+                            },
+                            then: {
+                              properties: {
+                                short_desc: {
+                                  maxLength: 6,
+                                  pattern: "^[a-zA-Z0-9]{1,6}$",
+                                  errorMessage:
+                                    "should not be an empty string or have more than 6 digits",
+                                },
+                              },
+                            },
+                          },
+                        ],
                       },
                       time: {
                         type: "object",
@@ -424,11 +455,17 @@ module.exports = {
                             properties: {
                               start: {
                                 type: "string",
-                                format: "date-time",
+                                pattern:
+                                  "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:
+                                  "should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format",
                               },
                               end: {
                                 type: "string",
-                                format: "date-time",
+                                pattern:
+                                  "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:
+                                  "should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format",
                               },
                             },
                             required: ["start", "end"],
@@ -436,7 +473,7 @@ module.exports = {
                         },
                       },
                     },
-                    required: ["person", "location", "contact", "time"],
+                    required: ["person", "location", "contact"],
                   },
 
                   end: {
@@ -548,10 +585,39 @@ module.exports = {
                           },
                           code: {
                             type: "string",
-                            enum: constants.PCC_CODE,
+                            enum: constants.DCC_CODE,
                           },
                         },
-                        required: ["code", "short_desc"],
+                        required: ["code"],
+                        allOf: [
+                          {
+                            if: { properties: { code: { const: "3" } } },
+                            then: {
+                              properties: {
+                                short_desc: {
+                                  maxLength: 0,
+                                  errorMessage: "is not required",
+                                },
+                              },
+                            },
+                          },
+                          {
+                            if: {
+                              properties: { code: { enum: ["1", "2"] } },
+                            },
+                            then: {
+                              properties: {
+                                short_desc: {
+                                  maxLength: 6,
+                                  pattern: "^[a-zA-Z0-9]{1,6}$",
+                                  errorMessage:
+                                    "should not be an empty string or have more than 6 digits",
+                                },
+                              },
+                              required: ["short_desc"],
+                            },
+                          },
+                        ],
                       },
                       time: {
                         type: "object",
@@ -561,11 +627,17 @@ module.exports = {
                             properties: {
                               start: {
                                 type: "string",
-                                format: "date-time",
+                                pattern:
+                                  "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:
+                                  "should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format",
                               },
                               end: {
                                 type: "string",
-                                format: "date-time",
+                                pattern:
+                                  "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:
+                                  "should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format",
                               },
                             },
                             required: ["start", "end"],
@@ -633,6 +705,7 @@ module.exports = {
                 ],
               },
             },
+
             billing: {
               type: "object",
               properties: {
@@ -804,6 +877,7 @@ module.exports = {
               errorMessage:
                 "does not match context/timestamp - ${3/context/timestamp}",
             },
+          
           },
           required: [
             "id",

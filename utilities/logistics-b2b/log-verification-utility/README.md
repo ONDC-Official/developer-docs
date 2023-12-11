@@ -4,8 +4,7 @@
 
 The tool is a NODE.js based server to check the conformance and compliance of the API logs for [logistics](https://docs.google.com/document/d/10GpEuKZE2g96DFJT3HKq6wIEMhPC-kkMZhXNn2jHHXc/edit?pli=1) and [B2B](https://github.com/ONDC-Official/ONDC-RET-Specifications) based on the examples in the API Contract.
 
-The Log Verification Server is a tool designed to validate log files. It offers an endpoint `/validate/<domain name>` that allows users to send a directory path containing log files for verification. The directory can have single log file or all the log files for the complete flow. In case of single log files, if sent in sequence will validate the complete flow for same transaction id.
-The server responds with a log report, indicating any errors found in the log files.
+The Log Verification Server is a tool designed to validate log files for the [logistics](https://docs.google.com/document/d/10GpEuKZE2g96DFJT3HKq6wIEMhPC-kkMZhXNn2jHHXc/edit?pli=1) and [B2B](https://github.com/ONDC-Official/ONDC-RET-Specifications) domains. It offers an endpoint that allows users to submit a directory path containing log files for verification. The server then responds with a log report, indicating any errors found in the log files.
 
 ### Tech
 
@@ -27,11 +26,10 @@ cd log-verification-utility
 npm i
 ```
 
-2. Set up the .env file in root directory with the following configuration:
+2. Set up the .env file with the following configuration:
 
 ```code
 MAPPLS_API_KEY=<api_key_value>
-PORT=<port>
 ```
 To get the api_key, refer to this link: https://developer.mappls.com/mapping/reverse-geocoding-api
 
@@ -48,26 +46,11 @@ The server will be up and running at `http://localhost:3000`
 http://localhost:3000/validate/<domainName>
 ```
 
-Example endpoint for Logistics
-
-**``
-http://localhost:3000/validate/logistics
-``**
-
-Example endpoint for B2B
-
-**``
-http://localhost:3000/validate/b2b
-``**
-
 5. Send a POST request to the endpoint with the following parameters:
-
 ```code
 logPath: <The path to the directory containing the log files>
 ```
-
 6. Example using Postman:
-
 ```
 Url: http://localhost:3000/validate/logistics
 Request body json: {

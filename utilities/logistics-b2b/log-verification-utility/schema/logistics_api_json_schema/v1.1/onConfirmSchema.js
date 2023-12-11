@@ -161,8 +161,6 @@ module.exports = {
             },
             quote: {
               type: "object",
-              const: { $data: "/confirm/0/message/order/quote" },
-              errorMessage: "object mismatches in /confirm and /on_confirm.",
               properties: {
                 price: {
                   type: "object",
@@ -267,9 +265,13 @@ module.exports = {
                             properties: {
                               start: {
                                 type: "string",
+                                pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
                               },
                               end: {
                                 type: "string",
+                                pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
                               },
                             },
                             required: ["start", "end"],
@@ -278,7 +280,7 @@ module.exports = {
                         required: ["range"],
                       },
                     },
-                    //required: ["time"],
+                  
                   },
                   end: {
                     type: "object",
@@ -291,9 +293,13 @@ module.exports = {
                             properties: {
                               start: {
                                 type: "string",
+                                pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
                               },
                               end: {
                                 type: "string",
+                                pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
                               },
                             },
                             required: ["start", "end"],
@@ -302,7 +308,7 @@ module.exports = {
                         required: ["range"],
                       },
                     },
-                    //required: ["time"],
+                    
                   },
                   agent: {
                     type: "object",
@@ -344,6 +350,7 @@ module.exports = {
                    
                   },
                 },
+                additionalProperties:false,
                 required: ["id", "type", "state", "tracking"],
               },
             },

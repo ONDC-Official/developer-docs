@@ -2,9 +2,9 @@ const _ = require("lodash");
 const dao = require("../../dao/dao");
 const constants = require("../constants");
 const utils = require("../utils");
-const {reverseGeoCodingCheck} = require("../reverseGeoCoding")
+const { reverseGeoCodingCheck } = require("../reverseGeoCoding");
 
-const checkOnSearch = (data, msgIdSet) => {
+const checkOnSearch = async (data, msgIdSet) => {
   const onSrchObj = {};
   let onSearch = data;
   let core_version = onSearch.context.core_version;
@@ -12,7 +12,7 @@ const checkOnSearch = (data, msgIdSet) => {
   let search = dao.getValue("searchObj");
   let validFulfillmentIDs = new Set();
   onSearch = onSearch.message.catalog;
-
+ let avgPickupTime;
   try {
     console.log(
       `Checking TAT for category or item in ${constants.LOG_ONSEARCH} api`
@@ -22,39 +22,61 @@ const checkOnSearch = (data, msgIdSet) => {
         provider.categories.forEach((category) => {
           const catName = category.id;
           const categoryTime = category.time;
-          const currentDate = timestamp.split('T')[0];
+          const currentDate = timestamp.split("T")[0];
           const dateObj = new Date(currentDate);
-          const nextDate = new Date(dateObj.setDate(dateObj.getDate() + 1)).toISOString().split('T')[0];
-          const categoryTimestamp = core_version == "1.1.0" ? categoryTime?.timestamp?.split('T')[0] : categoryTime?.timestamp;
-          if((catName == 'Same Day Delivery' || catName == 'Immediate Delivery') && categoryTimestamp && categoryTimestamp != currentDate){
-            onSrchObj.catTAT = `For Same Day Delivery/Immediate Delivery, TAT date should be the same date i.e. ${currentDate}`
+          const nextDate = new Date(dateObj.setDate(dateObj.getDate() + 1))
+            .toISOString()
+            .split("T")[0];
+          const categoryTimestamp =
+            core_version == "1.1.0"
+              ? categoryTime?.timestamp?.split("T")[0]
+              : categoryTime?.timestamp;
+
+          if (
+            (catName == "Same Day Delivery" ||
+              catName == "Immediate Delivery") &&
+            categoryTimestamp &&
+            categoryTimestamp != currentDate
+          ) {
+            onSrchObj.catTAT = `For Same Day Delivery/Immediate Delivery, TAT date should be the same date i.e. ${currentDate}`;
           }
-          if(catName == 'Next Day Delivery' && categoryTimestamp && categoryTimestamp != nextDate){
-            onSrchObj.catTAT = `For Next Day Delivery, TAT date should be the next date i.e. ${nextDate}`
+          if (
+            catName == "Next Day Delivery" &&
+            categoryTimestamp &&
+            categoryTimestamp != nextDate
+          ) {
+            onSrchObj.catTAT = `For Next Day Delivery, TAT date should be the next date i.e. ${nextDate}`;
           }
           provider.items.forEach((item) => {
             const catId = item.category_id;
             const itemTime = item.time;
-            const itemTimestamp = core_version == "1.1.0" ? itemTime?.timestamp?.split('T')[0] : itemTime?.timestamp;
+            const itemTimestamp =
+              core_version == "1.1.0"
+                ? itemTime?.timestamp?.split("T")[0]
+                : itemTime?.timestamp;
             if (catName === catId && !categoryTime && !itemTime)
               onSrchObj.TAT = `Either Category level TAT or Item level TAT should be given in ${constants.LOG_ONSEARCH} api for category "${catName}"`;
-              if((catId == 'Same Day Delivery' || catId == 'Immediate Delivery') && itemTimestamp && itemTimestamp != currentDate){
-                onSrchObj.itemTAT = `For Same Day Delivery/Immediate Delivery, TAT date should be the same date i.e. ${currentDate}`
-              }
-              if(catId == 'Next Day Delivery' && itemTimestamp && itemTimestamp != nextDate){
-                onSrchObj.itemTAT = `For Next Day Delivery, TAT date should be the next date i.e. ${nextDate}`
-              }  
+            if (
+              (catId == "Same Day Delivery" || catId == "Immediate Delivery") &&
+              itemTimestamp &&
+              itemTimestamp != currentDate 
+            ) {
+              onSrchObj.itemTAT = `For Same Day Delivery/Immediate Delivery, TAT date should be the same date i.e. ${currentDate}`;
+            }
+            if (
+              catId == "Next Day Delivery" &&
+              itemTimestamp &&
+              itemTimestamp != nextDate 
+            ) {
+              onSrchObj.itemTAT = `For Next Day Delivery, TAT date should be the next date i.e. ${nextDate}`;
+            }
           });
         });
       });
     }
   } catch (error) {
-    console.log(
-      `!!Error while fetching category and item TAT`,
-      error
-    );
+    console.log(`!!Error while fetching category and item TAT`, error);
   }
-
 
   //forward and backward shipment
   try {
@@ -78,20 +100,26 @@ const checkOnSearch = (data, msgIdSet) => {
 
       for (const fulfillment of fulfillments) {
         validFulfillmentIDs.add(fulfillment.id);
-        if (fulfillment.type === "Prepaid" || fulfillment.type === "CoD" || fulfillment.type === "Delivery") {
+        if (
+          fulfillment.type === "Prepaid" ||
+          fulfillment.type === "CoD" ||
+          fulfillment.type === "Delivery"
+        ) {
           hasForwardShipment = true;
+          avgPickupTime= fulfillment?.start?.time?.duration
+          dao.setValue("avgPickupTime",avgPickupTime)
         } else if (
           fulfillment.type === "RTO" ||
-          fulfillment.type === "Reverse QC" || fulfillment.type === "Return"
+          fulfillment.type === "Reverse QC" ||
+          fulfillment.type === "Return"
         ) {
           hasBackwardShipment = true;
+          if (fulfillment.type === "RTO") dao.setValue("rtoID", fulfillment.id);
         }
       }
 
       if (hasForwardShipment && hasBackwardShipment) {
-        console.log(
-          "Both forward and backward shipments are present."
-        );
+        console.log("Both forward and backward shipments are present.");
       } else if (!hasForwardShipment) {
         onSrchObj.frwrdShpmnt = `Forward shipment is missing in fulfillments in ${constants.LOG_ONSEARCH} api`;
       } else if (!hasBackwardShipment) {
@@ -139,29 +167,40 @@ const checkOnSearch = (data, msgIdSet) => {
       error
     );
   }
-
+  let providerLoc = false;
   // RGC checks on bpp/provider
 
   console.log(`Checking Reverse Geocoding on bpp/providers`);
   if (onSearch.hasOwnProperty("bpp/providers")) {
-    onSearch["bpp/providers"].forEach((provider) => {
+    const providers = onSearch["bpp/providers"];
+    for (let i = 0; i < providers.length; i++) {
+      const provider = providers[i];
       if (provider.hasOwnProperty("locations")) {
-        provider.locations.forEach(
-          async ({ id, gps, address: { area_code } }) => {
-            try {
-              const [lat, long] = gps.split(",");
-              const match = await reverseGeoCodingCheck(lat, long, area_code);
-              if (!match)
-                onSrchObj[
-                  "bpp/provider:location:" + id + ":RGC"
-                ] = `Reverse Geocoding for location ID ${id} failed. Area Code ${area_code} not matching with ${lat},${long} Lat-Long pair.`;
-            } catch (error) {
-              console.log("bpp/providers error: ", error);
+        const locations = provider.locations;
+        if (locations?.length > 1) {
+          providerLoc = true;
+        }
+        for (let j = 0; j < locations.length; j++) {
+          const {
+            id,
+            gps,
+            address: { area_code },
+          } = locations[j];
+          try {
+            const [lat, long] = gps.split(",");
+            const match = await reverseGeoCodingCheck(lat, long, area_code);
+            if (!match) {
+              onSrchObj[
+                "bpp/provider:location:" + id + ":RGC"
+              ] = `Reverse Geocoding for location ID ${id} failed. Area Code ${area_code} not matching with ${lat},${long} Lat-Long pair.`;
             }
+          } catch (error) {
+            console.log("bpp/providers error: ", error);
           }
-        );
+        }
       }
-    });
+      dao.setValue("providerLoc", providerLoc);
+    }
   }
 
   return onSrchObj;

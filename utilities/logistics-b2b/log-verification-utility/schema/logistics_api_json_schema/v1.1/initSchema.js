@@ -243,8 +243,6 @@ module.exports = {
                               building: {
                                 type: "string",
                                 minLength: 3,
-                                not: { const: { $data: "1/locality" } },
-                                errorMessage: "cannot be equal to locality",
                               },
                               locality: {
                                 type: "string",
@@ -336,6 +334,8 @@ module.exports = {
                     },
                   },
                   additionalProperties: false,
+                  isLengthValid:true,
+                            errorMessage:"name + building + locality < 190 chars",
                   required: [
                     "name",
                     "building",
@@ -348,6 +348,8 @@ module.exports = {
                 },
                 tax_number: {
                   type: "string",
+                  pattern: "^[0-9]{2}[A-Z]{5}[0-9]{4}[0-9A-Z]{4}$",
+                  errorMessage: "should be valid",
                 },
                 phone: {
                   type: "string",

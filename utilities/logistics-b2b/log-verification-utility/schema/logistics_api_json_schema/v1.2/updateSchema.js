@@ -146,6 +146,9 @@ module.exports = {
                 properties: {
                   id: {
                     type: "string",
+                    const: {
+                      $data: "/init/0/message/order/items/0/fulfillment_id",
+                    },
                   },
                   type: {
                     type: "string",
@@ -173,40 +176,38 @@ module.exports = {
                             type: "string",
                           },
                         },
-                        if: {
-                          properties: {
-                            code: {
-                              const: "1",
-                            },
-                          },
-                        },
-                        then: {
-                          properties: {
-                            short_desc: {
-                              type: "string",
-                              minLength: 10,
-                              maxLength: 10,
-                            },
-                          },
-                        },
-                        else: {
-                          if: {
-                            properties: {
-                              code: {
-                                const: "2",
-                              },
-                            },
-                          },
-                          then: {
-                            properties: {
-                              short_desc: {
-                                type: "string",
-                                maxLength: 6,
-                              },
-                            },
-                          },
-                        },
+                       
                         required: ["code", "short_desc"],
+                        allOf: [
+                          {
+                            if: { properties: { code: { const: "1" } } },
+                            then: {
+                              properties: {
+                                short_desc: {
+                                  minLength: 10,
+                                  maxLength: 10,
+                                  pattern: "^[0-9]{10}$",
+                                  errorMessage: "should be a 10 digit number",
+                                },
+                              },
+                            },
+                          },
+                          {
+                            if: {
+                              properties: { code: { enum: ["2", "3", "4"] } },
+                            },
+                            then: {
+                              properties: {
+                                short_desc: {
+                                  maxLength: 6,
+                                  pattern: "^[a-zA-Z0-9]{1,6}$",
+                                  errorMessage:
+                                    "should not be an empty string or have more than 6 digits",
+                                },
+                              },
+                            },
+                          },
+                        ],
                       },
                     },
                     additionalProperties: false,
@@ -227,24 +228,76 @@ module.exports = {
                           },
                           short_desc: {
                             type: "string",
-                            maxLength: 6,
                           },
                           long_desc: {
                             type: "string",
                           },
                         },
-                        required: ["code", "short_desc"],
+                        required: ["code"],
+                        allOf: [
+                          {
+                            if: { properties: { code: { const: "3" } } },
+                            then: {
+                              properties: {
+                                short_desc: {
+                                  maxLength: 0,
+                                  errorMessage: "is not required",
+                                },
+                              },
+                            },
+                          },
+                          {
+                            if: {
+                              properties: { code: { enum: ["1", "2"] } },
+                            },
+                            then: {
+                              properties: {
+                                short_desc: {
+                                  maxLength: 6,
+                                  pattern: "^[a-zA-Z0-9]{1,6}$",
+                                  errorMessage:
+                                    "should not be an empty string or have more than 6 digits",
+                                },
+                              },
+                              required: ["short_desc"],
+                            },
+                          },
+                        ],
                       },
                     },
                     additionalProperties: false,
                     // required: ["instructions"],
                   },
                   tags: {
-                    allOf: [
-                      {
-                        $ref: "confirmSchema#/properties/message/properties/order/properties/fulfillments/items/properties/tags",
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        code: {
+                          type: "string",
+                          enum: ["state"]
+                        },
+                        list: {
+                          type: "array",
+                          items: {
+                            type: "object",
+                            properties: {
+                              code: {
+                                type: "string",
+                                enum: ["ready_to_ship"]
+                              },
+                              value: {
+                                type: "string",
+                                enum: ["yes","no"]
+                              },
+                            },
+                            required: ["code", "value"],
+                          },
+                        },
                       },
-                    ],
+
+                      required: ["code", "list"],
+                    },
                   },
                 },
                 additionalProperties: false,
@@ -273,13 +326,13 @@ module.exports = {
               format: "date-time",
             },
           },
-          isFutureDated: true,
-          errorMessage: "updated_at must not be future dated",
+         
           required: ["id", "items", "fulfillments", "updated_at"],
         },
       },
       required: ["update_target", "order"],
     },
   },
+  
   required: ["context", "message"],
 };

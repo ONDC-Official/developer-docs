@@ -282,7 +282,7 @@ module.exports = {
                   const: { $data: "/init/0/message/order/billing/phone" },
                 },
               },
-              additionalProperties: false,
+             
               required: ["name", "address", "state", "city", "tax_id", "phone"],
             },
             fulfillments: {
@@ -421,7 +421,7 @@ module.exports = {
                               type: "string",
                             },
                           },
-                          required: ["phone", "email"],
+                          required: ["phone"],
                         },
                       },
                       required: ["type", "location", "time", "contact"],
@@ -627,6 +627,9 @@ module.exports = {
                   type: "string",
                 },
               },
+              isQuoteMatching: true,
+              errorMessage:
+                "price is not matching with the total breakup price",
               required: ["price", "breakup", "ttl"],
             },
             payments: {

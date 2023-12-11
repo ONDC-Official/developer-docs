@@ -47,6 +47,7 @@ const checkInit = (data, msgIdSet) => {
 
               if (location.id === element.id) providerLocExists = true;
             });
+           
             if (!providerLocExists) {
               let itemkey = `providerLocErr${i}`;
               initObj[

@@ -228,6 +228,37 @@ function compareDates(dateString1, dateString2) {
   }
 }
 
+function iso8601DurationToSeconds(duration) {
+  const unitMap = {
+    'D': 24 * 60 * 60 * 1000,  // Days to seconds
+    'H': 60 * 60 * 1000,       // Hours to seconds
+    'M': 60 * 1000,            // Minutes to seconds
+    'S': 1000             // Seconds
+  };
+
+  if (duration.startsWith("P")) {
+    duration = duration.slice(1);  // Remove the 'P' at the beginning
+  }
+
+  let totalSeconds = 0;
+  let currentNumber = "";
+  for (const char of duration) {
+    if (!isNaN(char)) {
+      currentNumber += char;
+    } else if (char in unitMap) {
+      totalSeconds += parseInt(currentNumber) * unitMap[char];
+      currentNumber = "";
+    }
+  }
+
+  return totalSeconds;
+}
+
+// Example usages:
+console.log(iso8601DurationToSeconds("P6D"));      // 518400 seconds (6 days)
+console.log(iso8601DurationToSeconds("PT30S"));    // 30 seconds
+console.log(iso8601DurationToSeconds("PT2H30M"));  // 9000 seconds (2 hours 30 minutes)
+
 const hasTwoOrLessDecimalPlaces = (inputString) => {
   const parts = inputString.split(".");
 
@@ -346,6 +377,7 @@ module.exports = {
   categoriesMap,
   compareDates,
   hasTwoOrLessDecimalPlaces,
+  iso8601DurationToSeconds,
   timeDiff,
   getVersion,
   taxNotInlcusive,

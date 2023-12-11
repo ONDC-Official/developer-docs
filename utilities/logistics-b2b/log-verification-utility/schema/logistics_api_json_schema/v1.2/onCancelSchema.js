@@ -194,6 +194,9 @@ module.exports = {
                 },
               },
               required: ["price", "breakup"],
+              isQuoteMatching: true,
+              errorMessage:
+                "price is not matching with the total breakup price",
             },
 
             fulfillments: {
@@ -206,7 +209,7 @@ module.exports = {
                   },
                   type: {
                     type: "string",
-                    enum: constants.FULFILLMENT_TYPE
+                    enum: constants.FULFILLMENT_TYPE,
                   },
                   state: {
                     type: "object",
@@ -216,7 +219,10 @@ module.exports = {
                         properties: {
                           code: {
                             type: "string",
-                            enum: ["Cancelled", "RTO-Initiated","RTO-Disposed"],
+                            enum: [
+                              "Cancelled",
+                              "RTO-Initiated"
+                            ],
                           },
                         },
                         required: ["code"],
@@ -233,10 +239,6 @@ module.exports = {
                   },
                   tracking: {
                     type: "boolean",
-                    const: {
-                      $data:
-                        "/on_confirm/0/message/order/fulfillments/0/tracking",
-                    },
                   },
                   start: {
                     type: "object",
@@ -249,18 +251,21 @@ module.exports = {
                             properties: {
                               start: {
                                 type: "string",
-                                format: "date-time",
+                                pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
                               },
                               end: {
                                 type: "string",
-                                format: "date-time",
+                                pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
                               },
                             },
-                            required: ["start", "end"],
+                            required: ["start"],
                           },
                           timestamp: {
                             type: "string",
-                            format: "date-time",
+                            pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                            errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
                           },
                         },
                       },
@@ -368,18 +373,21 @@ module.exports = {
                             properties: {
                               start: {
                                 type: "string",
-                                format: "date-time",
+                                pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
                               },
                               end: {
                                 type: "string",
-                                format: "date-time",
+                                pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
                               },
                             },
-                            required: ["start", "end"],
+                            required: ["start"],
                           },
                           timestamp: {
                             type: "string",
-                            format: "date-time",
+                            pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                            errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
                           },
                         },
                       },
@@ -543,17 +551,7 @@ module.exports = {
                       required: ["time", "person", "location", "contact"],
                     },
                   },
-                  required: [
-                    "id",
-                    "type",
-                    "state",
-                    "start",
-                    "end",
-                    "tracking",
-                    "agent",
-                    "vehicle",
-                    "tags",
-                  ],
+                  required: ["id", "type", "state", "start", "end", "tracking"],
                 },
                 else: {
                   properties: {
@@ -677,6 +675,31 @@ module.exports = {
             },
           },
           additionalProperties: false,
+
+          // if: {
+          //   properties: {
+          //     cancellation: {
+          //       properties: {
+          //         reason: {
+          //           properties: {
+          //             id: {
+          //               enum: ["011", "012", "013", "014", "015"],
+          //             },
+          //           },
+          //         },
+          //       },
+          //     },
+          //   },
+          // },
+          // then: {
+          //   properties: {
+          //     fulfillments: {
+          //       required: ["tags"],
+          //       errorMessage: "tags required when RTO is triggered",
+          //     },
+          //   },
+          // },
+
           required: [
             "id",
             "state",
@@ -692,9 +715,8 @@ module.exports = {
       },
       required: ["order"],
     },
-    
   },
-  isFutureDated: true,
-  errorMessage: "created_at/updated_at must not be future dated",
+  // isFutureDated: true,
+  // errorMessage: "order/created_at or order/updated_at cannot be future dated w.r.t context/timestamp",
   required: ["context", "message"],
 };

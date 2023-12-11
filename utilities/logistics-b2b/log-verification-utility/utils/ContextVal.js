@@ -6,7 +6,6 @@ const { error } = require("console");
 
 const checkContextVal = (payload, msgIdSet, i) => {
   try {
-    
     action = payload.context.action;
     console.log(`Checking context validations for ${action}`);
     // if (!Obj.hasOwnProperty(action)) {
@@ -14,6 +13,21 @@ const checkContextVal = (payload, msgIdSet, i) => {
     // }
     let Obj = {};
     let data = payload.context;
+    let domain = payload.context.domain;
+    let maxTimeDiff = 0;
+    if (domain === "ONDC:RET10") {
+      maxTimeDiff = 5000;
+      if (action === "init") {
+        maxTimeDiff = utils.iso8601DurationToSeconds(payload.context.ttl);
+        dao.setValue("maxTimeDiff", maxTimeDiff);
+      } else if (action === "on_init") {
+        maxTimeDiff = dao.getValue("maxTimeDiff");
+      }
+    } else if (domain === "nic2004:60232") {
+      maxTimeDiff = 1000;
+    }
+
+    console.log("time difference", maxTimeDiff);
     if (data.timestamp) {
       let date = data.timestamp;
       result = utils.timestampCheck(date);
@@ -26,10 +40,9 @@ const checkContextVal = (payload, msgIdSet, i) => {
     }
     try {
       console.log(`Comparing Message Id of /${action}`);
-    if (!action.includes("on_") || action ==="on_status" || action ==="on_update") {
+      if (action.includes("on_")) {
         if (msgIdSet.has(payload.context.message_id)) {
-          Obj.msgIdErr =
-            "Message Id cannot be same for different sets of APIs";
+          Obj.msgIdErr = "Message Id cannot be same for different sets of APIs";
         } else {
           msgIdSet.add(payload.context.message_id);
         }
@@ -84,11 +97,11 @@ const checkContextVal = (payload, msgIdSet, i) => {
               dao.getValue("tmpstmp")
             );
             //console.log(timeDiff);
-            if (timeDiff > 1000) {
+            if (timeDiff > maxTimeDiff) {
               Obj.tmpstmpErr = `context/timestamp difference between ${action} and ${action.replace(
                 "on_",
                 ""
-              )} should be smaller than 1 sec`;
+              )} should be within ${maxTimeDiff / 1000} seconds`;
             }
           }
         }

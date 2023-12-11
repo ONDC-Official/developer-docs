@@ -46,11 +46,6 @@ module.exports = {
           type: "string",
           allOf: [
             {
-              const: { $data: "/update/0/context/message_id" },
-              errorMessage:
-                "Message ID should be same as /update: ${/update/0/context/message_id}",
-            },
-            {
               not: {
                 const: { $data: "1/transaction_id" },
               },
@@ -100,15 +95,23 @@ module.exports = {
                 properties: {
                   id: {
                     type: "string",
+                    const: { $data: "/init/0/message/order/items/0/id" },
                   },
                   category_id: {
                     type: "string",
+                    const: {
+                      $data: "/init/0/message/order/items/0/category_id",
+                    },
                   },
                   descriptor: {
                     type: "object",
                     properties: {
                       code: {
                         type: "string",
+                        const: {
+                          $data:
+                            "/init/0/message/order/items/0/descriptor/code",
+                        },
                       },
                     },
                   },
@@ -144,11 +147,13 @@ module.exports = {
                             properties: {
                               start: {
                                 type: "string",
-                                minimum: { $data: "7/context/timestamp" },
-                                errorMessage: "${7/context/timestamp}",
+                                pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
                               },
                               end: {
                                 type: "string",
+                                pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
                               },
                             },
                             required: ["start", "end"],
@@ -183,9 +188,13 @@ module.exports = {
                             properties: {
                               start: {
                                 type: "string",
+                                pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
                               },
                               end: {
                                 type: "string",
+                                pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
                               },
                             },
                             required: ["start", "end"],

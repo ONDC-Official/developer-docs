@@ -119,11 +119,13 @@ module.exports = {
                 locations: {
                   type: "array",
                   const: { $data: "/init/0/message/order/provider/locations" },
+                  errorMessage:"mismatch from /init",
                   items: {
                     type: "object",
                     properties: {
                       id: {
                         type: "string",
+                       
                       },
                     },
                     required: ["id"],
@@ -274,7 +276,7 @@ module.exports = {
                   const: { $data: "/init/0/message/order/billing/phone" },
                 },
               },
-              additionalProperties: false,
+              
               required: ["name", "address", "state", "city", "tax_id", "phone"],
             },
             fulfillments: {
@@ -361,7 +363,7 @@ module.exports = {
                               type: "string",
                             },
                           },
-                          required: ["phone", "email"],
+                          required: ["phone"],
                         },
                         customer: {
                           type: "object",
@@ -499,7 +501,7 @@ module.exports = {
                       },
                       "@ondc/org/title_type": {
                         type: "string",
-                        enum: ["item", "Discount", "Packing charges", "delivery ", "tax", "misc"]
+                        enum: ["item", "discount", "packing", "delivery", "tax", "misc"]
                       },
                       price: {
                         type: "object",

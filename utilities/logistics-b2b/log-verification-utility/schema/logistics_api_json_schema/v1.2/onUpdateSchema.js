@@ -1,3 +1,4 @@
+const constants = require("../../../utils/constants");
 const {
   ORDER_STATE,
   TITLE_TYPE,
@@ -54,13 +55,6 @@ module.exports = {
         message_id: {
           type: "string",
           allOf: [
-            {
-              const: {
-                $data: "/update/0/context/message_id",
-              },
-              errorMessage:
-                "Message ID should be same as /update: ${/update/0/context/message_id}",
-            },
             {
               not: {
                 const: { $data: "1/transaction_id" },
@@ -129,6 +123,7 @@ module.exports = {
                 properties: {
                   id: {
                     type: "string",
+                    const: { $data: "/init/0/message/order/items/0/id" },
                   },
                   fulfillment_id: {
                     type: "string",
@@ -138,12 +133,19 @@ module.exports = {
                   },
                   category_id: {
                     type: "string",
+                    const: {
+                      $data: "/init/0/message/order/items/0/category_id",
+                    },
                   },
                   descriptor: {
                     type: "object",
                     properties: {
                       code: {
                         type: "string",
+                        const: {
+                          $data:
+                            "/init/0/message/order/items/0/descriptor/code",
+                        },
                       },
                     },
                   },
@@ -221,11 +223,13 @@ module.exports = {
                                 properties: {
                                   start: {
                                     type: "string",
-                                    format: "date-time",
+                                    pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                    errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
                                   },
                                   end: {
                                     type: "string",
-                                    format: "date-time",
+                                    pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                    errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
                                   },
                                 },
                                 required: ["start", "end"],
@@ -238,28 +242,55 @@ module.exports = {
                             required: ["range"],
                           },
                           instructions: {
+                            type: "object",
+                            properties: {
+                              code: {
+                                type: "string",
+                                enum: constants.PCC_CODE,
+                              },
+                              name: {
+                                type: "string",
+                              },
+                              short_desc: {
+                                type: "string",
+                              },
+                              long_desc: {
+                                type: "string",
+                              },
+                            },
+
+                            required: ["code", "short_desc"],
                             allOf: [
                               {
-                                type: "object",
-                                properties: {
-                                  code: { type: "string" },
-                                  short_desc: {
-                                    type: "string",
-                                  },
-                                  long_desc: {
-                                    type: "string",
-                                  },
-                                  images: {
-                                    type: "array",
-                                    items: {
-                                      type: "string",
+                                if: { properties: { code: { const: "1" } } },
+                                then: {
+                                  properties: {
+                                    short_desc: {
+                                      minLength: 10,
+                                      maxLength: 10,
+                                      pattern: "^[0-9]{10}$",
+                                      errorMessage:
+                                        "should be a 10 digit number",
                                     },
                                   },
                                 },
                               },
                               {
-                                $data:
-                                  "/update/0/message/order/fulfillments/0/start/instructions",
+                                if: {
+                                  properties: {
+                                    code: { enum: ["2", "3", "4"] },
+                                  },
+                                },
+                                then: {
+                                  properties: {
+                                    short_desc: {
+                                      maxLength: 6,
+                                      pattern: "^[a-zA-Z0-9]{1,6}$",
+                                      errorMessage:
+                                        "should not be an empty string or have more than 6 digits",
+                                    },
+                                  },
+                                },
                               },
                             ],
                           },
@@ -284,46 +315,70 @@ module.exports = {
                                 properties: {
                                   start: {
                                     type: "string",
-                                    format: "date-time",
+                                    pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                    errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
                                   },
                                   end: {
                                     type: "string",
-                                    format: "date-time",
+                                    pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                    errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
                                   },
-                                },
+                                },  
                                 required: ["start", "end"],
                               },
                               timestamp: {
                                 type: "string",
-                                format: "date-time",
+                                pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
                               },
                             },
                             required: ["range"],
                           },
                           instructions: {
+                            type: "object",
+                            properties: {
+                              code: {
+                                type: "string",
+                                enum: constants.DCC_CODE,
+                              },
+                              name: {
+                                type: "string",
+                              },
+                              short_desc: {
+                                type: "string",
+                              },
+                              long_desc: {
+                                type: "string",
+                              },
+                            },
+                            required: ["code"],
                             allOf: [
                               {
-                                type: "object",
-                                properties: {
-                                  code: { type: "string" },
-                                  short_desc: {
-                                    type: "string",
-                                  },
-                                  long_desc: {
-                                    type: "string",
-                                  },
-                                  images: {
-                                    type: "array",
-                                    items: {
-                                      type: "string",
+                                if: { properties: { code: { const: "3" } } },
+                                then: {
+                                  properties: {
+                                    short_desc: {
+                                      maxLength: 0,
+                                      errorMessage: "is not required",
                                     },
                                   },
                                 },
-                                required: ["code", "short_desc"],
                               },
                               {
-                                $data:
-                                  "/update/0/message/order/fulfillments/0/end/instructions",
+                                if: {
+                                  properties: { code: { enum: ["1", "2"] } },
+                                },
+                                then: {
+                                  properties: {
+                                    short_desc: {
+                                      maxLength: 6,
+                                      pattern: "^[a-zA-Z0-9]{1,6}$",
+                                      errorMessage:
+                                        "should not be an empty string or have more than 6 digits",
+                                    },
+                                  },
+                                  required: ["short_desc"],
+                                },
                               },
                             ],
                           },
@@ -404,6 +459,7 @@ module.exports = {
             },
             updated_at: {
               type: "string",
+              format:"date-time"
             },
           },
           additionalProperties: false,

@@ -138,6 +138,9 @@ module.exports = {
                     },
                     value: {
                       type: "string",
+                      pattern: "^[0-9]+(\\.[0-9]{1,2})?$",
+                      errorMessage:
+                        "precision for all prices in quote can be maximum of 2 decimal digits",
                     },
                   },
                   required: ["currency", "value"],
@@ -162,6 +165,9 @@ module.exports = {
                           },
                           value: {
                             type: "string",
+                            pattern: "^[0-9]+(\\.[0-9]{1,2})?$",
+                            errorMessage:
+                              "precision for all prices in quote can be maximum of 2 decimal digits",
                           },
                         },
                         required: ["currency", "value"],
@@ -179,6 +185,7 @@ module.exports = {
                   format: "duration",
                 },
               },
+              required: ["price", "breakup", "ttl"],
               isQuoteMatching: true,
               errorMessage:
                 "price is not matching with the total breakup price",

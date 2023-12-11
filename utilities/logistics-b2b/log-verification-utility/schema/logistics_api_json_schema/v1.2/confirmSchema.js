@@ -270,6 +270,7 @@ module.exports = {
                   },
                 },
               },
+              additionalProperties: false,
               required: ["price", "breakup"],
             },
             fulfillments: {
@@ -302,7 +303,7 @@ module.exports = {
                       },
                       duration: {
                         type: "string",
-                        format: "duration",
+                        format: "duration"
                       },
                       location: {
                         type: "object",
@@ -407,7 +408,7 @@ module.exports = {
                               properties: {
                                 short_desc: {
                                   maxLength: 6,
-                                  pattern: "^[0-9]{1,6}$",
+                                  pattern: "^[a-zA-Z0-9]{1,6}$",
                                   errorMessage:
                                     "should not be an empty string or have more than 6 digits",
                                 },
@@ -513,7 +514,7 @@ module.exports = {
                             enum: constants.DCC_CODE,
                           },
                         },
-                        required: ["code", "short_desc"],
+                        required: ["code"],
                         allOf: [
                           {
                             if: { properties: { code: { const: "3" } } },
@@ -534,11 +535,12 @@ module.exports = {
                               properties: {
                                 short_desc: {
                                   maxLength: 6,
-                                  pattern: "^[0-9]{1,6}$",
+                                  pattern: "^[a-zA-Z0-9]{1,6}$",
                                   errorMessage:
                                     "should not be an empty string or have more than 6 digits",
                                 },
                               },
+                              required: ["short_desc"],
                             },
                           },
                         ],
@@ -793,14 +795,39 @@ module.exports = {
                   },
                 },
               },
-              if: { properties: { type: { const: "ON-FULFILLMENT" } } },
-              then: {
-                properties: {
-                  collected_by: {
-                    const: "BPP",
+              allOf: [
+                {
+                  if: {
+                    properties: { type: { const: "ON-FULFILLMENT" } },
+                  },
+                  then: {
+                    required: ["@ondc/org/collection_amount"],
                   },
                 },
-              },
+                {
+                  if: {
+                    properties: {
+                      type: { enum: ["ON-ORDER", "POST-FULFILLMENT"] },
+                    },
+                  },
+                  then: {
+                    not: { required: ["@ondc/org/collection_amount"] },
+                    errorMessage:
+                      "@ondc/org/collection_amount is required only for payment/type 'ON-FULFILLMENT'",
+                  },
+                },
+                {
+                  if: { properties: { type: { const: "ON-FULFILLMENT" } } },
+                  then: {
+                    properties: {
+                      collected_by: {
+                        const: "BPP",
+                      },
+                    },
+                  },
+                },
+              ],
+
               required: ["collected_by", "type"],
             },
             "@ondc/org/linked_order": {
@@ -1014,8 +1041,8 @@ module.exports = {
       required: ["order"],
     },
   },
-  isFutureDated: true,
-  errorMessage:
-    "order/created_at or order/updated_at cannot be future dated w.r.t context/timestamp",
+  // isFutureDated: true,
+  // errorMessage:
+  //   "order/created_at or order/updated_at cannot be future dated w.r.t context/timestamp",
   required: ["context", "message"],
 };

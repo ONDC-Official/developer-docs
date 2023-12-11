@@ -269,7 +269,7 @@ module.exports = {
                   const: { $data: "/init/0/message/order/billing/phone" },
                 },
               },
-              additionalProperties: false,
+              
               required: ["name", "address", "state", "city", "tax_id", "phone"],
             },
             fulfillments: {
@@ -473,11 +473,7 @@ module.exports = {
                       },
                       "@ondc/org/title_type": {
                         type: "string",
-                        enum: ["item", "delivery",
-                            "packing",
-                            "tax",
-                            "discount",
-                            "misc"]
+                        enum: ["item", "discount", "packing", "delivery", "tax", "misc"]
                       },
                       price: {
                         type: "object",
@@ -552,6 +548,9 @@ module.exports = {
                   type: "string",
                 },
               },
+              isQuoteMatching: true,
+              errorMessage:
+                "price is not matching with the total breakup price",
               required: ["price", "breakup", "ttl"],
             },
             payments: {

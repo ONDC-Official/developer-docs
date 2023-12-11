@@ -127,7 +127,7 @@ module.exports = {
                       properties: {
                         id: {
                           type: "string",
-                          enum:constants.CATEGORY_ID
+                          enum: constants.CATEGORY_ID,
                         },
                         time: {
                           type: "object",
@@ -140,12 +140,12 @@ module.exports = {
                               type: "string",
                               format: "duration",
                             },
-                            timestamp:{
-                              type:"string",
-                              format:"date"
-                            }
+                            timestamp: {
+                              type: "string",
+                              format: "date",
+                            },
                           },
-                          required: ["label", "duration","timestamp"],
+                          required: ["label", "duration", "timestamp"],
                         },
                       },
                       required: ["id"],
@@ -235,7 +235,7 @@ module.exports = {
                         },
                         category_id: {
                           type: "string",
-                          enum:constants.CATEGORY_ID
+                          enum: constants.CATEGORY_ID,
                         },
                         fulfillment_id: {
                           type: "string",
@@ -245,7 +245,7 @@ module.exports = {
                           properties: {
                             code: {
                               type: "string",
-                              enum: constants.SHIPMENT_TYPE
+                              enum: constants.SHIPMENT_TYPE,
                             },
                             name: {
                               type: "string",
@@ -275,6 +275,9 @@ module.exports = {
                             },
                             value: {
                               type: "string",
+                              pattern: "^[0-9]+(\\.[0-9]{1,2})?$",
+                              errorMessage:
+                                "precision for all prices in quote can be maximum of 2 decimal digits",
                             },
                           },
                           required: ["currency", "value"],
@@ -288,7 +291,7 @@ module.exports = {
                             },
                             duration: {
                               type: "string",
-                              format: "duration"
+                              format: "duration",
                             },
                             timestamp: {
                               type: "string",

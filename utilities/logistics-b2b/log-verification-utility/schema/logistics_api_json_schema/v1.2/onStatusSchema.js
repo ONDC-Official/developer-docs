@@ -198,6 +198,9 @@ module.exports = {
                 },
               },
               required: ["price", "breakup"],
+              isQuoteMatching: true,
+              errorMessage:
+                "price is not matching with the total breakup price",
             },
             fulfillments: {
               type: "array",
@@ -242,18 +245,27 @@ module.exports = {
                             properties: {
                               start: {
                                 type: "string",
-                                format: "date-time",
+                                pattern:
+                                  "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:
+                                  "should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format",
                               },
                               end: {
                                 type: "string",
-                                format: "date-time",
+                                pattern:
+                                  "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:
+                                  "should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format",
                               },
                             },
                             required: ["start", "end"],
                           },
                           timestamp: {
                             type: "string",
-                            format: "date-time",
+                            pattern:
+                              "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                            errorMessage:
+                              "should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format",
                           },
                         },
                       },
@@ -360,18 +372,27 @@ module.exports = {
                             properties: {
                               start: {
                                 type: "string",
-                                format: "date-time",
+                                pattern:
+                                  "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:
+                                  "should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format",
                               },
                               end: {
                                 type: "string",
-                                format: "date-time",
+                                pattern:
+                                  "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:
+                                  "should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format",
                               },
                             },
                             required: ["start", "end"],
                           },
                           timestamp: {
                             type: "string",
-                            format: "date-time",
+                            pattern:
+                              "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                            errorMessage:
+                              "should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format",
                           },
                         },
                       },
@@ -543,6 +564,10 @@ module.exports = {
                     $data: "/on_confirm/0/message/order/payment/type",
                   },
                 },
+                status: {
+                  type: "string",
+                  enum: ["PAID", "NOT-PAID"],
+                },
                 collected_by: {
                   type: "string",
                   const: {
@@ -554,7 +579,10 @@ module.exports = {
                   properties: {
                     timestamp: {
                       type: "string",
-                      format: "date-time",
+                      pattern:
+                        "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                      errorMessage:
+                        "should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format",
                     },
                   },
                 },
@@ -600,7 +628,7 @@ module.exports = {
                   },
                 },
               },
-              required: ["type", "collected_by"],
+              required: ["type", "collected_by","status"],
             },
             billing: {
               type: "object",

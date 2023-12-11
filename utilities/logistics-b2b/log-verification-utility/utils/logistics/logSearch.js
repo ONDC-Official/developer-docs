@@ -66,7 +66,7 @@ const checkSearch = async (data, msgIdSet) => {
   } catch (error) {
     console.log("Error in end location",error)
   }
-  //console.log("srchObj from search:", srchObj)
+
   dao.setValue("searchObj", search);
   return srchObj;
 };

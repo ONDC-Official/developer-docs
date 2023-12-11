@@ -58,7 +58,7 @@ module.exports = {
           type: "string",
           const: { $data: "/select/0/context/transaction_id" },
           errorMessage:
-                "Transaction ID should be same across the transaction: ${/select/0/context/transaction_id}",
+            "Transaction ID should be same across the transaction: ${/select/0/context/transaction_id}",
         },
         message_id: {
           type: "string",
@@ -155,6 +155,7 @@ module.exports = {
                         required: ["count"],
                       },
                     },
+                    additionalProperties: false,
                     required: ["selected"],
                   },
                 },
@@ -279,7 +280,8 @@ module.exports = {
                             },
                             gps: {
                               type: "string",
-                              pattern: "^(-?[0-9]{1,3}(?:.[0-9]{6,15})?),( )*?(-?[0-9]{1,3}(?:.[0-9]{6,15})?)$",
+                              pattern:
+                                "^(-?[0-9]{1,3}(?:.[0-9]{6,15})?),( )*?(-?[0-9]{1,3}(?:.[0-9]{6,15})?)$",
                               errorMessage: "Incorrect gps value",
                             },
                             address: {
@@ -325,15 +327,21 @@ module.exports = {
                               properties: {
                                 start: {
                                   type: "string",
+                                  pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                  errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
                                 },
                                 end: {
                                   type: "string",
+                                  pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                  errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
                                 },
                               },
                               required: ["start", "end"],
                             },
                             timestamp: {
                               type: "string",
+                              pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                              errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
                             },
                           },
                           required: ["range"],
@@ -428,23 +436,23 @@ module.exports = {
                   {
                     properties: {
                       state: {
-                        const: "Order-picked-up"
+                        const: "Order-picked-up",
                       },
                       stops: {
                         type: "array",
                         items: {
                           properties: {
                             type: {
-                              const: "start"
+                              const: "start",
                             },
                             time: {
-                              required: ["range", "timestamp"]
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
+                              required: ["range", "timestamp"],
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
                 ],
               },
             },
@@ -559,6 +567,9 @@ module.exports = {
                   type: "string",
                 },
               },
+              isQuoteMatching: true,
+              errorMessage:
+                "price is not matching with the total breakup price",
               required: ["price", "breakup", "ttl"],
             },
             payments: {
@@ -587,6 +598,9 @@ module.exports = {
                   },
                   type: {
                     type: "string",
+                    const: {
+                      $data: "/on_confirm/0/message/order/payments/0/type",
+                    },
                     enum: [
                       "PRE-FULFILLMENT",
                       "ON-FULFILLMENT",
@@ -595,6 +609,10 @@ module.exports = {
                   },
                   collected_by: {
                     type: "string",
+                    const: {
+                      $data:
+                        "/on_confirm/0/message/order/payments/0/collected_by",
+                    },
                     enum: ["BAP", "BPP"],
                   },
                   "@ondc/org/buyer_app_finder_fee_type": {
@@ -692,20 +710,18 @@ module.exports = {
 
             documents: {
               type: "array",
-              items: 
-                {
-                  type: "object",
-                  properties: {
-                    url: {
-                      type: "string",
-                    },
-                    label: {
-                      type: "string",
-                    },
+              items: {
+                type: "object",
+                properties: {
+                  url: {
+                    type: "string",
                   },
-                  required: ["url", "label"],
+                  label: {
+                    type: "string",
+                  },
                 },
-              
+                required: ["url", "label"],
+              },
             },
             created_at: {
               type: "string",
@@ -737,72 +753,7 @@ module.exports = {
       },
       required: ["order"],
     },
-    search: {
-      type: "array",
-      items: {
-        $ref: "searchSchema#",
-      },
-    },
-    on_search: {
-      type: "array",
-      items: {
-        $ref: "onSearchSchema#",
-      },
-    },
-    select: {
-      type: "array",
-      items: {
-        $ref: "selectSchema#",
-      },
-    },
-    on_select: {
-      type: "array",
-      items: {
-        $ref: "onSelectSchema#",
-      },
-    },
-    init: {
-      type: "array",
-      items: {
-        $ref: "initSchema#",
-      },
-    },
-    on_init: {
-      type: "array",
-      items: {
-        $ref: "onInitSchema#",
-      },
-    },
-    confirm: {
-      type: "array",
-      items: {
-        $ref: "confirmSchema#",
-      },
-    },
-    on_confirm: {
-      type: "array",
-      items: {
-        $ref: "onConfirmSchema#",
-      },
-    },
-    update: {
-      type: "array",
-      items: {
-        $ref: "updateSchema#",
-      },
-    },
-    on_update: {
-      type: "array",
-      items: {
-        $ref: "onUpdateSchema#",
-      },
-    },
-    status: {
-      type: "array",
-      items: {
-        $ref: "statusSchema#",
-      },
-    },
   },
+ 
   required: ["context", "message"],
 };

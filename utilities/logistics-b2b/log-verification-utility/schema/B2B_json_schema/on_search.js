@@ -58,7 +58,7 @@ module.exports = {
           type: "string",
           const: { $data: "/search/0/context/transaction_id" },
           errorMessage:
-                "Transaction ID should be same across the transaction: ${/search/0/context/transaction_id}",
+            "Transaction ID should be same across the transaction: ${/search/0/context/transaction_id}",
         },
         message_id: {
           type: "string",
@@ -75,14 +75,14 @@ module.exports = {
               errorMessage:
                 "Message ID should not be equal to transaction_id: ${1/transaction_id}",
             },
-          ]
+          ],
         },
         timestamp: {
           type: "string",
           format: "date-time",
         },
         ttl: {
-          type: "string"       
+          type: "string",
         },
       },
       required: [
@@ -116,7 +116,7 @@ module.exports = {
                   },
                   type: {
                     type: "string",
-                    enum: ["Delivery", "Self-Pickup"]
+                    enum: ["Delivery", "Self-Pickup"],
                   },
                 },
                 required: ["id", "type"],
@@ -224,7 +224,7 @@ module.exports = {
                   },
                   ttl: {
                     type: "string",
-                    format: "duration"
+                    format: "duration",
                   },
                   locations: {
                     type: "array",
@@ -248,7 +248,6 @@ module.exports = {
                           properties: {
                             code: {
                               type: "string",
-                              pattern: "^(std:?[0-9]{2,3})$"
                             },
                             name: {
                               type: "string",
@@ -261,7 +260,6 @@ module.exports = {
                           properties: {
                             code: {
                               type: "string",
-                              pattern: "^(std:?[0-9]{2,3})$"
                             },
                           },
                           required: ["code"],
@@ -279,7 +277,7 @@ module.exports = {
                           type: "string",
                         },
                       },
-                      additionalProperties:false,
+                      additionalProperties: false,
                       required: [
                         "id",
                         "gps",
@@ -951,7 +949,7 @@ module.exports = {
               },
             },
           },
-          additionalProperties:false,
+          additionalProperties: false,
           required: ["fulfillments", "payments", "descriptor", "providers"],
         },
       },
