@@ -30,7 +30,7 @@
     </body>
 </html>
 ```
-> *Note: Please use the illustrated html as-is and only replace `SIGNED_UNIQUE_REQ_ID` with your correspnding generated signature, specifically use single quotes `'` to hold the information*
+> *Note: Please use the illustrated html as-is and only replace `SIGNED_UNIQUE_REQ_ID` with your corresponding generated signature, specifically use single quotes `'` to hold the information*
 
 12.	Configure developed /on_subscribe implementation to use enc_dec_private_key (generated in step 8) and ONDC public key to decrypt the challenge_string
 13.	Create /subscribe request as follows
@@ -187,7 +187,7 @@ Please connect with ONDC officials - Supriyo and Neeraj and get your subscriber 
 }
 ```
 Resolution
-Need to put timestamp within stipulated timegap defined by ONDC.
+Need to put timestamp within stipulated time gap defined by ONDC.
 ### Domain Verification Failed
 ```
 {
@@ -304,5 +304,5 @@ Resolution
 Resolution
 - Use Plain Request_ID: Network Participant should use plain request_id while generating signature, without applying any hashing on the request_id
 - Ensure Consistent Request_ID: Network Participant should use the same request_id in request body which they used while generating the signature. The request_id used during signature generation must match the one used during verification to ensure successful validation
-- Ensure signing public key: Network Participant should send the same signing public key in the request body, who's corresnponding signing private key was used for signing.
+- Ensure signing public key: Network Participant should send the same signing public key in the request body, who's corresponding signing private key was used for signing.
 
