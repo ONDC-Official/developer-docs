@@ -65,6 +65,7 @@ The NP performs the following steps to create the Authorization header
     ```
 7. Finally the Authorization header will look like this. (Let's assume subscriber_id = example-bap.com, unique_key_id = bap1234)
     ```
+      Signature 
       keyId="example-bap.com|bap1234|ed25519",algorithm="ed25519",created="1641287875",expires="1641291475",headers=" (created)(expires)digest",signature="cjbhP0PFyrlSCNszJM1F/YmHDVAWsZqJUPzojnE/7TJU3fJ/rmIlgaUHEr5E0/2PIyf0tpSnWtT6cyNNlpmoAQ=="
     ```  
  8. Finally the NP includes the authorization header in the request and calls the receiver's API
