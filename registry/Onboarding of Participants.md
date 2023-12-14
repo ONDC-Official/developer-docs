@@ -34,7 +34,7 @@
      [Libsodium library](https://libsodium.gitbook.io/doc/bindings_for_other_languages) can be utilised to generate the key pairs.
      For NodeJS: Inbuilt Crypto library should be used instead of Libsodium library. The generated encryption public key is already encoded in the ASN.1 DER format.
    - You can refer to the documentation for information on the format and generation of keys [here](./key-format-generation.md).
-3. Generate Unique Request ID (request_id). It should be unique for a Network Participant. It can be in any format. For example - it can be UUID or a simple number or alphanumeric format.
+3. Generate Unique Request ID (request_id). It should be unique for a network participant. It can be in any format. For example - it can be UUID or a simple number or alphanumeric format.
 4. Generate SIGNED_UNIQUE_REQ_ID => ( Sign request_id using signing_private_key generated in step 1 (signed using ed25519 algorithm without hashing) )
 
    The [on_subscribe utility](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/on_subscibe-service) has methods implemented to sign the message (request_id)
