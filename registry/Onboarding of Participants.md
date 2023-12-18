@@ -2,17 +2,21 @@
 
 ## Supported Registrations
 
-![image](https://user-images.githubusercontent.com/107539333/190342634-ad4ff9a6-b1e6-4ba7-b55a-6d25d6b4b5f9.png)
+1. ops_no : 1 - Buyer App Registration
+2. ops_no : 2 - Seller App Registration
+3. ops_no : 4 - Buyer & Seller App Registration
+
+> Note: ops_no 3 & 5 have been depricated feature of Seller On Record(SOR) from Registry
 
 ## Prerequisites
 
-1. Purchase a valid domain (FQDN/DNS) name. This becomes part of your subscriber ID (subscriber_id).
+1. Newtwork Participant(NP) shall have a valid domain (FQDN/DNS) name. This becomes part of your subscriber ID (subscriber_id).
 
    ```
    eg: prod.ondcapp.com
    ```
 
-2. Purchase a valid SSL certificate for your domain. This will be used while performing Online Certificate Status Protocol (OCSP) validation.
+2. NP shall have a valid SSL certificate for your domain. This will be used while performing Online Certificate Status Protocol (OCSP) validation.
 3. Get your subscriber_id whitelisted/approved by ONDC. To do that
 
    1. For Staging: Fill out the [subscriber id whitelisting form](https://docs.google.com/forms/d/1k5k-N2JW4azLsdkJVbWjlsW549Nz5tUatYozSmJERQk/viewform?edit_requested=true).
@@ -23,8 +27,8 @@
 
 ## Steps
 
-> Steps 4 to 7 can be done using the utility [here](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/on_subscibe-service)
-1. Generate Signing Key Pair (ed25519 Algorithm) - signing_public_key and signing_private_key; (base64 encoded)
+> Steps 4 to 7 can be done using the utility [here](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/on_subscibe-service). Every Participant is shall perform Step 1 to 3 to generate keys as below
+1. Generate Signing Key Pair (ed25519 Algorithm) - signing_public_key and signing_private_key; (base64 encoded) utility below in step 2
 2. Generate Encryption Key Pair (X25519 Algorithm) - encryption_public_key (ASN.1 Der format-> base64 encoded) and encryption_private_key (base64 encoded)
    Utilities to generate signing and encryption key pairs here:
    - [Java](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/ondc-crypto-utility-master)
@@ -100,30 +104,25 @@ https://prod.registry.ondc.org/subscribe
 
 11. The call is received by the respective registry and following operations are performed:
 
-    i. /subscribe payload schema is verified
-    ii. OCSP Check: SSL Certificate is verified
-    iii. Domain Verification: ondc-site-verification.html is verified;
-       - should be hosted on `https://<subscriber_id>/ondc-site-verification.html`
-       - request_id should be signed using the signing private key (without hashing)
-    
-    iv. /on_susbcribe is called by the registry with a challenge string hosted on the callback_url
-       `https://<subscriber_id>/<callback_url>/on_subscribe`
-
-```json
-{
-  "subscriber_id": "abc.com",
-  "challenge": "encrypted_challenge_string"
-}
-```
-
-
-    v. The challenge string should be decrypted using the shared key (generated in step 6) and answer should be provided as a sync response.
-
-```json
-{
-  "answer": "decrypted_challange_string"
-}
-```
+> 1. /subscribe payload schema is verified
+> 2. OCSP Check: SSL Certificate is verified
+> 3. Domain Verification: ondc-site-verification.html is verified;
+> - should be hosted on `https://<subscriber_id>/ondc-site-verification.html`
+> - request_id should be signed using the signing private key (without hashing)  
+> iv. /on_susbcribe is called by the registry with a challenge string hosted on the callback_url
+>      `https://<subscriber_id>/<callback_url>/on_subscribe`
+> ```json
+> {
+>   "subscriber_id": "abc.com",
+>  "challenge": "encrypted_challenge_string"
+> }
+> ```
+> v. The challenge string should be decrypted using the shared key (generated in step 6) and answer should be provided as a sync response.
+> ```json
+> {
+>   "answer": "decrypted_challange_string"
+> }
+> ```
 
 12. Verify whether you have received a successful response. If a success response is not received, refer to the section listing possible errors. If the issue persists, kindly reach out to our support desk using the details provided in step 14 below.
 
@@ -144,8 +143,31 @@ https://prod.registry.ondc.org/subscribe
 ```
 
 13. Check your record in registry lookup
+    
+i. /lookup
 
-    i. /vlookup
+```
+# For Staging
+https://staging.registry.ondc.org/lookup
+
+# For Pre-prod
+https://preprod.registry.ondc.org/ondc/lookup
+
+# For PROD
+https://prod.registry.ondc.org/lookup
+```
+
+```
+	curl --location --request POST 'https://preprod.registry.ondc.org/ondc/lookup' \
+	--header 'Content-Type: application/json' \
+	--data-raw '{
+
+	    "country": "IND",
+	    "domain":"ONDC:RET10"
+
+	}'
+```
+ii. /vlookup
 
 ```
 # For Staging
@@ -181,34 +203,7 @@ https://prod.registry.ondc.org/vlookup
 - signature: search_parameters signed using private key of request initiator: sign(country|domain|type|city|subscriber_id) => - sign(IND|ONDC:RET10|sellerApp|std:080|ondc.org)
 - type: enums are "buyerApp", "sellerApp", "gateway"
 
-
-
 ```
-
-      ii. /lookup
-
-```
-# For Staging
-https://staging.registry.ondc.org/lookup
-
-# For Pre-prod
-https://preprod.registry.ondc.org/ondc/lookup
-
-# For PROD
-https://prod.registry.ondc.org/lookup
-```
-
-```
-	curl --location --request POST 'https://preprod.registry.ondc.org/ondc/lookup' \
-	--header 'Content-Type: application/json' \
-	--data-raw '{
-
-	    "country": "IND",
-	    "domain":"ONDC:RET10"
-
-	}'
-```
-
 14. In case if you are not able to find your record in lookup and vlookup, please report to techsupport@ondc.org
 
 ```
