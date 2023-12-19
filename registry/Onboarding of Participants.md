@@ -77,7 +77,10 @@ To join the ONDC network, Network Participants (NPs) need to be included in the 
 > 2. ops_no : 2 - Seller App Registration
 > 3. ops_no : 4 - Buyer & Seller App Registration
 
-> Note: ops_no 3 & 5 have been depricated as feature of Seller On Record (SOR) in Registry is obsolete.
+> Note: ops_no 3 & 5 will be depricated as per the dates below as feature of Seller On Record (SOR) in registry will be obsolete. 
+> Staging: 29/12/2023
+> Pre Prod: TBD
+> Production: TBD
 
 9. Create /subscribe request as follows:
 
