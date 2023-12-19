@@ -16,7 +16,7 @@ This repository contains a simple Express.js server that facilitates the ONDC (O
 
 ### Usage
 
-1. Start the server by running `node index.js` in the terminal.
+1. Start the server by running `npm start` in the terminal.
 2. The server will run on http://localhost:9900.
 
 ## Routes
