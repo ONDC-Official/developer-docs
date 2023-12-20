@@ -33,16 +33,25 @@ export interface IVerifyHeader {
   publicKey: string;
 }
 
-export interface IsSignatureValid {
+export interface IsHeaderValid {
   header: string;
   body: any;
   publicKey: string;
 }
 export interface ICreateAuthorizationHeader {
-  message: GenericObject;
+  body: GenericObject;
   privateKey: string;
-  bapId: string;
-  bapUniqueKeyId: string;
+  subscriberId: string;
+  subscriberUniqueKeyId: string;
   expires?: string;
   created?: string;
+}
+
+export interface CreateVLookupSignature {
+  country: string;
+  domain: string;
+  type: string;
+  city: string;
+  subscriber_id: string;
+  privateKey: string;
 }
