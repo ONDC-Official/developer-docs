@@ -1,12 +1,6 @@
 # Onboarding of Network Participants 
 
-## Supported Registrations
-
-1. ops_no : 1 - Buyer App Registration
-2. ops_no : 2 - Seller App Registration
-3. ops_no : 4 - Buyer & Seller App Registration
-
-> Note: ops_no 3 & 5 have been depricated as feature of Seller On Record (SOR) in Registry is obsolete.
+To join the ONDC network, Network Participants (NPs) need to be included in the ONDC registry. The prerequisites and steps for an NP to be onboarded onto the ONDC Registry (Staging, Pre Production, Production) are as follows:
 
 ## Prerequisites
 
@@ -28,6 +22,7 @@
 ## Steps
 
 > Steps 4 to 7 can be done using the utility [here](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/on_subscibe-service). Every Participant shall perform Steps 1 and 2 to generate keys as below.
+
 1. Generate Signing Key Pair (ed25519 Algorithm) - signing_public_key and signing_private_key; (base64 encoded) 
 > Refer utility below in step 2
 2. Generate Encryption Key Pair (X25519 Algorithm) - encryption_public_key (ASN.1 Der format-> base64 encoded) and encryption_private_key (base64 encoded). Use the utilities provided below to generate signing and encryption key pairs:
@@ -75,6 +70,21 @@
       The (Node.JS/Python) [utility](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/on_subscibe-service) can be used to implement the /on_subscribe endpoint.
 
 8. Refer [swaggerhub document](https://app.swaggerhub.com/apis-docs/ONDC/ONDC-Registry-Onboarding/2.0.5#/ONDC%20Network%20Participant%20Onboarding/post_subscriber_url_on_subscribe) for request body and response of /subscribe API.
+
+> ### Supported Registrations
+>
+> 1. ops_no : 1 - Buyer App Registration
+> 2. ops_no : 2 - Seller App Registration
+> 3. ops_no : 3 - MSN Seller App Registration
+> 4. ops_no : 4 - Buyer & Seller App Registration
+> 5. ops_no : 5 - Buyer & MSN Seller App Registration
+>
+> Note: ops_no 3 & 5 will be deprecated as per the dates below as feature of Seller On Record (SOR) in registry will be obsolete. 
+>
+> Staging: 29/12/2023,
+> Pre Prod: TBD,
+> Production: TBD,
+
 9. Create /subscribe request as follows:
 
 ```
