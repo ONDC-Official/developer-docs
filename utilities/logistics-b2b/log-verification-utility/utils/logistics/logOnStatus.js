@@ -74,6 +74,12 @@ const checkOnStatus = (data, msgIdSet) => {
             onStatusObj.deliveryTimeErr = `Delivery timestamp (fulfillments/end/time/timestamp) cannot be provided for fulfillment state - ${ffState}`;
           }
         }
+
+        if (ffState === "Agent-assigned" || ffState === "Searching-for-Agent") {
+          if (orderState !== "In-progress") {
+            onStatusObj.ordrStatErr = `Order state should be 'In-progress' for fulfillment state - ${ffState}`;
+          }
+        }
         if (ffState === "Order-picked-up") {
           if (orderState !== "In-progress") {
             onStatusObj.ordrStatErr = `Order state should be 'In-progress' for fulfillment state - ${ffState}`;
@@ -142,14 +148,12 @@ const checkOnStatus = (data, msgIdSet) => {
             onStatusObj.ordrStatErr = `Order state should be 'Cancelled' for fulfillment state - ${ffState}`;
           }
           if (fulfillments.length > 1) {
-            if (!dao.getValue("pickupTime")) {
-              onStatusObj.msngPickupState = `/on_status call for Fulfillment state - 'Order-picked-up' missing`;
-            } else if (!fulfillment.start.time.timestamp) {
+            if (!fulfillment.start.time.timestamp) {
               onStatusObj.msngPickupTimeErr = `Pickup timestamp (fulfillments/start/time/timestamp) is missing for fulfillment state - ${ffState}`;
             }
           }
-          if(fulfillment.tracking===true){
-            onStatusObj.trackErr=`fulfillment tracking can be disabled (false) after the fulfillment is 'Cancelled`
+          if (fulfillment.tracking === true) {
+            onStatusObj.trackErr = `fulfillment tracking can be disabled (false) after the fulfillment is 'Cancelled`;
           }
           if (fulfillment.start.time.timestamp && dao.getValue("pickupTime")) {
             if (

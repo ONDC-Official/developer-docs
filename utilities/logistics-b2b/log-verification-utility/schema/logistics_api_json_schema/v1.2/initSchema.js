@@ -459,6 +459,7 @@ module.exports = {
                   errorMessage:"should be same as in /search - ${/search/0/message/intent/payment/type}"
                 },
               },
+              additionalProperties:false,
               required: ["type"],
             },
           },

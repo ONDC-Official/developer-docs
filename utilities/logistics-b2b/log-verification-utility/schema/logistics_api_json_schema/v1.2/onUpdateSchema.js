@@ -259,7 +259,7 @@ module.exports = {
                               },
                             },
 
-                            required: ["code", "short_desc"],
+                            required: [],
                             allOf: [
                               {
                                 if: { properties: { code: { const: "1" } } },
