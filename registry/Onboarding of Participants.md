@@ -72,12 +72,15 @@ To join the ONDC network, Network Participants (NPs) need to be included in the 
 8. Refer [swaggerhub document](https://app.swaggerhub.com/apis-docs/ONDC/ONDC-Registry-Onboarding/2.0.5#/ONDC%20Network%20Participant%20Onboarding/post_subscriber_url_on_subscribe) for request body and response of /subscribe API.
 
 > ### Supported Registrations
-
+>
 > 1. ops_no : 1 - Buyer App Registration
 > 2. ops_no : 2 - Seller App Registration
-> 3. ops_no : 4 - Buyer & Seller App Registration
-
-> Note: ops_no 3 & 5 will be depricated as per the dates below as feature of Seller On Record (SOR) in registry will be obsolete. 
+> 3. ops_no : 3 - MSN Seller App Registration
+> 4. ops_no : 4 - Buyer & Seller App Registration
+> 5. ops_no : 5 - Buyer & MSN Seller App Registration
+>
+> Note: ops_no 3 & 5 will be deprecated as per the dates below as feature of Seller On Record (SOR) in registry will be obsolete. 
+>
 > Staging: 29/12/2023
 > Pre Prod: TBD
 > Production: TBD
