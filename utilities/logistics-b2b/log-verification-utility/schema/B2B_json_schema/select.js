@@ -177,7 +177,8 @@ module.exports = {
                           type: "object",
                           properties: {
                             code: {
-                              type: "string"
+                              type: "string",
+                              enum: ["BUYER_TERMS"],
                             },
                           },
                           required: ["code"],
@@ -191,7 +192,8 @@ module.exports = {
                                 type: "object",
                                 properties: {
                                   code: {
-                                    type: "string"
+                                    type: "string",
+                                    enum: ["ITEM_REQ", "PACKAGING_REQ"],
                                   },
                                 },
                                 required: ["code"],

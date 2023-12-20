@@ -197,7 +197,7 @@ module.exports = {
                               },
                             },
                             isLengthValid:true,
-                            errorMessage:"name + building + locality < 190 chars",
+                            
                             required: [
                               "name",
                               "building",
@@ -275,7 +275,7 @@ module.exports = {
                               },
                             },
                             isLengthValid:true,
-                            errorMessage:"name + building + locality < 190 chars",
+                            
                             required: [
                               "name",
                               "building",
@@ -346,7 +346,6 @@ module.exports = {
                     },
                   },
                   isLengthValid: true,
-                  errorMessage: "name + building + locality < 190 chars",
                   additionalProperties: false,
                   required: [
                     "name",
