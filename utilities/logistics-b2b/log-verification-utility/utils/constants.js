@@ -167,5 +167,7 @@ module.exports = Object.freeze({
     "RTO-Disposed",
     "Cancelled",
   ],
-  CANCELLATION_TAGS_LIST:["retry_count","rto_id","cancellation_reason_id","sub_reason_id","cancelled_by"]
+  CANCELLATION_TAGS_LIST:["retry_count","rto_id","cancellation_reason_id","sub_reason_id","cancelled_by"],
+  FASHION_ATTRIBUTES : ["brand","colour","size","gender","material"],
+  ELECTRONICS_ATTRIBUTES: ["brand","model"]
 });

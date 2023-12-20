@@ -7,6 +7,7 @@ const { reverseGeoCodingCheck } = require("../reverseGeoCoding");
 const checkOnSearch = async (data, msgIdSet) => {
   const onSrchObj = {};
   let onSearch = data;
+  let domain = onSearch.context.domain;
   onSearch = onSearch.message.catalog;
 
   try {
@@ -49,6 +50,38 @@ const checkOnSearch = async (data, msgIdSet) => {
           }
         }
       }
+
+      //checking mandatory attributes for fashion and electronics
+
+      provider.items.forEach((item) => {
+        let itemTags = item?.tags;
+        let mandatoryAttr;
+
+        if (domain === "ONDC:RET12") {
+          mandatoryAttr = constants.FASHION_ATTRIBUTES;
+        }
+        if (domain === "ONDC:RET14") {
+          mandatoryAttr = constants.ELECTRONICS_ATTRIBUTES;
+        }
+        itemTags.map(({ descriptor, list }, index) => {
+          switch (descriptor.code) {
+            case "attribute":
+              const encounteredAttr = [];
+              list.map(({ descriptor, value }) => {
+                encounteredAttr.push(descriptor.code);
+              });
+
+              // Check if all allowedCodes are encountered
+              const missingAttr = mandatoryAttr.filter(
+                (code) => !encounteredAttr.includes(code)
+              );
+              if (missingAttr.length > 0) {
+                onSrchObj.mssngAttrErr = `'${missingAttr}' attribute/s required in items/tags for ${domain} domain`;
+              }
+              break;
+          }
+        });
+      });
     }
   }
 
