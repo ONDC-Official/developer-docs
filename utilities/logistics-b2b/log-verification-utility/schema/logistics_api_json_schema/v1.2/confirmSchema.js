@@ -88,11 +88,15 @@ module.exports = {
           properties: {
             id: {
               type: "string",
-              not: {
-                const: { $data: "1/context/transaction_id" },
-              },
-              errorMessage:
-                "should be unique (cannot be equal to transaction_id)",
+              allOf: [
+                {
+                  not: {
+                    const: { $data: "3/context/transaction_id" },
+                  },
+                  errorMessage:
+                    "Message ID should not be equal to transaction_id: ${3/context/transaction_id}",
+                },
+              ],
             },
             state: {
               type: "string",
