@@ -81,9 +81,9 @@ To join the ONDC network, Network Participants (NPs) need to be included in the 
 >
 > Note: ops_no 3 & 5 will be deprecated as per the dates below as feature of Seller On Record (SOR) in registry will be obsolete. 
 >
-> Staging: 29/12/2023
-> Pre Prod: TBD
-> Production: TBD
+> Staging: 29/12/2023,
+> Pre Prod: TBD,
+> Production: TBD,
 
 9. Create /subscribe request as follows:
 
