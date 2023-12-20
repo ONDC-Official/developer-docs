@@ -14,9 +14,8 @@ const checkContextVal = (payload, msgIdSet, i) => {
     let Obj = {};
     let data = payload.context;
     let domain = payload.context.domain;
-    let maxTimeDiff = 0;
-    if (domain === "ONDC:RET10") {
-      maxTimeDiff = 5000;
+    let maxTimeDiff = 5000;
+    if (domain === "ONDC:RET10" && payload?.context?.version === "2.0.1") {
       if (action === "init") {
         maxTimeDiff = utils.iso8601DurationToSeconds(payload.context.ttl);
         dao.setValue("maxTimeDiff", maxTimeDiff);
@@ -25,6 +24,16 @@ const checkContextVal = (payload, msgIdSet, i) => {
       }
     } else if (domain === "nic2004:60232") {
       maxTimeDiff = 1000;
+    } else if (
+      domain === "ONDC:RET10" &&
+      payload?.context?.version === "2.0.2"
+    ) {
+      if (action === "select") {
+        maxTimeDiff = utils.iso8601DurationToSeconds(payload.context.ttl);
+        dao.setValue("maxTimeDiff", maxTimeDiff);
+      } else if (action === "on_select") {
+        maxTimeDiff = dao.getValue("maxTimeDiff");
+      }
     }
 
     console.log("time difference", maxTimeDiff);
@@ -88,6 +97,7 @@ const checkContextVal = (payload, msgIdSet, i) => {
         } else {
           if (
             action === "on_search" ||
+            action === "on_select" ||
             action === "on_init" ||
             action === "on_confirm" ||
             action === "on_update"

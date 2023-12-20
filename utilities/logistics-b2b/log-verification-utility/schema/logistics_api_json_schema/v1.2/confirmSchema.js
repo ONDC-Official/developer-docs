@@ -88,6 +88,11 @@ module.exports = {
           properties: {
             id: {
               type: "string",
+              not: {
+                const: { $data: "1/context/transaction_id" },
+              },
+              errorMessage:
+                "should be unique (cannot be equal to transaction_id)",
             },
             state: {
               type: "string",

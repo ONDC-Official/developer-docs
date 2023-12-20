@@ -393,7 +393,7 @@ module.exports = {
                   },
                 },
                 if: { properties: { type: { const: "Prepaid" } } },
-                then: { required: ["type", "state", "tracking"] },
+                then: { required: ["type", "state", "tracking","start","end"] },
                 else: {
                   required: ["type", "state"],
                 },
