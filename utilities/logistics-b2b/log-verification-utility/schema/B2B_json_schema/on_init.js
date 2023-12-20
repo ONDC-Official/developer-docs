@@ -549,8 +549,7 @@ module.exports = {
                 },
               },
               isQuoteMatching: true,
-              errorMessage:
-                "price is not matching with the total breakup price",
+              
               required: ["price", "breakup", "ttl"],
             },
             payments: {

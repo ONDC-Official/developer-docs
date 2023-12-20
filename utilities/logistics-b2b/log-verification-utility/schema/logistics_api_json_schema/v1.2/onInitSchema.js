@@ -187,8 +187,7 @@ module.exports = {
               },
               required: ["price", "breakup", "ttl"],
               isQuoteMatching: true,
-              errorMessage:
-                "price is not matching with the total breakup price",
+              
             },
             fulfillments: {
               type: "array",

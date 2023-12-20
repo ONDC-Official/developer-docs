@@ -139,7 +139,6 @@ module.exports = {
                           },
                       },
                       isEndTimeGreater: true,
-                      errorMessage: 'The "end" time must be greater than the "start" time. Ref footnote 12 of v1.1 .',
                       required: ["start", "end"],
                     },
                   },
