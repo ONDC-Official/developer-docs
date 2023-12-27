@@ -4,7 +4,7 @@
 
 ```
 - PRIVATE_KEY_1 = "NP's encryption private key"
-- PUBLIC_KEY_1 = "Registry's encryption public key which is available in NP On-Boarding on Staging [document](https://github.com/ONDC-Official/developer-docs/blob/main/registry/Onboarding%20of%20Participants.md) (staging key: MCowBQYDK2VuAyEAduMuZgmtpjdCuxv+Nc49K0cB6tL/Dj3HZetvVN7ZekM=)" 
+- PUBLIC_KEY_1 = "Registry's encryption public key which is available in NP On-Boarding on [Staging](url) [document](https://github.com/ONDC-Official/developer-docs/blob/main/registry/Onboarding%20of%20Participants.md) (staging key: MCowBQYDK2VuAyEAduMuZgmtpjdCuxv+Nc49K0cB6tL/Dj3HZetvVN7ZekM=)" 
 - REQUEST_ID = "request_id which is sent in /subscribe"
 - SIGNING_PRIVATE_KEY = "NP's signing private key"
 ```
