@@ -101,7 +101,7 @@ def generate_key_pairs():
     #print(private_key)
     public_key = base64.b64encode(bytes(signing_key.verify_key)).decode()
     inst_private_key = X25519PrivateKey.generate()
-    #print(base64.b64encode(bytes(tcrypto_private_key.).decode()))
+    #print(base64.b64encode(bytes(tencryption_private_key.).decode()))
     inst_public_key = inst_private_key.public_key()
     bytes_private_key = inst_private_key.private_bytes(
         encoding=serialization.Encoding.DER,
@@ -112,21 +112,21 @@ def generate_key_pairs():
         encoding=serialization.Encoding.DER,
         format=serialization.PublicFormat.SubjectPublicKeyInfo
     )
-    crypto_private_key = base64.b64encode(bytes_private_key).decode('utf-8')
-    crypto_public_key = base64.b64encode(bytes_public_key).decode('utf-8')
+    encryption_private_key = base64.b64encode(bytes_private_key).decode('utf-8')
+    encryption_public_key = base64.b64encode(bytes_public_key).decode('utf-8')
     return {"Signing_private_key": private_key,
             "Signing_public_key": public_key,
-            "Crypto_Privatekey": crypto_private_key,
-            "Crypto_Publickey": crypto_public_key}
+            "Encryption_Privatekey": encryption_private_key,
+            "Encryption_Publickey": encryption_public_key}
 
 
-def encrypt(crypto_private_key, crypto_public_key, null):
+def encrypt(encryption_private_key, encryption_public_key, null):
     private_key = serialization.load_der_private_key(
-        base64.b64decode(crypto_private_key),
+        base64.b64decode(encryption_private_key),
         password=None
     )
     public_key = serialization.load_der_public_key(
-        base64.b64decode(crypto_public_key)
+        base64.b64decode(encryption_public_key)
     )
     shared_key = private_key.exchange(public_key)
     cipher = AES.new(shared_key, AES.MODE_ECB)
@@ -134,13 +134,13 @@ def encrypt(crypto_private_key, crypto_public_key, null):
     return base64.b64encode(cipher.encrypt(pad(text,AES.block_size))).decode('utf-8')
 
 
-def decrypt(crypto_private_key, crypto_public_key, cipherstring):
+def decrypt(encryption_private_key, encryption_public_key, cipherstring):
     private_key = serialization.load_der_private_key(
-        base64.b64decode(crypto_private_key),
+        base64.b64decode(encryption_private_key),
         password=None
     )
     public_key = serialization.load_der_public_key(
-        base64.b64decode(crypto_public_key)
+        base64.b64decode(encryption_public_key)
     )
     shared_key = private_key.exchange(public_key)
     cipher = AES.new(shared_key, AES.MODE_ECB)
