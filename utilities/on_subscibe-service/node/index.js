@@ -5,9 +5,9 @@ const crypto = require('crypto'); // Node.js crypto module for encryption and de
 const _sodium = require('libsodium-wrappers');
 
 const port = 3000; // Port on which the server will listen
-const PRIVATE_KEY_1 =
+const ENCRYPTION_PRIVATE_KEY =
   'MC4CAQEwBQYDK2VuBCIEILgcht9h660ZeO36tG+QuHGNcLN9JuAzxHWZl09f57Bh';
-const PUBLIC_KEY_1 =
+const ONDC_PUBLIC_KEY =
   'MCowBQYDK2VuAyEAlKHWJWiEiHFGlAJ6TE4VMGaeQUYg5DHEpuQdiq6flnQ=';
 const REQUEST_ID = '6a6abf53-674f-4d6d-a52b-62e3fda55e04';
 const SIGNING_PRIVATE_KEY =
