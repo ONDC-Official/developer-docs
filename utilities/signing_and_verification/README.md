@@ -23,16 +23,16 @@ python cryptic_utils.py generate_key_pairs
   ```
   Signing_private_key: G0Pme72u8Y1MwxHqvY4iBW+7VPtJ7dsX7SGs6zZ5yvVIzdRAyHR6YkwHG2ufOE+12lsbJRwBF4Hqd7dUEOZZkg==
   Signing_public_key:  SM3UQMh0emJMBxtrnzhPtdpbGyUcAReB6ne3VBDmWZI=
-  Crypto_Privatekey:   MC4CAQAwBQYDK2VuBCIEIKi7NbXeN8QzXjN48XkjOiS/UaR6rumXep8VslMy4fRU
-  Crypto_Publickey:    MCowBQYDK2VuAyEA9CEWxnLJkmwW/67QR739BEam7bbd3NsffjDa5HANf0Q=
+  Encryption_Privatekey:   MC4CAQAwBQYDK2VuBCIEIKi7NbXeN8QzXjN48XkjOiS/UaR6rumXep8VslMy4fRU
+  Encryption_Publickey:    MCowBQYDK2VuAyEA9CEWxnLJkmwW/67QR739BEam7bbd3NsffjDa5HANf0Q=
   ```
 
 4. Export private and public keys
 ```
 export PRIVATE_KEY=<private_key>
 export PUBLIC_KEY=<public_key>
-export CRYPTO_PRIVATE_KEY=<Crypto_Privatekey>
-export CRYPTO_PUBLIC_KEY=<Crypto_Publickey>
+export ENCRYPTION_PRIVATE_KEY=<Encryption_Privatekey>
+export ENCRYPTION_PUBLIC_KEY=<Encryption_Publickey>
 ```
 
 5. Create authorisation header
