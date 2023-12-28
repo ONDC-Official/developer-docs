@@ -7,12 +7,16 @@ const checkUpdate = (data, msgIdSet) => {
   let updtObj = {};
   let update = data;
   let version = update.context.core_version;
+  let contextTimestamp = update.context.timestamp;
   let p2h2p = dao.getValue("p2h2p");
   let awbNo= dao.getValue("awbNo");
 
   dao.setValue("updateApi",true)
 
   update = update.message.order;
+  if (update?.updated_at > contextTimestamp) {
+    updtObj.updatedAtErr = `order/updated_at cannot be future dated w.r.t context/timestamp`;
+  }
   if (version === "1.1.0")
   rts = update?.fulfillments[0]?.tags["@ondc/org/order_ready_to_ship"];
 else {

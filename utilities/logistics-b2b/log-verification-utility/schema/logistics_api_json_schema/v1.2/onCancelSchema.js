@@ -538,14 +538,14 @@ module.exports = {
                       properties: {
                         time: { required: ["range"] },
                       },
-                      required: ["time", "person", "location", "contact"],
+                      required: [ "person", "location", "contact"],
                     },
 
                     end: {
                       properties: {
                         time: { required: ["range"] },
                       },
-                      required: ["time", "person", "location", "contact"],
+                      required: ["person", "location", "contact"],
                     },
                   },
                   required: ["id", "type", "state", "start", "end", "tracking"],

@@ -72,9 +72,9 @@ const checkConfirm = (data, msgIdSet) => {
 
   let p2h2p = dao.getValue("p2h2p");
   fulfillments.forEach((fulfillment) => {
-    let avgPickupTime= fulfillment.start.time.duration;
+    let avgPickupTime= fulfillment?.start?.time?.duration;
 
-    if(avgPickupTime!==dao.getValue("avgPickupTime")){
+    if(avgPickupTime && avgPickupTime!==dao.getValue("avgPickupTime")){
       cnfrmObj.avgPckupErr=`Average Pickup Time (fulfillments/start/time/duration) mismatches from the one provided in /on_search`
     }
     if (fulfillment["@ondc/org/awb_no"] && p2h2p) awbNo = true;

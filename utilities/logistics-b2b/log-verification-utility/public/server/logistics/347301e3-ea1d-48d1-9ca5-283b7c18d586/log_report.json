@@ -1,0 +1,8 @@
+{
+    "Schema": {
+        "schemaErr0": "/on_init/0/message/order/quote price is not matching with the total breakup price",
+        "schemaErr1": "/on_update/0/message/order/fulfillments/0/start/instructions must have required property 'code'",
+        "schemaErr2": "/on_update/0/message/order/fulfillments/0/start/instructions must have required property 'short_desc'",
+        "schemaErr3": "/on_update/0/message/order/fulfillments/0/start must pass \"$merge\" keyword validation"
+    }
+}

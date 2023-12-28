@@ -1,4 +1,16 @@
-
+const onConfirmSchema = require("./on_confirm");
+const onInitSchema = require("./on_init");
+const onSearchSchema = require("./on_search");
+const selectSchema = require("./select");
+const onSelectSchema = require("./on_select");
+const onUpdateSchema = require("./on_update");
+const searchSchema = require("./search");
+const initSchema = require("./init");
+const masterSchema = require("./master");
+const confirmSchema = require("./confirm");
+const statusSchema = require("./status");
+const updateSchema = require("./update");
+const onStatusSchema = require("./on_status");
 const { isLengthValid } = require("./keywords/init");
 const { isQuoteMatching } = require("./keywords/onInit");
 const { isFutureDated } = require("./keywords/confirm");
@@ -30,33 +42,8 @@ const formatted_error = (errors) => {
   return error_json;
 };
 
-const loadSchema = (schemaType, version) => {
-  try {
-    return require(`./${version}/${schemaType}.js`);
-  } catch (error) {
-    console.log("Error Occurred while importing", error);
-  }
-};
 
-const validate_schema = (data, schema,version) => {
-  const searchSchema = loadSchema("search", version);
-  const onSearchSchema = loadSchema("on_search", version);
-
-  const selectSchema = loadSchema("select", version);
-  const onSelectSchema = loadSchema("on_select", version);
-
-  const initSchema = loadSchema("init", version);
-  const onInitSchema = loadSchema("on_init", version);
-
-  const confirmSchema = loadSchema("confirm", version);
-  const onConfirmSchema = loadSchema("on_confirm", version);
-
-  const updateSchema = loadSchema("update", version);
-  const onUpdateSchema = loadSchema("on_update", version);
-
-  const statusSchema = loadSchema("status", version);
-  const onStatusSchema = loadSchema("on_status", version);
-
+const validate_schema = (data, schema) => {
   const Ajv = require("ajv");
   const ajv = new Ajv({
     allErrors: true,
@@ -110,9 +97,8 @@ const validate_schema = (data, schema,version) => {
   return error_list;
 };
 
-const validate_schema_b2b_master = (data,version) => {
-  const masterSchema = loadSchema("master", version);
-  error_list = validate_schema(data, masterSchema,version);
+const validate_schema_b2b_master = (data) => {
+  error_list = validate_schema(data, masterSchema);
   return formatted_error(error_list);
 };
 

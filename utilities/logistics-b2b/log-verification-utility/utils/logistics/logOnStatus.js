@@ -62,7 +62,7 @@ const checkOnStatus = (data, msgIdSet) => {
       ) {
         if (
           categoryId === "Immediate Delivery" &&
-          fulfillment.tracking !== true
+          fulfillment.tracking !== true && ffState!=='Cancelled'
         ) {
           onStatusObj.trckErr = `tracking should be enabled (true) for hyperlocal (Immediate Delivery)`;
         }
@@ -152,9 +152,7 @@ const checkOnStatus = (data, msgIdSet) => {
               onStatusObj.msngPickupTimeErr = `Pickup timestamp (fulfillments/start/time/timestamp) is missing for fulfillment state - ${ffState}`;
             }
           }
-          if (fulfillment.tracking === true) {
-            onStatusObj.trackErr = `fulfillment tracking can be disabled (false) after the fulfillment is 'Cancelled`;
-          }
+        
           if (fulfillment.start.time.timestamp && dao.getValue("pickupTime")) {
             if (
               !_.isEqual(

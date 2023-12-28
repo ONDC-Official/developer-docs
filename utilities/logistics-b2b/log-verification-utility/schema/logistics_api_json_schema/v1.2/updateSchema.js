@@ -326,13 +326,12 @@ module.exports = {
               format: "date-time",
             },
           },
-         
+         additionalProperties:false,
           required: ["id", "items", "fulfillments", "updated_at"],
         },
       },
       required: ["update_target", "order"],
     },
   },
-  
   required: ["context", "message"],
 };

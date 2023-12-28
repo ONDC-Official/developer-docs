@@ -77,7 +77,6 @@ const checkInit = (data, msgIdSet) => {
       }
       onSearchitemsArr?.forEach((element) => {
         if (item.id === element.id) itemExists = true;
-        console.log(item.id, element.id);
       });
       if (!itemExists) {
         let itemkey = `itemErr${i}`;
@@ -86,7 +85,10 @@ const checkInit = (data, msgIdSet) => {
         let itemObj = onSearchitemsArr.filter(
           (element) => item.id === element.id
         );
+       
         itemObj = itemObj[0];
+        dao.setValue("selectedItem",itemObj.id)
+        console.log(itemObj.id);
         if (item.category_id != itemObj.category_id) {
           let itemkey = `catIdErr${i}`;
           initObj[
