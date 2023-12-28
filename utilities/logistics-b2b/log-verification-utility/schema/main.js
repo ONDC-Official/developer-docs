@@ -9,13 +9,15 @@ const {
 const fs = require("fs");
 
 const validate_schema_for_domain_json = (vertical, data, version) => {
-  version = getVersion(data);
+  version = getVersion(data,vertical);
   switch (vertical) {
     case "logistics":
+     
       res = validate_schema_master(data, version);
       return res;
     case "b2b":
-      res = validate_schema_b2b_master(data);
+      
+      res = validate_schema_b2b_master(data,version);
       return res;
     default:
       console.log("Invalid Domain!!");

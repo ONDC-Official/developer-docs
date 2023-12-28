@@ -7,7 +7,6 @@ module.exports = {
       properties: {
         domain: {
           type: "string",
-          const: "ONDC:RET10",
         },
         location: {
           type: "object",
@@ -41,7 +40,7 @@ module.exports = {
         },
         version: {
           type: "string",
-          const: "2.0.1",
+          const: "2.0.2",
         },
         bap_id: {
           type: "string",

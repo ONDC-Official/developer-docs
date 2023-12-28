@@ -133,6 +133,7 @@ module.exports = Object.freeze({
     "004",
     "005",
     "006",
+    "007",
     "008",
     "009",
     "010",
@@ -169,5 +170,6 @@ module.exports = Object.freeze({
   ],
   CANCELLATION_TAGS_LIST:["retry_count","rto_id","cancellation_reason_id","sub_reason_id","cancelled_by"],
   FASHION_ATTRIBUTES : ["brand","colour","size","gender","material"],
-  ELECTRONICS_ATTRIBUTES: ["brand","model"]
+  ELECTRONICS_ATTRIBUTES: ["brand","model"],
+  TERMS:["bap_terms","bpp_terms"]
 });

@@ -71,7 +71,7 @@ const checkOnSearch = async (data, msgIdSet) => {
                 encounteredAttr.push(descriptor.code);
               });
 
-              // Check if all allowedCodes are encountered
+              // Check if all mandatory attributes are encountered
               const missingAttr = mandatoryAttr.filter(
                 (code) => !encounteredAttr.includes(code)
               );

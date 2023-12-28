@@ -7,6 +7,8 @@ module.exports = {
       totalBreakup += parseFloat(breakup?.price?.value);
     });
     // console.log(quotePrice,totalBreakup);
+    totalBreakup= parseFloat(totalBreakup).toFixed(2)
+    quotePrice=quotePrice.toFixed(2)
     if (quotePrice != totalBreakup) return false;
     else return true;
   },

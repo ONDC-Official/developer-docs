@@ -242,7 +242,7 @@ module.exports = {
                   type: "string",
                 },
               },
-              required: ["@ondc/org/collection_amount"],
+              required: [],
             },
             "@ondc/org/payload_details": {
               type: "object",

@@ -9,8 +9,10 @@ const checkOnCancel = (data, msgIdSet) => {
   let contextTime = on_cancel.context.timestamp;
   let version = on_cancel.context.core_version;
   let messageId = on_cancel.context.message_id;
+  const providerId = on_cancel.message?.provider?.id;
 
   on_cancel = on_cancel.message.order;
+  let onSearchItemsArr = dao.getValue(`${on_cancel?.provider?.id}itemsArr`);
   let ffState;
   let orderState = on_cancel.state;
   let items = on_cancel.items;
@@ -42,6 +44,13 @@ const checkOnCancel = (data, msgIdSet) => {
   } catch (error) {
     console.log(error);
   }
+  if (onSearchItemsArr) {
+    let selectedItem = onSearchItemsArr.filter(
+      (element) => element.parent_item_id === dao.getValue("selectedItem")
+    );
+    selectedItem = selectedItem[0];
+  }
+
   try {
     fulfillments.forEach((fulfillment) => {
       ffState = fulfillment?.state?.descriptor?.code;
@@ -63,9 +72,7 @@ const checkOnCancel = (data, msgIdSet) => {
               onCancelObj.msngPickupTimeErr = `Pickup timestamp (fulfillments/start/time/timestamp) is missing for fulfillment state - ${ffState}`;
             }
           }
-          if(fulfillment.tracking===true){
-            onStatusObj.trackErr=`fulfillment tracking can be disabled (false) after the fulfillment is 'Cancelled`
-          }
+
           if (fulfillment.start.time.timestamp && dao.getValue("pickupTime")) {
             if (
               !_.isEqual(
@@ -76,9 +83,17 @@ const checkOnCancel = (data, msgIdSet) => {
               onCancelObj.pickupTimeErr = `Pickup timestamp (fulfillments/start/time/timestamp) cannot change for fulfillment state - ${ffState}`;
             }
           }
-          console.log('comparing RTO fulfillment id with /on_search');
+          console.log("comparing RTO fulfillment id with /on_search");
           //checking RTO id matching with /on_search
           if (version === "1.2.0") {
+            if (dao.getValue("rts") === "yes") {
+              if (!fulfillment?.start?.time) {
+                onCancelObj.msngStrtTime = `Pickup time range (fulfillments/start/time) is missing`;
+              }
+              if (!fulfillment?.end?.time) {
+                onCancelObj.msngDlvryTime = `Delivery time range (fulfillments/end/time) is missing`;
+              }
+            }
             let fulTags = fulfillment?.tags;
             let rtoID;
             fulTags.forEach((tag) => {
@@ -87,8 +102,9 @@ const checkOnCancel = (data, msgIdSet) => {
                 lists.forEach((list) => {
                   if (list.code === "rto_id") {
                     rtoID = list.value;
-                    if (rtoID !== dao.getValue("rtoID")) {
-                      onCancelObj.rtoIdTagsErr = `rto_id '${rtoID}' in fulfillments/tags does not match with the one provided in on_search '${dao.getValue("rtoID")}' in /fulfillments`;
+
+                    if (rtoID !== selectedItem.fulfillment_id) {
+                      onCancelObj.rtoIdTagsErr = `rto_id '${rtoID}' in fulfillments/tags does not match with the one provided in on_search '${selectedItem.fulfillment_id}' in /fulfillments`;
                     }
                   }
                 });
@@ -100,9 +116,9 @@ const checkOnCancel = (data, msgIdSet) => {
         if (orderState !== "Cancelled") {
           onCancelObj.ordrStatErr = `Order state should be 'Cancelled' for fulfillment state - ${ffState}`;
         }
-        console.log(fulfillment.id,dao.getValue("rtoID"));
-        if(fulfillment.id!==dao.getValue("rtoID")){
-          onCancelObj.rtoIdErr = `RTO id - '${fulfillment.id}' of fulfillment type 'RTO' does not match with the one provided in on_search '${dao.getValue("rtoID")}' in /fulfillments`;
+        console.log(fulfillment.id, selectedItem?.fulfillment_id);
+        if (fulfillment.id !== selectedItem.fulfillment_id) {
+          onCancelObj.rtoIdErr = `RTO id - '${fulfillment.id}' of fulfillment type 'RTO' does not match with the one provided in on_search '${selectedItem.fulfillment_id}' in /fulfillments`;
         }
         if (ffState === "RTO-Initiated") {
           RtoPickupTime = fulfillment?.start?.time?.timestamp;

@@ -107,12 +107,12 @@ const checkOnStatus = (data, msgIdSet) => {
           fulfillment.stops.forEach((stop) => {
             if (stop.type === "start") {
               pickupTime = stop?.time?.timestamp;
-              dao.setValue("pickupTime", pickupTime);
+              
               if (!pickupTime) {
                 onStatusObj.pickupTimeErr = `Pickup timestamp (fulfillments/start/time/timestamp) is required for fulfillment state - ${ffState}`;
               } else if (
                 dao.getValue("pickupTime") &&
-                fulfillment?.start?.time?.timestamp !==
+                pickupTime !==
                   dao.getValue("pickupTime")
               ) {
                 onStatusObj.pickupTimeErr = `Pickup timestamp (fulfillments/start/time/timestamp) cannot change for fulfillment state - ${ffState}`;
@@ -135,12 +135,11 @@ const checkOnStatus = (data, msgIdSet) => {
           fulfillment.stops.forEach((stop) => {
             if (stop.type === "start") {
               pickupTime = stop?.time?.timestamp;
-              dao.setValue("pickupTime", pickupTime);
               if (!pickupTime) {
                 onStatusObj.pickupTimeErr = `Pickup timestamp (fulfillments/start/time/timestamp) is required for fulfillment state - ${ffState}`;
               } else if (
                 dao.getValue("pickupTime") &&
-                fulfillment?.start?.time?.timestamp !==
+                pickupTime !==
                   dao.getValue("pickupTime")
               ) {
                 onStatusObj.pickupTimeErr = `Pickup timestamp (fulfillments/start/time/timestamp) cannot change for fulfillment state - ${ffState}`;

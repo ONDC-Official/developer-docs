@@ -93,7 +93,7 @@ module.exports = {
                     const: { $data: "3/context/transaction_id" },
                   },
                   errorMessage:
-                    "Message ID should not be equal to transaction_id: ${3/context/transaction_id}",
+                    "should be unique and not be equal to transaction_id: ${3/context/transaction_id}",
                 },
               ],
             },

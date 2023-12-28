@@ -1,0 +1,62 @@
+{
+    "Flow Error": {
+        "0": "Incorrect Flow as per context/timestamps - (search,on_search,cancel,init,on_init,confirm,on_confirm,status,support,track,on_track,on_support,on_status,on_cancel)"
+    },
+    "Schema": {
+        "schemaErr0": "/search/0/message/intent/payment @ondc/org/collection_amount is required only for payment/type 'ON-FULFILLMENT'",
+        "schemaErr1": "/search/0/message/intent/payment must match \"then\" schema",
+        "schemaErr2": "/confirm/0/message/order/billing/created_at mismatches in /billing in /init and /confirm",
+        "schemaErr3": "/confirm/0/message/order/billing/updated_at mismatches in /billing in /init and /confirm",
+        "schemaErr4": "/confirm/0/message/order/payment/collected_by mismatches in /payment in /on_init and /confirm",
+        "schemaErr5": "/on_confirm/0/message/order/payment/collected_by mismatches in /payment in /on_init and /confirm",
+        "schemaErr6": "/on_status/0/message/order/fulfillments/0/start/time must have required property 'range'",
+        "schemaErr7": "/on_status/0/message/order/fulfillments/0/end must have required property 'time'",
+        "schemaErr8": "/on_status/0/message/order/fulfillments/0 must match \"then\" schema",
+        "schemaErr9": "/on_cancel/0/message/order must have required property 'created_at'",
+        "schemaErr10": "/on_cancel/0/message/order/quote price is not matching with the total breakup price",
+        "schemaErr11": "/on_cancel/0/message/order/fulfillments/0/start/time must have required property 'range'",
+        "schemaErr12": "/on_cancel/0/message/order/fulfillments/0/end/time must have required property 'range'",
+        "schemaErr13": "/on_cancel/0/message/order/fulfillments/0 must match \"then\" schema"
+    },
+    "Context": {
+        "init_0": {
+            "tmpstmpErr": "Timestamp mismatch for /init "
+        },
+        "status_0": {
+            "tmpstmpErr": "Timestamp mismatch for /status "
+        },
+        "support_0": {
+            "tmpstmpErr": "Timestamp mismatch for /support "
+        },
+        "track_0": {
+            "tmpstmpErr": "Timestamp mismatch for /track "
+        },
+        "on_track_0": {
+            "msgIdErr": "Message Id cannot be same for different sets of APIs"
+        },
+        "on_support_0": {
+            "msgIdErr": "Message Id cannot be same for different sets of APIs"
+        },
+        "on_status_0": {
+            "msgIdErr": "Message Id cannot be same for different sets of APIs"
+        },
+        "on_cancel_0": {
+            "msgIdErr": "Message Id cannot be same for different sets of APIs"
+        }
+    },
+    "Message": {
+        "on_search_0": {
+            "itemTAT": "For Same Day Delivery/Immediate Delivery, TAT date should be the same date i.e. 2023-12-08"
+        },
+        "confirm_0": {
+            "itemDurationErr": "item duration does not match with the one provided in /on_search (LSP can send NACK)",
+            "avgPckupErr": "Average Pickup Time mismatches from the one provided in /on_search"
+        },
+        "on_confirm_0": {
+            "trckErr": "tracking should be enabled (true) for hyperlocal (Immediate Delivery)"
+        },
+        "on_status_0": {
+            "trckErr": "tracking should be enabled (true) for hyperlocal (Immediate Delivery)"
+        }
+    }
+}
