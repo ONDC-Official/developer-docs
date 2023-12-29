@@ -30,12 +30,12 @@ const htmlFile = `
 `;
 // Pre-defined public and private keys
 const privateKey = crypto.createPrivateKey({
-  key: Buffer.from(PRIVATE_KEY_1, 'base64'), // Decode private key from base64
+  key: Buffer.from(ENCRYPTION_PRIVATE_KEY, 'base64'), // Decode private key from base64
   format: 'der', // Specify the key format as DER
   type: 'pkcs8', // Specify the key type as PKCS#8
 });
 const publicKey = crypto.createPublicKey({
-  key: Buffer.from(PUBLIC_KEY_1, 'base64'), // Decode public key from base64
+  key: Buffer.from(ONDC_PUBLIC_KEY, 'base64'), // Decode public key from base64
   format: 'der', // Specify the key format as DER
   type: 'spki', // Specify the key type as SubjectPublicKeyInfo (SPKI)
 });
