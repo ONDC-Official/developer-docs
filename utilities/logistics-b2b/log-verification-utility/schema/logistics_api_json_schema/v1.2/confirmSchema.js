@@ -88,6 +88,15 @@ module.exports = {
           properties: {
             id: {
               type: "string",
+              allOf: [
+                {
+                  not: {
+                    const: { $data: "3/context/transaction_id" },
+                  },
+                  errorMessage:
+                    "should be unique and not be equal to transaction_id: ${3/context/transaction_id}",
+                },
+              ],
             },
             state: {
               type: "string",
@@ -303,7 +312,7 @@ module.exports = {
                       },
                       duration: {
                         type: "string",
-                        format: "duration"
+                        format: "duration",
                       },
                       location: {
                         type: "object",
@@ -583,7 +592,7 @@ module.exports = {
                       "both 'state' and 'rto_action' tags are required",
                   },
                 },
-
+                additionalProperties: false,
                 required: ["id", "type", "start", "end", "tags"],
               },
             },
@@ -1021,8 +1030,40 @@ module.exports = {
               type: "string",
               format: "date-time",
             },
-          },
+            tags: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  code: {
+                    type: "string",
+                    enum: constants.TERMS,
+                    
+                  },
+                  list: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        code: {
+                          type: "string",
+                        },
+                        value: {
+                          type: "string",
+                        },
+                      },
+                      required: ["code", "value"],
+                    },
+                  },
+                },
 
+                required: ["code", "list"],
+              },
+              minItems: 2,
+              errorMessage: "both 'bpp_terms' and 'bap_terms' tags are required (logistics buyer NP must accept LSP terms. If not accepted, LSP can NACK /confirm with error code 65002)",
+            },
+          },
+          additionalProperties: false,
           required: [
             "id",
             "state",
@@ -1042,7 +1083,6 @@ module.exports = {
     },
   },
   // isFutureDated: true,
-  // errorMessage:
-  //   "order/created_at or order/updated_at cannot be future dated w.r.t context/timestamp",
+
   required: ["context", "message"],
 };

@@ -1,5 +1,5 @@
 module.exports = {
-  $id: "http://example.com/schema/onStatusSchema",
+  $id: "http://example.com/schema/confirmSchema",
   type: "object",
   properties: {
     context: {
@@ -36,11 +36,11 @@ module.exports = {
         },
         action: {
           type: "string",
-          const: "on_status",
+          const: "confirm",
         },
         version: {
           type: "string",
-          const: "2.0.1",
+          const: "2.0.2",
         },
         bap_id: {
           type: "string",
@@ -58,10 +58,19 @@ module.exports = {
           type: "string",
           const: { $data: "/select/0/context/transaction_id" },
           errorMessage:
-            "Transaction ID should be same across the transaction: ${/select/0/context/transaction_id}",
+                "Transaction ID should be same across the transaction: ${/search/0/context/transaction_id}",
         },
         message_id: {
           type: "string",
+          allOf: [
+            {
+              not: {
+                const: { $data: "1/transaction_id" },
+              },
+              errorMessage:
+                "Message ID should not be equal to transaction_id: ${1/transaction_id}",
+            },
+          ]
         },
         timestamp: {
           type: "string",
@@ -69,6 +78,7 @@ module.exports = {
         },
         ttl: {
           type: "string",
+          const: "PT30S",
         },
       },
       required: [
@@ -94,32 +104,28 @@ module.exports = {
           properties: {
             id: {
               type: "string",
-              const: { $data: "/confirm/0/message/order/id" },
             },
             state: {
               type: "string",
-              enum: [
-                "Created",
-                "Accepted",
-                "In-progress",
-                "Cancelled",
-                "Completed",
-              ],
+              enum: ["Created"],
             },
             provider: {
               type: "object",
               properties: {
                 id: {
                   type: "string",
-                  const: { $data: "/select/0/message/order/provider/id" },
+                  const: { $data: "/init/0/message/order/provider/id" },
                 },
                 locations: {
                   type: "array",
+                  const: { $data: "/init/0/message/order/provider/locations" },
+                  errorMessage:"mismatch from /init",
                   items: {
                     type: "object",
                     properties: {
                       id: {
                         type: "string",
+                       
                       },
                     },
                     required: ["id"],
@@ -155,8 +161,68 @@ module.exports = {
                         required: ["count"],
                       },
                     },
-                    additionalProperties: false,
                     required: ["selected"],
+                  },
+                  "add-ons": {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        id: {
+                          type: "string",
+                        },
+                      },
+                      required: ["id"],
+                    },
+                  },
+                  tags: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        descriptor: {
+                          type: "object",
+                          properties: {
+                            code: {
+                              type: "string",
+                              enum: ["BUYER_TERMS"],
+                            },
+                          },
+                          required: ["code"],
+                        },
+                        list: {
+                          type: "array",
+                          items: {
+                            type: "object",
+                            properties: {
+                              descriptor: {
+                                type: "object",
+                                properties: {
+                                  code: {
+                                    type: "string",
+                                    enum: ["ITEM_REQ", "PACKAGING_REQ"],
+                                  },
+                                },
+                                required: ["code"],
+                              },
+                              value: {
+                                type: "string",
+                                anyOf: [
+                                  {
+                                    const: { $data: "/init/0/message/order/items/0/tags/0/list/0/value" },
+                                  },
+                                  {
+                                    const: { $data: "/init/0/message/order/items/0/tags/0/list/1/value" },
+                                  }
+                                ]
+                              },
+                            },
+                            required: ["descriptor", "value"],
+                          },
+                        },
+                      },
+                      required: ["descriptor", "list"],
+                    },
                   },
                 },
                 required: ["id", "fulfillment_ids", "quantity"],
@@ -190,12 +256,16 @@ module.exports = {
                   properties: {
                     name: {
                       type: "string",
-                    },
-                    const: {
-                      $data: "/init/0/message/order/billing/city/name",
+                      const: {
+                        $data: "/init/0/message/order/billing/city/name",
+                      },
                     },
                   },
                   required: ["name"],
+                },
+                tax_id: {
+                  type: "string",
+                  const: { $data: "/init/0/message/order/billing/tax_id" },
                 },
                 email: {
                   type: "string",
@@ -206,7 +276,8 @@ module.exports = {
                   const: { $data: "/init/0/message/order/billing/phone" },
                 },
               },
-              required: ["name", "address", "state", "city", "phone"],
+              
+              required: ["name", "address", "state", "city", "tax_id", "phone"],
             },
             fulfillments: {
               type: "array",
@@ -216,37 +287,11 @@ module.exports = {
                   id: {
                     type: "string",
                   },
-                  "@ondc/org/provider_name": {
-                    type: "string",
-                  },
                   type: {
                     type: "string",
                   },
                   tracking: {
                     type: "boolean",
-                  },
-                  state: {
-                    type: "object",
-                    properties: {
-                      descriptor: {
-                        type: "object",
-                        properties: {
-                          code: {
-                            type: "string",
-                            enum: [
-                              "Pending",
-                              "Packed",
-                              "Agent-assigned",
-                              "Order-picked-up",
-                              "Out-for-delivery",
-                              "Order-delivered",
-                            ],
-                          },
-                        },
-                        required: ["code"],
-                      },
-                    },
-                    required: ["descriptor"],
                   },
                   stops: {
                     type: "array",
@@ -260,28 +305,9 @@ module.exports = {
                         location: {
                           type: "object",
                           properties: {
-                            id: {
-                              type: "string",
-                            },
-                            descriptor: {
-                              type: "object",
-                              properties: {
-                                name: {
-                                  type: "string",
-                                },
-                                images: {
-                                  type: "array",
-                                  items: {
-                                    type: "string",
-                                  },
-                                },
-                              },
-                              required: ["name"],
-                            },
                             gps: {
                               type: "string",
-                              pattern:
-                                "^(-?[0-9]{1,3}(?:.[0-9]{6,15})?),( )*?(-?[0-9]{1,3}(?:.[0-9]{6,15})?)$",
+                              pattern: "^(-?[0-9]{1,3}(?:.[0-9]{6,15})?),( )*?(-?[0-9]{1,3}(?:.[0-9]{6,15})?)$",
                               errorMessage: "Incorrect gps value",
                             },
                             address: {
@@ -318,58 +344,13 @@ module.exports = {
                               required: ["name"],
                             },
                           },
-                        },
-                        time: {
-                          type: "object",
-                          properties: {
-                            range: {
-                              type: "object",
-                              properties: {
-                                start: {
-                                  type: "string",
-                                  pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
-                                  errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
-                                },
-                                end: {
-                                  type: "string",
-                                  pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
-                                  errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
-                                },
-                              },
-                              required: ["start", "end"],
-                            },
-                            timestamp: {
-                              type: "string",
-                              pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
-                              errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
-                            },
-                          },
-                          required: ["range"],
-                        },
-                        instructions: {
-                          type: "object",
-                          properties: {
-                            name: {
-                              type: "string",
-                            },
-                            short_desc: {
-                              type: "string",
-                            },
-                            long_desc: {
-                              type: "string",
-                            },
-                            images: {
-                              type: "array",
-                              items: {
-                                type: "string",
-                              },
-                            },
-                          },
                           required: [
-                            "name",
-                            "short_desc",
-                            "long_desc",
-                            "images",
+                            "gps",
+                            "address",
+                            "city",
+                            "country",
+                            "area_code",
+                            "state",
                           ],
                         },
                         contact: {
@@ -384,7 +365,7 @@ module.exports = {
                           },
                           required: ["phone"],
                         },
-                        agent: {
+                        customer: {
                           type: "object",
                           properties: {
                             person: {
@@ -396,64 +377,88 @@ module.exports = {
                               },
                               required: ["name"],
                             },
-                            contact: {
-                              type: "object",
-                              properties: {
-                                phone: {
-                                  type: "string",
-                                },
-                              },
-                              required: ["phone"],
+                          },
+                          required: ["person"],
+                        },
+                      },
+                      required: ["type", "location", "contact"],
+                    },
+                  },
+                  tags: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        descriptor: {
+                          type: "object",
+                          properties: {
+                            code: {
+                              type: "string",
+                              enum: ["DELIVERY_TERMS"],
                             },
                           },
-                          required: ["person", "contact"],
+                          required: ["code"],
+                        },
+                        list: {
+                          type: "array",
+                          items: {
+                            type: "object",
+                            properties: {
+                              descriptor: {
+                                type: "object",
+                                properties: {
+                                  code: {
+                                    type: "string",
+                                    enum: [
+                                      "INCOTERMS",
+                                      "NAMED_PLACE_OF_DELIVERY",
+                                    ],
+                                  },
+                                },
+                                required: ["code"],
+                              },
+                              value: {
+                                type: "string",
+                                anyOf: [
+                                  {
+                                    const: { $data: "/init/0/message/order/fulfillments/0/tags/0/list/0/value" },
+                                  },
+                                  {
+                                    const: { $data: "/init/0/message/order/fulfillments/0/tags/0/list/1/value" },
+                                  }
+                                ]
+                              },
+                            },
+                            if: {
+                              properties: {
+                                descriptor: {
+                                  properties: { code: { const: "INCOTERMS" } },
+                                },
+                              },
+                            },
+                            then: {
+                              properties: {
+                                value: {
+                                  enum: [
+                                    "DPU",
+                                    "CIF",
+                                    "EXW",
+                                    "FOB",
+                                    "DAP",
+                                    "DDP",
+                                  ],
+                                },
+                              },
+                            },
+                            required: ["descriptor", "value"],
+                          },
                         },
                       },
-                      if: { properties: { type: { const: "start" } } },
-                      then: {
-                        properties: {
-                          location: { required: ["id", "descriptor", "gps"] },
-                        },
-                      },
-                      else: {
-                        properties: {
-                          location: { required: ["address", "gps"] },
-                        },
-                      },
-                      required: ["type", "location", "time", "contact"],
+                      required: ["descriptor", "list"],
                     },
                   },
                 },
-                required: [
-                  "id",
-                  "@ondc/org/provider_name",
-                  "type",
-                  "tracking",
-                  "state",
-                  "stops",
-                ],
-                anyof: [
-                  {
-                    properties: {
-                      state: {
-                        const: "Order-picked-up",
-                      },
-                      stops: {
-                        type: "array",
-                        items: {
-                          properties: {
-                            type: {
-                              const: "start",
-                            },
-                            time: {
-                              required: ["range", "timestamp"],
-                            },
-                          },
-                        },
-                      },
-                    },
-                  },
-                ],
+                required: ["id", "type", "stops"],
               },
             },
             quote: {
@@ -467,6 +472,9 @@ module.exports = {
                     },
                     value: {
                       type: "string",
+                      const: {
+                        $data: "/on_init/0/message/order/quote/price/value",
+                      },
                     },
                   },
                   required: ["currency", "value"],
@@ -493,6 +501,7 @@ module.exports = {
                       },
                       "@ondc/org/title_type": {
                         type: "string",
+                        enum: ["item", "discount", "packing", "delivery", "tax", "misc"]
                       },
                       price: {
                         type: "object",
@@ -567,9 +576,6 @@ module.exports = {
                   type: "string",
                 },
               },
-              isQuoteMatching: true,
-              errorMessage:
-                "price is not matching with the total breakup price",
               required: ["price", "breakup", "ttl"],
             },
             payments: {
@@ -598,9 +604,6 @@ module.exports = {
                   },
                   type: {
                     type: "string",
-                    const: {
-                      $data: "/on_confirm/0/message/order/payments/0/type",
-                    },
                     enum: [
                       "PRE-FULFILLMENT",
                       "ON-FULFILLMENT",
@@ -609,11 +612,6 @@ module.exports = {
                   },
                   collected_by: {
                     type: "string",
-                    const: {
-                      $data:
-                        "/on_confirm/0/message/order/payments/0/collected_by",
-                    },
-                    enum: ["BAP", "BPP"],
                   },
                   "@ondc/org/buyer_app_finder_fee_type": {
                     type: "string",
@@ -637,9 +635,6 @@ module.exports = {
                           type: "string",
                           enum: ["upi", "neft", "rtgs"],
                         },
-                        beneficiary_name: {
-                          type: "string",
-                        },
                         upi_address: {
                           type: "string",
                         },
@@ -647,6 +642,9 @@ module.exports = {
                           type: "string",
                         },
                         settlement_ifsc_code: {
+                          type: "string",
+                        },
+                        beneficiary_name: {
                           type: "string",
                         },
                         bank_name: {
@@ -689,14 +687,6 @@ module.exports = {
                     },
                   },
                 },
-                if: { properties: { type: { const: "ON-FULFILLMENT" } } },
-                then: {
-                  properties: {
-                    collected_by: {
-                      const: "BPP",
-                    },
-                  },
-                },
                 required: [
                   "params",
                   "status",
@@ -707,35 +697,57 @@ module.exports = {
                 ],
               },
             },
-
-            documents: {
+            tags: {
               type: "array",
               items: {
                 type: "object",
                 properties: {
-                  url: {
-                    type: "string",
+                  descriptor: {
+                    properties: {
+                      code: {
+                        type: "string",
+                        enum: ["buyer_id"],
+                      },
+                    },
                   },
-                  label: {
-                    type: "string",
+                  list: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        descriptor: {
+                          properties: {
+                            code: {
+                              type: "string",
+                              enum: ["buyer_id_code", "buyer_id_no"],
+                            },
+                          },
+                        },
+                        value: {
+                          type: "string",
+                        },
+                      },
+                      required: ["descriptor", "value"],
+                    },
                   },
                 },
-                required: ["url", "label"],
+                required: ["descriptor", "list"],
               },
             },
             created_at: {
               type: "string",
-              format: "date-time",
-              const: { $data: "/confirm/0/message/order/created_at" },
+              const: { $data: "3/context/timestamp" },
               errorMessage:
-                "order/created_at should remain same as in /confirm - ${/confirm/0/message/order/created_at}",
+                "created_at does not match context timestamp - ${3/context/timestamp}",
             },
             updated_at: {
               type: "string",
-              format: "date-time",
+              const: { $data: "3/context/timestamp" },
+              errorMessage:
+                "updated_at does not match context timestamp - ${3/context/timestamp}",
             },
           },
-          additionalProperties: false,
+          additionalProperties:false,
           required: [
             "id",
             "state",
@@ -745,7 +757,6 @@ module.exports = {
             "fulfillments",
             "quote",
             "payments",
-            "documents",
             "created_at",
             "updated_at",
           ],
@@ -754,6 +765,5 @@ module.exports = {
       required: ["order"],
     },
   },
- 
   required: ["context", "message"],
 };

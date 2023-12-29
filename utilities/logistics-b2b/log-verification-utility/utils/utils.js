@@ -197,9 +197,16 @@ const timestampCheck = (date) => {
   }
 };
 
-const getVersion = (data) => {
-  if (data?.search[0]?.context?.core_version === "1.1.0") return "v1.1";
+const getVersion = (data,vertical) => {
+  if(vertical==='logistics'){
+    if (data?.search[0]?.context?.core_version === "1.1.0") return "v1.1";
   else return "v1.2";
+  }
+  if(vertical==='b2b'){
+    if (data?.search[0]?.context?.version === "2.0.1") return "v1";
+    else return "v2";
+  }
+
 };
 function compareDates(dateString1, dateString2) {
   const date1 = new Date(dateString1);

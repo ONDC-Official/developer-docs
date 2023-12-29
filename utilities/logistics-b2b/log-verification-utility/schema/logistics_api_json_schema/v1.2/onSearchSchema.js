@@ -301,6 +301,7 @@ module.exports = {
                           required: ["label", "duration", "timestamp"],
                         },
                       },
+                      additionalProperties:false,
                       required: [
                         "id",
                         "category_id",
@@ -322,7 +323,53 @@ module.exports = {
                           type: "string",
                           enum: constants.FULFILLMENT_TYPE,
                         },
+                        start: {
+                          type: "object",
+                          properties: {
+                            time: {
+                              type: "object",
+                              properties: {
+                                duration: {
+                                  type: "string",
+                                },
+                              },
+                              required: ["duration"],
+                            },
+                          },
+                          required: ["time"],
+                        },
+                        tags: {
+                          type: "array",
+                          items: {
+                            type: "object",
+                            properties: {
+                              code: {
+                                type: "string",
+                                enum: ["distance"]
+                              },
+                              list: {
+                                type: "array",
+                                items: {
+                                  type: "object",
+                                  properties: {
+                                    code: {
+                                      type: "string",
+                                      enum: ["motorable_distance_type","motorable_distance"]
+                                    },
+                                    value: {
+                                      type: "string",
+                                    },
+                                  },
+                                  required: ["code", "value"],
+                                },
+                              },
+                            },
+      
+                            required: ["code", "list"],
+                          },
+                        },
                       },
+                      additionalProperties:false,
                       required: ["id", "type"],
                     },
                   },

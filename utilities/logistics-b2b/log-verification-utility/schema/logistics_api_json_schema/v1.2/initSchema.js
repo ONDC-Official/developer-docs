@@ -197,7 +197,7 @@ module.exports = {
                               },
                             },
                             isLengthValid:true,
-                            errorMessage:"name + building + locality < 190 chars",
+                            
                             required: [
                               "name",
                               "building",
@@ -275,7 +275,7 @@ module.exports = {
                               },
                             },
                             isLengthValid:true,
-                            errorMessage:"name + building + locality < 190 chars",
+                            
                             required: [
                               "name",
                               "building",
@@ -346,7 +346,6 @@ module.exports = {
                     },
                   },
                   isLengthValid: true,
-                  errorMessage: "name + building + locality < 190 chars",
                   additionalProperties: false,
                   required: [
                     "name",
@@ -460,6 +459,7 @@ module.exports = {
                   errorMessage:"should be same as in /search - ${/search/0/message/intent/payment/type}"
                 },
               },
+              additionalProperties:false,
               required: ["type"],
             },
           },
