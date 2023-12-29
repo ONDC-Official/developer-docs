@@ -40,7 +40,7 @@ module.exports = {
         },
         version: {
           type: "string",
-          const: "2.0.1",
+          const: "2.0.2",
         },
         bap_id: {
           type: "string",
@@ -58,7 +58,7 @@ module.exports = {
           type: "string",
           const: { $data: "/search/0/context/transaction_id" },
           errorMessage:
-                "Transaction ID should be same across the transaction: ${/search/0/context/transaction_id}",
+            "Transaction ID should be same across the transaction: ${/search/0/context/transaction_id}",
         },
         message_id: {
           type: "string",
@@ -70,7 +70,7 @@ module.exports = {
               errorMessage:
                 "Message ID should not be equal to transaction_id: ${1/transaction_id}",
             },
-          ]
+          ],
         },
         timestamp: {
           type: "string",
@@ -78,7 +78,9 @@ module.exports = {
         },
         ttl: {
           type: "string",
-          const: "PT30S",
+          const: { $data: "2/message/order/provider/ttl" },
+          errorMessage:
+            "should match provider ttl - ${2/message/order/provider/ttl}",
         },
       },
       required: [
@@ -122,7 +124,7 @@ module.exports = {
                 },
                 ttl: {
                   type: "string",
-                  format: "duration"
+                  format: "duration",
                 },
               },
               required: ["id", "locations"],
@@ -177,7 +179,8 @@ module.exports = {
                           type: "object",
                           properties: {
                             code: {
-                              type: "string"
+                              type: "string",
+                              enum: ["BUYER_TERMS"],
                             },
                           },
                           required: ["code"],
@@ -191,7 +194,8 @@ module.exports = {
                                 type: "object",
                                 properties: {
                                   code: {
-                                    type: "string"
+                                    type: "string",
+                                    enum: ["ITEM_REQ", "PACKAGING_REQ"],
                                   },
                                 },
                                 required: ["code"],
@@ -229,7 +233,8 @@ module.exports = {
                           properties: {
                             gps: {
                               type: "string",
-                              pattern: "^(-?[0-9]{1,3}(?:.[0-9]{6,15})?),( )*?(-?[0-9]{1,3}(?:.[0-9]{6,15})?)$",
+                              pattern:
+                                "^(-?[0-9]{1,3}(?:.[0-9]{6,15})?),( )*?(-?[0-9]{1,3}(?:.[0-9]{6,15})?)$",
                               errorMessage: "Incorrect gps value",
                             },
                             area_code: {
@@ -414,14 +419,14 @@ module.exports = {
               },
             },
           },
-          additionalProperties:false,
+          additionalProperties: false,
           required: ["provider", "items", "fulfillments", "payments", "tags"],
         },
       },
       required: ["order"],
-      additionalProperties:false,
+      additionalProperties: false,
     },
   },
   required: ["context", "message"],
-  additionalProperties:false,
+  additionalProperties: false,
 };

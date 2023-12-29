@@ -195,8 +195,7 @@ module.exports = {
               },
               required: ["price", "breakup"],
               isQuoteMatching: true,
-              errorMessage:
-                "price is not matching with the total breakup price",
+              
             },
 
             fulfillments: {
@@ -340,8 +339,7 @@ module.exports = {
                               },
                             },
                             isLengthValid: true,
-                            errorMessage:
-                              "name + building + locality < 190 chars",
+                            
                           },
                         },
                         required: ["gps", "address"],
@@ -462,8 +460,7 @@ module.exports = {
                               },
                             },
                             isLengthValid: true,
-                            errorMessage:
-                              "name + building + locality < 190 chars",
+                            
                           },
                         },
                         required: ["gps", "address"],
@@ -541,14 +538,14 @@ module.exports = {
                       properties: {
                         time: { required: ["range"] },
                       },
-                      required: ["time", "person", "location", "contact"],
+                      required: [ "person", "location", "contact"],
                     },
 
                     end: {
                       properties: {
                         time: { required: ["range"] },
                       },
-                      required: ["time", "person", "location", "contact"],
+                      required: ["person", "location", "contact"],
                     },
                   },
                   required: ["id", "type", "state", "start", "end", "tracking"],
@@ -717,6 +714,6 @@ module.exports = {
     },
   },
   // isFutureDated: true,
-  // errorMessage: "order/created_at or order/updated_at cannot be future dated w.r.t context/timestamp",
+
   required: ["context", "message"],
 };

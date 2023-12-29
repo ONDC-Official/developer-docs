@@ -199,8 +199,7 @@ module.exports = {
               },
               required: ["price", "breakup"],
               isQuoteMatching: true,
-              errorMessage:
-                "price is not matching with the total breakup price",
+              
             },
             fulfillments: {
               type: "array",
@@ -340,8 +339,7 @@ module.exports = {
                               },
                             },
                             isLengthValid: true,
-                            errorMessage:
-                              "name + building + locality < 190 chars",
+                            
                           },
                         },
                         required: ["gps", "address"],
@@ -467,8 +465,7 @@ module.exports = {
                               },
                             },
                             isLengthValid: true,
-                            errorMessage:
-                              "name + building + locality < 190 chars",
+                            
                           },
                         },
                         required: ["gps", "address"],

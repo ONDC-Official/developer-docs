@@ -187,8 +187,7 @@ module.exports = {
               },
               required: ["price", "breakup", "ttl"],
               isQuoteMatching: true,
-              errorMessage:
-                "price is not matching with the total breakup price",
+              
             },
             fulfillments: {
               type: "array",
@@ -356,6 +355,8 @@ module.exports = {
                 type: {
                   type: "string",
                   enum: constants.PAYMENT_TYPE,
+                  const: { $data: "/search/0/message/intent/payment/type" },
+                  errorMessage:"does not match the intended payment type by the logistics buyer"
                 },
                 collected_by: {
                   type: "string",

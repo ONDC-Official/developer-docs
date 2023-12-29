@@ -202,8 +202,7 @@ module.exports = {
                 },
               },
               isQuoteMatching: true,
-              errorMessage:
-                "price is not matching with the total breakup price",
+              
               required: ["price", "breakup"],
             },
             fulfillments: {
@@ -394,7 +393,7 @@ module.exports = {
                   },
                 },
                 if: { properties: { type: { const: "Prepaid" } } },
-                then: { required: ["type", "state", "tracking"] },
+                then: { required: ["type", "state", "tracking","start","end"] },
                 else: {
                   required: ["type", "state"],
                 },

@@ -36,11 +36,14 @@ const checkInit = (data, msgIdSet) => {
 
           if (providerLocArr) {
             providerLocArr.forEach((location, i) => {
-              providerObj[0]?.locations?.forEach((element) => {
-                console.log(location.id, element.id);
+              if (providerObj) {
+                providerObj[0]?.locations?.forEach((element) => {
+                  console.log(location.id, element.id);
 
-                if (location.id === element.id) providerLocExists = true;
-              });
+                  if (location.id === element.id) providerLocExists = true;
+                });
+              }
+
               if (!providerLocExists) {
                 let itemkey = `providerLocErr${i}`;
                 initObj[
@@ -66,10 +69,12 @@ const checkInit = (data, msgIdSet) => {
     let itemExists = false;
 
     itemsArr.forEach((item, i) => {
-      onSearchitemsArr.forEach((element) => {
-        if (item.id === element.id) itemExists = true;
-        console.log(item.id, element.id);
-      });
+      if (onSearchitemsArr) {
+        onSearchitemsArr.forEach((element) => {
+          if (item.id === element.id) itemExists = true;
+        });
+      }
+
       if (!itemExists) {
         let itemkey = `itemErr${i}`;
         initObj[itemkey] = `Item Id '${item.id}' does not exist in /on_search`;

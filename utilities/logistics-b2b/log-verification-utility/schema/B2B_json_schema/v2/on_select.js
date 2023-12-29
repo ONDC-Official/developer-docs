@@ -40,7 +40,7 @@ module.exports = {
         },
         version: {
           type: "string",
-          const: "2.0.1",
+          const: "2.0.2",
         },
         bap_id: {
           type: "string",
@@ -220,7 +220,7 @@ module.exports = {
                       },
                       "@ondc/org/title_type": {
                         type: "string",
-                        enum: ["item", "discount", "Packing charges", "delivery ", "tax", "misc"]
+                        enum: ["item", "discount", "packing", "delivery ", "tax", "misc"]
                       },
                       price: {
                         type: "object",
@@ -321,8 +321,7 @@ module.exports = {
                 },
               },
               isQuoteMatching: true,
-              errorMessage:
-                "price is not matching with the total breakup price",
+              
               required: ["price", "breakup", "ttl"],
             },
           },
