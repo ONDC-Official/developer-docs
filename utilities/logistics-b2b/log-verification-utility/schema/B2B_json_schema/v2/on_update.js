@@ -56,18 +56,18 @@ module.exports = {
         },
         transaction_id: {
           type: "string",
-           const: { $data: "/select/0/context/transaction_id" },
+          const: { $data: "/select/0/context/transaction_id" },
         },
         message_id: {
           type: "string",
-             const: { $data: "/update/0/context/message_id" },
+          const: { $data: "/update/0/context/message_id" },
         },
         timestamp: {
           type: "string",
           format: "date-time",
         },
         ttl: {
-          type: "string"
+          type: "string",
         },
       },
       required: [
@@ -93,22 +93,18 @@ module.exports = {
           properties: {
             id: {
               type: "string",
-               const: { $data: "/confirm/0/message/order/id" },
+              const: { $data: "/confirm/0/message/order/id" },
             },
             state: {
               type: "string",
-              enum: [
-                "Created",
-                "Accepted",
-                "In-progress"
-              ],
+              enum: ["Created", "Accepted", "In-progress"],
             },
             provider: {
               type: "object",
               properties: {
                 id: {
                   type: "string",
-                   const: { $data: "/select/0/message/order/provider/id" },
+                  const: { $data: "/init/0/message/order/provider/id" },
                 },
               },
               required: ["id"],
@@ -178,7 +174,7 @@ module.exports = {
                 },
                 collected_by: {
                   type: "string",
-                  enum:["BAP","BPP"]
+                  enum: ["BAP", "BPP"],
                 },
                 "@ondc/org/buyer_app_finder_fee_type": {
                   type: "string",
@@ -255,13 +251,13 @@ module.exports = {
                 },
               },
               if: { properties: { type: { const: "ON-FULFILLMENT" } } },
-                then: {
-                  properties: {
-                    collected_by: {
-                      const: "BPP",
-                    },
+              then: {
+                properties: {
+                  collected_by: {
+                    const: "BPP",
                   },
                 },
+              },
               required: [
                 "params",
                 "status",
@@ -290,7 +286,15 @@ module.exports = {
                         properties: {
                           code: {
                             type: "string",
-                            enum:["Pending","Agent-assigned","Order-picked-up","Out-for-delivery","Delivered"]
+                            enum: [
+                              "Pending",
+                              "Out-for-pickup",
+                              "Order-picked-up",
+                              "In-transit",
+                              "At-destination-hub",
+                              "Out-for-delivery",
+                              "Order-delivered",
+                            ],
                           },
                         },
                         required: ["code"],
@@ -374,13 +378,17 @@ module.exports = {
                               properties: {
                                 start: {
                                   type: "string",
-                                  pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
-                                  errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
+                                  pattern:
+                                    "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                  errorMessage:
+                                    "should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format",
                                 },
                                 end: {
                                   type: "string",
-                                  pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
-                                  errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
+                                  pattern:
+                                    "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                  errorMessage:
+                                    "should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format",
                                 },
                               },
                               required: ["start", "end"],
@@ -435,7 +443,7 @@ module.exports = {
                           properties: {
                             code: {
                               type: "string",
-                              enum:["ITEM_DETAILS"]
+                              enum: ["ITEM_DETAILS"],
                             },
                           },
                           required: ["code"],
@@ -450,7 +458,12 @@ module.exports = {
                                 properties: {
                                   code: {
                                     type: "string",
-                                    enum:["ITEM_ID","COUNT","MEASURE_UNIT","MEASURE_VALUE"]
+                                    enum: [
+                                      "ITEM_ID",
+                                      "COUNT",
+                                      "MEASURE_UNIT",
+                                      "MEASURE_VALUE",
+                                    ],
                                   },
                                 },
                                 required: ["code"],
@@ -472,12 +485,12 @@ module.exports = {
                   "@ondc/org/provider_name",
                   "state",
                   "type",
-                  "stops"
+                  "stops",
                 ],
               },
             },
           },
-          
+
           required: ["id", "state", "provider", "items"],
         },
       },
