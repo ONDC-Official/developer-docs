@@ -235,7 +235,7 @@ module.exports = {
                               type: "string",
                               pattern:
                                 "^(-?[0-9]{1,3}(?:.[0-9]{6,15})?),( )*?(-?[0-9]{1,3}(?:.[0-9]{6,15})?)$",
-                              errorMessage: "Incorrect gps value",
+                              errorMessage: "Incorrect gps value (minimum of six decimal places are required)",
                             },
                             area_code: {
                               type: "string",
