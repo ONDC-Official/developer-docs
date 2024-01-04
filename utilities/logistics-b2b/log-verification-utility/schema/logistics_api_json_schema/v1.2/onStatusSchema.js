@@ -163,6 +163,21 @@ module.exports = {
                     },
                     required: ["code"],
                   },
+                  time: {
+                    type: "object",
+                    properties: {
+                      label: {
+                        type: "string",
+                      },
+                      duration: {
+                        type: "string",
+                      },
+                      timestamp: {
+                        type: "string",
+                      },
+                    },
+                    required: ["label", "duration", "timestamp"],
+                  },
                 },
                 required: ["id", "category_id", "descriptor", "fulfillment_id"],
               },
@@ -623,6 +638,30 @@ module.exports = {
                   collected_by: {
                     const: "BPP",
                   },
+                },
+              },
+
+              if: { properties: { type: { const: "ON-ORDER" } } },
+              then: {
+                properties: {
+                  collected_by: {
+                    const: "BAP",
+                  },
+                  status:{
+                    const:"PAID"
+                  }
+                },
+              },
+
+              if: { properties: { type: { const: "POST-FULFILLMENT" } } },
+              then: {
+                properties: {
+                  collected_by: {
+                    const: "BAP",
+                  },
+                  status:{
+                    const:"NOT-PAID"
+                  }
                 },
               },
               required: ["type", "collected_by","status"],
