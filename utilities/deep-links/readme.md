@@ -45,7 +45,7 @@ query_string = {
 
 Option 1:
 
-** Pass the query_string as a string as an argument **
+**Pass the query_string as a string as an argument**
 
 ```
 python3 qr_generate.py '{"context.bpp_id": "sellerapp.com", "message.intent.provider.id": "P1", "context.domain": "RET10", "message.intent.category.id": "Foodgrains"}'
@@ -53,7 +53,7 @@ python3 qr_generate.py '{"context.bpp_id": "sellerapp.com", "message.intent.prov
 
 Option 2:
 
-** Define the query_string in qr_generate.py **
+**Define the query_string in qr_generate.py**
 
 ## Buyer App Platform Integration
 
