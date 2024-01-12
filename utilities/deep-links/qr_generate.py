@@ -1,48 +1,18 @@
-import qrcode
+from qr_code_generator import generate_deep_link, generate_qr_code
 import json
 import sys
 
-BASE_URL = "beckn://ondc"
 
-DEFAULT_PARAMS = {
-    "context.action": "search"
-}
+try:
+    query_string = json.loads(sys.argv[1])
+    deep_link = generate_deep_link(**query_string)
+    output_path = "/path/to/save/qr_code.png"
 
-#  Generate deep link
-def generate_deep_link(**kwargs):
-    params = DEFAULT_PARAMS.copy()
-    params.update(kwargs)
-    query_string = '&'.join([f"{k}={v}" for k, v in params.items()])
-    return f"{BASE_URL}?{query_string}"
-
-#  Generate QR code with deep link embedded
-
-def generate_qr_code(deep_link, file_name="qr_code.png"):
-    """
-    Generate a QR code from a given deep link.
-
-    Parameters:
-    - deep_link (str): The deep link to encode in the QR code.
-    - file_name (str): The name of the file to save the QR code image. Default is "qr_code.png".
-
-    Returns:
-    - None
-    """
-    qr = qrcode.QRCode(
-        version=1,
-        error_correction=qrcode.constants.ERROR_CORRECT_L,
-        box_size=10,
-        border=4,
-    )
-    qr.add_data(deep_link)
-    qr.make(fit=True)
-
-    img = qr.make_image(fill_color="black", back_color="white")
-    img.save(file_name)
-
-
-query_string=json.loads(sys.argv[1])
-deep_link = generate_deep_link(**query_string)
-
-# Example usage:
-generate_qr_code(deep_link)
+    # Example usage:
+    generate_qr_code(deep_link, output_path)
+except json.JSONDecodeError:
+    print("Invalid JSON input.")
+    raise
+except Exception as e:
+    print(f"An unexpected error occurred: {e}")
+    raise
