@@ -56,9 +56,6 @@ module.exports = {
         },
         transaction_id: {
           type: "string",
-          const: { $data: "/search/0/context/transaction_id" },
-          errorMessage:
-            "Transaction ID should be same across the transaction: ${/search/0/context/transaction_id}",
         },
         message_id: {
           type: "string",
@@ -127,7 +124,7 @@ module.exports = {
                   format: "duration",
                 },
               },
-              required: ["id", "locations"],
+              required: ["id", "locations","ttl"],
             },
             items: {
               type: "array",
@@ -138,6 +135,12 @@ module.exports = {
                     type: "string",
                   },
                   location_ids: {
+                    type: "array",
+                    items: {
+                      type: "string",
+                    },
+                  },
+                  fulfillment_ids: {
                     type: "array",
                     items: {
                       type: "string",
@@ -212,7 +215,7 @@ module.exports = {
                     },
                   },
                 },
-                required: ["id", "location_ids", "quantity"],
+                required: ["id", "location_ids", "quantity","tags","fulfillment_ids"],
               },
             },
             fulfillments: {
@@ -220,6 +223,12 @@ module.exports = {
               items: {
                 type: "object",
                 properties: {
+                  id: {
+                    type: "string",
+                  },
+                  type: {
+                    type: "string",
+                  },
                   stops: {
                     type: "array",
                     items: {
@@ -291,73 +300,8 @@ module.exports = {
                     },
                     required: ["person"],
                   },
-                  tags: {
-                    type: "array",
-                    items: {
-                      type: "object",
-                      properties: {
-                        descriptor: {
-                          type: "object",
-                          properties: {
-                            code: {
-                              type: "string",
-                              enum: ["DELIVERY_TERMS"],
-                            },
-                          },
-                          required: ["code"],
-                        },
-                        list: {
-                          type: "array",
-                          items: {
-                            type: "object",
-                            properties: {
-                              descriptor: {
-                                type: "object",
-                                properties: {
-                                  code: {
-                                    type: "string",
-                                    enum: [
-                                      "INCOTERMS",
-                                      "NAMED_PLACE_OF_DELIVERY",
-                                    ],
-                                  },
-                                },
-                                required: ["code"],
-                              },
-                              value: {
-                                type: "string",
-                              },
-                            },
-                            if: {
-                              properties: {
-                                descriptor: {
-                                  properties: { code: { const: "INCOTERMS" } },
-                                },
-                              },
-                            },
-                            then: {
-                              properties: {
-                                value: {
-                                  enum: [
-                                    "DPU",
-                                    "CIF",
-                                    "EXW",
-                                    "FOB",
-                                    "DAP",
-                                    "DDP",
-                                  ],
-                                },
-                              },
-                            },
-                            required: ["descriptor", "value"],
-                          },
-                        },
-                      },
-                      required: ["descriptor", "list"],
-                    },
-                  },
                 },
-                required: ["stops"],
+                required: ["id","type","stops"],
               },
             },
             payments: {

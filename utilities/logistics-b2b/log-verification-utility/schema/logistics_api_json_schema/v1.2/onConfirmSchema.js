@@ -214,7 +214,7 @@ module.exports = {
                     required: ["label", "duration", "timestamp"],
                   },
                 },
-                required: ["id", "category_id", "descriptor","time","fulfillment_id"],
+                required: ["id", "category_id", "descriptor","fulfillment_id"],
               },
             },
             quote: {

@@ -556,8 +556,38 @@ module.exports = {
                               },
                               required: ["measure", "count"],
                             },
+                            minimum: {
+                              type: "object",
+                              properties: {
+                                measure: {
+                                  type: "object",
+                                  properties: {
+                                    unit: {
+                                      type: "string",
+                                      enum: [
+                                        "unit",
+                                        "dozen",
+                                        "gram",
+                                        "kilogram",
+                                        "tonne",
+                                        "litre",
+                                        "millilitre",
+                                      ],
+                                    },
+                                    value: {
+                                      type: "string",
+                                    },
+                                  },
+                                  required: ["unit", "value"],
+                                },
+                                count: {
+                                  type: "string",
+                                },
+                              },
+                              required: ["measure", "count"],
+                            },
                           },
-                          required: ["unitized", "available", "maximum"],
+                          required: ["unitized", "available"],
                         },
                         category_ids: {
                           type: "array",

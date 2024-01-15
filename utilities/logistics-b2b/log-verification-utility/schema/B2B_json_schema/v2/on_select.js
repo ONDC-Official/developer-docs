@@ -220,7 +220,7 @@ module.exports = {
                       },
                       "@ondc/org/title_type": {
                         type: "string",
-                        enum: ["item", "discount", "packing", "delivery ", "tax", "misc"]
+                        enum: ["item", "discount", "packing", "delivery", "tax", "misc"]
                       },
                       price: {
                         type: "object",
@@ -324,8 +324,29 @@ module.exports = {
               
               required: ["price", "breakup", "ttl"],
             },
+            payments: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  type: {
+                    type: "string",
+                    enum: [
+                      "PRE-FULFILLMENT",
+                      "ON-FULFILLMENT",
+                      "POST-FULFILLMENT",
+                    ],
+                  },
+                  collected_by:{
+                    type:"string",
+                    enum:["BAP","BPP"]
+                  }
+                },
+                required: ["type","collected_by"],
+              },
+            },
           },
-          required: ["provider", "items", "quote"],
+          required: ["provider", "items", "quote","payments","fulfillments"],
         },
       },
       required: ["order"],

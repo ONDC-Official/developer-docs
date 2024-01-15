@@ -795,7 +795,7 @@ module.exports = {
               const: {
                 $data: "/confirm/0/message/order/created_at",
               },
-              errorMessage: "mismatches in /confirm and /on_update",
+              errorMessage: "mismatches in /confirm and /on_status",
             },
             updated_at: {
               type: "string",
