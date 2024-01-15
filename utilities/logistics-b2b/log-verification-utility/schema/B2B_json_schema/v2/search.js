@@ -255,7 +255,7 @@ module.exports = {
             },
           },
           additionalProperties:false,
-          required: ["item", "fulfillment", "payment", "tags"],
+          required: ["fulfillment", "payment", "tags"],
         },
       },
       required: ["intent"],

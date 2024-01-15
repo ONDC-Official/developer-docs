@@ -235,12 +235,15 @@ module.exports = {
                             type: "string",
                             enum: [
                               "Pending",
+                              "Packed",
+                              "Agent-assigned",
                               "Out-for-pickup",
                               "Order-picked-up",
                               "In-transit",
                               "At-destination-hub",
                               "Out-for-delivery",
                               "Order-delivered",
+                              "Cancelled"
                             ],
                           },
                         },

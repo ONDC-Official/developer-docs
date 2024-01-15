@@ -215,13 +215,15 @@ module.exports = {
                                 type: "string",
                                 anyOf: [
                                   {
-                                    const: { $data: "/init/0/message/order/items/0/tags/0/list/0/value" },
+                                    const: { $data: "/select/0/message/order/items/0/tags/0/list/0/value" },
+                                    errorMessage:"Buyer terms should be same as provided in /select"
                                   },
                                   {
-                                    const: { $data: "/init/0/message/order/items/0/tags/0/list/1/value" },
+                                    const: { $data: "/select/0/message/order/items/0/tags/0/list/1/value" },
+                                    errorMessage:"Buyer terms should be same as provided in /select"
                                   }
                                 ]
-                              },
+                              }
                             },
                             required: ["descriptor", "value"],
                           },
@@ -803,9 +805,6 @@ module.exports = {
             updated_at: {
               type: "string",
               format: "date-time",
-              const: { $data: "3/context/timestamp" },
-              errorMessage:
-                " should be updated as per context/timestamp - ${3/context/timestamp}",
             },
           },
           additionalProperties: false,

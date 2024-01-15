@@ -58,7 +58,7 @@ module.exports = {
           type: "string",
           const: { $data: "/select/0/context/transaction_id" },
           errorMessage:
-                "Transaction ID should be same across the transaction: ${/select/0/context/transaction_id}",
+            "Transaction ID should be same across the transaction: ${/select/0/context/transaction_id}",
         },
         message_id: {
           type: "string",
@@ -75,7 +75,7 @@ module.exports = {
               errorMessage:
                 "Message ID should not be equal to transaction_id: ${1/transaction_id}",
             },
-          ]
+          ],
         },
         timestamp: {
           type: "string",
@@ -83,7 +83,7 @@ module.exports = {
         },
         ttl: {
           type: "string",
-          format: "duration"
+          format: "duration",
         },
       },
       required: [
@@ -122,7 +122,9 @@ module.exports = {
               properties: {
                 id: {
                   type: "string",
-                  const: { $data: "/init/0/message/order/provider/locations/0/id"}
+                  const: {
+                    $data: "/init/0/message/order/provider/locations/0/id",
+                  },
                 },
               },
               required: ["id"],
@@ -178,7 +180,7 @@ module.exports = {
                           properties: {
                             code: {
                               type: "string",
-                              enum:["BUYER_TERMS"]
+                              enum: ["BUYER_TERMS"],
                             },
                           },
                           required: ["code"],
@@ -193,7 +195,7 @@ module.exports = {
                                 properties: {
                                   code: {
                                     type: "string",
-                                    enum:["ITEM_REQ","PACKAGING_REQ"]
+                                    enum: ["ITEM_REQ", "PACKAGING_REQ"],
                                   },
                                 },
                                 required: ["code"],
@@ -202,12 +204,18 @@ module.exports = {
                                 type: "string",
                                 anyOf: [
                                   {
-                                    const: { $data: "/init/0/message/order/items/0/tags/0/list/0/value" },
+                                    const: {
+                                      $data:
+                                        "/init/0/message/order/items/0/tags/0/list/0/value",
+                                    },
                                   },
                                   {
-                                    const: { $data: "/init/0/message/order/items/0/tags/0/list/1/value" },
-                                  }
-                                ]
+                                    const: {
+                                      $data:
+                                        "/init/0/message/order/items/0/tags/0/list/1/value",
+                                    },
+                                  },
+                                ],
                               },
                             },
                             required: ["descriptor", "value"],
@@ -269,7 +277,7 @@ module.exports = {
                   const: { $data: "/init/0/message/order/billing/phone" },
                 },
               },
-              
+
               required: ["name", "address", "state", "city", "tax_id", "phone"],
             },
             fulfillments: {
@@ -394,12 +402,18 @@ module.exports = {
                                 type: "string",
                                 anyOf: [
                                   {
-                                    const: { $data: "/init/0/message/order/fulfillments/0/tags/0/list/0/value" },
+                                    const: {
+                                      $data:
+                                        "/init/0/message/order/fulfillments/0/tags/0/list/0/value",
+                                    },
                                   },
                                   {
-                                    const: { $data: "/init/0/message/order/fulfillments/0/tags/0/list/1/value" },
-                                  }
-                                ]
+                                    const: {
+                                      $data:
+                                        "/init/0/message/order/fulfillments/0/tags/0/list/1/value",
+                                    },
+                                  },
+                                ],
                               },
                             },
                             if: {
@@ -471,7 +485,14 @@ module.exports = {
                       },
                       "@ondc/org/title_type": {
                         type: "string",
-                        enum: ["item", "discount", "packing", "delivery", "tax", "misc"]
+                        enum: [
+                          "item",
+                          "discount",
+                          "packing",
+                          "delivery",
+                          "tax",
+                          "misc",
+                        ],
                       },
                       price: {
                         type: "object",
@@ -547,7 +568,7 @@ module.exports = {
                 },
               },
               isQuoteMatching: true,
-              
+
               required: ["price", "breakup", "ttl"],
             },
             payments: {
@@ -555,10 +576,31 @@ module.exports = {
               items: {
                 type: "object",
                 properties: {
+                  type: {
+                    type: "string",
+                    enum: [
+                      "PRE-FULFILLMENT",
+                      "ON-FULFILLMENT",
+                      "POST-FULFILLMENT",
+                    ],
+                  },
+                  collected_by: {
+                    type: "string",
+                    enum: ["BAP", "BPP"],
+                  },
                   "@ondc/org/buyer_app_finder_fee_type": {
                     type: "string",
                   },
                   "@ondc/org/buyer_app_finder_fee_amount": {
+                    type: "string",
+                  },
+                  "@ondc/org/settlement_basis": {
+                    type: "string",
+                  },
+                  "@ondc/org/settlement_window": {
+                    type: "string",
+                  },
+                  "@ondc/org/withholding_amount": {
                     type: "string",
                   },
                   "@ondc/org/settlement_details": {
@@ -629,10 +671,34 @@ module.exports = {
                     },
                   },
                 },
-                required: [
-                  "@ondc/org/buyer_app_finder_fee_type",
-                  "@ondc/org/buyer_app_finder_fee_amount",
-                ],
+                if: { properties: { collected_by: { const: "BAP" } } },
+                then: {
+                  required: [
+                    "params",
+                    "status",
+                    "type",
+                    "collected_by",
+                    "@ondc/org/buyer_app_finder_fee_type",
+                    "@ondc/org/buyer_app_finder_fee_amount",
+                    "@ondc/org/settlement_basis",
+                    "@ondc/org/settlement_window",
+                    "@ondc/org/withholding_amount",
+                    "@ondc/org/settlement_details",
+                  ],
+                },
+                else: {
+                  required: [
+                    "params",
+                    "status",
+                    "type",
+                    "collected_by",
+                    "@ondc/org/buyer_app_finder_fee_type",
+                    "@ondc/org/buyer_app_finder_fee_amount",
+                    "@ondc/org/settlement_basis",
+                    "@ondc/org/settlement_window",
+                    "@ondc/org/withholding_amount",
+                  ],
+                },
               },
             },
             tags: {
@@ -673,7 +739,7 @@ module.exports = {
               },
             },
           },
-          additionalProperties:false,
+          additionalProperties: false,
           required: [
             "provider",
             "provider_location",

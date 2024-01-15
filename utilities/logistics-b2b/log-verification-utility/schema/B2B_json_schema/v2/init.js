@@ -58,7 +58,7 @@ module.exports = {
           type: "string",
           const: { $data: "/select/0/context/transaction_id" },
           errorMessage:
-            "Transaction ID should be same across the transaction: ${/search/0/context/transaction_id}",
+            "Transaction ID should be same across the transaction: ${/select/0/context/transaction_id}",
         },
         message_id: {
           type: "string",
@@ -127,6 +127,7 @@ module.exports = {
                 }
               },
               required: ["id", "locations"],
+              additionalProperties:false
             },
             items: {
               type: "array",
@@ -201,6 +202,22 @@ module.exports = {
                               },
                               value: {
                                 type: "string",
+                                anyOf: [
+                                  {
+                                    const: {
+                                      $data:
+                                        "/select/0/message/order/items/0/tags/0/list/0/value",
+                                    },
+                                    errorMessage:"Buyer terms should be same as provided in /select"
+                                  },
+                                  {
+                                    const: {
+                                      $data:
+                                        "/select/0/message/order/items/0/tags/0/list/1/value",
+                                    },
+                                    errorMessage:"Buyer terms should be same as provided in /select"
+                                  },
+                                ],
                               },
                             },
                             required: ["descriptor", "value"],
@@ -211,7 +228,7 @@ module.exports = {
                     },
                   },
                 },
-                required: ["id", "quantity"],
+                required: ["id", "fulfillment_ids","quantity","tags",],
               },
             },
             billing: {
@@ -471,8 +488,12 @@ module.exports = {
                       "POST-FULFILLMENT",
                     ],
                   },
+                  collected_by:{
+                    type:"string",
+                    enum:["BAP","BPP"]
+                  }
                 },
-                required: ["type"],
+                required: ["type","collected_by"],
               },
             },
             tags: {
