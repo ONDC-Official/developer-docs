@@ -1,5 +1,9 @@
 # Subscribing to ONDC Registry
 
+### Start Server
+
+``` flask --app server run  ```
+
 1. Add following environment variables like below.
 ```
 - name: BAP_BASE_URL
@@ -19,10 +23,10 @@
 curl --location 'https://<Domain_Host_Url>/subscribe' \
 --header 'Content-Type: application/json' \
 --data '{
-    "<Domain_Host_Url>/bap/beckn/v1/4b17bd06-ae7e-48e9-85bf-282fb310209c | 60": {
+    "<subscriber_id> | <ukId>": {
         "signingPublicKey": "...",
         "signingPrivateKey": "...",
-        "ondcPublicKey": "MCowBQYDK2VuAyEAvVEyZY91O2yV8w8/CAwVDAnqIZDJJUPdLUUKwLo3K0M=",
+        "ondcPublicKey": "MCowBQYDK2VuAyEAduMuZgmtpjdCuxv+Nc49K0cB6tL/Dj3HZetvVN7ZekM=", # Change it for pre-prod and prod
         "encPublicKey": "...",
         "encPrivateKey": "...",
         "type": "BAP",
@@ -31,7 +35,7 @@ curl --location 'https://<Domain_Host_Url>/subscribe' \
     "<Domain_Host_Url>/dobpp/beckn/7f7896dd-787e-4a0b-8675-e9e6fe93bb8f | 50": {
         "signingPublicKey": "HUVYp98+DBp/LIbs7LoeSec3NwQcojLZhsa/tQdqbP4=",
         "signingPrivateKey": "...",
-        "ondcPublicKey": "MCowBQYDK2VuAyEAvVEyZY91O2yV8w8/CAwVDAnqIZDJJUPdLUUKwLo3K0M=",
+        "ondcPublicKey": "MCowBQYDK2VuAyEAduMuZgmtpjdCuxv+Nc49K0cB6tL/Dj3HZetvVN7ZekM=",
         "encPublicKey": "...",
         "encPrivateKey": "...",
         "type": "BPP",
