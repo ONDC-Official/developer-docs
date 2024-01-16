@@ -191,9 +191,9 @@ https://prod.registry.ondc.org/vlookup
 ```
 
 ```
-	curl --location --request GET 'https://preprod.registry.ondc.org/ondc/vlookup' \
+	curl --location 'https://preprod.registry.ondc.org/ondc/vlookup' \
 		--header 'Content-Type: application/json' \
-		--data-raw '{
+		--data '{
 		    "sender_subscriber_id": "pilot-gateway-1.beckn.nsdl.co.in/option8",
 		    "request_id": "27baa06d-f90a-486c-85e5-cc621b787f04",
 		    "timestamp": "2022-09-13T20:45:07.060Z",
@@ -205,7 +205,7 @@ https://prod.registry.ondc.org/vlookup
 			"city":"std:080",
 			"subscriber_id": "ondc.org"
 		    }
-		}
+		}'
 
 - sender_subscriber_id: subscriber id of request initiator
 - request_id: unique identifier for request
