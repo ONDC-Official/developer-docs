@@ -95,7 +95,6 @@ const checkContextVal = (payload, msgIdSet, i) => {
           Obj.tmpstmpErr = `Timestamp mismatch for /${action} `;
         } else {
           if (
-            action === "on_search" ||
             action === "on_select" ||
             action === "on_init" ||
             action === "on_confirm" ||

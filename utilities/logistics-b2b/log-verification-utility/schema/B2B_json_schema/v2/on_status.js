@@ -626,9 +626,11 @@ module.exports = {
                   },
                   "@ondc/org/buyer_app_finder_fee_type": {
                     type: "string",
+                    const: { $data: "/confirm/0/message/order/payments/0/@ondc~1org~1buyer_app_finder_fee_type" },
                   },
                   "@ondc/org/buyer_app_finder_fee_amount": {
                     type: "string",
+                    const: { $data: "/confirm/0/message/order/payments/0/@ondc~1org~1buyer_app_finder_fee_amount" },
                   },
                   "@ondc/org/settlement_details": {
                     type: "array",

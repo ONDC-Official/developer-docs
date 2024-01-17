@@ -112,10 +112,27 @@ module.exports = {
                 id: {
                   type: "string",
                   const: { $data: "/select/0/message/order/provider/id" },
-
                 },
+                locations: {
+                  type: "array",
+                  items: {
+                    type: "object",
+                    properties: {
+                      id: {
+                        type: "string",
+                        const: {
+                          $data:
+                            "/select/0/message/order/provider/locations/0/id",
+                        },
+                      },
+                    },
+                    additionalProperties:false,
+                    required: ["id"],
+                  },
+                }
               },
-              required: ["id"],
+              additionalProperties:false,
+              required: ["id","locations"],
             },
             items: {
               type: "array",
@@ -164,7 +181,7 @@ module.exports = {
                         properties: {
                           code: {
                             type: "string",
-                            enum: ["Serviceable", "Non-Serviceable"],
+                            enum: ["Serviceable", "Non-serviceable"],
                           },
                         },
                         required: ["code"],
@@ -237,30 +254,6 @@ module.exports = {
                       item: {
                         type: "object",
                         properties: {
-                          quantity: {
-                            type: "object",
-                            properties: {
-                              available: {
-                                type: "object",
-                                properties: {
-                                  count: {
-                                    type: "string",
-                                  },
-                                },
-                                required: ["count"],
-                              },
-                              maximum: {
-                                type: "object",
-                                properties: {
-                                  count: {
-                                    type: "string",
-                                  },
-                                },
-                                required: ["count"],
-                              },
-                            },
-                            required: ["available", "maximum"],
-                          },
                           price: {
                             type: "object",
                             properties: {
@@ -274,7 +267,7 @@ module.exports = {
                             required: ["currency", "value"],
                           },
                         },
-                        required: ["quantity", "price"],
+                        required: ["price"],
                       },
                     },
                     if: {
@@ -336,6 +329,7 @@ module.exports = {
                       "ON-FULFILLMENT",
                       "POST-FULFILLMENT",
                     ],
+                    const: { $data: "/search/0/message/intent/payment/type" },
                   },
                   collected_by:{
                     type:"string",

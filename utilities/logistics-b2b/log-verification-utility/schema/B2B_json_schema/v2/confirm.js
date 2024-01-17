@@ -634,6 +634,7 @@ module.exports = {
                       "ON-FULFILLMENT",
                       "POST-FULFILLMENT",
                     ],
+                    const: { $data: "/search/0/message/intent/payment/type" },
                   },
                   collected_by: {
                     type: "string",
