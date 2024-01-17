@@ -12,6 +12,23 @@ const checkSearch = async (data, msgIdSet) => {
   let contextTime = search.context.timestamp;
   search = search.message.intent;
 
+  try {
+    console.log("Checking buyer app finder fee in /search");
+
+    search.tags.forEach((tag) => {
+      if (tag?.descriptor?.code === "bap_terms" && tag?.list) {
+        tag.list.forEach((val) => {
+          if (val?.descriptor?.code === "finder_fee_type") {
+            dao.setValue("buyerFinderFeeType", val?.value);
+          }
+          if (val?.descriptor?.code === "finder_fee_amount") {
+            dao.setValue("buyerFinderFeeAmount", val?.value);
+          }
+        });
+      }
+    });
+  } catch (error) {}
+
   const stops = data?.message?.intent?.fulfillment?.stops;
   let startLocation, endLocation;
   stops.forEach((stop) => {

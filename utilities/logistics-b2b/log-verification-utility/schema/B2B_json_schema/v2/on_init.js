@@ -583,6 +583,8 @@ module.exports = {
                       "ON-FULFILLMENT",
                       "POST-FULFILLMENT",
                     ],
+                    const: { $data: "/search/0/message/intent/payment/type" },
+              
                   },
                   collected_by: {
                     type: "string",
@@ -674,8 +676,6 @@ module.exports = {
                 if: { properties: { collected_by: { const: "BAP" } } },
                 then: {
                   required: [
-                    "params",
-                    "status",
                     "type",
                     "collected_by",
                     "@ondc/org/buyer_app_finder_fee_type",
@@ -688,8 +688,6 @@ module.exports = {
                 },
                 else: {
                   required: [
-                    "params",
-                    "status",
                     "type",
                     "collected_by",
                     "@ondc/org/buyer_app_finder_fee_type",

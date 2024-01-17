@@ -15,6 +15,28 @@ const checkOnStatus = (data, msgIdSet) => {
   let items = on_status.items;
   let fulfillments = on_status.fulfillments;
   let pickupTime, deliveryTime, RtoPickupTime, RtoDeliveredTime;
+  let payments = on_status?.payments;
+
+  try {
+    console.log(`Checking payment object in /on_status`);
+    payments.forEach((payment) => {
+      let paymentStatus = payment?.status;
+      let paymentType = payment?.type;
+      let params = payment?.params;
+
+      if (paymentStatus === "PAID" && !params?.transaction_id) {
+        onStatusObj.pymntErr = `Transaction ID in payments/params is required when the payment status is 'PAID'`;
+      }
+      if (paymentStatus === "NOT-PAID" && params?.transaction_id) {
+        onStatusObj.pymntErr = `Transaction ID in payments/params cannot be provided when the payment status is 'NOT-PAID'`;
+      }
+      if(paymentType==='ON-FULFILLMENT' && orderState!='Completed' && paymentStatus==='PAID'){
+        onStatusObj.pymntstsErr= `Payment status will be 'PAID' once the order is 'Completed' for payment type 'ON-FULFILLMENT'`
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
 
   //   try {
   //     console.log(
@@ -98,7 +120,6 @@ const checkOnStatus = (data, msgIdSet) => {
           });
         }
 
-        
         //Out-for-delivery
         if (ffState === "Out-for-delivery") {
           if (orderState !== "In-progress") {
@@ -107,13 +128,12 @@ const checkOnStatus = (data, msgIdSet) => {
           fulfillment.stops.forEach((stop) => {
             if (stop.type === "start") {
               pickupTime = stop?.time?.timestamp;
-              
+
               if (!pickupTime) {
                 onStatusObj.pickupTimeErr = `Pickup timestamp (fulfillments/start/time/timestamp) is required for fulfillment state - ${ffState}`;
               } else if (
                 dao.getValue("pickupTime") &&
-                pickupTime !==
-                  dao.getValue("pickupTime")
+                pickupTime !== dao.getValue("pickupTime")
               ) {
                 onStatusObj.pickupTimeErr = `Pickup timestamp (fulfillments/start/time/timestamp) cannot change for fulfillment state - ${ffState}`;
               }
@@ -139,8 +159,7 @@ const checkOnStatus = (data, msgIdSet) => {
                 onStatusObj.pickupTimeErr = `Pickup timestamp (fulfillments/start/time/timestamp) is required for fulfillment state - ${ffState}`;
               } else if (
                 dao.getValue("pickupTime") &&
-                pickupTime !==
-                  dao.getValue("pickupTime")
+                pickupTime !== dao.getValue("pickupTime")
               ) {
                 onStatusObj.pickupTimeErr = `Pickup timestamp (fulfillments/start/time/timestamp) cannot change for fulfillment state - ${ffState}`;
               }
@@ -149,7 +168,7 @@ const checkOnStatus = (data, msgIdSet) => {
             if (stop.type === "end") {
               deliveryTime = stop?.time?.timestamp;
               dao.setValue("deliveryTime", deliveryTime);
-             
+
               if (!deliveryTime) {
                 onStatusObj.deliveryTimeErr = `Delivery timestamp (fulfillments/end/time/timestamp) is required for fulfillment state - ${ffState}`;
               }
@@ -162,10 +181,6 @@ const checkOnStatus = (data, msgIdSet) => {
             }
           });
         }
-
-
-
-
       }
     });
   } catch (error) {
