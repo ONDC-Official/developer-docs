@@ -124,7 +124,7 @@ module.exports = {
                   format: "duration",
                 },
               },
-              required: ["id", "locations","ttl"],
+              required: ["id", "locations"],
             },
             items: {
               type: "array",
@@ -215,7 +215,7 @@ module.exports = {
                     },
                   },
                 },
-                required: ["id", "location_ids", "quantity","tags","fulfillment_ids"],
+                required: ["id", "location_ids", "quantity","fulfillment_ids"],
               },
             },
             fulfillments: {
@@ -317,7 +317,6 @@ module.exports = {
                       "ON-FULFILLMENT",
                       "POST-FULFILLMENT",
                     ],
-                    const: { $data: "/search/0/message/intent/payment/type" },
                   },
                 },
                 required: ["type"],

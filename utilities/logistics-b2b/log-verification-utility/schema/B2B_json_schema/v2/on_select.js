@@ -58,7 +58,7 @@ module.exports = {
           type: "string",
           const: { $data: "/select/0/context/transaction_id" },
           errorMessage:
-                "Transaction ID should be same across the transaction: ${/select/0/context/transaction_id}",
+            "Transaction ID should be same across the transaction: ${/select/0/context/transaction_id}",
         },
         message_id: {
           type: "string",
@@ -75,14 +75,14 @@ module.exports = {
               errorMessage:
                 "Message ID should not be equal to transaction_id: ${1/transaction_id}",
             },
-          ]
+          ],
         },
         timestamp: {
           type: "string",
           format: "date-time",
         },
         ttl: {
-          type: "string"
+          type: "string",
         },
       },
       required: [
@@ -126,30 +126,98 @@ module.exports = {
                         },
                       },
                     },
-                    additionalProperties:false,
+                    additionalProperties: false,
                     required: ["id"],
                   },
-                }
+                },
               },
-              additionalProperties:false,
-              required: ["id","locations"],
+              additionalProperties: false,
+              required: ["id", "locations"],
             },
             items: {
               type: "array",
               items: {
                 type: "object",
                 properties: {
+                  id: {
+                    type: "string",
+                  },
                   fulfillment_ids: {
                     type: "array",
                     items: {
                       type: "string",
                     },
                   },
-                  id: {
-                    type: "string",
+                  quantity: {
+                    type: "object",
+                    properties: {
+                      selected: {
+                        type: "object",
+                        properties: {
+                          count: {
+                            type: "integer",
+                          },
+                        },
+                        required: ["count"],
+                      },
+                    },
+                    required: ["selected"],
+                  },
+                  "add-ons": {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        id: {
+                          type: "string",
+                        },
+                      },
+                      required: ["id"],
+                    },
+                  },
+                  tags: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        descriptor: {
+                          type: "object",
+                          properties: {
+                            code: {
+                              type: "string",
+                              enum: ["BUYER_TERMS"],
+                            },
+                          },
+                          required: ["code"],
+                        },
+                        list: {
+                          type: "array",
+                          items: {
+                            type: "object",
+                            properties: {
+                              descriptor: {
+                                type: "object",
+                                properties: {
+                                  code: {
+                                    type: "string",
+                                    enum: ["ITEM_REQ", "PACKAGING_REQ"],
+                                  },
+                                },
+                                required: ["code"],
+                              },
+                              value: {
+                                type: "string",
+                              },
+                            },
+                            required: ["descriptor", "value"],
+                          },
+                        },
+                      },
+                      required: ["descriptor", "list"],
+                    },
                   },
                 },
-                required: ["id"],
+                required: ["id", "quantity", "fulfillment_ids"],
               },
             },
             fulfillments: {
@@ -171,7 +239,7 @@ module.exports = {
                   },
                   "@ondc/org/TAT": {
                     type: "string",
-                    format: "duration"
+                    format: "duration",
                   },
                   state: {
                     type: "object",
@@ -237,7 +305,14 @@ module.exports = {
                       },
                       "@ondc/org/title_type": {
                         type: "string",
-                        enum: ["item", "discount", "packing", "delivery", "tax", "misc"]
+                        enum: [
+                          "item",
+                          "discount",
+                          "packing",
+                          "delivery",
+                          "tax",
+                          "misc",
+                        ],
                       },
                       price: {
                         type: "object",
@@ -310,11 +385,11 @@ module.exports = {
                 },
                 ttl: {
                   type: "string",
-                  format: "duration"
+                  format: "duration",
                 },
               },
               isQuoteMatching: true,
-              
+
               required: ["price", "breakup", "ttl"],
             },
             payments: {
@@ -329,18 +404,18 @@ module.exports = {
                       "ON-FULFILLMENT",
                       "POST-FULFILLMENT",
                     ],
-                    const: { $data: "/search/0/message/intent/payment/type" },
+                    const: { $data: "/select/0/message/order/payments/0/type" },
                   },
-                  collected_by:{
-                    type:"string",
-                    enum:["BAP","BPP"]
-                  }
+                  collected_by: {
+                    type: "string",
+                    enum: ["BAP", "BPP"],
+                  },
                 },
-                required: ["type","collected_by"],
+                required: ["type", "collected_by"],
               },
             },
           },
-          required: ["provider", "items", "quote","payments","fulfillments"],
+          required: ["provider", "items", "quote", "payments", "fulfillments"],
         },
       },
       required: ["order"],

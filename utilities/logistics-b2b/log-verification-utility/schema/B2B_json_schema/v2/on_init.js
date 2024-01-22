@@ -287,12 +287,27 @@ module.exports = {
                 properties: {
                   id: {
                     type: "string",
+                    const: { $data: "/on_select/0/message/order/fulfillments/0/id" },
                   },
                   type: {
                     type: "string",
+                    const: { $data: "/on_select/0/message/order/fulfillments/0/type" },
+                  },
+                  "@ondc/org/provider_name": {
+                    type: "string",
+                    const: { $data: "/on_select/0/message/order/fulfillments/0/@ondc~1org~1provider_name" },
                   },
                   tracking: {
                     type: "boolean",
+                  },
+                  "@ondc/org/category": {
+                    type: "string",
+                    const: { $data: "/on_select/0/message/order/fulfillments/0/@ondc~1org~1category" },
+                  },
+                  "@ondc/org/TAT": {
+                    type: "string",
+                    format: "duration",
+                    const: { $data: "/on_select/0/message/order/fulfillments/0/@ondc~1org~1TAT" },
                   },
                   stops: {
                     type: "array",
@@ -459,6 +474,7 @@ module.exports = {
                     },
                     value: {
                       type: "string",
+                      const: { $data: "/on_select/0/message/order/quote/price/value" },
                     },
                   },
                   required: ["currency", "value"],
@@ -583,7 +599,7 @@ module.exports = {
                       "ON-FULFILLMENT",
                       "POST-FULFILLMENT",
                     ],
-                    const: { $data: "/search/0/message/intent/payment/type" },
+                    const: { $data: "/select/0/message/order/payments/0/type" },
               
                   },
                   collected_by: {
@@ -680,9 +696,6 @@ module.exports = {
                     "collected_by",
                     "@ondc/org/buyer_app_finder_fee_type",
                     "@ondc/org/buyer_app_finder_fee_amount",
-                    "@ondc/org/settlement_basis",
-                    "@ondc/org/settlement_window",
-                    "@ondc/org/withholding_amount",
                     "@ondc/org/settlement_details",
                   ],
                 },

@@ -228,7 +228,7 @@ module.exports = {
                     },
                   },
                 },
-                required: ["id", "fulfillment_ids","quantity","tags",],
+                required: ["id", "fulfillment_ids","quantity"],
               },
             },
             billing: {
@@ -487,7 +487,7 @@ module.exports = {
                       "ON-FULFILLMENT",
                       "POST-FULFILLMENT",
                     ],
-                    const: { $data: "/search/0/message/intent/payment/type" },
+                    const: { $data: "/select/0/message/order/payments/0/type" },
                   },
                   collected_by:{
                     type:"string",

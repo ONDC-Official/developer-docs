@@ -25,10 +25,12 @@ const checkOnSelect = async (data, msgIdSet) => {
 
   try {
     console.log(`Checking quote object in /on_select api`);
-    quote?.breakup.forEach((breakup) => {
+    quote?.breakup.forEach((breakup,i) => {
       let itemPrice = parseFloat(breakup?.item?.price?.value);
+      let available = Number(breakup?.item?.quantity?.available?.count)
       let quantity = breakup["@ondc/org/item_quantity"];
 
+     
       if (
         breakup["@ondc/org/title_type"] === "delivery" &&
         breakup["@ondc/org/item_id"] === ffId
@@ -38,9 +40,16 @@ const checkOnSelect = async (data, msgIdSet) => {
       if (
         breakup["@ondc/org/title_type"] === "item" &&
         quantity &&
-        parseFloat(breakup.price.value) != itemPrice * quantity?.count
+        parseFloat(breakup.price.value).toFixed(2) != parseFloat(itemPrice * quantity?.count).toFixed(2)
       ) {
-        onSelectObj.quoteErr = `Total price of the item with item id ${breakup["@ondc/org/item_id"]} is not in sync with the unit price and quantity`;
+        let item = `quoteErr${i}`
+        onSelectObj[item] = `Total price of the item with item id ${breakup["@ondc/org/item_id"]} is not in sync with the unit price and quantity`;
+      }
+
+      if( breakup["@ondc/org/title_type"] === "item" &&
+      quantity && quantity?.count>available){
+        let item = `quoteErr${i}`
+        onSelectObj[item] = `@ondc/org/item_quantity for item with id ${breakup["@ondc/org/item_id"]} cannot be more than the available count (quantity/avaialble/count) in quote/breakup`;
       }
     });
 
@@ -56,7 +65,7 @@ const checkOnSelect = async (data, msgIdSet) => {
     }
   } catch (error) {
     console.log(
-      `!!Error while checking providers array in /on_search api`,
+      `!!Error while checking providers array in /on_select api`,
       error
     );
   }
