@@ -52,44 +52,45 @@ const checkOnSearch = async (data, msgIdSet) => {
       }
 
       //checking mandatory attributes for fashion and electronics
+      if (domain === "ONDC:RET12" || domain === "ONDC:RET14") {
+        provider.items.forEach((item) => {
+          let itemTags = item?.tags;
+          let mandatoryAttr;
+          let attrPresent = false;
 
-      provider.items.forEach((item) => {
-        let itemTags = item?.tags;
-        let mandatoryAttr;
-        let attrPresent = false;
-
-        if (domain === "ONDC:RET12") {
-          mandatoryAttr = constants.FASHION_ATTRIBUTES;
-        }
-        if (domain === "ONDC:RET14") {
-          mandatoryAttr = constants.ELECTRONICS_ATTRIBUTES;
-        }
-        itemTags.map(({ descriptor, list }, index) => {
-          switch (descriptor?.code) {
-            case "attribute":
-              attrPresent = true;
-              const encounteredAttr = [];
-              list.map(({ descriptor, value }) => {
-                encounteredAttr.push(descriptor?.code);
-              });
-
-              // Check if all mandatory attributes are encountered
-              const missingAttr = mandatoryAttr.filter(
-                (code) => !encounteredAttr.includes(code)
-              );
-              if (missingAttr.length > 0) {
-                onSrchObj.mssngAttrErr = `'${missingAttr}' attribute/s required in items/tags for ${domain} domain`;
-              }
-              break;
+          if (domain === "ONDC:RET12") {
+            mandatoryAttr = constants.FASHION_ATTRIBUTES;
           }
-        });
+          if (domain === "ONDC:RET14") {
+            mandatoryAttr = constants.ELECTRONICS_ATTRIBUTES;
+          }
+          itemTags.map(({ descriptor, list }, index) => {
+            switch (descriptor?.code) {
+              case "attribute":
+                attrPresent = true;
+                const encounteredAttr = [];
+                list.map(({ descriptor, value }) => {
+                  encounteredAttr.push(descriptor?.code);
+                });
 
-        if (
-          (domain === "ONDC:RET12" || domain === "ONDC:RET14") &&
-          !attrPresent
-        )
-          onSrchObj.attrErr = `code = 'attribute' is required in items/tags for domain - ${domain} and provider/id - ${provider.id}`;
-      });
+                // Check if all mandatory attributes are encountered
+                const missingAttr = mandatoryAttr.filter(
+                  (code) => !encounteredAttr.includes(code)
+                );
+                if (missingAttr.length > 0) {
+                  onSrchObj.mssngAttrErr = `'${missingAttr}' attribute/s required in items/tags for ${domain} domain`;
+                }
+                break;
+            }
+          });
+
+          if (
+            (domain === "ONDC:RET12" || domain === "ONDC:RET14") &&
+            !attrPresent
+          )
+            onSrchObj.attrErr = `code = 'attribute' is required in items/tags for domain - ${domain} and provider/id - ${provider.id}`;
+        });
+      }
     }
   }
 

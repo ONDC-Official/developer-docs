@@ -18,13 +18,13 @@ const checkOnInit = async (data, msgIdSet) => {
       if (feeType != dao.getValue("buyerFinderFeeType")) {
         onInitObj.feeTypeErr = `Buyer Finder Fee type mismatches from /search`;
       }
-      if (feeAmount != dao.getValue("buyerFinderFeeAmount")) {
+      if (parseFloat(feeAmount) != parseFloat(dao.getValue("buyerFinderFeeAmount"))) {
         onInitObj.feeTypeErr = `Buyer Finder Fee amount mismatches from /search`;
       }
     });
   } catch (error) {
     console.log(
-      `!!Error while checking providers array in /on_search api`,
+      `!!Error while checking providers array in /on_init api`,
       error
     );
   }

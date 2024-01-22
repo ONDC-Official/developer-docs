@@ -661,7 +661,7 @@ module.exports = {
                       "ON-FULFILLMENT",
                       "POST-FULFILLMENT",
                     ],
-                    const: { $data: "/search/0/message/intent/payment/type" },
+                    const: { $data: "/select/0/message/order/payments/0/type" },
                   },
                   collected_by: {
                     type: "string",
@@ -829,5 +829,6 @@ module.exports = {
       required: ["order"],
     },
   },
+  isFutureDated: true,
   required: ["context", "message"],
 };

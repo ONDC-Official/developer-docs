@@ -634,7 +634,7 @@ module.exports = {
                       "ON-FULFILLMENT",
                       "POST-FULFILLMENT",
                     ],
-                    const: { $data: "/search/0/message/intent/payment/type" },
+                    const: { $data: "/select/0/message/order/payments/0/type" },
                   },
                   collected_by: {
                     type: "string",
@@ -793,15 +793,12 @@ module.exports = {
             },
             created_at: {
               type: "string",
-              const: { $data: "3/context/timestamp" },
-              errorMessage:
-                "does not match context timestamp - ${3/context/timestamp}",
             },
             updated_at: {
               type: "string",
-              const: { $data: "3/context/timestamp" },
+              const: { $data: "1/created_at" },
               errorMessage:
-                "does not match context timestamp - ${3/context/timestamp}",
+                "does not match created_at timestamp - ${1/created_at}",
             },
           },
           additionalProperties: false,
