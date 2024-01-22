@@ -14,12 +14,32 @@ const checkConfirm = async (data, msgIdSet) => {
     payments.forEach((payment) => {
       let feeType = payment["@ondc/org/buyer_app_finder_fee_type"];
       let feeAmount = payment["@ondc/org/buyer_app_finder_fee_amount"];
+      let paymentStatus = payment?.status;
+      let paymentType = payment?.type;
+      let params = payment?.params;
 
       if (feeType != dao.getValue("buyerFinderFeeType")) {
-        onInitObj.feeTypeErr = `Buyer Finder Fee type mismatches from /search`;
+        cnfrmObj.feeTypeErr = `Buyer Finder Fee type mismatches from /search`;
       }
-      if (parseFloat(feeAmount) != parseFloat(dao.getValue("buyerFinderFeeAmount"))) {
-        onInitObj.feeTypeErr = `Buyer Finder Fee amount mismatches from /search`;
+      if (
+        parseFloat(feeAmount) !=
+        parseFloat(dao.getValue("buyerFinderFeeAmount"))
+      ) {
+        cnfrmObj.feeTypeErr = `Buyer Finder Fee amount mismatches from /search`;
+      }
+
+      if (paymentStatus === "PAID" && !params?.transaction_id) {
+        cnfrmObj.pymntErr = `Transaction ID in payments/params is required when the payment status is 'PAID'`;
+      }
+      if (paymentStatus === "NOT-PAID" && params?.transaction_id) {
+        cnfrmObj.pymntErr = `Transaction ID in payments/params cannot be provided when the payment status is 'NOT-PAID'`;
+      }
+      if (
+        paymentType === "ON-FULFILLMENT" &&
+        orderState != "Completed" &&
+        paymentStatus === "PAID"
+      ) {
+        cnfrmObj.pymntstsErr = `Payment status will be 'PAID' once the order is 'Completed' for payment type 'ON-FULFILLMENT'`;
       }
     });
   } catch (error) {
