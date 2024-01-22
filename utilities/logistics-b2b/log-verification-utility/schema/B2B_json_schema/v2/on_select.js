@@ -257,6 +257,71 @@ module.exports = {
                     },
                     required: ["descriptor"],
                   },
+                  tags: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        descriptor: {
+                          type: "object",
+                          properties: {
+                            code: {
+                              type: "string",
+                              enum: ["DELIVERY_TERMS"],
+                            },
+                          },
+                          required: ["code"],
+                        },
+                        list: {
+                          type: "array",
+                          items: {
+                            type: "object",
+                            properties: {
+                              descriptor: {
+                                type: "object",
+                                properties: {
+                                  code: {
+                                    type: "string",
+                                    enum: [
+                                      "INCOTERMS",
+                                      "NAMED_PLACE_OF_DELIVERY",
+                                    ],
+                                  },
+                                },
+                                required: ["code"],
+                              },
+                              value: {
+                                type: "string",
+                              },
+                            },
+                            if: {
+                              properties: {
+                                descriptor: {
+                                  properties: { code: { const: "INCOTERMS" } },
+                                },
+                              },
+                            },
+                            then: {
+                              properties: {
+                                value: {
+                                  enum: [
+                                    "DPU",
+                                    "CIF",
+                                    "EXW",
+                                    "FOB",
+                                    "DAP",
+                                    "DDP",
+                                  ],
+                                },
+                              },
+                            },
+                            required: ["descriptor", "value"],
+                          },
+                        },
+                      },
+                      required: ["descriptor", "list"],
+                    },
+                  },
                 },
                 required: [
                   "id",
