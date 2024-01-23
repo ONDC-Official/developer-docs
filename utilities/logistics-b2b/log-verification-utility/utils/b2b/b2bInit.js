@@ -16,10 +16,12 @@ const checkInit = (data, msgIdSet) => {
     const itemDiff = utils.findDifferencesInArrays(items, selectedItems);
     console.log(itemDiff);
     itemDiff.forEach((item, i) => {
+      if(item?.attributes?.length>0){
       let itemkey = `item-${i}-DiffErr`;
       initObj[
         itemkey
       ] = `In /items, '${item.attributes}' mismatch from /select`;
+    }
     });
   } catch (error) {
     console.log(error);

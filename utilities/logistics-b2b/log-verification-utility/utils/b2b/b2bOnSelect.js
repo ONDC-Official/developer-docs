@@ -30,16 +30,18 @@ const checkOnSelect = async (data, msgIdSet) => {
     const itemDiff = utils.findDifferencesInArrays(items, selectedItems);
     console.log(itemDiff);
     itemDiff.forEach((item, i) => {
+      if(item?.attributes?.length>0){
       let itemkey = `item-${i}-DiffErr`;
       onSelectObj[
         itemkey
       ] = `In /items, '${item.attributes}' mismatch from /select`;
+    }
     });
   } catch (error) {
     console.log(error);
   }
 
-  
+
   try {
     console.log(`Checking quote object in /on_select api`);
     quote?.breakup.forEach((breakup, i) => {
