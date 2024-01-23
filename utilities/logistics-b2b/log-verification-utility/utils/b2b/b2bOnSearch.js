@@ -10,6 +10,12 @@ const checkOnSearch = async (data, msgIdSet) => {
   let domain = onSearch.context.domain;
   onSearch = onSearch.message.catalog;
 
+  //saving fulfillments
+
+  const fulfillments = onSearch?.fulfillments;
+
+  dao.setValue("fulfillmentsArr", fulfillments);
+
   try {
     console.log(`Saving provider items array in /on_search api`);
     if (onSearch["providers"]) {

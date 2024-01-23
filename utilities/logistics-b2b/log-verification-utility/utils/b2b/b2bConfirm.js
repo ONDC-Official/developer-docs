@@ -7,7 +7,25 @@ const checkConfirm = async (data, msgIdSet) => {
   const cnfrmObj = {};
   let confirm = data;
   confirm = confirm.message.order;
+  let orderState = confirm.state;
   let payments = confirm?.payments;
+
+  let items = confirm.items;
+  const selectedItems = dao.getValue("slctdItemsArray");
+
+  try {
+    console.log("Comparing items object with /select");
+    const itemDiff = utils.findDifferencesInArrays(items, selectedItems);
+    console.log(itemDiff);
+    itemDiff.forEach((item, i) => {
+      let itemkey = `item-${i}-DiffErr`;
+      cnfrmObj[
+        itemkey
+      ] = `In /items, '${item.attributes}' mismatch from /select`;
+    });
+  } catch (error) {
+    console.log(error);
+  }
 
   try {
     console.log(`Checking payment object in /confirm api`);
