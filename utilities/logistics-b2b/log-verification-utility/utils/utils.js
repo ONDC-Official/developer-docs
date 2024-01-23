@@ -365,6 +365,44 @@ const isObjectEqual = (obj1, obj2, parentKey = "") => {
   return notEqualKeys;
 };
 
+function findDifferentAttributes(obj1, obj2) {
+  const differences = [];
+
+  // Iterate over each key in obj1
+  _.forOwn(obj1, (value1, key) => {
+    const value2 = obj2[key];
+
+    // Check if the values are not equal
+    if (!_.isEqual(value1, value2)) {
+      differences.push(key);
+    }
+  });
+
+  return differences;
+}
+
+function findDifferencesInArrays(array1, array2) {
+  const differences = [];
+
+  // Check if arrays have the same length
+  if (array1.length !== array2.length) {
+    return differences;
+  }
+
+  // Iterate over each item in the arrays
+  for (let i = 0; i < array1.length; i++) {
+    const item1 = array1[i];
+    const item2 = array2[i];
+
+    // Check if the properties are equal using lodash's _.isEqual
+    if (!_.isEqual(item1, item2)) {
+      const differingAttributes = findDifferentAttributes(item1, item2);
+      differences.push({ index: i, attributes: differingAttributes });
+    }
+  }
+
+  return differences;
+}
 module.exports = {
   uuidCheck,
   timestampCheck,
@@ -390,6 +428,7 @@ module.exports = {
   taxNotInlcusive,
   isArrayEqual,
   countDecimalDigits,
+  findDifferencesInArrays,
   grocery_categories_id,
   fnb_categories_id,
 };

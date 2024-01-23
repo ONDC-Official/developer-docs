@@ -480,7 +480,13 @@ module.exports = {
               },
             },
           },
-          required: ["provider", "items", "quote", "payments", "fulfillments"],
+          required: [
+            "provider",
+            "items",
+            "quote",
+            "payments",
+            "fulfillments"
+          ],
         },
       },
       required: ["order"],

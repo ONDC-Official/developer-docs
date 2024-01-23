@@ -1,3 +1,4 @@
+const constants = require("../../../utils/constants");
 module.exports = {
   $id: "http://example.com/schema/onConfirmSchema",
   type: "object",
@@ -763,6 +764,7 @@ module.exports = {
             },
             tags: {
               type: "array",
+              minItems: 3,
               items: {
                 type: "object",
                 properties: {
@@ -770,7 +772,7 @@ module.exports = {
                     properties: {
                       code: {
                         type: "string",
-                        enum: ["buyer_id"],
+                        enum: constants.TERMS
                       },
                     },
                   },
@@ -783,7 +785,7 @@ module.exports = {
                           properties: {
                             code: {
                               type: "string",
-                              enum: ["buyer_id_code", "buyer_id_no"],
+                              enum: constants.B2B_BPP_TERMS
                             },
                           },
                         },

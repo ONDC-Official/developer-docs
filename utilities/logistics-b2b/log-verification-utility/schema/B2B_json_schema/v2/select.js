@@ -124,7 +124,7 @@ module.exports = {
                   format: "duration",
                 },
               },
-              required: ["id", "locations","ttl"],
+              required: ["id", "locations", "ttl"],
             },
             items: {
               type: "array",
@@ -215,7 +215,7 @@ module.exports = {
                     },
                   },
                 },
-                required: ["id", "location_ids", "quantity","fulfillment_ids"],
+                required: ["id", "location_ids", "quantity", "fulfillment_ids"],
               },
             },
             fulfillments: {
@@ -244,7 +244,8 @@ module.exports = {
                               type: "string",
                               pattern:
                                 "^(-?[0-9]{1,3}(?:.[0-9]{6,15})?),( )*?(-?[0-9]{1,3}(?:.[0-9]{6,15})?)$",
-                              errorMessage: "Incorrect gps value (minimum of six decimal places are required)",
+                              errorMessage:
+                                "Incorrect gps value (minimum of six decimal places are required)",
                             },
                             area_code: {
                               type: "string",
@@ -366,8 +367,8 @@ module.exports = {
                     },
                   },
                 },
-                additionalProperties:false,
-                required: ["id","type","stops"],
+                additionalProperties: false,
+                required: ["id", "type", "stops"],
               },
             },
             payments: {
