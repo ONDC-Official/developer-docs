@@ -238,7 +238,7 @@ module.exports = {
                           type: "string",
                           pattern:
                             "^(-?[0-9]{1,3}(?:.[0-9]{6,15})?),( )*?(-?[0-9]{1,3}(?:.[0-9]{6,15})?)$",
-                          errorMessage: "Incorrect gps value",
+                          errorMessage: "Incorrect gps value (minimum of six decimal places are required)",
                         },
                         address: {
                           type: "string",
@@ -556,8 +556,38 @@ module.exports = {
                               },
                               required: ["measure", "count"],
                             },
+                            minimum: {
+                              type: "object",
+                              properties: {
+                                measure: {
+                                  type: "object",
+                                  properties: {
+                                    unit: {
+                                      type: "string",
+                                      enum: [
+                                        "unit",
+                                        "dozen",
+                                        "gram",
+                                        "kilogram",
+                                        "tonne",
+                                        "litre",
+                                        "millilitre",
+                                      ],
+                                    },
+                                    value: {
+                                      type: "string",
+                                    },
+                                  },
+                                  required: ["unit", "value"],
+                                },
+                                count: {
+                                  type: "string",
+                                },
+                              },
+                              required: ["measure", "count"],
+                            },
                           },
-                          required: ["unitized", "available", "maximum"],
+                          required: ["unitized", "available"],
                         },
                         category_ids: {
                           type: "array",

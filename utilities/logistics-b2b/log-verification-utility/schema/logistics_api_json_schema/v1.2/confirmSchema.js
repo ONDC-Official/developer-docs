@@ -172,6 +172,21 @@ module.exports = {
                     },
                     required: ["code"],
                   },
+                  time: {
+                    type: "object",
+                    properties: {
+                      label: {
+                        type: "string",
+                      },
+                      duration: {
+                        type: "string",
+                      },
+                      timestamp: {
+                        type: "string",
+                      },
+                    },
+                    required: ["label", "duration", "timestamp"],
+                  },
                 },
                 required: ["id", "category_id", "descriptor", "fulfillment_id"],
                 // anyOf: [
@@ -1038,7 +1053,6 @@ module.exports = {
                   code: {
                     type: "string",
                     enum: constants.TERMS,
-                    
                   },
                   list: {
                     type: "array",
@@ -1060,7 +1074,8 @@ module.exports = {
                 required: ["code", "list"],
               },
               minItems: 2,
-              errorMessage: "both 'bpp_terms' and 'bap_terms' tags are required (logistics buyer NP must accept LSP terms. If not accepted, LSP can NACK /confirm with error code 65002)",
+              errorMessage:
+                "both 'bpp_terms' and 'bap_terms' tags are required (logistics buyer NP must accept LSP terms. If not accepted, LSP can NACK /confirm with error code 65002)",
             },
           },
           additionalProperties: false,

@@ -10,6 +10,12 @@ const checkOnSearch = async (data, msgIdSet) => {
   let domain = onSearch.context.domain;
   onSearch = onSearch.message.catalog;
 
+  //saving fulfillments
+
+  const fulfillments = onSearch?.fulfillments;
+
+  dao.setValue("fulfillmentsArr", fulfillments);
+
   try {
     console.log(`Saving provider items array in /on_search api`);
     if (onSearch["providers"]) {
@@ -43,7 +49,7 @@ const checkOnSearch = async (data, msgIdSet) => {
             if (!match) {
               onSrchObj[
                 "bpp/provider:location:" + id + ":RGC"
-              ] = `Reverse Geocoding for location ID ${id} failed. Area Code ${area_code} not matching with ${lat},${long} Lat-Long pair.`;
+              ] = `Reverse Geocoding for location ID ${id} failed for provider with id '${provider?.id}'. Area Code ${area_code} not matching with ${lat},${long} Lat-Long pair.`;
             }
           } catch (error) {
             console.log("bpp/providers error: ", error);
@@ -52,36 +58,45 @@ const checkOnSearch = async (data, msgIdSet) => {
       }
 
       //checking mandatory attributes for fashion and electronics
+      if (domain === "ONDC:RET12" || domain === "ONDC:RET14") {
+        provider.items.forEach((item) => {
+          let itemTags = item?.tags;
+          let mandatoryAttr;
+          let attrPresent = false;
 
-      provider.items.forEach((item) => {
-        let itemTags = item?.tags;
-        let mandatoryAttr;
-
-        if (domain === "ONDC:RET12") {
-          mandatoryAttr = constants.FASHION_ATTRIBUTES;
-        }
-        if (domain === "ONDC:RET14") {
-          mandatoryAttr = constants.ELECTRONICS_ATTRIBUTES;
-        }
-        itemTags.map(({ descriptor, list }, index) => {
-          switch (descriptor.code) {
-            case "attribute":
-              const encounteredAttr = [];
-              list.map(({ descriptor, value }) => {
-                encounteredAttr.push(descriptor.code);
-              });
-
-              // Check if all mandatory attributes are encountered
-              const missingAttr = mandatoryAttr.filter(
-                (code) => !encounteredAttr.includes(code)
-              );
-              if (missingAttr.length > 0) {
-                onSrchObj.mssngAttrErr = `'${missingAttr}' attribute/s required in items/tags for ${domain} domain`;
-              }
-              break;
+          if (domain === "ONDC:RET12") {
+            mandatoryAttr = constants.FASHION_ATTRIBUTES;
           }
+          if (domain === "ONDC:RET14") {
+            mandatoryAttr = constants.ELECTRONICS_ATTRIBUTES;
+          }
+          itemTags.map(({ descriptor, list }, index) => {
+            switch (descriptor?.code) {
+              case "attribute":
+                attrPresent = true;
+                const encounteredAttr = [];
+                list.map(({ descriptor, value }) => {
+                  encounteredAttr.push(descriptor?.code);
+                });
+
+                // Check if all mandatory attributes are encountered
+                const missingAttr = mandatoryAttr.filter(
+                  (code) => !encounteredAttr.includes(code)
+                );
+                if (missingAttr.length > 0) {
+                  onSrchObj.mssngAttrErr = `'${missingAttr}' attribute/s required in items/tags for ${domain} domain`;
+                }
+                break;
+            }
+          });
+
+          if (
+            (domain === "ONDC:RET12" || domain === "ONDC:RET14") &&
+            !attrPresent
+          )
+            onSrchObj.attrErr = `code = 'attribute' is required in items/tags for domain - ${domain} and provider/id - ${provider.id}`;
         });
-      });
+      }
     }
   }
 

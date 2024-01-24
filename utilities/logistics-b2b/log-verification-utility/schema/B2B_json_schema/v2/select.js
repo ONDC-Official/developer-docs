@@ -56,9 +56,6 @@ module.exports = {
         },
         transaction_id: {
           type: "string",
-          const: { $data: "/search/0/context/transaction_id" },
-          errorMessage:
-            "Transaction ID should be same across the transaction: ${/search/0/context/transaction_id}",
         },
         message_id: {
           type: "string",
@@ -127,7 +124,7 @@ module.exports = {
                   format: "duration",
                 },
               },
-              required: ["id", "locations"],
+              required: ["id", "locations", "ttl"],
             },
             items: {
               type: "array",
@@ -138,6 +135,12 @@ module.exports = {
                     type: "string",
                   },
                   location_ids: {
+                    type: "array",
+                    items: {
+                      type: "string",
+                    },
+                  },
+                  fulfillment_ids: {
                     type: "array",
                     items: {
                       type: "string",
@@ -212,7 +215,7 @@ module.exports = {
                     },
                   },
                 },
-                required: ["id", "location_ids", "quantity"],
+                required: ["id", "location_ids", "quantity", "fulfillment_ids"],
               },
             },
             fulfillments: {
@@ -220,6 +223,12 @@ module.exports = {
               items: {
                 type: "object",
                 properties: {
+                  id: {
+                    type: "string",
+                  },
+                  type: {
+                    type: "string",
+                  },
                   stops: {
                     type: "array",
                     items: {
@@ -235,7 +244,8 @@ module.exports = {
                               type: "string",
                               pattern:
                                 "^(-?[0-9]{1,3}(?:.[0-9]{6,15})?),( )*?(-?[0-9]{1,3}(?:.[0-9]{6,15})?)$",
-                              errorMessage: "Incorrect gps value",
+                              errorMessage:
+                                "Incorrect gps value (minimum of six decimal places are required)",
                             },
                             area_code: {
                               type: "string",
@@ -357,7 +367,8 @@ module.exports = {
                     },
                   },
                 },
-                required: ["stops"],
+                additionalProperties: false,
+                required: ["id", "type", "stops"],
               },
             },
             payments: {
