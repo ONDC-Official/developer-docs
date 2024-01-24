@@ -15,7 +15,7 @@ const checkContextVal = (payload, msgIdSet, i) => {
     let data = payload.context;
     let domain = payload.context.domain;
     let maxTimeDiff = 5000;
-    if (domain === "ONDC:RET10" && payload?.context?.version === "2.0.1") {
+    if (payload?.context?.version === "2.0.1") {
       if (action === "init") {
         maxTimeDiff = utils.iso8601DurationToSeconds(payload.context.ttl);
         dao.setValue("maxTimeDiff", maxTimeDiff);
@@ -25,7 +25,6 @@ const checkContextVal = (payload, msgIdSet, i) => {
     } else if (domain === "nic2004:60232") {
       maxTimeDiff = 1000;
     } else if (
-      domain === "ONDC:RET10" &&
       payload?.context?.version === "2.0.2"
     ) {
       if (action === "select") {
@@ -96,7 +95,6 @@ const checkContextVal = (payload, msgIdSet, i) => {
           Obj.tmpstmpErr = `Timestamp mismatch for /${action} `;
         } else {
           if (
-            action === "on_search" ||
             action === "on_select" ||
             action === "on_init" ||
             action === "on_confirm" ||

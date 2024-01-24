@@ -171,5 +171,6 @@ module.exports = Object.freeze({
   CANCELLATION_TAGS_LIST:["retry_count","rto_id","cancellation_reason_id","sub_reason_id","cancelled_by"],
   FASHION_ATTRIBUTES : ["brand","colour","size","gender","material"],
   ELECTRONICS_ATTRIBUTES: ["brand","model"],
-  TERMS:["bap_terms","bpp_terms"]
+  TERMS:["buyer_id","bap_terms","bpp_terms"],
+  B2B_BPP_TERMS:["buyer_id_code","buyer_id_no","max_liability","max_liability_cap","mandatory_arbitration","court_jurisdiction","delay_interest","accept_bpp_terms"]
 });

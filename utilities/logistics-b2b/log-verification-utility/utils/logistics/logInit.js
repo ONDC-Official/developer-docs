@@ -6,11 +6,7 @@ const utils = require("../utils");
 const checkInit = (data, msgIdSet) => {
   const billing = data.message.order.billing
   const billingAdd= billing.address
-  const len = billingAdd.name.length + billingAdd.building.length +billingAdd.locality.length
-  console.log(billingAdd.name.length,billingAdd.building.length,billingAdd.locality.length);
-  console.log("length",len);
-  if (billingAdd.name.length + billingAdd.building.length +billingAdd.locality.length > 190) return true
-  else false
+
   const initObj = {};
   let init = data;
   let p2h2p = false;
@@ -83,7 +79,7 @@ const checkInit = (data, msgIdSet) => {
         initObj[itemkey] = `Item Id '${item.id}' does not exist in /on_search`;
       } else {
         let itemObj = onSearchitemsArr.filter(
-          (element) => item.id === element.id
+          (element) => element.id === item.id
         );
        
         itemObj = itemObj[0];

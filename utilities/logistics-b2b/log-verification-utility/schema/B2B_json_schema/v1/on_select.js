@@ -164,7 +164,7 @@ module.exports = {
                         properties: {
                           code: {
                             type: "string",
-                            enum: ["Serviceable", "Non-Serviceable"],
+                            enum: ["Serviceable", "Non-serviceable"],
                           },
                         },
                         required: ["code"],

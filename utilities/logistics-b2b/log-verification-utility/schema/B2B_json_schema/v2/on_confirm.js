@@ -1,3 +1,4 @@
+const constants = require("../../../utils/constants");
 module.exports = {
   $id: "http://example.com/schema/onConfirmSchema",
   type: "object",
@@ -215,13 +216,15 @@ module.exports = {
                                 type: "string",
                                 anyOf: [
                                   {
-                                    const: { $data: "/init/0/message/order/items/0/tags/0/list/0/value" },
+                                    const: { $data: "/select/0/message/order/items/0/tags/0/list/0/value" },
+                                    errorMessage:"Buyer terms should be same as provided in /select"
                                   },
                                   {
-                                    const: { $data: "/init/0/message/order/items/0/tags/0/list/1/value" },
+                                    const: { $data: "/select/0/message/order/items/0/tags/0/list/1/value" },
+                                    errorMessage:"Buyer terms should be same as provided in /select"
                                   }
                                 ]
-                              },
+                              }
                             },
                             required: ["descriptor", "value"],
                           },
@@ -343,8 +346,6 @@ module.exports = {
                             },
                             gps: {
                               type: "string",
-                              pattern: "^(-?[0-9]{1,3}(?:.[0-9]{6,15})?),( )*?(-?[0-9]{1,3}(?:.[0-9]{6,15})?)$",
-                              errorMessage: "Incorrect gps value",
                             },
                             address: {
                               type: "string",
@@ -661,6 +662,7 @@ module.exports = {
                       "ON-FULFILLMENT",
                       "POST-FULFILLMENT",
                     ],
+                    const: { $data: "/select/0/message/order/payments/0/type" },
                   },
                   collected_by: {
                     type: "string",
@@ -668,9 +670,11 @@ module.exports = {
                   },
                   "@ondc/org/buyer_app_finder_fee_type": {
                     type: "string",
+                    const: { $data: "/confirm/0/message/order/payments/0/@ondc~1org~1buyer_app_finder_fee_type" },
                   },
                   "@ondc/org/buyer_app_finder_fee_amount": {
                     type: "string",
+                    const: { $data: "/confirm/0/message/order/payments/0/@ondc~1org~1buyer_app_finder_fee_amount" },
                   },
                   "@ondc/org/settlement_details": {
                     type: "array",
@@ -760,6 +764,7 @@ module.exports = {
             },
             tags: {
               type: "array",
+              minItems: 3,
               items: {
                 type: "object",
                 properties: {
@@ -767,7 +772,7 @@ module.exports = {
                     properties: {
                       code: {
                         type: "string",
-                        enum: ["buyer_id"],
+                        enum: constants.TERMS
                       },
                     },
                   },
@@ -780,7 +785,7 @@ module.exports = {
                           properties: {
                             code: {
                               type: "string",
-                              enum: ["buyer_id_code", "buyer_id_no"],
+                              enum: constants.B2B_BPP_TERMS
                             },
                           },
                         },
@@ -805,9 +810,6 @@ module.exports = {
             updated_at: {
               type: "string",
               format: "date-time",
-              const: { $data: "3/context/timestamp" },
-              errorMessage:
-                " should be updated as per context/timestamp - ${3/context/timestamp}",
             },
           },
           additionalProperties: false,
@@ -829,5 +831,6 @@ module.exports = {
       required: ["order"],
     },
   },
+  isFutureDated: true,
   required: ["context", "message"],
 };
