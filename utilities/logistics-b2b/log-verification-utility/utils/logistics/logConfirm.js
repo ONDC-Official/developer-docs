@@ -11,7 +11,7 @@ const checkConfirm = (data, msgIdSet) => {
   let onSearchProvArr = dao.getValue("providersArr");
   confirm = confirm.message.order;
   let rts;
-
+  let linkedOrder = confirm["@ondc/org/linked_order"]
   if (confirm?.updated_at > contextTimestamp) {
     cnfrmObj.updatedAtErr = `order/updated_at cannot be future dated w.r.t context/timestamp`;
   }
@@ -73,8 +73,8 @@ const checkConfirm = (data, msgIdSet) => {
   let p2h2p = dao.getValue("p2h2p");
   fulfillments.forEach((fulfillment) => {
     let avgPickupTime= fulfillment?.start?.time?.duration;
-
-    if(avgPickupTime && avgPickupTime!==dao.getValue("avgPickupTime")){
+console.log(avgPickupTime,dao.getValue(`${fulfillment?.id}-avgPickupTime`));
+    if(avgPickupTime && avgPickupTime!==dao.getValue(`${fulfillment?.id}-avgPickupTime`)){
       cnfrmObj.avgPckupErr=`Average Pickup Time (fulfillments/start/time/duration) mismatches from the one provided in /on_search`
     }
     if (fulfillment["@ondc/org/awb_no"] && p2h2p) awbNo = true;
@@ -83,6 +83,27 @@ const checkConfirm = (data, msgIdSet) => {
     }
   });
 
+  try {
+    console.log("checking linked order in /confirm");
+
+    const orderWeight =linkedOrder?.order?.weight?.value;
+
+    let totalUnitWeight=0;
+
+    linkedOrder?.items.forEach(item=>{
+      const quantity = item?.quantity?.measure?.value
+      const count = item?.quantity?.count
+      
+      const unitWeight = (quantity*count).toFixed(2)
+       totalUnitWeight+=unitWeight;
+    })
+
+    if(totalUnitWeight!=orderWeight.toFixed(2)){
+      cnfrmObj.weightErr=`Total order weight '${orderWeight} does not match the total unit weight of items '${totalUnitWeight}'`
+    }
+  } catch (error) {
+    console.log(error);
+  }
   dao.setValue("awbNo", awbNo);
   return cnfrmObj;
 };
