@@ -11,7 +11,12 @@ const checkOnSearch = async (data, msgIdSet) => {
   onSearch = onSearch.message.catalog;
 
   //saving fulfillments
-
+  try {
+    console.log("checking attr");
+    console.log(constants.ATTR_DOMAINS.includes(domain));
+  } catch (error) {
+    console.log(error);
+  }
   const fulfillments = onSearch?.fulfillments;
 
   dao.setValue("fulfillmentsArr", fulfillments);
@@ -58,10 +63,10 @@ const checkOnSearch = async (data, msgIdSet) => {
       }
 
       //checking mandatory attributes for fashion and electronics
-      if (domain === "ONDC:RET12" || domain === "ONDC:RET14") {
+      if (constants.ATTR_DOMAINS.includes(domain)) {
         provider.items.forEach((item) => {
           let itemTags = item?.tags;
-          let mandatoryAttr;
+          let mandatoryAttr = [];
           let attrPresent = false;
 
           if (domain === "ONDC:RET12") {
@@ -90,10 +95,7 @@ const checkOnSearch = async (data, msgIdSet) => {
             }
           });
 
-          if (
-            (domain === "ONDC:RET12" || domain === "ONDC:RET14") &&
-            !attrPresent
-          )
+          if (!attrPresent)
             onSrchObj.attrErr = `code = 'attribute' is required in items/tags for domain - ${domain} and provider/id - ${provider.id}`;
         });
       }
