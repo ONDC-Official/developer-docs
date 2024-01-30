@@ -94,11 +94,11 @@ console.log(avgPickupTime,dao.getValue(`${fulfillment?.id}-avgPickupTime`));
       const quantity = item?.quantity?.measure?.value
       const count = item?.quantity?.count
       
-      const unitWeight = (quantity*count).toFixed(2)
+      const unitWeight = (quantity*count)
        totalUnitWeight+=unitWeight;
     })
 
-    if(totalUnitWeight!=orderWeight.toFixed(2)){
+    if(totalUnitWeight.toFixed(2)!=orderWeight.toFixed(2)){
       cnfrmObj.weightErr=`Total order weight '${orderWeight} does not match the total unit weight of items '${totalUnitWeight}'`
     }
   } catch (error) {

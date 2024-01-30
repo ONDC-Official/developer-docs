@@ -117,6 +117,7 @@ module.exports = {
                     properties: {
                       type: {
                         type: "string",
+                        enum:["end"]
                       },
                       location: {
                         type: "object",

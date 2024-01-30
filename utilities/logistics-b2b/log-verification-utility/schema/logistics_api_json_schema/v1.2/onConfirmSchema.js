@@ -888,9 +888,6 @@ module.exports = {
             },
             updated_at: {
               type: "string",
-              const: { $data: "3/context/timestamp" },
-              errorMessage:
-                "does not match context/timestamp - ${3/context/timestamp}",
             },
           
           },
