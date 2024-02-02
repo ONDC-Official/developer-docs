@@ -1,0 +1,38 @@
+{
+    "name": "sop/x501",
+    "description": "A PHP library for X.501 ASN.1 types, X.520 attributes and DN parsing.",
+    "homepage": "https://github.com/sop/x501",
+    "license": "MIT",
+    "type": "library",
+    "keywords": [
+        "x501",
+        "x.501",
+        "x520",
+        "x.520",
+        "ldap",
+        "dn",
+        "rdn",
+        "attribute"
+    ],
+    "authors": [
+        {
+            "name": "Joni Eskelinen",
+            "email": "jonieske@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.2",
+        "ext-intl": "*",
+        "ext-mbstring": "*",
+        "sop/asn1": "^4.0.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sop\\X501\\": "lib/X501/"
+        }
+    }
+}
