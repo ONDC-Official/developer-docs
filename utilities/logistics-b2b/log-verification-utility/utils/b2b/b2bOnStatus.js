@@ -16,6 +16,7 @@ const checkOnStatus = (data, msgIdSet) => {
   let fulfillments = on_status.fulfillments;
   let pickupTime, deliveryTime, RtoPickupTime, RtoDeliveredTime;
   let payments = on_status?.payments;
+  let invoice = on_status?.documents;
 
   try {
     console.log(`Checking payment object in /on_status`);
@@ -42,34 +43,6 @@ const checkOnStatus = (data, msgIdSet) => {
     console.log(error);
   }
 
-  //   try {
-  //     console.log(
-  //       `Checking if message id is unique for different on_status apis`
-  //     );
-  //     if (msgIdSet.has(messageId)) {
-  //       onStatusObj.msgIdErr = `Message Id should be unique for different /on_status APIs`;
-  //     } else {
-  //       msgIdSet.add(messageId);
-  //     }
-  //   } catch (error) {
-  //     console.log(`Error checking message id in /on_status API`);
-  //   }
-
-  //   try {
-  //     if (fulfillments.length > 1) {
-  //       console.log(
-  //         `Checking for a valid 'Cancelled' fulfillment state for type 'Delivery' in case of RTO`
-  //       );
-  //       fulfillments.forEach((fulfillment) => {
-  //         ffState = fulfillment?.state?.descriptor?.code;
-  //         if (fulfillment.type === "Prepaid" && ffState !== "Cancelled") {
-  //           onStatusObj.flflmntstErr = `In case of RTO, fulfillment with type 'Prepaid' needs to in 'Cancelled' state`;
-  //         }
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
   try {
     fulfillments.forEach((fulfillment) => {
       ffState = fulfillment?.state?.descriptor?.code;
@@ -83,6 +56,7 @@ const checkOnStatus = (data, msgIdSet) => {
           ffState === "Agent-assigned" ||
           ffState === "Packed"
         ) {
+         
           fulfillment.stops.forEach((stop) => {
             if (stop.type === "start") {
               if (stop?.time?.timestamp) {
@@ -96,10 +70,12 @@ const checkOnStatus = (data, msgIdSet) => {
               }
             }
           });
+          if(invoice) onStatusObj.invoiceErr=`/documents (Invoice) is not required before order is picked up`
         }
         //Order-picked-up
 
         if (ffState === "Order-picked-up") {
+         
           if (orderState !== "In-progress") {
             onStatusObj.ordrStatErr = `Order state should be 'In-progress' for fulfillment state - ${ffState}`;
           }
@@ -122,10 +98,12 @@ const checkOnStatus = (data, msgIdSet) => {
               }
             }
           });
+          if(!invoice) onStatusObj.invoiceErr=`/documents (Invoice) is required once the order is picked up`
         }
 
         //Out-for-delivery
         if (ffState === "Out-for-delivery") {
+          
           if (orderState !== "In-progress") {
             onStatusObj.ordrStatErr = `Order state should be 'In-progress' for fulfillment state - ${ffState}`;
           }
@@ -149,10 +127,12 @@ const checkOnStatus = (data, msgIdSet) => {
               }
             }
           });
+          if(!invoice) onStatusObj.invoiceErr=`/documents (Invoice) is required once the order is picked up`
         }
 
         //Order-delivered
         if (ffState === "Order-delivered") {
+         
           if (orderState !== "Completed") {
             onStatusObj.ordrStatErr = `Order state should be 'Completed' for fulfillment state - ${ffState}`;
           }
@@ -184,6 +164,7 @@ const checkOnStatus = (data, msgIdSet) => {
               }
             }
           });
+          if(!invoice) onStatusObj.invoiceErr=`/documents (Invoice) is required once the order is picked up`
         }
       }
       if (fulfillment.type === "Self-Pickup") {

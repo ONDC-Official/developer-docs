@@ -235,6 +235,7 @@ function compareDates(dateString1, dateString2) {
   }
 }
 
+
 function iso8601DurationToSeconds(duration) {
   const unitMap = {
     'D': 24 * 60 * 60 * 1000,  // Days to seconds
@@ -403,6 +404,19 @@ function findDifferencesInArrays(array1, array2) {
 
   return differences;
 }
+
+const findMissingTags =(list,code,mandatoryAttr) =>{
+  const encounteredAttr = [];
+  list.map(({ descriptor, value }) => {
+    encounteredAttr.push(descriptor?.code);
+  });
+   // Check if all mandatory attributes are encountered
+   const missingAttr = mandatoryAttr.filter(
+    (code) => !encounteredAttr.includes(code)
+  );
+  return missingAttr;
+
+}
 module.exports = {
   uuidCheck,
   timestampCheck,
@@ -431,4 +445,5 @@ module.exports = {
   findDifferencesInArrays,
   grocery_categories_id,
   fnb_categories_id,
+  findMissingTags
 };

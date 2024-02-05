@@ -643,21 +643,21 @@ module.exports = {
                     type: "string",
                     const: {
                       $data:
-                        "/confirm/0/message/order/payments/0/@ondc~1org~1settlement_basis",
+                        "/on_confirm/0/message/order/payments/0/@ondc~1org~1settlement_basis",
                     },
                   },
                   "@ondc/org/settlement_window": {
                     type: "string",
                     const: {
                       $data:
-                        "/confirm/0/message/order/payments/0/@ondc~1org~1settlement_window",
+                        "/on_confirm/0/message/order/payments/0/@ondc~1org~1settlement_window",
                     },
                   },
                   "@ondc/org/withholding_amount": {
                     type: "string",
                     const: {
                       $data:
-                        "/confirm/0/message/order/payments/0/@ondc~1org~1withholding_amount",
+                        "/on_confirm/0/message/order/payments/0/@ondc~1org~1withholding_amount",
                     },
                   },
                   "@ondc/org/settlement_details": {
@@ -787,7 +787,6 @@ module.exports = {
             "fulfillments",
             "quote",
             "payments",
-            "documents",
             "created_at",
             "updated_at",
           ],

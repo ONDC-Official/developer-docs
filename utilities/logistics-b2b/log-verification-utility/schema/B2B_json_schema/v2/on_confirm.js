@@ -583,6 +583,7 @@ module.exports = {
                             required: ["currency", "value"],
                           },
                         },
+                        additionalProperties: false,
                         required: ["price"],
                       },
                     },

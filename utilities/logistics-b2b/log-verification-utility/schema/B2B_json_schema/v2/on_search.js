@@ -238,7 +238,8 @@ module.exports = {
                           type: "string",
                           pattern:
                             "^(-?[0-9]{1,3}(?:.[0-9]{6,15})?),( )*?(-?[0-9]{1,3}(?:.[0-9]{6,15})?)$",
-                          errorMessage: "Incorrect gps value (minimum of six decimal places are required)",
+                          errorMessage:
+                            "Incorrect gps value (minimum of six decimal places are required)",
                         },
                         address: {
                           type: "string",
@@ -700,68 +701,93 @@ module.exports = {
                                 },
                                 required: ["descriptor"],
                               },
-                              refund_eligible: {
-                                type: "string",
+                              reason_required: {
+                                type: "boolean",
                               },
-                              return_policy: {
+                              cancellation_fee: {
                                 type: "object",
                                 properties: {
-                                  return_eligible: {
+                                  percentage: {
                                     type: "string",
                                   },
-                                  return_within: {
-                                    type: "string",
-                                  },
-                                  fulfillment_managed_by: {
-                                    type: "string",
-                                  },
-                                  return_location: {
+                                  amount: {
                                     type: "object",
                                     properties: {
-                                      address: {
+                                      currency: {
                                         type: "string",
                                       },
-                                      gps: {
+                                      value: {
                                         type: "string",
                                       },
                                     },
-                                    required: ["address", "gps"],
+                                    required: ["currency", "value"],
                                   },
                                 },
-                                required: [
-                                  "return_eligible",
-                                  "return_within",
-                                  "fulfillment_managed_by",
-                                  "return_location",
-                                ],
+                                required: [],
                               },
                             },
-                            if: {
-                              properties: {
-                                fulfillment_state: {
-                                  properties: {
-                                    descriptor: {
-                                      properties: {
-                                        code: {
-                                          const: "Order-delivered",
-                                        },
-                                      },
-                                    },
-                                  },
-                                },
-                              },
-                            },
-                            then: {
-                              required: ["fulfillment_state", "return_policy"],
-                            },
-                            else: {
-                              required: [
-                                "fulfillment_state",
-                                "refund_eligible",
-                              ],
-                            },
+                            required: [
+                              "fulfillment_state",
+                              "reason_required",
+                              "cancellation_fee",
+                            ],
                           },
                         },
+                        return_terms: {
+                          type: "object",
+                          properties: {
+                            fulfillment_state: {
+                              type: "object",
+                              properties: {
+                                descriptor: {
+                                  type: "object",
+                                  properties: {
+                                    code: {
+                                      type: "string",
+                                    },
+                                  },
+                                  required: ["code"],
+                                },
+                              },
+                              required: ["descriptor"],
+                            },
+                            return_eligible: {
+                              type: "boolean",
+                            },
+                            return_time: {
+                              type: "object",
+                              properties: {
+                                duration: {
+                                  type: "string",
+                                },
+                              },
+                              required: ["duration"],
+                            },
+                            return_location: {
+                              type: "object",
+                              properties: {
+                                address: {
+                                  type: "string",
+                                },
+                                gps: {
+                                  type: "string",
+                                },
+                              },
+                              required: ["address", "gps"],
+                            },
+                            fulfillment_managed_by: {
+                              type: "string",
+                            },
+                          },
+                          required: [
+                            "fulfillment_state",
+                            "return_eligible",
+                            "return_time",
+                            "return_location",
+                            "fulfillment_managed_by",
+                          ],
+                        },
+
                         replacement_terms: {
                           type: "array",
                           items: {
@@ -840,7 +866,6 @@ module.exports = {
                       },
                       required: [
                         "id",
-
                         "descriptor",
                         "creator",
                         "price",
@@ -850,8 +875,8 @@ module.exports = {
                         "location_ids",
                         "payment_ids",
                         "cancellation_terms",
+                        "return_terms",
                         "replacement_terms",
-
                         "matched",
                         "recommended",
                       ],
