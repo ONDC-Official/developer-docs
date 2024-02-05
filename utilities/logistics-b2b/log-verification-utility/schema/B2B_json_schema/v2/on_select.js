@@ -1,3 +1,4 @@
+const constants = require("../../../utils/constants");
 module.exports = {
   $id: "http://example.com/schema/onSelectSchema",
   type: "object",
@@ -58,7 +59,7 @@ module.exports = {
           type: "string",
           const: { $data: "/select/0/context/transaction_id" },
           errorMessage:
-                "Transaction ID should be same across the transaction: ${/select/0/context/transaction_id}",
+            "Transaction ID should be same across the transaction: ${/select/0/context/transaction_id}",
         },
         message_id: {
           type: "string",
@@ -75,14 +76,14 @@ module.exports = {
               errorMessage:
                 "Message ID should not be equal to transaction_id: ${1/transaction_id}",
             },
-          ]
+          ],
         },
         timestamp: {
           type: "string",
           format: "date-time",
         },
         ttl: {
-          type: "string"
+          type: "string",
         },
       },
       required: [
@@ -112,27 +113,112 @@ module.exports = {
                 id: {
                   type: "string",
                   const: { $data: "/select/0/message/order/provider/id" },
-
+                },
+                locations: {
+                  type: "array",
+                  items: {
+                    type: "object",
+                    properties: {
+                      id: {
+                        type: "string",
+                        const: {
+                          $data:
+                            "/select/0/message/order/provider/locations/0/id",
+                        },
+                      },
+                    },
+                    additionalProperties: false,
+                    required: ["id"],
+                  },
                 },
               },
-              required: ["id"],
+              additionalProperties: false,
+              required: ["id", "locations"],
             },
             items: {
               type: "array",
               items: {
                 type: "object",
                 properties: {
+                  id: {
+                    type: "string",
+                  },
                   fulfillment_ids: {
                     type: "array",
                     items: {
                       type: "string",
                     },
                   },
-                  id: {
-                    type: "string",
+                  quantity: {
+                    type: "object",
+                    properties: {
+                      selected: {
+                        type: "object",
+                        properties: {
+                          count: {
+                            type: "integer",
+                          },
+                        },
+                        required: ["count"],
+                      },
+                    },
+                    required: ["selected"],
+                  },
+                  "add-ons": {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        id: {
+                          type: "string",
+                        },
+                      },
+                      required: ["id"],
+                    },
+                  },
+                  tags: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        descriptor: {
+                          type: "object",
+                          properties: {
+                            code: {
+                              type: "string",
+                              enum: ["BUYER_TERMS"],
+                            },
+                          },
+                          required: ["code"],
+                        },
+                        list: {
+                          type: "array",
+                          items: {
+                            type: "object",
+                            properties: {
+                              descriptor: {
+                                type: "object",
+                                properties: {
+                                  code: {
+                                    type: "string",
+                                    enum: ["ITEM_REQ", "PACKAGING_REQ"],
+                                  },
+                                },
+                                required: ["code"],
+                              },
+                              value: {
+                                type: "string",
+                              },
+                            },
+                            required: ["descriptor", "value"],
+                          },
+                        },
+                      },
+                      required: ["descriptor", "list"],
+                    },
                   },
                 },
-                required: ["id"],
+                required: ["id", "quantity", "fulfillment_ids"],
               },
             },
             fulfillments: {
@@ -151,10 +237,11 @@ module.exports = {
                   },
                   "@ondc/org/category": {
                     type: "string",
+                    enum: constants.CATEGORY_ID
                   },
                   "@ondc/org/TAT": {
                     type: "string",
-                    format: "duration"
+                    format: "duration",
                   },
                   state: {
                     type: "object",
@@ -164,13 +251,78 @@ module.exports = {
                         properties: {
                           code: {
                             type: "string",
-                            enum: ["Serviceable", "Non-Serviceable"],
+                            enum: ["Serviceable", "Non-serviceable"],
                           },
                         },
                         required: ["code"],
                       },
                     },
                     required: ["descriptor"],
+                  },
+                  tags: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        descriptor: {
+                          type: "object",
+                          properties: {
+                            code: {
+                              type: "string",
+                              enum: ["DELIVERY_TERMS"],
+                            },
+                          },
+                          required: ["code"],
+                        },
+                        list: {
+                          type: "array",
+                          items: {
+                            type: "object",
+                            properties: {
+                              descriptor: {
+                                type: "object",
+                                properties: {
+                                  code: {
+                                    type: "string",
+                                    enum: [
+                                      "INCOTERMS",
+                                      "NAMED_PLACE_OF_DELIVERY",
+                                    ],
+                                  },
+                                },
+                                required: ["code"],
+                              },
+                              value: {
+                                type: "string",
+                              },
+                            },
+                            if: {
+                              properties: {
+                                descriptor: {
+                                  properties: { code: { const: "INCOTERMS" } },
+                                },
+                              },
+                            },
+                            then: {
+                              properties: {
+                                value: {
+                                  enum: [
+                                    "DPU",
+                                    "CIF",
+                                    "EXW",
+                                    "FOB",
+                                    "DAP",
+                                    "DDP",
+                                  ],
+                                },
+                              },
+                            },
+                            required: ["descriptor", "value"],
+                          },
+                        },
+                      },
+                      required: ["descriptor", "list"],
+                    },
                   },
                 },
                 required: [
@@ -220,7 +372,14 @@ module.exports = {
                       },
                       "@ondc/org/title_type": {
                         type: "string",
-                        enum: ["item", "discount", "packing", "delivery ", "tax", "misc"]
+                        enum: [
+                          "item",
+                          "discount",
+                          "packing",
+                          "delivery",
+                          "tax",
+                          "misc",
+                        ],
                       },
                       price: {
                         type: "object",
@@ -237,30 +396,6 @@ module.exports = {
                       item: {
                         type: "object",
                         properties: {
-                          quantity: {
-                            type: "object",
-                            properties: {
-                              available: {
-                                type: "object",
-                                properties: {
-                                  count: {
-                                    type: "string",
-                                  },
-                                },
-                                required: ["count"],
-                              },
-                              maximum: {
-                                type: "object",
-                                properties: {
-                                  count: {
-                                    type: "string",
-                                  },
-                                },
-                                required: ["count"],
-                              },
-                            },
-                            required: ["available", "maximum"],
-                          },
                           price: {
                             type: "object",
                             properties: {
@@ -274,7 +409,7 @@ module.exports = {
                             required: ["currency", "value"],
                           },
                         },
-                        required: ["quantity", "price"],
+                        required: ["price"],
                       },
                     },
                     if: {
@@ -317,15 +452,43 @@ module.exports = {
                 },
                 ttl: {
                   type: "string",
-                  format: "duration"
+                  format: "duration",
                 },
               },
               isQuoteMatching: true,
-              
+
               required: ["price", "breakup", "ttl"],
             },
+            payments: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  type: {
+                    type: "string",
+                    enum: [
+                      "PRE-FULFILLMENT",
+                      "ON-FULFILLMENT",
+                      "POST-FULFILLMENT",
+                    ],
+                    const: { $data: "/select/0/message/order/payments/0/type" },
+                  },
+                  collected_by: {
+                    type: "string",
+                    enum: ["BAP", "BPP"],
+                  },
+                },
+                required: ["type", "collected_by"],
+              },
+            },
           },
-          required: ["provider", "items", "quote"],
+          required: [
+            "provider",
+            "items",
+            "quote",
+            "payments",
+            "fulfillments"
+          ],
         },
       },
       required: ["order"],

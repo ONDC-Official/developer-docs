@@ -107,7 +107,7 @@ const checkOnSearch = async (data, msgIdSet) => {
         ) {
           hasForwardShipment = true;
           avgPickupTime= fulfillment?.start?.time?.duration
-          dao.setValue("avgPickupTime",avgPickupTime)
+          dao.setValue(`${fulfillment?.id}-avgPickupTime`,avgPickupTime)
         } else if (
           fulfillment.type === "RTO" ||
           fulfillment.type === "Reverse QC" ||

@@ -1,3 +1,5 @@
+const constants = require("../../../utils/constants");
+
 module.exports = {
   $id: "http://example.com/schema/initSchema",
   type: "object",
@@ -58,7 +60,7 @@ module.exports = {
           type: "string",
           const: { $data: "/select/0/context/transaction_id" },
           errorMessage:
-            "Transaction ID should be same across the transaction: ${/search/0/context/transaction_id}",
+            "Transaction ID should be same across the transaction: ${/select/0/context/transaction_id}",
         },
         message_id: {
           type: "string",
@@ -127,6 +129,7 @@ module.exports = {
                 }
               },
               required: ["id", "locations"],
+              additionalProperties:false
             },
             items: {
               type: "array",
@@ -201,6 +204,22 @@ module.exports = {
                               },
                               value: {
                                 type: "string",
+                                anyOf: [
+                                  {
+                                    const: {
+                                      $data:
+                                        "/select/0/message/order/items/0/tags/0/list/0/value",
+                                    },
+                                    errorMessage:"Buyer terms should be same as provided in /select"
+                                  },
+                                  {
+                                    const: {
+                                      $data:
+                                        "/select/0/message/order/items/0/tags/0/list/1/value",
+                                    },
+                                    errorMessage:"Buyer terms should be same as provided in /select"
+                                  },
+                                ],
                               },
                             },
                             required: ["descriptor", "value"],
@@ -211,7 +230,7 @@ module.exports = {
                     },
                   },
                 },
-                required: ["id", "quantity"],
+                required: ["id", "fulfillment_ids","quantity"],
               },
             },
             billing: {
@@ -287,7 +306,7 @@ module.exports = {
                               type: "string",
                               pattern:
                                 "^(-?[0-9]{1,3}(?:.[0-9]{6,15})?),( )*?(-?[0-9]{1,3}(?:.[0-9]{6,15})?)$",
-                              errorMessage: "Incorrect gps value",
+                              errorMessage: "Incorrect gps value (minimum of six decimal places are required)",
                             },
                             address: {
                               type: "string",
@@ -470,13 +489,19 @@ module.exports = {
                       "ON-FULFILLMENT",
                       "POST-FULFILLMENT",
                     ],
+                    const: { $data: "/select/0/message/order/payments/0/type" },
                   },
+                  collected_by:{
+                    type:"string",
+                    enum:["BAP","BPP"]
+                  }
                 },
-                required: ["type"],
+                required: ["type","collected_by"],
               },
             },
             tags: {
               type: "array",
+              minItems: 1,
               items: {
                 type: "object",
                 properties: {
@@ -484,7 +509,7 @@ module.exports = {
                     properties: {
                       code: {
                         type: "string",
-                        enum: ["buyer_id"],
+                        enum: constants.TERMS
                       },
                     },
                   },
@@ -497,7 +522,7 @@ module.exports = {
                           properties: {
                             code: {
                               type: "string",
-                              enum: ["buyer_id_code", "buyer_id_no"],
+                              enum: constants.B2B_BPP_TERMS
                             },
                           },
                         },

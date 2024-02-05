@@ -22,7 +22,9 @@ const checkOnConfirm = (data, msgIdSet) => {
   if (on_confirm?.created_at > contextTimestamp) {
     onCnfrmObj.createdAtErr = `order/created_at cannot be future dated w.r.t context/timestamp`;
   }
-
+  if (on_confirm?.created_at > on_confirm?.updated_at) {
+    onCnfrmObj.createdAtErr = `order/created_at cannot be future dated w.r.t order/updated_at`;
+  }
   let categoryId;
   items.forEach(item=>{
     categoryId=item.category_id;

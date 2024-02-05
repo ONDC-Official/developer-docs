@@ -1,3 +1,4 @@
+const constants = require("../../../utils/constants");
 module.exports = {
   $id: "http://example.com/schema/confirmSchema",
   type: "object",
@@ -58,7 +59,7 @@ module.exports = {
           type: "string",
           const: { $data: "/select/0/context/transaction_id" },
           errorMessage:
-                "Transaction ID should be same across the transaction: ${/search/0/context/transaction_id}",
+            "Transaction ID should be same across the transaction: ${/select/0/context/transaction_id}",
         },
         message_id: {
           type: "string",
@@ -70,7 +71,7 @@ module.exports = {
               errorMessage:
                 "Message ID should not be equal to transaction_id: ${1/transaction_id}",
             },
-          ]
+          ],
         },
         timestamp: {
           type: "string",
@@ -119,13 +120,12 @@ module.exports = {
                 locations: {
                   type: "array",
                   const: { $data: "/init/0/message/order/provider/locations" },
-                  errorMessage:"mismatch from /init",
+                  errorMessage: "mismatch from /init",
                   items: {
                     type: "object",
                     properties: {
                       id: {
                         type: "string",
-                       
                       },
                     },
                     required: ["id"],
@@ -209,12 +209,22 @@ module.exports = {
                                 type: "string",
                                 anyOf: [
                                   {
-                                    const: { $data: "/init/0/message/order/items/0/tags/0/list/0/value" },
+                                    const: {
+                                      $data:
+                                        "/select/0/message/order/items/0/tags/0/list/0/value",
+                                    },
+                                    errorMessage:
+                                      "Buyer terms should be same as provided in /select",
                                   },
                                   {
-                                    const: { $data: "/init/0/message/order/items/0/tags/0/list/1/value" },
-                                  }
-                                ]
+                                    const: {
+                                      $data:
+                                        "/select/0/message/order/items/0/tags/0/list/1/value",
+                                    },
+                                    errorMessage:
+                                      "Buyer terms should be same as provided in /select",
+                                  },
+                                ],
                               },
                             },
                             required: ["descriptor", "value"],
@@ -276,7 +286,7 @@ module.exports = {
                   const: { $data: "/init/0/message/order/billing/phone" },
                 },
               },
-              
+
               required: ["name", "address", "state", "city", "tax_id", "phone"],
             },
             fulfillments: {
@@ -307,8 +317,10 @@ module.exports = {
                           properties: {
                             gps: {
                               type: "string",
-                              pattern: "^(-?[0-9]{1,3}(?:.[0-9]{6,15})?),( )*?(-?[0-9]{1,3}(?:.[0-9]{6,15})?)$",
-                              errorMessage: "Incorrect gps value",
+                              pattern:
+                                "^(-?[0-9]{1,3}(?:.[0-9]{6,15})?),( )*?(-?[0-9]{1,3}(?:.[0-9]{6,15})?)$",
+                              errorMessage:
+                                "Incorrect gps value (minimum of six decimal places are required)",
                             },
                             address: {
                               type: "string",
@@ -421,12 +433,18 @@ module.exports = {
                                 type: "string",
                                 anyOf: [
                                   {
-                                    const: { $data: "/init/0/message/order/fulfillments/0/tags/0/list/0/value" },
+                                    const: {
+                                      $data:
+                                        "/init/0/message/order/fulfillments/0/tags/0/list/0/value",
+                                    },
                                   },
                                   {
-                                    const: { $data: "/init/0/message/order/fulfillments/0/tags/0/list/1/value" },
-                                  }
-                                ]
+                                    const: {
+                                      $data:
+                                        "/init/0/message/order/fulfillments/0/tags/0/list/1/value",
+                                    },
+                                  },
+                                ],
                               },
                             },
                             if: {
@@ -501,7 +519,14 @@ module.exports = {
                       },
                       "@ondc/org/title_type": {
                         type: "string",
-                        enum: ["item", "discount", "packing", "delivery", "tax", "misc"]
+                        enum: [
+                          "item",
+                          "discount",
+                          "packing",
+                          "delivery",
+                          "tax",
+                          "misc",
+                        ],
                       },
                       price: {
                         type: "object",
@@ -602,6 +627,7 @@ module.exports = {
                     type: "string",
                     enum: ["PAID", "NOT-PAID"],
                   },
+
                   type: {
                     type: "string",
                     enum: [
@@ -609,9 +635,11 @@ module.exports = {
                       "ON-FULFILLMENT",
                       "POST-FULFILLMENT",
                     ],
+                    const: { $data: "/select/0/message/order/payments/0/type" },
                   },
                   collected_by: {
                     type: "string",
+                    enum: ["BAP", "BPP"],
                   },
                   "@ondc/org/buyer_app_finder_fee_type": {
                     type: "string",
@@ -619,6 +647,28 @@ module.exports = {
                   "@ondc/org/buyer_app_finder_fee_amount": {
                     type: "string",
                   },
+                  "@ondc/org/settlement_basis": {
+                    type: "string",
+                    const: {
+                      $data:
+                        "/on_init/0/message/order/payments/0/@ondc~1org~1settlement_basis",
+                    },
+                  },
+                  "@ondc/org/settlement_window": {
+                    type: "string",
+                    const: {
+                      $data:
+                        "/on_init/0/message/order/payments/0/@ondc~1org~1settlement_window",
+                    },
+                  },
+                  "@ondc/org/withholding_amount": {
+                    type: "string",
+                    const: {
+                      $data:
+                        "/on_init/0/message/order/payments/0/@ondc~1org~1withholding_amount",
+                    },
+                  },
+
                   "@ondc/org/settlement_details": {
                     type: "array",
                     items: {
@@ -687,18 +737,39 @@ module.exports = {
                     },
                   },
                 },
-                required: [
-                  "params",
-                  "status",
-                  "type",
-                  "collected_by",
-                  "@ondc/org/buyer_app_finder_fee_type",
-                  "@ondc/org/buyer_app_finder_fee_amount",
-                ],
+                if: { properties: { collected_by: { const: "BPP" } } },
+                then: {
+                  required: [
+                    "params",
+                    "status",
+                    "type",
+                    "collected_by",
+                    "@ondc/org/buyer_app_finder_fee_type",
+                    "@ondc/org/buyer_app_finder_fee_amount",
+                    "@ondc/org/settlement_basis",
+                    "@ondc/org/settlement_window",
+                    "@ondc/org/withholding_amount",
+                    "@ondc/org/settlement_details",
+                  ],
+                },
+                else: {
+                  required: [
+                    "params",
+                    "status",
+                    "type",
+                    "collected_by",
+                    "@ondc/org/buyer_app_finder_fee_type",
+                    "@ondc/org/buyer_app_finder_fee_amount",
+                    "@ondc/org/settlement_basis",
+                    "@ondc/org/settlement_window",
+                    "@ondc/org/withholding_amount",
+                  ],
+                },
               },
             },
             tags: {
               type: "array",
+              minItems: 3,
               items: {
                 type: "object",
                 properties: {
@@ -706,7 +777,7 @@ module.exports = {
                     properties: {
                       code: {
                         type: "string",
-                        enum: ["buyer_id"],
+                        enum: constants.TERMS
                       },
                     },
                   },
@@ -719,7 +790,7 @@ module.exports = {
                           properties: {
                             code: {
                               type: "string",
-                              enum: ["buyer_id_code", "buyer_id_no"],
+                              enum: constants.B2B_BPP_TERMS
                             },
                           },
                         },
@@ -736,18 +807,15 @@ module.exports = {
             },
             created_at: {
               type: "string",
-              const: { $data: "3/context/timestamp" },
-              errorMessage:
-                "created_at does not match context timestamp - ${3/context/timestamp}",
             },
             updated_at: {
               type: "string",
-              const: { $data: "3/context/timestamp" },
+              const: { $data: "1/created_at" },
               errorMessage:
-                "updated_at does not match context timestamp - ${3/context/timestamp}",
+                "does not match created_at timestamp - ${1/created_at}",
             },
           },
-          additionalProperties:false,
+          additionalProperties: false,
           required: [
             "id",
             "state",
@@ -759,11 +827,13 @@ module.exports = {
             "payments",
             "created_at",
             "updated_at",
+            "tags"
           ],
         },
       },
       required: ["order"],
     },
   },
+  isFutureDated: true,
   required: ["context", "message"],
 };

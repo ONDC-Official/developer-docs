@@ -1,7 +1,9 @@
 const checkConfirm = require("./b2bConfirm");
 const checkInit = require("./b2bInit");
-const checkOnConfirm = require("./b2bOnConfirm");
+const checkSelect = require("./b2bSelect");
 const checkOnInit = require("./b2bOnInit");
+const checkOnConfirm = require("./b2bOnConfirm");
+const checkOnSelect = require("./b2bOnSelect");
 const checkOnSearch = require("./b2bOnSearch");
 const checkOnUpdate = require("./b2bOnUpdate");
 const checkUpdate = require("./b2bUpdate");
@@ -18,14 +20,20 @@ const b2bVal = (element, action, msgIdSet) => {
     case "on_search":
       return checkOnSearch(element, msgIdSet);
 
+    case "select":
+      return checkSelect(element, msgIdSet);
+
+    case "on_select":
+      return checkOnSelect(element, msgIdSet);
+
     case "init":
       return checkInit(element, msgIdSet);
 
-    // case "on_init":
-    //   return checkOnInit(element, msgIdSet);
+    case "on_init":
+      return checkOnInit(element, msgIdSet);
 
-    // case "confirm":
-    //   return checkConfirm(element, msgIdSet);
+    case "confirm":
+      return checkConfirm(element, msgIdSet);
 
     // case "on_confirm":
     //   return checkOnConfirm(element, msgIdSet);

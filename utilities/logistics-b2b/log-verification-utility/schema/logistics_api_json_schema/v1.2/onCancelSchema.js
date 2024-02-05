@@ -159,6 +159,21 @@ module.exports = {
                     },
                     required: ["code"],
                   },
+                  time: {
+                    type: "object",
+                    properties: {
+                      label: {
+                        type: "string",
+                      },
+                      duration: {
+                        type: "string",
+                      },
+                      timestamp: {
+                        type: "string",
+                      },
+                    },
+                    required: ["label", "duration", "timestamp"],
+                  },
                 },
                 required: ["id", "category_id", "descriptor", "fulfillment_id"],
               },

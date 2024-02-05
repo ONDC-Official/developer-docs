@@ -235,12 +235,15 @@ module.exports = {
                             type: "string",
                             enum: [
                               "Pending",
+                              "Packed",
+                              "Agent-assigned",
                               "Out-for-pickup",
                               "Order-picked-up",
                               "In-transit",
                               "At-destination-hub",
                               "Out-for-delivery",
                               "Order-delivered",
+                              "Cancelled",
                             ],
                           },
                         },
@@ -604,14 +607,15 @@ module.exports = {
                   },
                   type: {
                     type: "string",
-                    const: {
-                      $data: "/on_confirm/0/message/order/payments/0/type",
-                    },
                     enum: [
                       "PRE-FULFILLMENT",
                       "ON-FULFILLMENT",
                       "POST-FULFILLMENT",
                     ],
+
+                    const: {
+                      $data: "/on_confirm/0/message/order/payments/0/type",
+                    },
                   },
                   collected_by: {
                     type: "string",
@@ -623,9 +627,38 @@ module.exports = {
                   },
                   "@ondc/org/buyer_app_finder_fee_type": {
                     type: "string",
+                    const: {
+                      $data:
+                        "/confirm/0/message/order/payments/0/@ondc~1org~1buyer_app_finder_fee_type",
+                    },
                   },
                   "@ondc/org/buyer_app_finder_fee_amount": {
                     type: "string",
+                    const: {
+                      $data:
+                        "/confirm/0/message/order/payments/0/@ondc~1org~1buyer_app_finder_fee_amount",
+                    },
+                  },
+                  "@ondc/org/settlement_basis": {
+                    type: "string",
+                    const: {
+                      $data:
+                        "/on_confirm/0/message/order/payments/0/@ondc~1org~1settlement_basis",
+                    },
+                  },
+                  "@ondc/org/settlement_window": {
+                    type: "string",
+                    const: {
+                      $data:
+                        "/on_confirm/0/message/order/payments/0/@ondc~1org~1settlement_window",
+                    },
+                  },
+                  "@ondc/org/withholding_amount": {
+                    type: "string",
+                    const: {
+                      $data:
+                        "/on_confirm/0/message/order/payments/0/@ondc~1org~1withholding_amount",
+                    },
                   },
                   "@ondc/org/settlement_details": {
                     type: "array",
@@ -710,6 +743,9 @@ module.exports = {
                   "collected_by",
                   "@ondc/org/buyer_app_finder_fee_type",
                   "@ondc/org/buyer_app_finder_fee_amount",
+                  "@ondc/org/settlement_basis",
+                  "@ondc/org/settlement_window",
+                  "@ondc/org/withholding_amount",
                 ],
               },
             },
@@ -751,7 +787,6 @@ module.exports = {
             "fulfillments",
             "quote",
             "payments",
-            "documents",
             "created_at",
             "updated_at",
           ],

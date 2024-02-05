@@ -15,35 +15,34 @@ const checkOnStatus = (data, msgIdSet) => {
   let items = on_status.items;
   let fulfillments = on_status.fulfillments;
   let pickupTime, deliveryTime, RtoPickupTime, RtoDeliveredTime;
+  let payments = on_status?.payments;
+  let invoice = on_status?.documents;
 
-  //   try {
-  //     console.log(
-  //       `Checking if message id is unique for different on_status apis`
-  //     );
-  //     if (msgIdSet.has(messageId)) {
-  //       onStatusObj.msgIdErr = `Message Id should be unique for different /on_status APIs`;
-  //     } else {
-  //       msgIdSet.add(messageId);
-  //     }
-  //   } catch (error) {
-  //     console.log(`Error checking message id in /on_status API`);
-  //   }
+  try {
+    console.log(`Checking payment object in /on_status`);
+    payments.forEach((payment) => {
+      let paymentStatus = payment?.status;
+      let paymentType = payment?.type;
+      let params = payment?.params;
 
-  //   try {
-  //     if (fulfillments.length > 1) {
-  //       console.log(
-  //         `Checking for a valid 'Cancelled' fulfillment state for type 'Delivery' in case of RTO`
-  //       );
-  //       fulfillments.forEach((fulfillment) => {
-  //         ffState = fulfillment?.state?.descriptor?.code;
-  //         if (fulfillment.type === "Prepaid" && ffState !== "Cancelled") {
-  //           onStatusObj.flflmntstErr = `In case of RTO, fulfillment with type 'Prepaid' needs to in 'Cancelled' state`;
-  //         }
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
+      if (paymentStatus === "PAID" && !params?.transaction_id) {
+        onStatusObj.pymntErr = `Transaction ID in payments/params is required when the payment status is 'PAID'`;
+      }
+      if (paymentStatus === "NOT-PAID" && params?.transaction_id) {
+        onStatusObj.pymntErr = `Transaction ID in payments/params cannot be provided when the payment status is 'NOT-PAID'`;
+      }
+      if (
+        paymentType === "ON-FULFILLMENT" &&
+        orderState != "Completed" &&
+        paymentStatus === "PAID"
+      ) {
+        onStatusObj.pymntstsErr = `Payment status will be 'PAID' once the order is 'Completed' for payment type 'ON-FULFILLMENT'`;
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
+
   try {
     fulfillments.forEach((fulfillment) => {
       ffState = fulfillment?.state?.descriptor?.code;
@@ -57,6 +56,7 @@ const checkOnStatus = (data, msgIdSet) => {
           ffState === "Agent-assigned" ||
           ffState === "Packed"
         ) {
+         
           fulfillment.stops.forEach((stop) => {
             if (stop.type === "start") {
               if (stop?.time?.timestamp) {
@@ -70,10 +70,12 @@ const checkOnStatus = (data, msgIdSet) => {
               }
             }
           });
+          if(invoice) onStatusObj.invoiceErr=`/documents (Invoice) is not required before order is picked up`
         }
         //Order-picked-up
 
         if (ffState === "Order-picked-up") {
+         
           if (orderState !== "In-progress") {
             onStatusObj.ordrStatErr = `Order state should be 'In-progress' for fulfillment state - ${ffState}`;
           }
@@ -96,24 +98,24 @@ const checkOnStatus = (data, msgIdSet) => {
               }
             }
           });
+          if(!invoice) onStatusObj.invoiceErr=`/documents (Invoice) is required once the order is picked up`
         }
 
-        
         //Out-for-delivery
         if (ffState === "Out-for-delivery") {
+          
           if (orderState !== "In-progress") {
             onStatusObj.ordrStatErr = `Order state should be 'In-progress' for fulfillment state - ${ffState}`;
           }
           fulfillment.stops.forEach((stop) => {
             if (stop.type === "start") {
               pickupTime = stop?.time?.timestamp;
-              
+
               if (!pickupTime) {
                 onStatusObj.pickupTimeErr = `Pickup timestamp (fulfillments/start/time/timestamp) is required for fulfillment state - ${ffState}`;
               } else if (
                 dao.getValue("pickupTime") &&
-                pickupTime !==
-                  dao.getValue("pickupTime")
+                pickupTime !== dao.getValue("pickupTime")
               ) {
                 onStatusObj.pickupTimeErr = `Pickup timestamp (fulfillments/start/time/timestamp) cannot change for fulfillment state - ${ffState}`;
               }
@@ -125,10 +127,12 @@ const checkOnStatus = (data, msgIdSet) => {
               }
             }
           });
+          if(!invoice) onStatusObj.invoiceErr=`/documents (Invoice) is required once the order is picked up`
         }
 
         //Order-delivered
         if (ffState === "Order-delivered") {
+         
           if (orderState !== "Completed") {
             onStatusObj.ordrStatErr = `Order state should be 'Completed' for fulfillment state - ${ffState}`;
           }
@@ -139,8 +143,7 @@ const checkOnStatus = (data, msgIdSet) => {
                 onStatusObj.pickupTimeErr = `Pickup timestamp (fulfillments/start/time/timestamp) is required for fulfillment state - ${ffState}`;
               } else if (
                 dao.getValue("pickupTime") &&
-                pickupTime !==
-                  dao.getValue("pickupTime")
+                pickupTime !== dao.getValue("pickupTime")
               ) {
                 onStatusObj.pickupTimeErr = `Pickup timestamp (fulfillments/start/time/timestamp) cannot change for fulfillment state - ${ffState}`;
               }
@@ -149,7 +152,7 @@ const checkOnStatus = (data, msgIdSet) => {
             if (stop.type === "end") {
               deliveryTime = stop?.time?.timestamp;
               dao.setValue("deliveryTime", deliveryTime);
-             
+
               if (!deliveryTime) {
                 onStatusObj.deliveryTimeErr = `Delivery timestamp (fulfillments/end/time/timestamp) is required for fulfillment state - ${ffState}`;
               }
@@ -161,11 +164,53 @@ const checkOnStatus = (data, msgIdSet) => {
               }
             }
           });
+          if(!invoice) onStatusObj.invoiceErr=`/documents (Invoice) is required once the order is picked up`
+        }
+      }
+      if (fulfillment.type === "Self-Pickup") {
+        if (
+          ffState === "Pending" ||
+          ffState === "Packed"
+        ) {
+          fulfillment.stops.forEach((stop) => {
+            if (stop.type === "start") {
+              if (stop?.time?.timestamp) {
+                onStatusObj.pickupTimeErr = `Pickup timestamp (fulfillments/start/time/timestamp) cannot be provided for fulfillment state - ${ffState}`;
+              }
+            }
+
+            if (stop.type === "end") {
+              if (stop?.time?.timestamp) {
+                onStatusObj.deliveryTimeErr = `Delivery timestamp (fulfillments/end/time/timestamp) cannot be provided for fulfillment state - ${ffState}`;
+              }
+            }
+          });
         }
 
+        if (ffState === "Order-picked-up") {
+          if (orderState !== "Completed") {
+            onStatusObj.ordrStatErr = `Order state should be 'Completed' once the order is picked up`;
+          }
+          fulfillment.stops.forEach((stop) => {
+            if (stop.type === "start") {
+              pickupTime = stop?.time?.timestamp;
+              dao.setValue("pickupTime", pickupTime);
+              if (!pickupTime) {
+                onStatusObj.pickupTimeErr = `Pickup timestamp (fulfillments/start/time/timestamp) is required for fulfillment state - ${ffState}`;
+              }
 
+              if (_.gt(pickupTime, contextTime)) {
+                onStatusObj.tmstmpErr = `Pickup timestamp (fulfillments/start/time/timestamp) cannot be future dated w.r.t context/timestamp for fulfillment state - ${ffState}`;
+              }
+            }
 
-
+            if (stop.type === "end") {
+              if (stop?.time?.timestamp) {
+                onStatusObj.deliveryTimeErr = `Delivery timestamp (fulfillments/end/time/timestamp) cannot be provided for fulfillment state - ${ffState}`;
+              }
+            }
+          });
+        }
       }
     });
   } catch (error) {
