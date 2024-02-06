@@ -298,6 +298,7 @@ module.exports = {
                   },
                   "@ondc/org/provider_name": {
                     type: "string",
+                    const: { $data: "/on_select/0/message/order/fulfillments/0/@ondc~1org~1provider_name" },
                   },
                   state: {
                     type: "object",

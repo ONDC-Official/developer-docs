@@ -864,6 +864,7 @@ module.exports = {
                           },
                         },
                       },
+                      additionalProperties:false,
                       required: [
                         "id",
                         "descriptor",
