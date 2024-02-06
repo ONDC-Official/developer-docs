@@ -165,12 +165,14 @@ module.exports = {
                           code: {
                             type: "string",
                             enum: PCC_CODE,
+                            const: { $data: "/confirm/0/message/order/fulfillments/0/start/instructions/code" }
                           },
                           name: {
                             type: "string",
                           },
                           short_desc: {
                             type: "string",
+                            const: { $data: "/confirm/0/message/order/fulfillments/0/end/instructions/short_desc" }
                           },
                           long_desc: {
                             type: "string",
@@ -222,12 +224,15 @@ module.exports = {
                           code: {
                             type: "string",
                             enum: DCC_CODE,
+                            const: { $data: "/confirm/0/message/order/fulfillments/0/end/instructions/code" }
                           },
                           name: {
                             type: "string",
                           },
                           short_desc: {
                             type: "string",
+                            not: { const: { $data: "3/start/instructions/short_desc" } },
+                            errorMessage: "cannot be same as PCC - ${3/start/instructions/short_desc}"
                           },
                           long_desc: {
                             type: "string",

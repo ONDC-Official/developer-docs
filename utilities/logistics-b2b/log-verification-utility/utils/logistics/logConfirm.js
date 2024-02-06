@@ -74,7 +74,7 @@ const checkConfirm = (data, msgIdSet) => {
   fulfillments.forEach((fulfillment) => {
     let avgPickupTime= fulfillment?.start?.time?.duration;
 console.log(avgPickupTime,dao.getValue(`${fulfillment?.id}-avgPickupTime`));
-    if(avgPickupTime && avgPickupTime!==dao.getValue(`${fulfillment?.id}-avgPickupTime`)){
+    if(avgPickupTime && dao.getValue(`${fulfillment?.id}-avgPickupTime`) && avgPickupTime!==dao.getValue(`${fulfillment?.id}-avgPickupTime`)){
       cnfrmObj.avgPckupErr=`Average Pickup Time (fulfillments/start/time/duration) mismatches from the one provided in /on_search`
     }
     if (fulfillment["@ondc/org/awb_no"] && p2h2p) awbNo = true;

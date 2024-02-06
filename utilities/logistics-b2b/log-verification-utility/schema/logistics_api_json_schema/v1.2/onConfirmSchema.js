@@ -594,6 +594,8 @@ module.exports = {
                         properties: {
                           short_desc: {
                             type: "string",
+                            not: { const: { $data: "3/start/instructions/short_desc" } },
+                            errorMessage: "cannot be same as PCC - ${3/start/instructions/short_desc}"
                           },
                           long_desc: {
                             type: "string",
