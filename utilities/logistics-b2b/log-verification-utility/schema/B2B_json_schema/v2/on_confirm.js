@@ -679,12 +679,24 @@ module.exports = {
                   },
                   "@ondc/org/settlement_basis": {
                     type: "string",
+                    const: {
+                      $data:
+                        "/confirm/0/message/order/payments/0/@ondc~1org~1settlement_basis",
+                    },
                   },
                   "@ondc/org/settlement_window": {
                     type: "string",
+                    const: {
+                      $data:
+                        "/confirm/0/message/order/payments/0/@ondc~1org~1settlement_window",
+                    },
                   },
                   "@ondc/org/withholding_amount": {
                     type: "string",
+                    const: {
+                      $data:
+                        "/confirm/0/message/order/payments/0/@ondc~1org~1withholding_amount",
+                    },
                   },
                   "@ondc/org/settlement_details": {
                     type: "array",
@@ -694,6 +706,10 @@ module.exports = {
                         settlement_counterparty: {
                           type: "string",
                           enum: ["seller-app", "buyer-app"],
+                          const: {
+                            $data:
+                              "/confirm/0/message/order/payments/0/@ondc~1org~1settlement_details/0/settlement_counterparty",
+                          },
                         },
                         settlement_phase: {
                           type: "string",
@@ -701,24 +717,52 @@ module.exports = {
                         settlement_type: {
                           type: "string",
                           enum: ["upi", "neft", "rtgs"],
+                          const: {
+                            $data:
+                              "/confirm/0/message/order/payments/0/@ondc~1org~1settlement_details/0/settlement_type",
+                          },
                         },
                         beneficiary_name: {
                           type: "string",
+                          const: {
+                            $data:
+                              "/confirm/0/message/order/payments/0/@ondc~1org~1settlement_details/0/beneficiary_name",
+                          },
                         },
                         upi_address: {
                           type: "string",
+                          const: {
+                            $data:
+                              "/confirm/0/message/order/payments/0/@ondc~1org~1settlement_details/0/upi_address",
+                          },
                         },
                         settlement_bank_account_no: {
                           type: "string",
+                          const: {
+                            $data:
+                              "/confirm/0/message/order/payments/0/@ondc~1org~1settlement_details/0/settlement_bank_account_no",
+                          },
                         },
                         settlement_ifsc_code: {
                           type: "string",
+                          const: {
+                            $data:
+                              "/confirm/0/message/order/payments/0/@ondc~1org~1settlement_details/0/settlement_ifsc_code",
+                          },
                         },
                         bank_name: {
                           type: "string",
+                          const: {
+                            $data:
+                              "/confirm/0/message/order/payments/0/@ondc~1org~1settlement_details/0/bank_name",
+                          },
                         },
                         branch_name: {
                           type: "string",
+                          const: {
+                            $data:
+                              "/confirm/0/message/order/payments/0/@ondc~1org~1settlement_details/0/branch_name",
+                          },
                         },
                       },
                       allOf: [
