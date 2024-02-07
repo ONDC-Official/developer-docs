@@ -125,6 +125,7 @@ module.exports = {
                 },
               },
               required: ["id", "locations", "ttl"],
+              errorMessage: "id, locations are mandatory attributes and ttl is required for RFQ Flow"
             },
             items: {
               type: "array",

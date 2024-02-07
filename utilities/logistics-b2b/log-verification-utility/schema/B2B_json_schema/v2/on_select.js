@@ -1,3 +1,4 @@
+const constants = require("../../../utils/constants");
 module.exports = {
   $id: "http://example.com/schema/onSelectSchema",
   type: "object",
@@ -236,6 +237,7 @@ module.exports = {
                   },
                   "@ondc/org/category": {
                     type: "string",
+                    enum: constants.CATEGORY_ID
                   },
                   "@ondc/org/TAT": {
                     type: "string",

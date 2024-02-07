@@ -11,7 +11,12 @@ const checkOnSearch = async (data, msgIdSet) => {
   onSearch = onSearch.message.catalog;
 
   //saving fulfillments
-
+  try {
+    console.log("checking attr");
+    console.log(constants.ATTR_DOMAINS.includes(domain));
+  } catch (error) {
+    console.log(error);
+  }
   const fulfillments = onSearch?.fulfillments;
 
   dao.setValue("fulfillmentsArr", fulfillments);
@@ -58,45 +63,59 @@ const checkOnSearch = async (data, msgIdSet) => {
       }
 
       //checking mandatory attributes for fashion and electronics
-      if (domain === "ONDC:RET12" || domain === "ONDC:RET14") {
-        provider.items.forEach((item) => {
-          let itemTags = item?.tags;
-          let mandatoryAttr;
-          let attrPresent = false;
 
-          if (domain === "ONDC:RET12") {
-            mandatoryAttr = constants.FASHION_ATTRIBUTES;
-          }
-          if (domain === "ONDC:RET14") {
-            mandatoryAttr = constants.ELECTRONICS_ATTRIBUTES;
-          }
-          itemTags.map(({ descriptor, list }, index) => {
-            switch (descriptor?.code) {
-              case "attribute":
-                attrPresent = true;
-                const encounteredAttr = [];
-                list.map(({ descriptor, value }) => {
-                  encounteredAttr.push(descriptor?.code);
-                });
+      provider.items.forEach((item) => {
+        let itemTags = item?.tags;
+        let mandatoryAttr = [];
+        let attrPresent = false;
+        let missingAttr = [];
 
-                // Check if all mandatory attributes are encountered
-                const missingAttr = mandatoryAttr.filter(
-                  (code) => !encounteredAttr.includes(code)
-                );
-                if (missingAttr.length > 0) {
-                  onSrchObj.mssngAttrErr = `'${missingAttr}' attribute/s required in items/tags for ${domain} domain`;
-                }
-                break;
+        itemTags.forEach((tag) => {
+          let { descriptor, list } = tag;
+          console.log(descriptor.code);
+          if (descriptor?.code === "attribute" && constants.ATTR_DOMAINS.includes(domain)) {
+
+            if (domain === "ONDC:RET12") {
+              mandatoryAttr = constants.FASHION_ATTRIBUTES;
             }
-          });
+            if (domain === "ONDC:RET14") {
+              mandatoryAttr = constants.ELECTRONICS_ATTRIBUTES;
+            }
+            if (domain === "ONDC:RET12") {
+              mandatoryAttr = constants.FASHION_ATTRIBUTES;
+            }
+            if (domain === "ONDC:RET1A"||domain === "ONDC:RET1B"||domain === "ONDC:RET1C"||domain === "ONDC:RET1D") {
+              mandatoryAttr = constants.MANDATORY_ATTRIBUTES;
+            }
+            attrPresent = true;
+            missingAttr = utils.findMissingTags(
+              list,
+              descriptor.code,
+              mandatoryAttr
+            );
 
-          if (
-            (domain === "ONDC:RET12" || domain === "ONDC:RET14") &&
-            !attrPresent
-          )
-            onSrchObj.attrErr = `code = 'attribute' is required in items/tags for domain - ${domain} and provider/id - ${provider.id}`;
+            if (missingAttr.length > 0) {
+              onSrchObj.mssngAttrErr = `'${missingAttr}' attribute/s required in items/tags for ${domain} domain`;
+            }
+          }
+          if (descriptor?.code === "g2") {
+            mandatoryAttr = constants.G2TAGS;
+            missingAttr = utils.findMissingTags(
+              list,
+              descriptor.code,
+              mandatoryAttr
+            );
+
+            if (missingAttr.length > 0) {
+              onSrchObj.missingTagErr = `'${missingAttr}' required for 'g2' tag in items/tags`;
+            }
+          }
         });
-      }
+        if (constants.ATTR_DOMAINS.includes(domain) && !attrPresent) {
+          onSrchObj.attrMissing = `code = 'attribute' is missing in /items/tags for domain ${domain}`;
+        }
+      });
+     
     }
   }
 

@@ -649,12 +649,24 @@ module.exports = {
                   },
                   "@ondc/org/settlement_basis": {
                     type: "string",
+                    const: {
+                      $data:
+                        "/on_init/0/message/order/payments/0/@ondc~1org~1settlement_basis",
+                    },
                   },
                   "@ondc/org/settlement_window": {
                     type: "string",
+                    const: {
+                      $data:
+                        "/on_init/0/message/order/payments/0/@ondc~1org~1settlement_window",
+                    },
                   },
                   "@ondc/org/withholding_amount": {
                     type: "string",
+                    const: {
+                      $data:
+                        "/on_init/0/message/order/payments/0/@ondc~1org~1withholding_amount",
+                    },
                   },
 
                   "@ondc/org/settlement_details": {

@@ -196,8 +196,8 @@ module.exports = {
                                 type: "string",
                               },
                             },
-                            isLengthValid:true,
-                            
+                            isLengthValid: true,
+
                             required: [
                               "name",
                               "building",
@@ -274,8 +274,8 @@ module.exports = {
                                 type: "string",
                               },
                             },
-                            isLengthValid:true,
-                            
+                            isLengthValid: true,
+
                             required: [
                               "name",
                               "building",
@@ -456,15 +456,32 @@ module.exports = {
                   type: "string",
                   enum: constants.PAYMENT_TYPE,
                   const: { $data: "/search/0/message/intent/payment/type" },
-                  errorMessage:"should be same as in /search - ${/search/0/message/intent/payment/type}"
+                  errorMessage:
+                    "should be same as in /search - ${/search/0/message/intent/payment/type}",
+                },
+                collected_by: {
+                  type: "string",
+                  enum: constants.PAYMENT_COLLECTEDBY,
                 },
               },
-              additionalProperties:false,
-              required: ["type"],
+              additionalProperties: false,
+              if: {
+                properties: {
+                  type: {
+                    const: "ON-ORDER",
+                  },
+                },
+              },
+              then: {
+                required: ["type", "collected_by"],
+              },
+              else: {
+                required: ["type"],
+              },
             },
           },
           additionalProperties: false,
-          required: ["provider", "items", "fulfillments", "billing","payment"],
+          required: ["provider", "items", "fulfillments", "billing", "payment"],
         },
       },
       required: ["order"],
