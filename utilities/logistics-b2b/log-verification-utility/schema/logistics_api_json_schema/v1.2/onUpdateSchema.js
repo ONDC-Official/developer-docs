@@ -157,9 +157,17 @@ module.exports = {
                       },
                       duration: {
                         type: "string",
+                        const: {
+                          $data:
+                            "/on_confirm/0/message/order/items/0/time/duration",
+                        },
                       },
                       timestamp: {
                         type: "string",
+                        const: {
+                          $data:
+                          "/on_confirm/0/message/order/items/0/time/timestamp",
+                        },
                       },
                     },
                     required: ["label", "duration", "timestamp"],
