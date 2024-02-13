@@ -48,7 +48,7 @@ c. Retail reference buyer app
 
 `https://ref-app-buyer-staging-v2.ondc.org/login`
 
-# Configuration settings for ONDC Old Staging Environment (To be deprecated)
+# Configuration settings for ONDC Old Staging Environment (Deprecated on 1st Jan, 2024)
 
 a. Registry end point
 
