@@ -117,6 +117,7 @@ module.exports = {
                 },
               },
               required: ["id"],
+              additionalProperties: false
             },
             provider_location: {
               type: "object",
@@ -129,6 +130,7 @@ module.exports = {
                 },
               },
               required: ["id"],
+              additionalProperties: false
             },
             items: {
               type: "array",

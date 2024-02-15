@@ -70,7 +70,7 @@ const checkOnStatus = (data, msgIdSet) => {
               }
             }
           });
-          if(invoice) onStatusObj.invoiceErr=`/documents (Invoice) is not required before order is picked up`
+          if(invoice) onStatusObj.invoiceErr=`/documents (Invoice) is not required before order is picked up for Non RFQ Flow.`
         }
         //Order-picked-up
 
