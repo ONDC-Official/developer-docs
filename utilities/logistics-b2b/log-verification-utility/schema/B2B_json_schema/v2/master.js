@@ -73,6 +73,21 @@ module.exports = {
       items: {
         $ref: "onStatusSchema#",
       },
+<<<<<<< HEAD
+=======
+    },
+    cancel: {
+      type: "array",
+      items: {
+        $ref: "cancelSchema#",
+      },
+    },
+    on_cancel: {
+      type: "array",
+      items: {
+        $ref: "onCancelSchema#",
+      },
+>>>>>>> patch-reference-implementations-remote/main
     }
   },
 };

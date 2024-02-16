@@ -522,7 +522,7 @@ module.exports = {
                       properties: {
                         code: {
                           type: "string",
-                          const: "rto_event",
+                          enum: constants.CANCELLATION_TAGS_CODES,
                         },
                         list: {
                           type: "array",

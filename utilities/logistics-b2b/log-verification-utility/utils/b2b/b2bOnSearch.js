@@ -72,7 +72,10 @@ const checkOnSearch = async (data, msgIdSet) => {
 
         itemTags.forEach((tag) => {
           let { descriptor, list } = tag;
+<<<<<<< HEAD
           console.log(descriptor.code);
+=======
+>>>>>>> patch-reference-implementations-remote/main
           if (descriptor?.code === "attribute" && constants.ATTR_DOMAINS.includes(domain)) {
 
             if (domain === "ONDC:RET12") {

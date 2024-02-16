@@ -734,6 +734,7 @@ module.exports = {
                           },
                         },
                         return_terms: {
+<<<<<<< HEAD
                           type: "object",
                           properties: {
                             fulfillment_state: {
@@ -786,6 +787,62 @@ module.exports = {
                             "return_location",
                             "fulfillment_managed_by",
                           ],
+=======
+                          type: "array",
+                          items: {
+                            properties: {
+                              fulfillment_state: {
+                                type: "object",
+                                properties: {
+                                  descriptor: {
+                                    type: "object",
+                                    properties: {
+                                      code: {
+                                        type: "string",
+                                      },
+                                    },
+                                    required: ["code"],
+                                  },
+                                },
+                                required: ["descriptor"],
+                              },
+                              return_eligible: {
+                                type: "boolean",
+                              },
+                              return_time: {
+                                type: "object",
+                                properties: {
+                                  duration: {
+                                    type: "string",
+                                  },
+                                },
+                                required: ["duration"],
+                              },
+                              return_location: {
+                                type: "object",
+                                properties: {
+                                  address: {
+                                    type: "string",
+                                  },
+                                  gps: {
+                                    type: "string",
+                                  },
+                                },
+                                required: ["address", "gps"],
+                              },
+                              fulfillment_managed_by: {
+                                type: "string",
+                              },
+                            },
+                            required: [
+                              "fulfillment_state",
+                              "return_eligible",
+                              "return_time",
+                              "return_location",
+                              "fulfillment_managed_by",
+                            ],
+                          },
+>>>>>>> patch-reference-implementations-remote/main
                         },
 
                         replacement_terms: {
@@ -864,7 +921,11 @@ module.exports = {
                           },
                         },
                       },
+<<<<<<< HEAD
                       additionalProperties:false,
+=======
+                      additionalProperties: false,
+>>>>>>> patch-reference-implementations-remote/main
                       required: [
                         "id",
                         "descriptor",

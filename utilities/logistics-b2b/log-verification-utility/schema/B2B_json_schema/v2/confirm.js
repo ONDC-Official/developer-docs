@@ -105,6 +105,13 @@ module.exports = {
           properties: {
             id: {
               type: "string",
+<<<<<<< HEAD
+=======
+              not: {
+                const: { $data: "3/context/transaction_id" },
+              },
+              errorMessage:"Order ID must not be the same as Transaction ID - ${3/context/transaction_id}."
+>>>>>>> patch-reference-implementations-remote/main
             },
             state: {
               type: "string",

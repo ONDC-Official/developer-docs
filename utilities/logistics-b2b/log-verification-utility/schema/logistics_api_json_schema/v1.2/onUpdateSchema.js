@@ -157,9 +157,23 @@ module.exports = {
                       },
                       duration: {
                         type: "string",
+<<<<<<< HEAD
                       },
                       timestamp: {
                         type: "string",
+=======
+                        const: {
+                          $data:
+                            "/on_confirm/0/message/order/items/0/time/duration",
+                        },
+                      },
+                      timestamp: {
+                        type: "string",
+                        const: {
+                          $data:
+                          "/on_confirm/0/message/order/items/0/time/timestamp",
+                        },
+>>>>>>> patch-reference-implementations-remote/main
                       },
                     },
                     required: ["label", "duration", "timestamp"],

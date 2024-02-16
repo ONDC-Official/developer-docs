@@ -57,6 +57,12 @@ const validate_schema = (data, schema,version) => {
   const statusSchema = loadSchema("status", version);
   const onStatusSchema = loadSchema("on_status", version);
 
+<<<<<<< HEAD
+=======
+  const cancelSchema = loadSchema("cancel", version);
+  const onCancelSchema = loadSchema("on_cancel", version);
+
+>>>>>>> patch-reference-implementations-remote/main
   const Ajv = require("ajv");
   const ajv = new Ajv({
     allErrors: true,
@@ -84,6 +90,8 @@ const validate_schema = (data, schema,version) => {
       .addSchema(onUpdateSchema)
       .addSchema(statusSchema)
       .addSchema(onStatusSchema)
+      .addSchema(cancelSchema)
+      .addSchema(onCancelSchema)
       .addKeyword("isEndTimeGreater", {
         validate: (schema, data) => isEndTimeGreater(data),
       })
