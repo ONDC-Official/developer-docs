@@ -9,7 +9,7 @@ const checkInit = (data, msgIdSet) => {
   init = init.message.order;
 
   let items = init.items;
-  const selectedItems = dao.getValue("slctdItemsArray");
+  const selectedItems = dao.getValue("onSlctdItemsArray");
 
   try {
     console.log("Comparing items object with /select");

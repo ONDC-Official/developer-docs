@@ -739,6 +739,44 @@ module.exports = {
               type: "string",
               format: "date-time",
             },
+            tags: {
+              type: "array",
+              minItems: 3,
+              items: {
+                type: "object",
+                properties: {
+                  descriptor: {
+                    properties: {
+                      code: {
+                        type: "string",
+                        enum: constants.TERMS,
+                      },
+                    },
+                  },
+                  list: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        descriptor: {
+                          properties: {
+                            code: {
+                              type: "string",
+                              enum: constants.B2B_BPP_TERMS,
+                            },
+                          },
+                        },
+                        value: {
+                          type: "string",
+                        },
+                      },
+                      required: ["descriptor", "value"],
+                    },
+                  },
+                },
+                required: ["descriptor", "list"],
+              },
+            },
           },
           additionalProperties: false,
           required: [
