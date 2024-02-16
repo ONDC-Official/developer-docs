@@ -70,11 +70,7 @@ const checkOnStatus = (data, msgIdSet) => {
               }
             }
           });
-<<<<<<< HEAD
-          if(invoice) onStatusObj.invoiceErr=`/documents (Invoice) is not required before order is picked up`
-=======
           if(invoice) onStatusObj.invoiceErr=`/documents (Invoice) is not required before order is picked up for Non RFQ Flow.`
->>>>>>> patch-reference-implementations-remote/main
         }
         //Order-picked-up
 

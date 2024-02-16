@@ -73,8 +73,6 @@ module.exports = {
       items: {
         $ref: "onStatusSchema#",
       },
-<<<<<<< HEAD
-=======
     },
     cancel: {
       type: "array",
@@ -87,7 +85,6 @@ module.exports = {
       items: {
         $ref: "onCancelSchema#",
       },
->>>>>>> patch-reference-implementations-remote/main
     }
   },
 };

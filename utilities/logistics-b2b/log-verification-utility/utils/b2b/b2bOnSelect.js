@@ -12,11 +12,8 @@ const checkOnSelect = async (data, msgIdSet) => {
   let fulfillments = onSelect?.fulfillments;
   let ffState, ffId;
   let deliveryQuoteItem = false;
-<<<<<<< HEAD
-=======
   let deliveryCharge = 0
   dao.setValue("onSlctdItemsArray", items)
->>>>>>> patch-reference-implementations-remote/main
   const selectedItems = dao.getValue("slctdItemsArray");
   try {
     console.log("Checking fulfillment object in /on_select");
@@ -59,11 +56,8 @@ const checkOnSelect = async (data, msgIdSet) => {
         breakup["@ondc/org/item_id"] === ffId
       ) {
         deliveryQuoteItem = true;
-<<<<<<< HEAD
-=======
         deliveryCharge= breakup?.price?.value
         console.log("deliverycharge",deliveryCharge);
->>>>>>> patch-reference-implementations-remote/main
       }
       if (
         breakup["@ondc/org/title_type"] === "item" &&
@@ -92,13 +86,8 @@ const checkOnSelect = async (data, msgIdSet) => {
     if (!deliveryQuoteItem && ffState === "Serviceable") {
       onSelectObj.deliveryQuoteErr = `Delivery charges should be provided in quote/breakup when fulfillment is 'Serviceable'`;
     }
-<<<<<<< HEAD
-    if (deliveryQuoteItem && ffState === "Non-serviceable") {
-      onSelectObj.deliveryQuoteErr = `Delivery charges are not required in quote/breakup when fulfillment is 'Non-serviceable'`;
-=======
     if (deliveryQuoteItem && deliveryCharge!=0 && ffState === "Non-serviceable") {
       onSelectObj.deliveryQuoteErr = `Delivery charges are not required or should be zero in quote/breakup when fulfillment is 'Non-serviceable'`;
->>>>>>> patch-reference-implementations-remote/main
     }
 
     if (ffState === "Non-serviceable" && !data.error) {

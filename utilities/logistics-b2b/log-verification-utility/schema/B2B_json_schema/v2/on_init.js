@@ -117,10 +117,7 @@ module.exports = {
                 },
               },
               required: ["id"],
-<<<<<<< HEAD
-=======
               additionalProperties: false
->>>>>>> patch-reference-implementations-remote/main
             },
             provider_location: {
               type: "object",
@@ -133,10 +130,7 @@ module.exports = {
                 },
               },
               required: ["id"],
-<<<<<<< HEAD
-=======
               additionalProperties: false
->>>>>>> patch-reference-implementations-remote/main
             },
             items: {
               type: "array",
