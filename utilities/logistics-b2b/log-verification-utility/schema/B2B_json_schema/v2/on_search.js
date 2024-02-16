@@ -734,58 +734,60 @@ module.exports = {
                           },
                         },
                         return_terms: {
-                          type: "object",
-                          properties: {
-                            fulfillment_state: {
-                              type: "object",
-                              properties: {
-                                descriptor: {
-                                  type: "object",
-                                  properties: {
-                                    code: {
-                                      type: "string",
+                          type: "array",
+                          items: {
+                            properties: {
+                              fulfillment_state: {
+                                type: "object",
+                                properties: {
+                                  descriptor: {
+                                    type: "object",
+                                    properties: {
+                                      code: {
+                                        type: "string",
+                                      },
                                     },
+                                    required: ["code"],
                                   },
-                                  required: ["code"],
                                 },
+                                required: ["descriptor"],
                               },
-                              required: ["descriptor"],
-                            },
-                            return_eligible: {
-                              type: "boolean",
-                            },
-                            return_time: {
-                              type: "object",
-                              properties: {
-                                duration: {
-                                  type: "string",
-                                },
+                              return_eligible: {
+                                type: "boolean",
                               },
-                              required: ["duration"],
-                            },
-                            return_location: {
-                              type: "object",
-                              properties: {
-                                address: {
-                                  type: "string",
+                              return_time: {
+                                type: "object",
+                                properties: {
+                                  duration: {
+                                    type: "string",
+                                  },
                                 },
-                                gps: {
-                                  type: "string",
-                                },
+                                required: ["duration"],
                               },
-                              required: ["address", "gps"],
+                              return_location: {
+                                type: "object",
+                                properties: {
+                                  address: {
+                                    type: "string",
+                                  },
+                                  gps: {
+                                    type: "string",
+                                  },
+                                },
+                                required: ["address", "gps"],
+                              },
+                              fulfillment_managed_by: {
+                                type: "string",
+                              },
                             },
-                            fulfillment_managed_by: {
-                              type: "string",
-                            },
+                            required: [
+                              "fulfillment_state",
+                              "return_eligible",
+                              "return_time",
+                              "return_location",
+                              "fulfillment_managed_by",
+                            ],
                           },
-                          required: [
-                            "fulfillment_state",
-                            "return_eligible",
-                            "return_time",
-                            "return_location",
-                            "fulfillment_managed_by",
-                          ],
                         },
 
                         replacement_terms: {
@@ -864,7 +866,7 @@ module.exports = {
                           },
                         },
                       },
-                      additionalProperties:false,
+                      additionalProperties: false,
                       required: [
                         "id",
                         "descriptor",

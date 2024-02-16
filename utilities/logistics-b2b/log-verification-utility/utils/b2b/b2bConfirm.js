@@ -11,7 +11,7 @@ const checkConfirm = async (data, msgIdSet) => {
   let payments = confirm?.payments;
 
   let items = confirm.items;
-  const selectedItems = dao.getValue("slctdItemsArray");
+  const selectedItems = dao.getValue("onSlctdItemsArray");
 
   try {
     console.log("Comparing items object with /select");

@@ -304,6 +304,7 @@ module.exports = {
                       additionalProperties:false,
                       required: [
                         "id",
+                        "parent_item_id",
                         "category_id",
                         "fulfillment_id",
                         "descriptor",

@@ -263,6 +263,8 @@ module.exports = {
                 },
                 tax_id: {
                   type: "string",
+                  pattern: "^[0-9]{2}[A-Z]{5}[0-9]{4}[0-9A-Z]{4}$",
+                  errorMessage: "should be valid",
                 },
                 email: {
                   type: "string",
@@ -493,7 +495,8 @@ module.exports = {
                   },
                   collected_by:{
                     type:"string",
-                    enum:["BAP","BPP"]
+                    enum:["BAP","BPP"],
+                    const: { $data: "/on_select/0/message/order/payments/0/collected_by" },
                   }
                 },
                 required: ["type","collected_by"],

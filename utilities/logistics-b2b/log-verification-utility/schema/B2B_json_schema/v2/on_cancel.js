@@ -1,6 +1,6 @@
 const constants = require("../../../utils/constants");
 module.exports = {
-  $id: "http://example.com/schema/confirmSchema",
+  $id: "http://example.com/schema/onCancelSchema",
   type: "object",
   properties: {
     context: {
@@ -37,7 +37,7 @@ module.exports = {
         },
         action: {
           type: "string",
-          const: "confirm",
+          const: "on_cancel",
         },
         version: {
           type: "string",
@@ -63,15 +63,6 @@ module.exports = {
         },
         message_id: {
           type: "string",
-          allOf: [
-            {
-              not: {
-                const: { $data: "1/transaction_id" },
-              },
-              errorMessage:
-                "Message ID should not be equal to transaction_id: ${1/transaction_id}",
-            },
-          ],
         },
         timestamp: {
           type: "string",
@@ -79,7 +70,6 @@ module.exports = {
         },
         ttl: {
           type: "string",
-          const: "PT30S",
         },
       },
       required: [
@@ -105,26 +95,39 @@ module.exports = {
           properties: {
             id: {
               type: "string",
-              not: {
-                const: { $data: "3/context/transaction_id" },
-              },
-              errorMessage:"Order ID must not be the same as Transaction ID - ${3/context/transaction_id}."
+              const: { $data: "/confirm/0/message/order/id" },
             },
             state: {
               type: "string",
-              enum: ["Created"],
+              enum: ["Cancelled"],
+            },
+            cancellation: {
+              type: "object",
+              properties: {
+                reason: {
+                  type: "object",
+                  properties: {
+                    id: {
+                      type: "string",
+                    },
+                  },
+                  required: ["id"],
+                },
+                cancelled_by: {
+                  type: "string",
+                },
+              },
+              required: ["reason", "cancelled_by"],
             },
             provider: {
               type: "object",
               properties: {
                 id: {
                   type: "string",
-                  const: { $data: "/init/0/message/order/provider/id" },
+                  const: { $data: "/select/0/message/order/provider/id" },
                 },
                 locations: {
                   type: "array",
-                  const: { $data: "/init/0/message/order/provider/locations" },
-                  errorMessage: "mismatch from /init",
                   items: {
                     type: "object",
                     properties: {
@@ -146,6 +149,12 @@ module.exports = {
                   id: {
                     type: "string",
                   },
+                  payment_ids: {
+                    type: "array",
+                    items: {
+                      type: "string",
+                    },
+                  },
                   fulfillment_ids: {
                     type: "array",
                     items: {
@@ -165,81 +174,11 @@ module.exports = {
                         required: ["count"],
                       },
                     },
+                    additionalProperties: false,
                     required: ["selected"],
                   },
-                  "add-ons": {
-                    type: "array",
-                    items: {
-                      type: "object",
-                      properties: {
-                        id: {
-                          type: "string",
-                        },
-                      },
-                      required: ["id"],
-                    },
-                  },
-                  tags: {
-                    type: "array",
-                    items: {
-                      type: "object",
-                      properties: {
-                        descriptor: {
-                          type: "object",
-                          properties: {
-                            code: {
-                              type: "string",
-                              enum: ["BUYER_TERMS"],
-                            },
-                          },
-                          required: ["code"],
-                        },
-                        list: {
-                          type: "array",
-                          items: {
-                            type: "object",
-                            properties: {
-                              descriptor: {
-                                type: "object",
-                                properties: {
-                                  code: {
-                                    type: "string",
-                                    enum: ["ITEM_REQ", "PACKAGING_REQ"],
-                                  },
-                                },
-                                required: ["code"],
-                              },
-                              value: {
-                                type: "string",
-                                anyOf: [
-                                  {
-                                    const: {
-                                      $data:
-                                        "/select/0/message/order/items/0/tags/0/list/0/value",
-                                    },
-                                    errorMessage:
-                                      "Buyer terms should be same as provided in /select",
-                                  },
-                                  {
-                                    const: {
-                                      $data:
-                                        "/select/0/message/order/items/0/tags/0/list/1/value",
-                                    },
-                                    errorMessage:
-                                      "Buyer terms should be same as provided in /select",
-                                  },
-                                ],
-                              },
-                            },
-                            required: ["descriptor", "value"],
-                          },
-                        },
-                      },
-                      required: ["descriptor", "list"],
-                    },
-                  },
                 },
-                required: ["id", "fulfillment_ids", "quantity"],
+                required: ["id", "fulfillment_ids", "quantity", "payment_ids"],
               },
             },
             billing: {
@@ -270,16 +209,12 @@ module.exports = {
                   properties: {
                     name: {
                       type: "string",
-                      const: {
-                        $data: "/init/0/message/order/billing/city/name",
-                      },
+                    },
+                    const: {
+                      $data: "/init/0/message/order/billing/city/name",
                     },
                   },
                   required: ["name"],
-                },
-                tax_id: {
-                  type: "string",
-                  const: { $data: "/init/0/message/order/billing/tax_id" },
                 },
                 email: {
                   type: "string",
@@ -290,8 +225,7 @@ module.exports = {
                   const: { $data: "/init/0/message/order/billing/phone" },
                 },
               },
-
-              required: ["name", "address", "state", "city", "tax_id", "phone"],
+              required: ["name", "address", "state", "city", "phone"],
             },
             fulfillments: {
               type: "array",
@@ -301,11 +235,30 @@ module.exports = {
                   id: {
                     type: "string",
                   },
+                  "@ondc/org/provider_name": {
+                    type: "string",
+                  },
                   type: {
                     type: "string",
                   },
                   tracking: {
                     type: "boolean",
+                  },
+                  state: {
+                    type: "object",
+                    properties: {
+                      descriptor: {
+                        type: "object",
+                        properties: {
+                          code: {
+                            type: "string",
+                            enum: ["Cancelled"],
+                          },
+                        },
+                        required: ["code"],
+                      },
+                    },
+                    required: ["descriptor"],
                   },
                   stops: {
                     type: "array",
@@ -319,12 +272,29 @@ module.exports = {
                         location: {
                           type: "object",
                           properties: {
+                            id: {
+                              type: "string",
+                            },
+                            descriptor: {
+                              type: "object",
+                              properties: {
+                                name: {
+                                  type: "string",
+                                },
+                                images: {
+                                  type: "array",
+                                  items: {
+                                    type: "string",
+                                  },
+                                },
+                              },
+                              required: ["name"],
+                            },
                             gps: {
                               type: "string",
                               pattern:
                                 "^(-?[0-9]{1,3}(?:.[0-9]{6,15})?),( )*?(-?[0-9]{1,3}(?:.[0-9]{6,15})?)$",
-                              errorMessage:
-                                "Incorrect gps value (minimum of six decimal places are required)",
+                              errorMessage: "Incorrect gps value",
                             },
                             address: {
                               type: "string",
@@ -360,13 +330,64 @@ module.exports = {
                               required: ["name"],
                             },
                           },
+                        },
+                        time: {
+                          type: "object",
+                          properties: {
+                            range: {
+                              type: "object",
+                              properties: {
+                                start: {
+                                  type: "string",
+                                  pattern:
+                                    "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                  errorMessage:
+                                    "should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format",
+                                },
+                                end: {
+                                  type: "string",
+                                  pattern:
+                                    "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                  errorMessage:
+                                    "should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format",
+                                },
+                              },
+                              required: ["start", "end"],
+                            },
+                            timestamp: {
+                              type: "string",
+                              pattern:
+                                "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                              errorMessage:
+                                "should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format",
+                            },
+                          },
+                          required: ["range"],
+                        },
+                        instructions: {
+                          type: "object",
+                          properties: {
+                            name: {
+                              type: "string",
+                            },
+                            short_desc: {
+                              type: "string",
+                            },
+                            long_desc: {
+                              type: "string",
+                            },
+                            images: {
+                              type: "array",
+                              items: {
+                                type: "string",
+                              },
+                            },
+                          },
                           required: [
-                            "gps",
-                            "address",
-                            "city",
-                            "country",
-                            "area_code",
-                            "state",
+                            "name",
+                            "short_desc",
+                            "long_desc",
+                            "images",
                           ],
                         },
                         contact: {
@@ -381,7 +402,7 @@ module.exports = {
                           },
                           required: ["phone"],
                         },
-                        customer: {
+                        agent: {
                           type: "object",
                           properties: {
                             person: {
@@ -393,94 +414,42 @@ module.exports = {
                               },
                               required: ["name"],
                             },
+                            contact: {
+                              type: "object",
+                              properties: {
+                                phone: {
+                                  type: "string",
+                                },
+                              },
+                              required: ["phone"],
+                            },
                           },
-                          required: ["person"],
+                          required: ["person", "contact"],
                         },
                       },
-                      required: ["type", "location", "contact"],
-                    },
-                  },
-                  tags: {
-                    type: "array",
-                    items: {
-                      type: "object",
-                      properties: {
-                        descriptor: {
-                          type: "object",
-                          properties: {
-                            code: {
-                              type: "string",
-                              enum: ["DELIVERY_TERMS"],
-                            },
-                          },
-                          required: ["code"],
-                        },
-                        list: {
-                          type: "array",
-                          items: {
-                            type: "object",
-                            properties: {
-                              descriptor: {
-                                type: "object",
-                                properties: {
-                                  code: {
-                                    type: "string",
-                                    enum: [
-                                      "INCOTERMS",
-                                      "NAMED_PLACE_OF_DELIVERY",
-                                    ],
-                                  },
-                                },
-                                required: ["code"],
-                              },
-                              value: {
-                                type: "string",
-                                anyOf: [
-                                  {
-                                    const: {
-                                      $data:
-                                        "/init/0/message/order/fulfillments/0/tags/0/list/0/value",
-                                    },
-                                  },
-                                  {
-                                    const: {
-                                      $data:
-                                        "/init/0/message/order/fulfillments/0/tags/0/list/1/value",
-                                    },
-                                  },
-                                ],
-                              },
-                            },
-                            if: {
-                              properties: {
-                                descriptor: {
-                                  properties: { code: { const: "INCOTERMS" } },
-                                },
-                              },
-                            },
-                            then: {
-                              properties: {
-                                value: {
-                                  enum: [
-                                    "DPU",
-                                    "CIF",
-                                    "EXW",
-                                    "FOB",
-                                    "DAP",
-                                    "DDP",
-                                  ],
-                                },
-                              },
-                            },
-                            required: ["descriptor", "value"],
-                          },
+                      if: { properties: { type: { const: "start" } } },
+                      then: {
+                        properties: {
+                          location: { required: ["id", "descriptor", "gps"] },
                         },
                       },
-                      required: ["descriptor", "list"],
+                      else: {
+                        properties: {
+                          location: { required: ["address", "gps"] },
+                        },
+                      },
+                      required: ["type", "location", "time", "contact"],
                     },
                   },
                 },
-                required: ["id", "type", "stops"],
+                required: [
+                  "id",
+                  "@ondc/org/provider_name",
+                  "type",
+                  "tracking",
+                  "state",
+                  "stops",
+                ],
               },
             },
             quote: {
@@ -494,9 +463,6 @@ module.exports = {
                     },
                     value: {
                       type: "string",
-                      const: {
-                        $data: "/on_init/0/message/order/quote/price/value",
-                      },
                     },
                   },
                   required: ["currency", "value"],
@@ -530,6 +496,7 @@ module.exports = {
                           "delivery",
                           "tax",
                           "misc",
+                          "refund",
                         ],
                       },
                       price: {
@@ -563,48 +530,14 @@ module.exports = {
                         required: ["price"],
                       },
                     },
-                    if: {
-                      properties: {
-                        "@ondc/org/title_type": {
-                          const: "item",
-                        },
-                      },
-                    },
-                    then: {
-                      required: [
-                        "@ondc/org/item_id",
-                        "@ondc/org/item_quantity",
-                        "title",
-                        "@ondc/org/title_type",
-                        "price",
-                        "item",
-                      ],
-                    },
-                    else: {
-                      properties: {
-                        "@ondc/org/title_type": {
-                          enum: [
-                            "delivery",
-                            "packing",
-                            "tax",
-                            "discount",
-                            "misc",
-                          ],
-                        },
-                      },
-                      required: [
-                        "@ondc/org/item_id",
-                        "title",
-                        "@ondc/org/title_type",
-                        "price",
-                      ],
-                    },
                   },
                 },
                 ttl: {
                   type: "string",
                 },
               },
+              isQuoteMatching: true,
+
               required: ["price", "breakup", "ttl"],
             },
             payments: {
@@ -612,6 +545,9 @@ module.exports = {
               items: {
                 type: "object",
                 properties: {
+                  id: {
+                    type: "string",
+                  },
                   params: {
                     type: "object",
                     properties: {
@@ -631,7 +567,6 @@ module.exports = {
                     type: "string",
                     enum: ["PAID", "NOT-PAID"],
                   },
-
                   type: {
                     type: "string",
                     enum: [
@@ -639,40 +574,54 @@ module.exports = {
                       "ON-FULFILLMENT",
                       "POST-FULFILLMENT",
                     ],
-                    const: { $data: "/select/0/message/order/payments/0/type" },
+
+                    const: {
+                      $data: "/on_confirm/0/message/order/payments/0/type",
+                    },
                   },
                   collected_by: {
                     type: "string",
+                    const: {
+                      $data:
+                        "/on_confirm/0/message/order/payments/0/collected_by",
+                    },
                     enum: ["BAP", "BPP"],
                   },
                   "@ondc/org/buyer_app_finder_fee_type": {
                     type: "string",
+                    const: {
+                      $data:
+                        "/confirm/0/message/order/payments/0/@ondc~1org~1buyer_app_finder_fee_type",
+                    },
                   },
                   "@ondc/org/buyer_app_finder_fee_amount": {
                     type: "string",
+                    const: {
+                      $data:
+                        "/confirm/0/message/order/payments/0/@ondc~1org~1buyer_app_finder_fee_amount",
+                    },
                   },
                   "@ondc/org/settlement_basis": {
                     type: "string",
                     const: {
                       $data:
-                        "/on_init/0/message/order/payments/0/@ondc~1org~1settlement_basis",
+                        "/on_confirm/0/message/order/payments/0/@ondc~1org~1settlement_basis",
                     },
                   },
                   "@ondc/org/settlement_window": {
                     type: "string",
                     const: {
                       $data:
-                        "/on_init/0/message/order/payments/0/@ondc~1org~1settlement_window",
+                        "/on_confirm/0/message/order/payments/0/@ondc~1org~1settlement_window",
                     },
                   },
                   "@ondc/org/withholding_amount": {
                     type: "string",
                     const: {
                       $data:
-                        "/on_init/0/message/order/payments/0/@ondc~1org~1withholding_amount",
+                        "/on_confirm/0/message/order/payments/0/@ondc~1org~1withholding_amount",
                     },
                   },
-
                   "@ondc/org/settlement_details": {
                     type: "array",
                     items: {
@@ -689,6 +638,9 @@ module.exports = {
                           type: "string",
                           enum: ["upi", "neft", "rtgs"],
                         },
+                        beneficiary_name: {
+                          type: "string",
+                        },
                         upi_address: {
                           type: "string",
                         },
@@ -696,9 +648,6 @@ module.exports = {
                           type: "string",
                         },
                         settlement_ifsc_code: {
-                          type: "string",
-                        },
-                        beneficiary_name: {
                           type: "string",
                         },
                         bank_name: {
@@ -741,35 +690,54 @@ module.exports = {
                     },
                   },
                 },
-                if: { properties: { collected_by: { const: "BPP" } } },
+                if: { properties: { type: { const: "ON-FULFILLMENT" } } },
                 then: {
-                  required: [
-                    "params",
-                    "status",
-                    "type",
-                    "collected_by",
-                    "@ondc/org/buyer_app_finder_fee_type",
-                    "@ondc/org/buyer_app_finder_fee_amount",
-                    "@ondc/org/settlement_basis",
-                    "@ondc/org/settlement_window",
-                    "@ondc/org/withholding_amount",
-                    "@ondc/org/settlement_details",
-                  ],
+                  properties: {
+                    collected_by: {
+                      const: "BPP",
+                    },
+                  },
                 },
-                else: {
-                  required: [
-                    "params",
-                    "status",
-                    "type",
-                    "collected_by",
-                    "@ondc/org/buyer_app_finder_fee_type",
-                    "@ondc/org/buyer_app_finder_fee_amount",
-                    "@ondc/org/settlement_basis",
-                    "@ondc/org/settlement_window",
-                    "@ondc/org/withholding_amount",
-                  ],
-                },
+                required: [
+                  "id",
+                  "params",
+                  "status",
+                  "type",
+                  "collected_by",
+                  "@ondc/org/buyer_app_finder_fee_type",
+                  "@ondc/org/buyer_app_finder_fee_amount",
+                  "@ondc/org/settlement_basis",
+                  "@ondc/org/settlement_window",
+                  "@ondc/org/withholding_amount",
+                ],
               },
+            },
+
+            documents: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  url: {
+                    type: "string",
+                  },
+                  label: {
+                    type: "string",
+                  },
+                },
+                required: ["url", "label"],
+              },
+            },
+            created_at: {
+              type: "string",
+              format: "date-time",
+              const: { $data: "/confirm/0/message/order/created_at" },
+              errorMessage:
+                "order/created_at should remain same as in /confirm - ${/confirm/0/message/order/created_at}",
+            },
+            updated_at: {
+              type: "string",
+              format: "date-time",
             },
             tags: {
               type: "array",
@@ -781,7 +749,7 @@ module.exports = {
                     properties: {
                       code: {
                         type: "string",
-                        enum: constants.TERMS
+                        enum: constants.TERMS,
                       },
                     },
                   },
@@ -794,7 +762,7 @@ module.exports = {
                           properties: {
                             code: {
                               type: "string",
-                              enum: constants.B2B_BPP_TERMS
+                              enum: constants.B2B_BPP_TERMS,
                             },
                           },
                         },
@@ -809,15 +777,6 @@ module.exports = {
                 required: ["descriptor", "list"],
               },
             },
-            created_at: {
-              type: "string",
-            },
-            updated_at: {
-              type: "string",
-              const: { $data: "1/created_at" },
-              errorMessage:
-                "does not match created_at timestamp - ${1/created_at}",
-            },
           },
           additionalProperties: false,
           required: [
@@ -829,15 +788,12 @@ module.exports = {
             "fulfillments",
             "quote",
             "payments",
-            "created_at",
-            "updated_at",
-            "tags"
+            "cancellation",
           ],
         },
       },
       required: ["order"],
     },
   },
-  isFutureDated: true,
   required: ["context", "message"],
 };
