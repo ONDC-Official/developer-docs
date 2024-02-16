@@ -168,12 +168,8 @@ module.exports = Object.freeze({
     "RTO-Disposed",
     "Cancelled",
   ],
-<<<<<<< HEAD
-  CANCELLATION_TAGS_LIST:["retry_count","rto_id","cancellation_reason_id","sub_reason_id","cancelled_by"],
-=======
   CANCELLATION_TAGS_CODES:["rto_event","precancel_state"],
   CANCELLATION_TAGS_LIST:["retry_count","rto_id","cancellation_reason_id","sub_reason_id","cancelled_by","fulfillment_state","updated_at"],
->>>>>>> patch-reference-implementations-remote/main
   FASHION_ATTRIBUTES : ["brand","colour","size","gender","material"],
   ELECTRONICS_ATTRIBUTES: ["brand","model"],
   MANDATORY_ATTRIBUTES: ["brand"],

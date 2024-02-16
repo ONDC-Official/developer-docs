@@ -10,11 +10,7 @@ const checkOnCancel = (data, msgIdSet) => {
   let version = on_cancel.context.core_version;
   let messageId = on_cancel.context.message_id;
   const providerId = on_cancel.message?.provider?.id;
-<<<<<<< HEAD
-
-=======
   let selectedItem;
->>>>>>> patch-reference-implementations-remote/main
   on_cancel = on_cancel.message.order;
   let onSearchItemsArr = dao.getValue(`${on_cancel?.provider?.id}itemsArr`);
   let ffState;
@@ -48,16 +44,10 @@ const checkOnCancel = (data, msgIdSet) => {
   } catch (error) {
     console.log(error);
   }
-<<<<<<< HEAD
-  if (onSearchItemsArr) {
-    let selectedItem = onSearchItemsArr.filter(
-      (element) => element.parent_item_id === dao.getValue("selectedItem")
-=======
 
   if (onSearchItemsArr) {
      selectedItem = onSearchItemsArr.filter(
       (element) => element?.parent_item_id === dao.getValue("selectedItem")
->>>>>>> patch-reference-implementations-remote/main
     );
     selectedItem = selectedItem[0];
   }
@@ -84,14 +74,10 @@ const checkOnCancel = (data, msgIdSet) => {
             }
           }
 
-<<<<<<< HEAD
-          if (fulfillment.start.time.timestamp && dao.getValue("pickupTime")) {
-=======
           if (
             fulfillment?.start?.time?.timestamp &&
             dao.getValue("pickupTime")
           ) {
->>>>>>> patch-reference-implementations-remote/main
             if (
               !_.isEqual(
                 dao.getValue("pickupTime"),
@@ -106,30 +92,7 @@ const checkOnCancel = (data, msgIdSet) => {
           if (version === "1.2.0") {
             if (dao.getValue("rts") === "yes") {
               if (!fulfillment?.start?.time) {
-<<<<<<< HEAD
-                onCancelObj.msngStrtTime = `Pickup time range (fulfillments/start/time) is missing`;
-              }
-              if (!fulfillment?.end?.time) {
-                onCancelObj.msngDlvryTime = `Delivery time range (fulfillments/end/time) is missing`;
-              }
-            }
-            let fulTags = fulfillment?.tags;
-            let rtoID;
-            fulTags.forEach((tag) => {
-              if (tag.code === "rto_event") {
-                const lists = tag.list;
-                lists.forEach((list) => {
-                  if (list.code === "rto_id") {
-                    rtoID = list.value;
-
-                    if (rtoID !== selectedItem.fulfillment_id) {
-                      onCancelObj.rtoIdTagsErr = `rto_id '${rtoID}' in fulfillments/tags does not match with the one provided in on_search '${selectedItem.fulfillment_id}' in /fulfillments`;
-                    }
-                  }
-                });
-=======
                 onCancelObj.msngStrtTime = `Pickup time range (fulfillments/start/time) is missing for fulfillment type - '${fulfillment.type}'`;
->>>>>>> patch-reference-implementations-remote/main
               }
               if (!fulfillment?.end?.time) {
                 onCancelObj.msngDlvryTime = `Delivery time range (fulfillments/end/time) is missing for fulfillment type - '${fulfillment.type}'`;
