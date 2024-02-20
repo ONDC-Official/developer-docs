@@ -438,7 +438,7 @@ module.exports = {
                           location: { required: ["address", "gps"] },
                         },
                       },
-                      required: ["type", "location", "time", "contact"],
+                      required: ["type", "location", "contact"],
                     },
                   },
                 },

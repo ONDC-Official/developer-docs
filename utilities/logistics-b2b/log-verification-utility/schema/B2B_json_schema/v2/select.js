@@ -124,8 +124,9 @@ module.exports = {
                   format: "duration",
                 },
               },
-              required: ["id", "locations", "ttl"],
-              errorMessage: "id, locations are mandatory attributes and ttl is required for RFQ Flow"
+              required: ["id", "locations"],
+              errorMessage:
+                "id, locations are mandatory attributes and ttl is required for RFQ Flow",
             },
             items: {
               type: "array",
@@ -369,7 +370,9 @@ module.exports = {
                   },
                 },
                 additionalProperties: false,
-                required: ["id", "type", "stops"],
+                if: { properties: { type: { const: "Delivery" } } },
+                then: { required: ["id", "type", "stops"] },
+                else: { required: ["id", "type"] },
               },
             },
             payments: {

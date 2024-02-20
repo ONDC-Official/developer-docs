@@ -386,12 +386,12 @@ function findDifferencesInArrays(array1, array2) {
   const differences = [];
 
   // Check if arrays have the same length
-  if (array1.length !== array2.length) {
+  if (array1?.length !== array2?.length) {
     return differences;
   }
 
   // Iterate over each item in the arrays
-  for (let i = 0; i < array1.length; i++) {
+  for (let i = 0; i < array1?.length; i++) {
     const item1 = array1[i];
     const item2 = array2[i];
 

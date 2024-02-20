@@ -426,7 +426,7 @@ module.exports = {
                           required: ["phone"],
                         },
                       },
-                      required: ["type", "location", "time", "contact"],
+                      required: ["type", "location", "contact"],
                     },
                   },
                   rateable: {
