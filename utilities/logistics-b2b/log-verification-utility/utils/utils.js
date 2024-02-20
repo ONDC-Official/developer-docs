@@ -199,11 +199,11 @@ const timestampCheck = (date) => {
 
 const getVersion = (data,vertical) => {
   if(vertical==='logistics'){
-    if (data?.search[0]?.context?.core_version === "1.1.0") return "v1.1";
+    if (data?.search && data?.search[0]?.context?.core_version === "1.1.0") return "v1.1";
   else return "v1.2";
   }
   if(vertical==='b2b'){
-    if (data?.search[0]?.context?.version === "2.0.1") return "v1";
+    if (data?.search && data?.search[0]?.context?.version === "2.0.1") return "v1";
     else return "v2";
   }
 
@@ -386,12 +386,12 @@ function findDifferencesInArrays(array1, array2) {
   const differences = [];
 
   // Check if arrays have the same length
-  if (array1.length !== array2.length) {
+  if (array1?.length !== array2?.length) {
     return differences;
   }
 
   // Iterate over each item in the arrays
-  for (let i = 0; i < array1.length; i++) {
+  for (let i = 0; i < array1?.length; i++) {
     const item1 = array1[i];
     const item2 = array2[i];
 

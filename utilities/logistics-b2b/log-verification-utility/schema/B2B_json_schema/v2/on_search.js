@@ -522,7 +522,7 @@ module.exports = {
                                   required: ["unit", "value"],
                                 },
                                 count: {
-                                  type: "string",
+                                  type: "integer",
                                 },
                               },
                               required: ["measure", "count"],
@@ -552,7 +552,7 @@ module.exports = {
                                   required: ["unit", "value"],
                                 },
                                 count: {
-                                  type: "string",
+                                  type: "integer",
                                 },
                               },
                               required: ["measure", "count"],
@@ -582,7 +582,7 @@ module.exports = {
                                   required: ["unit", "value"],
                                 },
                                 count: {
-                                  type: "string",
+                                  type: "integer",
                                 },
                               },
                               required: ["measure", "count"],
@@ -614,7 +614,7 @@ module.exports = {
                             type: "string",
                           },
                         },
-                        "add-ons": {
+                        "add_ons": {
                           type: "array",
                           items: {
                             type: "object",
@@ -824,10 +824,10 @@ module.exports = {
                           required: ["label", "range"],
                         },
                         matched: {
-                          type: "string",
+                          type: "boolean",
                         },
                         recommended: {
-                          type: "string",
+                          type: "boolean",
                         },
                         tags: {
                           type: "array",
