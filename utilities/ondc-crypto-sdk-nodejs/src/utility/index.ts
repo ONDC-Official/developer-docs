@@ -8,7 +8,8 @@ import {
   ISignMessage,
   IVerifyHeader,
   IVerifyMessage,
-  IsSignatureValid,
+  IsHeaderValid,
+  CreateVLookupSignature,
 } from '../types';
 
 export const createSigningString = async ({ message, created, expires }: ICreateSigningString) => {
@@ -109,7 +110,7 @@ const verifyHeader = async ({ headerParts, body, publicKey }: IVerifyHeader) => 
   return verified;
 };
 
-export const isSignatureValid = async ({ header, body, publicKey }: IsSignatureValid) => {
+export const isHeaderValid = async ({ header, body, publicKey }: IsHeaderValid) => {
   try {
     const headerParts = splitAuthHeader(header);
     const keyIdSplit = headerParts?.keyId?.split('|');
@@ -121,4 +122,20 @@ export const isSignatureValid = async ({ header, body, publicKey }: IsSignatureV
   } catch (e) {
     return false;
   }
+};
+
+export const createVLookupSignature = async ({
+  country,
+  domain,
+  type,
+  city,
+  subscriber_id,
+  privateKey,
+}: CreateVLookupSignature) => {
+  const stringToSign = `${country}|${domain}|${type}|${city}|${subscriber_id}`;
+  const signature = await signMessage({
+    signingString: stringToSign,
+    privateKey,
+  });
+  return signature;
 };
