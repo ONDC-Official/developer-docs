@@ -12,6 +12,7 @@ const checkOnConfirm = (data, msgIdSet) => {
   on_confirm = on_confirm.message.order;
   let items= on_confirm.items;
   let fulfillments = on_confirm.fulfillments;
+  let linkedOrder = on_confirm["@ondc/org/linked_order"]
   let rts = dao.getValue("rts");
   let p2h2p = dao.getValue("p2h2p")
   let awbNo= dao.getValue("awbNo");
@@ -51,6 +52,27 @@ const checkOnConfirm = (data, msgIdSet) => {
     console.log(`Error checking fulfillment object in /on_confirm`);
   }
  
+  try {
+    console.log("checking linked order in /confirm");
+
+    const orderWeight =linkedOrder?.order?.weight?.value;
+
+    let totalUnitWeight=0;
+
+    linkedOrder?.items.forEach(item=>{
+      const quantity = item?.quantity?.measure?.value
+      const count = item?.quantity?.count
+      
+      const unitWeight = (quantity*count)
+       totalUnitWeight+=unitWeight;
+    })
+
+    if(totalUnitWeight.toFixed(2)!=orderWeight.toFixed(2)){
+      onCnfrmObj.weightErr=`Total order weight '${orderWeight} does not match the total unit weight of items '${totalUnitWeight}'`
+    }
+  } catch (error) {
+    console.log(error);
+  }
   dao.setValue("awbNo",awbNo);
   return onCnfrmObj;
 };
