@@ -1,7 +1,6 @@
-package com.ondc.onboarding;
+package ondc.onboarding.utility;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,11 +10,11 @@ import javax.crypto.NoSuchPaddingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.ondc.onboarding.Utils.*;
+import static ondc.onboarding.utility.Utils.generateEncDecKey;
+import static ondc.onboarding.utility.Utils.generateSigningKeyPair;
 
 @Configuration
 public class AppConfig {

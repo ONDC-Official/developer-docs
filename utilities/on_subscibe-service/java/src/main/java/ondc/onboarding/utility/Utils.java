@@ -1,4 +1,4 @@
-package com.ondc.onboarding;
+package ondc.onboarding.utility;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.math.ec.rfc8032.Ed25519;
