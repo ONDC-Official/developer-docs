@@ -1,10 +1,10 @@
-package com.ondc.onboarding;
+package ondc.onboarding.utility;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class OnboardingApplicationTests {
+class UtilityApplicationTests {
 
 	@Test
 	void contextLoads() {
