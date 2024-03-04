@@ -11,11 +11,10 @@ To join the ONDC network, Network Participants (NPs) need to be included in the 
    ```
 
 2. NP shall have a valid SSL certificate for your domain. This will be used while performing Online Certificate Status Protocol (OCSP) validation.
-3. Get your subscriber_id whitelisted/approved by ONDC. To do that
+3. Get your Staging, Preprod and Production subscriber_id whitelisted/approved by ONDC by raising the request on Network Participant Portal:
 
-   1. For Staging: Fill out the [subscriber id whitelisting form](https://docs.google.com/forms/d/1k5k-N2JW4azLsdkJVbWjlsW549Nz5tUatYozSmJERQk/viewform?edit_requested=true).
-   2. For Preprod: please reach out to tech@ondc.org post successful demo signoff from ONDC Ops team
-   3. For Prod : please reach out to tech@ondc.org post tech and ops clearance.
+   1. Please sign up on Network Participant Portal [here](https://portal.ondc.org) and raise the request
+   2. Please go through the self help guide [here](https://sites.google.com/ondc.org/portal-help)
 
 4. Configure your system with domain name and SSL. All communication with ONDC Network should happen through this domain.
 
