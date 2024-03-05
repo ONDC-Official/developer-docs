@@ -399,7 +399,7 @@ function findDifferencesInArrays(array1, array2) {
     // Check if the properties are equal using lodash's _.isEqual
     if (!_.isEqual(item1, item2)) {
       const differingAttributes = findDifferentAttributes(item1, item2);
-      differences.push({ index: i, attributes: differingAttributes });
+      differences.push({ index: item2?.id, attributes: differingAttributes });
     }
   }
 

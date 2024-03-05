@@ -7,7 +7,9 @@ const checkOnInit = async (data, msgIdSet) => {
   const onInitObj = {};
   let onInit = data;
   onInit = onInit.message.order;
+  let quote = onInit?.quote;
   let payments = onInit?.payments;
+
 
   try {
     console.log(`Checking payment object in /on_init api`);
@@ -18,7 +20,10 @@ const checkOnInit = async (data, msgIdSet) => {
       if (feeType != dao.getValue("buyerFinderFeeType")) {
         onInitObj.feeTypeErr = `Buyer Finder Fee type mismatches from /search`;
       }
-      if (parseFloat(feeAmount) != parseFloat(dao.getValue("buyerFinderFeeAmount"))) {
+      if (
+        parseFloat(feeAmount) !=
+        parseFloat(dao.getValue("buyerFinderFeeAmount"))
+      ) {
         onInitObj.feeTypeErr = `Buyer Finder Fee amount mismatches from /search`;
       }
     });

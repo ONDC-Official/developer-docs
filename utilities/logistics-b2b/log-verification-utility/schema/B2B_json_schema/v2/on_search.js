@@ -614,7 +614,7 @@ module.exports = {
                             type: "string",
                           },
                         },
-                        "add_ons": {
+                        add_ons: {
                           type: "array",
                           items: {
                             type: "object",
@@ -706,6 +706,7 @@ module.exports = {
                               },
                               cancellation_fee: {
                                 type: "object",
+                                maxProperties: 1,
                                 properties: {
                                   percentage: {
                                     type: "string",
@@ -726,6 +727,7 @@ module.exports = {
                                 required: [],
                               },
                             },
+                            additionalProperties: false,
                             required: [
                               "fulfillment_state",
                               "reason_required",

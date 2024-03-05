@@ -22,7 +22,7 @@ const checkConfirm = async (data, msgIdSet) => {
       let itemkey = `item-${i}-DiffErr`;
       cnfrmObj[
         itemkey
-      ] = `In /items, '${item.attributes}' mismatch from /select`;
+      ] = `In /items, '${item.attributes}' mismatch from /on_select`;
     }
     });
   } catch (error) {
