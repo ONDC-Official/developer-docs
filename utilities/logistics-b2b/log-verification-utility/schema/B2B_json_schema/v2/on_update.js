@@ -120,11 +120,12 @@ module.exports = {
                   quantity: {
                     type: "object",
                     properties: {
-                      count: {
-                        type: "integer",
+                      selected: {
+                        count: {
+                          type: "integer",
+                        },
                       },
                     },
-                    required: ["count"],
                   },
                   fulfillment_ids: {
                     type: "array",
@@ -133,7 +134,7 @@ module.exports = {
                     },
                   },
                 },
-                required: ["id", "quantity", "fulfillment_ids"],
+                required: ["id", "quantity"],
               },
             },
             payment: {
@@ -418,7 +419,7 @@ module.exports = {
                               type: "string",
                             },
                           },
-                          required: ["phone", "email"],
+                          required: ["phone"],
                         },
                       },
                       required: [

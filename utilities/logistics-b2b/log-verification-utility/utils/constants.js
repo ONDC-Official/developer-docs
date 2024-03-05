@@ -54,6 +54,16 @@ module.exports = Object.freeze({
     "confirm",
     "on_confirm",
   ],
+  SRV_SORTED_INDEX: [
+    "search",
+    "on_search",
+    "select",
+    "on_select",
+    "init",
+    "on_init",
+    "confirm",
+    "on_confirm",
+  ],
   RET_SEARCH: "search",
   RET_ONSEARCH: "on_search",
   RET_SELECT: "select",
@@ -176,5 +186,15 @@ module.exports = Object.freeze({
   TERMS:["buyer_id","bap_terms","bpp_terms"],
   B2B_BPP_TERMS:["buyer_id_code","buyer_id_no","max_liability","max_liability_cap","mandatory_arbitration","court_jurisdiction","delay_interest","accept_bpp_terms"],
   ATTR_DOMAINS:["ONDC:RET12","ONDC:RET14","ONDC:RET1A","ONDC:RET1B","ONDC:RET1C","ONDC:RET1D"],
-  G2TAGS:["time_to_ship","cancellable","tax_rate"]
+  G2TAGS:["time_to_ship","cancellable","tax_rate"],
+
+  //services
+  SRV_FULFILLMENT_TYPE:["Home-Service","Store-Service"],
+  SRV_PAYMENT_TYPE:["PRE-FULFILLMENT","ON-FULFILLMENT","POST-FULFILLMENT"],
+  SRV_FULFILLMENT_STATE:["Pending","At-Location","In-Transit","Completed","Cancelled"],
+  SRV_ORDER_STATE:["Created","Accepted","In-progress","Completed","Cancelled","Pending"],
+  GPS_PATTERN: "^(-?[0-9]{1,3}(?:.[0-9]{6,15})?),( )*?(-?[0-9]{1,3}(?:.[0-9]{6,15})?)$",
+  SERVICEABILITY:["location","category","type","val","unit"],
+  RESCHEDULE_TERMS:["fulfillment_state","reschedule_eligible","reschedule_fee","reschedule_within"]
+
 });

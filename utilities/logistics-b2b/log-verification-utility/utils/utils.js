@@ -206,6 +206,7 @@ const getVersion = (data,vertical) => {
     if (data?.search && data?.search[0]?.context?.version === "2.0.1") return "v1";
     else return "v2";
   }
+  if(vertical==="services") return "v2"
 
 };
 function compareDates(dateString1, dateString2) {

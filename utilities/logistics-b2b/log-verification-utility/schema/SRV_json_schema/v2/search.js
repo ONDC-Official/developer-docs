@@ -1,3 +1,5 @@
+const constants = require("../../../utils/constants");
+
 module.exports = {
   $id: "http://example.com/schema/searchSchema",
   type: "object",
@@ -38,7 +40,7 @@ module.exports = {
         },
         version: {
           type: "string",
-          const: "2.0.2",
+          const: "2.0.0"
         },
         bap_id: {
           type: "string",
@@ -58,7 +60,7 @@ module.exports = {
         },
         ttl: {
           type: "string",
-          const: "PT30S",
+          const: "PT30S"
         },
       },
       required: [
@@ -108,7 +110,7 @@ module.exports = {
               properties: {
                 type: {
                   type: "string",
-                  enum: ["Delivery", "Self-Pickup", "Delivery and Self-Pickup"],
+                  enum: constants.SRV_FULFILLMENT_TYPE
                 },
                 stops: {
                   type: "array",
@@ -117,22 +119,47 @@ module.exports = {
                     properties: {
                       type: {
                         type: "string",
-                        enum:["end"]
+                        const: "end"
                       },
                       location: {
                         type: "object",
                         properties: {
                           gps: {
                             type: "string",
-                            pattern:
-                                "^(-?[0-9]{1,3}(?:.[0-9]{6,15})?),( )*?(-?[0-9]{1,3}(?:.[0-9]{6,15})?)$",
-                              errorMessage: "Incorrect gps value (minimum of six decimal places are required)",
+                            pattern: constants.GPS_PATTERN,
+                            errorMessage: "Incorrect gps value (minimum of six decimal places are required)"
                           },
                           area_code: {
                             type: "string",
                           },
                         },
                         required: ["gps", "area_code"],
+                      },
+                      time: {
+                        type: "object",
+                        properties: {
+                          range: {
+                            type: "object",
+                            properties: {
+                              start: {
+                                type: "string",
+                                format: "date-time"
+                              },
+                              end: {
+                                type: "string",
+                                format: "date-time"
+                              },
+                            },
+                            required: ["start", "end"],
+                          },
+                          days: {
+                            type: "array",
+                            items: {
+                              type: "string",
+                            },
+                          },
+                        },
+                        required: ["range"],
                       },
                     },
                     required: ["type", "location"],
@@ -146,43 +173,46 @@ module.exports = {
               properties: {
                 type: {
                   type: "string",
-                  enum: [
-                    "PRE-FULFILLMENT",
-                    "ON-FULFILLMENT",
-                    "POST-FULFILLMENT",
-                  ],
+                  enum: constants.SRV_PAYMENT_TYPE
+                },
+                collected_by: {
+                  type: "string",
+                  enum:  constants.PAYMENT_COLLECTEDBY
                 },
               },
-              required: ["type"],
+              required: ["type", "collected_by"],
             },
             tags: {
               type: "array",
-              minItems: 2,
-              uniqueItems: true,
+              minItems: 1,
               items: {
                 type: "object",
                 properties: {
                   descriptor: {
+                    type: "object",
                     properties: {
                       code: {
                         type: "string",
-                        enum: ["bap_terms", "buyer_id"],
+                        enum: ["BAP_Terms"]
                       },
                     },
-                    required:["code"]
+                    required: ["code"],
                   },
                   list: {
                     type: "array",
+                    minItems: 2,
                     items: {
                       type: "object",
                       properties: {
                         descriptor: {
+                          type: "object",
                           properties: {
                             code: {
                               type: "string",
+                              enum:["finder_fee_type","finder_fee_amount"]
                             },
                           },
-                          required:["code"]
+                          required: ["code"],
                         },
                         value: {
                           type: "string",
@@ -190,73 +220,13 @@ module.exports = {
                       },
                       required: ["descriptor", "value"],
                     },
-                    minItems: 2,
                   },
                 },
                 required: ["descriptor", "list"],
-                if: {
-                  properties: {
-                    descriptor: {
-                      properties: { code: { const: "bap_terms" } },
-                    },
-                  },
-                },
-                then: {
-                  properties: {
-                    list: {
-                      items: {
-                        type: "object",
-                        properties: {
-                          descriptor: {
-                            properties: {
-                              code: {
-                                enum: ["finder_fee_type", "finder_fee_amount"],
-                              },
-                            },
-                          },
-                        },
-                        required: ["descriptor"],
-                      },
-                    },
-                  },
-                  errorMessage:
-                    "For 'bap_terms', the 'list' must contain either 'finder_fee_type' or 'finder_fee_amount'.",
-                },
-                else: {
-                  if: {
-                    properties: {
-                      descriptor: {
-                        properties: { code: { const: "buyer_id" } },
-                      },
-                    },
-                  },
-                  then: {
-                    properties: {
-                      list: {
-                        items: {
-                          type: "object",
-                          properties: {
-                            descriptor: {
-                              properties: {
-                                code: {
-                                  enum: ["buyer_id_code", "buyer_id_no"],
-                                },
-                              },
-                            },
-                          },
-                          required: ["descriptor"],
-                        },
-                      },
-                    },
-                    errorMessage:
-                      "For 'buyer_id', the 'list' must contain either 'buyer_id_code' or 'buyer_id_no'.",
-                  },
-                },
               },
             },
           },
-          additionalProperties:false,
-          required: ["fulfillment", "payment", "tags"],
+          required: [ "fulfillment", "payment", "tags"],
         },
       },
       required: ["intent"],
