@@ -195,7 +195,7 @@ module.exports = {
                           required: ["label", "range"],
                         },
                       },
-                      required: ["type", "location"],
+                      required: ["type", "location","time"],
                     },
                   },
                 },

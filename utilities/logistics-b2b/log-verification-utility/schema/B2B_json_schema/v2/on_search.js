@@ -138,6 +138,10 @@ module.exports = {
                       "POST-FULFILLMENT",
                     ],
                   },
+                  collected_by:{
+                    type: "string",
+                    enum: ["BAP","BPP"]
+                  }
                 },
                 required: ["id", "type"],
               },
@@ -994,6 +998,30 @@ module.exports = {
                         },
                       },
                       required: ["contact"],
+                    },
+                  },
+                  payments: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        id: {
+                          type: "string",
+                        },
+                        type: {
+                          type: "string",
+                          enum: [
+                            "PRE-FULFILLMENT",
+                            "ON-FULFILLMENT",
+                            "POST-FULFILLMENT",
+                          ],
+                        },
+                        collected_by:{
+                          type: "string",
+                          enum: ["BAP","BPP"]
+                        }
+                      },
+                      required: ["id", "type"],
                     },
                   },
                 },

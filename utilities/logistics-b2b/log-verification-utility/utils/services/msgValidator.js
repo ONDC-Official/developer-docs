@@ -1,9 +1,9 @@
-// const checkConfirm = require("./b2bConfirm");
+const checkConfirm = require("./srvConfirm");
 // const checkInit = require("./b2bInit");
 const checkSelect = require("./srvSelect");
-// const checkOnInit = require("./b2bOnInit");
+const checkOnInit = require("./srvOnInit");
 // const checkOnConfirm = require("./b2bOnConfirm");
-// const checkOnSelect = require("./b2bOnSelect");
+const checkOnSelect = require("./srvOnSelect");
 const checkOnSearch = require("./srvOnSearch");
 // const checkOnUpdate = require("./b2bOnUpdate");
 // const checkUpdate = require("./b2bUpdate");
@@ -23,17 +23,17 @@ const srvVal = (element, action, msgIdSet) => {
     case "select":
       return checkSelect(element, msgIdSet);
 
-    // case "on_select":
-    //   return checkOnSelect(element, msgIdSet);
+    case "on_select":
+      return checkOnSelect(element, msgIdSet);
 
     // case "init":
     //   return checkInit(element, msgIdSet);
 
-    // case "on_init":
-    //   return checkOnInit(element, msgIdSet);
+    case "on_init":
+      return checkOnInit(element, msgIdSet);
 
-    // case "confirm":
-    //   return checkConfirm(element, msgIdSet);
+    case "confirm":
+      return checkConfirm(element, msgIdSet);
 
     // case "on_confirm":
     //   return checkOnConfirm(element, msgIdSet);

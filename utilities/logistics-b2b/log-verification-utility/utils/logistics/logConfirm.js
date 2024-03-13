@@ -87,11 +87,20 @@ console.log(avgPickupTime,dao.getValue(`${fulfillment?.id}-avgPickupTime`));
     console.log("checking linked order in /confirm");
 
     const orderWeight =linkedOrder?.order?.weight?.value;
+    const unit = linkedOrder?.order?.weight?.unit;
+
+    if(unit === 'kilogram'){
+      orderWeight = orderWeight*1000;
+    }
 
     let totalUnitWeight=0;
 
     linkedOrder?.items.forEach(item=>{
       const quantity = item?.quantity?.measure?.value
+      const quantityUnit = item?.quantity?.measure?.unit
+      if(quantityUnit === 'kilogram'){
+        quantity = quantity*1000;
+      }
       const count = item?.quantity?.count
       
       const unitWeight = (quantity*count)

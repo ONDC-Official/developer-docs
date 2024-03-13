@@ -304,6 +304,7 @@ module.exports = {
                           properties: {
                             label: {
                               type: "string",
+                              enum:["confirmed"]
                             },
                             range: {
                               type: "object",

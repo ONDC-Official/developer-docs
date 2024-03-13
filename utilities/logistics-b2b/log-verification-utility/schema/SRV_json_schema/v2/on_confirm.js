@@ -637,7 +637,9 @@ module.exports = {
             },
             updated_at: {
               type: "string",
-              format: "date-time"
+              format: "date-time",
+              not: { const: { $data: "/confirm/0/message/order/created_at" } },
+              errorMessage: "should not be same as 'created_at'",
             },
             xinput: {
               type: "object",

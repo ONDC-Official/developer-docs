@@ -197,17 +197,18 @@ const timestampCheck = (date) => {
   }
 };
 
-const getVersion = (data,vertical) => {
-  if(vertical==='logistics'){
-    if (data?.search && data?.search[0]?.context?.core_version === "1.1.0") return "v1.1";
-  else return "v1.2";
+const getVersion = (data, vertical) => {
+  if (vertical === "logistics") {
+    if (data?.search && data?.search[0]?.context?.core_version === "1.1.0")
+      return "v1.1";
+    else return "v1.2";
   }
-  if(vertical==='b2b'){
-    if (data?.search && data?.search[0]?.context?.version === "2.0.1") return "v1";
+  if (vertical === "b2b") {
+    if (data?.search && data?.search[0]?.context?.version === "2.0.1")
+      return "v1";
     else return "v2";
   }
-  if(vertical==="services") return "v2"
-
+  if (vertical === "services") return "v2";
 };
 function compareDates(dateString1, dateString2) {
   const date1 = new Date(dateString1);
@@ -236,17 +237,16 @@ function compareDates(dateString1, dateString2) {
   }
 }
 
-
 function iso8601DurationToSeconds(duration) {
   const unitMap = {
-    'D': 24 * 60 * 60 * 1000,  // Days to seconds
-    'H': 60 * 60 * 1000,       // Hours to seconds
-    'M': 60 * 1000,            // Minutes to seconds
-    'S': 1000             // Seconds
+    D: 24 * 60 * 60 * 1000, // Days to seconds
+    H: 60 * 60 * 1000, // Hours to seconds
+    M: 60 * 1000, // Minutes to seconds
+    S: 1000, // Seconds
   };
 
   if (duration.startsWith("P")) {
-    duration = duration.slice(1);  // Remove the 'P' at the beginning
+    duration = duration.slice(1); // Remove the 'P' at the beginning
   }
 
   let totalSeconds = 0;
@@ -264,9 +264,9 @@ function iso8601DurationToSeconds(duration) {
 }
 
 // Example usages:
-console.log(iso8601DurationToSeconds("P6D"));      // 518400 seconds (6 days)
-console.log(iso8601DurationToSeconds("PT30S"));    // 30 seconds
-console.log(iso8601DurationToSeconds("PT2H30M"));  // 9000 seconds (2 hours 30 minutes)
+console.log(iso8601DurationToSeconds("P6D")); // 518400 seconds (6 days)
+console.log(iso8601DurationToSeconds("PT30S")); // 30 seconds
+console.log(iso8601DurationToSeconds("PT2H30M")); // 9000 seconds (2 hours 30 minutes)
 
 const hasTwoOrLessDecimalPlaces = (inputString) => {
   const parts = inputString.split(".");
@@ -391,33 +391,35 @@ function findDifferencesInArrays(array1, array2) {
     return differences;
   }
 
-  // Iterate over each item in the arrays
+  // Iterate over each item in the array1 and  check for difference in array 2
   for (let i = 0; i < array1?.length; i++) {
+    for(let j= 0; j< array2.length; j++){
     const item1 = array1[i];
-    const item2 = array2[i];
-
-    // Check if the properties are equal using lodash's _.isEqual
-    if (!_.isEqual(item1, item2)) {
-      const differingAttributes = findDifferentAttributes(item1, item2);
-      differences.push({ index: item2?.id, attributes: differingAttributes });
+    const item2 = array2[j];
+    if (item1.id === item2.id) {
+      if (!_.isEqual(item1, item2)) {
+        const differingAttributes = findDifferentAttributes(item1, item2);
+        differences.push({ index: item1?.id, attributes: differingAttributes });
+      }
     }
+  }
+    // Check if the properties are equal using lodash's _.isEqual
   }
 
   return differences;
 }
 
-const findMissingTags =(list,code,mandatoryAttr) =>{
+const findMissingTags = (list, code, mandatoryAttr) => {
   const encounteredAttr = [];
   list.map(({ descriptor, value }) => {
     encounteredAttr.push(descriptor?.code);
   });
-   // Check if all mandatory attributes are encountered
-   const missingAttr = mandatoryAttr.filter(
+  // Check if all mandatory attributes are encountered
+  const missingAttr = mandatoryAttr.filter(
     (code) => !encounteredAttr.includes(code)
   );
   return missingAttr;
-
-}
+};
 module.exports = {
   uuidCheck,
   timestampCheck,
@@ -446,5 +448,5 @@ module.exports = {
   findDifferencesInArrays,
   grocery_categories_id,
   fnb_categories_id,
-  findMissingTags
+  findMissingTags,
 };

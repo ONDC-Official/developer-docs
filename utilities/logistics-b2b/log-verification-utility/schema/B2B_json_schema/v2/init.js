@@ -80,7 +80,7 @@ module.exports = {
         },
         ttl: {
           type: "string",
-          const: "PT30S"
+          const: "PT30S",
         },
       },
       required: [
@@ -126,10 +126,10 @@ module.exports = {
                     },
                     required: ["id"],
                   },
-                }
+                },
               },
               required: ["id", "locations"],
-              additionalProperties:false
+              additionalProperties: false,
             },
             items: {
               type: "array",
@@ -210,14 +210,16 @@ module.exports = {
                                       $data:
                                         "/select/0/message/order/items/0/tags/0/list/0/value",
                                     },
-                                    errorMessage:"Buyer terms should be same as provided in /select"
+                                    errorMessage:
+                                      "Buyer terms should be same as provided in /select",
                                   },
                                   {
                                     const: {
                                       $data:
                                         "/select/0/message/order/items/0/tags/0/list/1/value",
                                     },
-                                    errorMessage:"Buyer terms should be same as provided in /select"
+                                    errorMessage:
+                                      "Buyer terms should be same as provided in /select",
                                   },
                                 ],
                               },
@@ -230,7 +232,7 @@ module.exports = {
                     },
                   },
                 },
-                required: ["id", "fulfillment_ids","quantity"],
+                required: ["id", "fulfillment_ids", "quantity"],
               },
             },
             billing: {
@@ -271,6 +273,8 @@ module.exports = {
                 },
                 phone: {
                   type: "string",
+                  pattern: "^(\\+[0-9]+)?[0-9]{10}$",
+                  errorMessage: `should match the format of a phone number`
                 },
                 created_at: {
                   type: "string",
@@ -308,7 +312,8 @@ module.exports = {
                               type: "string",
                               pattern:
                                 "^(-?[0-9]{1,3}(?:.[0-9]{6,15})?),( )*?(-?[0-9]{1,3}(?:.[0-9]{6,15})?)$",
-                              errorMessage: "Incorrect gps value (minimum of six decimal places are required)",
+                              errorMessage:
+                                "Incorrect gps value (minimum of six decimal places are required)",
                             },
                             address: {
                               type: "string",
@@ -358,6 +363,8 @@ module.exports = {
                           properties: {
                             phone: {
                               type: "string",
+                              pattern: "^(\\+[0-9]+)?[0-9]{10}$",
+                              errorMessage: `should match the format of a phone number`
                             },
                           },
                           required: ["phone"],
@@ -493,13 +500,16 @@ module.exports = {
                     ],
                     const: { $data: "/select/0/message/order/payments/0/type" },
                   },
-                  collected_by:{
-                    type:"string",
-                    enum:["BAP","BPP"],
-                    const: { $data: "/on_select/0/message/order/payments/0/collected_by" },
-                  }
+                  collected_by: {
+                    type: "string",
+                    enum: ["BAP", "BPP"],
+                    const: {
+                      $data:
+                        "/on_select/0/message/order/payments/0/collected_by",
+                    },
+                  },
                 },
-                required: ["type","collected_by"],
+                required: ["type", "collected_by"],
               },
             },
             tags: {
@@ -512,7 +522,7 @@ module.exports = {
                     properties: {
                       code: {
                         type: "string",
-                        enum: constants.TERMS
+                        enum: constants.TERMS,
                       },
                     },
                   },
@@ -525,7 +535,7 @@ module.exports = {
                           properties: {
                             code: {
                               type: "string",
-                              enum: constants.B2B_BPP_TERMS
+                              enum: constants.B2B_BPP_TERMS,
                             },
                           },
                         },

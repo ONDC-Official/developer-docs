@@ -258,7 +258,7 @@ module.exports = {
                         required: ["holidays"],
                       },
                     },
-                    required: ["label","schedule"],
+                    required: ["label", "schedule"],
                   },
                   locations: {
                     type: "array",
@@ -338,6 +338,68 @@ module.exports = {
                         },
                       },
                       required: ["id", "type", "desc", "url"],
+                    },
+                  },
+                  categories: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        id: {
+                          type: "string",
+                        },
+                        descriptor: {
+                          type: "object",
+                          properties: {
+                            name: {
+                              type: "string",
+                            },
+                            code: {
+                              type: "string",
+                            },
+                          },
+                          required: ["name", "code"],
+                        },
+                        tags: {
+                          type: "array",
+                          items: {
+                            type: "object",
+                            properties: {
+                              descriptor: {
+                                type: "object",
+                                properties: {
+                                  code: {
+                                    type: "string",
+                                  },
+                                },
+                                required: ["code"],
+                              },
+                              list: {
+                                type: "array",
+                                items: {
+                                  type: "object",
+                                  properties: {
+                                    descriptor: {
+                                      type: "object",
+                                      properties: {
+                                        code: {
+                                          type: "string",
+                                        },
+                                      },
+                                      required: ["code"],
+                                    },
+                                    value: {
+                                      type: "string",
+                                    },
+                                  },
+                                  required: ["descriptor", "value"],
+                                },
+                              },
+                            },
+                            required: ["descriptor", "list"],
+                          },
+                        },
+                      },
                     },
                   },
                   tags: {
@@ -439,7 +501,6 @@ module.exports = {
                             "short_desc",
                             "long_desc",
                             "images",
-                            "media",
                           ],
                         },
                         creator: {
@@ -502,12 +563,7 @@ module.exports = {
                               type: "string",
                             },
                           },
-                          required: [
-                            "currency",
-                            "value",
-                            "offered_value",
-                            "maximum_value",
-                          ],
+                          required: ["currency", "value"],
                         },
                         category_ids: {
                           type: "array",
@@ -662,22 +718,36 @@ module.exports = {
                           type: "boolean",
                         },
                       },
-                      required: [
-                        "id",
-                        "parent_item_id",
-                        "descriptor",
-                        "creator",
-                        "price",
-                        "category_ids",
-                        "fulfillment_ids",
-                        "location_ids",
-                        "payment_ids",
-                        "cancellation_terms",
-                        "tags",
-                        "time",
-                        "matched",
-                        "recommended",
-                      ],
+                      if: { properties: { parent_item_id: { const: "" } } },
+                      then: {
+                        required: [
+                          "id",
+                          "parent_item_id",
+                          "descriptor",
+                          "creator",
+                          "price",
+                          "category_ids",
+                          "fulfillment_ids",
+                          "location_ids",
+                          "payment_ids",
+                          "cancellation_terms",
+                          "tags",
+                          "time",
+                          "matched",
+                          "recommended",
+                        ],
+                      },
+                      else: {
+                        required: [
+                          "id",
+                          "parent_item_id",
+                          "descriptor",
+                          "price",
+                          "quantity",
+                          "category_ids",
+                          "tags",
+                        ],
+                      },
                     },
                   },
                   offers: {
@@ -762,6 +832,45 @@ module.exports = {
                             },
                           },
                           required: ["label", "range"],
+                        },
+                        tags: {
+                          type: "array",
+                          items: {
+                            type: "object",
+                            properties: {
+                              descriptor: {
+                                type: "object",
+                                properties: {
+                                  code: {
+                                    type: "string",
+                                  },
+                                },
+                                required: ["code"],
+                              },
+                              list: {
+                                type: "array",
+                                items: {
+                                  type: "object",
+                                  properties: {
+                                    descriptor: {
+                                      type: "object",
+                                      properties: {
+                                        code: {
+                                          type: "string",
+                                        },
+                                      },
+                                      required: ["code"],
+                                    },
+                                    value: {
+                                      type: "string",
+                                    },
+                                  },
+                                  required: ["descriptor", "value"],
+                                },
+                              },
+                            },
+                            required: ["descriptor", "list"],
+                          },
                         },
                       },
                       required: [
