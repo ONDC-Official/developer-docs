@@ -111,7 +111,7 @@ module.exports = Object.freeze({
   ],
   PAYMENT_TYPE: ["ON-ORDER", "ON-FULFILLMENT", "POST-FULFILLMENT"],
   PAYMENT_COLLECTEDBY: ["BAP", "BPP"],
-  UNITS_WEIGHT: ["kilogram", "gram"],
+  UNITS_WEIGHT: ["unit","dozen","gram","kilogram","tonne","litre","millilitre"],
   UNITS_DIMENSIONS: ["centimeter", "meter"],
   CATEGORIES: [
     "Grocery",

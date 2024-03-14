@@ -55,7 +55,7 @@ const checkOnConfirm = (data, msgIdSet) => {
   try {
     console.log("checking linked order in /confirm");
 
-    const orderWeight =linkedOrder?.order?.weight?.value;
+    let orderWeight =linkedOrder?.order?.weight?.value;
     const unit = linkedOrder?.order?.weight?.unit;
 
     if(unit === 'kilogram'){
@@ -77,8 +77,8 @@ const checkOnConfirm = (data, msgIdSet) => {
        totalUnitWeight+=unitWeight;
     })
 
-    if(totalUnitWeight.toFixed(2)!=orderWeight.toFixed(2)){
-      onCnfrmObj.weightErr=`Total order weight '${orderWeight} does not match the total unit weight of items '${totalUnitWeight}'`
+    if(totalUnitWeight.toFixed(2)!=orderWeight.toFixed(2) && quantityUnit!== 'unit'){
+      onCnfrmObj.weightErr=`Total order weight '${orderWeight}' does not match the total unit weight of items '${totalUnitWeight}'`
     }
   } catch (error) {
     console.log(error);

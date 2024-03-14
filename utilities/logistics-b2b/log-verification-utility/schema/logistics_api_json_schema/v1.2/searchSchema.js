@@ -109,6 +109,9 @@ module.exports = {
                       },
                       required: ["holidays"],
                     },
+                    duration: {
+                      type: "string",
+                    },
                     range: {
                       type: "object",
                       properties: {
@@ -255,7 +258,7 @@ module.exports = {
                     },
                     value: {
                       type: "number",
-                      minimum: 0
+                      minimum: 0,
                     },
                   },
                   required: ["unit", "value"],
@@ -272,7 +275,7 @@ module.exports = {
                         },
                         value: {
                           type: "number",
-                          minimum: 0
+                          minimum: 0,
                         },
                       },
                       required: ["unit", "value"],
@@ -286,7 +289,7 @@ module.exports = {
                         },
                         value: {
                           type: "number",
-                          minimum: 0
+                          minimum: 0,
                         },
                       },
                       required: ["unit", "value"],
@@ -300,7 +303,7 @@ module.exports = {
                         },
                         value: {
                           type: "number",
-                          minimum: 0
+                          minimum: 0,
                         },
                       },
                       required: ["unit", "value"],

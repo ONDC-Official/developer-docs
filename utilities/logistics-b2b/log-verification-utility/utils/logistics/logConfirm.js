@@ -86,7 +86,7 @@ console.log(avgPickupTime,dao.getValue(`${fulfillment?.id}-avgPickupTime`));
   try {
     console.log("checking linked order in /confirm");
 
-    const orderWeight =linkedOrder?.order?.weight?.value;
+    let orderWeight =linkedOrder?.order?.weight?.value;
     const unit = linkedOrder?.order?.weight?.unit;
 
     if(unit === 'kilogram'){
@@ -106,9 +106,10 @@ console.log(avgPickupTime,dao.getValue(`${fulfillment?.id}-avgPickupTime`));
       const unitWeight = (quantity*count)
        totalUnitWeight+=unitWeight;
     })
-
-    if(totalUnitWeight.toFixed(2)!=orderWeight.toFixed(2)){
-      cnfrmObj.weightErr=`Total order weight '${orderWeight} does not match the total unit weight of items '${totalUnitWeight}'`
+  console.log("hello");
+    console.log(totalUnitWeight,orderWeight);
+    if(totalUnitWeight.toFixed(2)!=orderWeight.toFixed(2) && quantityUnit!== 'unit'){
+      cnfrmObj.weightErr=`Total order weight '${orderWeight}' does not match the total unit weight of items '${totalUnitWeight}'`
     }
   } catch (error) {
     console.log(error);
