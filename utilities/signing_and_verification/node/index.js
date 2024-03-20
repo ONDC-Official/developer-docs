@@ -1,14 +1,19 @@
 const nacl = require("tweetnacl");
-const { randomBytes } = require("crypto");
+const crypto = require("crypto");
 
 function generateKeyPairs() {
-  // Generate signing key pair
   const signingKeyPair = nacl.sign.keyPair();
-
-  // Generate X25519 key pair for encryption
-  const encryptionKeyPair = nacl.box.keyPair.fromSecretKey(
-    randomBytes(nacl.box.secretKeyLength)
-  );
+  const { privateKey, publicKey } = crypto.generateKeyPairSync('x25519', {
+    modulusLength: 2048,
+    publicKeyEncoding: {
+      type: 'spki',
+      format: 'pem',
+    },
+    privateKeyEncoding: {
+      type: 'pkcs8',
+      format: 'pem',
+    },
+  });
 
   return {
     Signing_private_key: Buffer.from(signingKeyPair.secretKey).toString(
@@ -17,15 +22,16 @@ function generateKeyPairs() {
     Signing_public_key: Buffer.from(signingKeyPair.publicKey).toString(
       "base64"
     ),
-    Encryption_Privatekey: Buffer.from(encryptionKeyPair.secretKey).toString(
-      "base64"
-    ),
-    Encryption_Publickey: Buffer.from(encryptionKeyPair.publicKey).toString(
-      "base64"
-    ),
+    Encryption_Privatekey: privateKey.toString('utf-8')
+      .replace(/-----BEGIN PRIVATE KEY-----/, '')
+      .replace(/-----END PRIVATE KEY-----/, '')
+      .replace(/\s/g, ''),
+    Encryption_Publickey: publicKey.toString('utf-8')
+      .replace(/-----BEGIN PUBLIC KEY-----/, '')
+      .replace(/-----END PUBLIC KEY-----/, '')
+      .replace(/\s/g, ''),
   };
 }
 
-// Example usage:
 const keyPairs = generateKeyPairs();
 console.log(keyPairs);
