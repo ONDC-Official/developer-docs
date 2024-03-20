@@ -64,10 +64,10 @@ const checkOnConfirm = (data, msgIdSet) => {
 
 
     let totalUnitWeight=0;
-
+    let quantityUnit;
     linkedOrder?.items.forEach(item=>{
-      const quantity = item?.quantity?.measure?.value
-      const quantityUnit = item?.quantity?.measure?.unit
+      let quantity = item?.quantity?.measure?.value
+       quantityUnit = item?.quantity?.measure?.unit
       if(quantityUnit === 'kilogram'){
         quantity = quantity*1000;
       }

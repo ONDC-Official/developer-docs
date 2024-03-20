@@ -94,10 +94,11 @@ console.log(avgPickupTime,dao.getValue(`${fulfillment?.id}-avgPickupTime`));
     }
 
     let totalUnitWeight=0;
+    let quantityUnit;
 
     linkedOrder?.items.forEach(item=>{
-      const quantity = item?.quantity?.measure?.value
-      const quantityUnit = item?.quantity?.measure?.unit
+      let quantity = item?.quantity?.measure?.value
+       quantityUnit = item?.quantity?.measure?.unit
       if(quantityUnit === 'kilogram'){
         quantity = quantity*1000;
       }
@@ -106,7 +107,7 @@ console.log(avgPickupTime,dao.getValue(`${fulfillment?.id}-avgPickupTime`));
       const unitWeight = (quantity*count)
        totalUnitWeight+=unitWeight;
     })
-  console.log("hello");
+
     console.log(totalUnitWeight,orderWeight);
     if(totalUnitWeight.toFixed(2)!=orderWeight.toFixed(2) && quantityUnit!== 'unit'){
       cnfrmObj.weightErr=`Total order weight '${orderWeight}' does not match the total unit weight of items '${totalUnitWeight}'`

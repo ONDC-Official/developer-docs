@@ -273,8 +273,8 @@ module.exports = {
                 },
                 phone: {
                   type: "string",
-                  pattern: "^(\\+[0-9]+)?[0-9]{10}$",
-                  errorMessage: `should match the format of a phone number`
+                  pattern: "^[0-9]{10}$",
+                  errorMessage: `should match the format of a 10 digit phone number`
                 },
                 created_at: {
                   type: "string",
@@ -363,8 +363,8 @@ module.exports = {
                           properties: {
                             phone: {
                               type: "string",
-                              pattern: "^(\\+[0-9]+)?[0-9]{10}$",
-                              errorMessage: `should match the format of a phone number`
+                              pattern: "^[0-9]{10}$",
+                              errorMessage: `should match the format of a 10 digit phone number`
                             },
                           },
                           required: ["phone"],

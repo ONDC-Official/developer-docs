@@ -676,8 +676,7 @@ module.exports = {
             "quote",
             "payments",
             "created_at",
-            "updated_at",
-            "xinput",
+            "updated_at"
           ],
         },
       },

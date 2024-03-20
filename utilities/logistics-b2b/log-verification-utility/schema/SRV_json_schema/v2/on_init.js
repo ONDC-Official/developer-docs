@@ -617,8 +617,7 @@ module.exports = {
             "billing",
             "fulfillments",
             "quote",
-            "payments",
-            "xinput",
+            "payments"
           ],
         },
       },

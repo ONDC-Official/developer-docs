@@ -1,13 +1,13 @@
 const checkConfirm = require("./srvConfirm");
-// const checkInit = require("./b2bInit");
+// const checkInit = require("./srvInit");
 const checkSelect = require("./srvSelect");
 const checkOnInit = require("./srvOnInit");
-// const checkOnConfirm = require("./b2bOnConfirm");
+// const checkOnConfirm = require("./srvOnConfirm");
 const checkOnSelect = require("./srvOnSelect");
 const checkOnSearch = require("./srvOnSearch");
-// const checkOnUpdate = require("./b2bOnUpdate");
-// const checkUpdate = require("./b2bUpdate");
-// const checkOnStatus = require("./b2bOnStatus");
+// const checkOnUpdate = require("./srvOnUpdate");
+// const checkUpdate = require("./srvUpdate");
+const checkOnStatus = require("./srvOnStatus");
 const checkSearch = require("./srvSearch");
 const _ = require("lodash");
 
@@ -44,8 +44,8 @@ const srvVal = (element, action, msgIdSet) => {
     // case "on_update":
     //   return checkOnUpdate(element,msgIdSet)
 
-    // case "on_status":
-    //   return checkOnStatus(element,msgIdSet)
+    case "on_status":
+      return checkOnStatus(element,msgIdSet)
   }
   return busnsErr;
 };
