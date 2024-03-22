@@ -430,7 +430,7 @@ module.exports = {
                                 type: "object",
                                 properties: {
                                   count: {
-                                    type: "string",
+                                    type: "integer",
                                   },
                                 },
                                 required: ["count"],
