@@ -214,7 +214,7 @@ module.exports = {
                     required: ["label", "duration", "timestamp"],
                   },
                 },
-                required: ["id", "category_id", "descriptor","fulfillment_id"],
+                required: ["id", "category_id", "descriptor", "fulfillment_id"],
               },
             },
             quote: {
@@ -465,6 +465,9 @@ module.exports = {
                       time: {
                         type: "object",
                         properties: {
+                          duration: {
+                            type: "string",
+                          },
                           range: {
                             type: "object",
                             properties: {
@@ -594,8 +597,13 @@ module.exports = {
                         properties: {
                           short_desc: {
                             type: "string",
-                            not: { const: { $data: "3/start/instructions/short_desc" } },
-                            errorMessage: "cannot be same as PCC - ${3/start/instructions/short_desc}"
+                            not: {
+                              const: {
+                                $data: "3/start/instructions/short_desc",
+                              },
+                            },
+                            errorMessage:
+                              "cannot be same as PCC - ${3/start/instructions/short_desc}",
                           },
                           long_desc: {
                             type: "string",
@@ -872,14 +880,191 @@ module.exports = {
               ],
             },
             "@ondc/org/linked_order": {
-              allOf: [
-                {
-                  $ref: "confirmSchema#/properties/message/properties/order/properties/@ondc~1org~1linked_order",
+              type: "object",
+              properties: {
+                items: {
+                  type: "array",
+                  items: {
+                    type: "object",
+                    properties: {
+                      category_id: {
+                        type: "string",
+                        enum: constants.CATEGORIES,
+                      },
+                      descriptor: {
+                        type: "object",
+                        properties: {
+                          name: {
+                            type: "string",
+                          },
+                        },
+                        required: ["name"],
+                      },
+                      quantity: {
+                        type: "object",
+                        properties: {
+                          count: {
+                            type: "integer",
+                          },
+                          measure: {
+                            type: "object",
+                            properties: {
+                              unit: {
+                                type: "string",
+                                enum: constants.UNITS_WEIGHT,
+                              },
+                              value: {
+                                type: "number",
+                              },
+                            },
+                            required: ["unit", "value"],
+                          },
+                        },
+                        required: ["count", "measure"],
+                      },
+                      price: {
+                        type: "object",
+                        properties: {
+                          currency: {
+                            type: "string",
+                          },
+                          value: {
+                            type: "string",
+                          },
+                        },
+                        required: ["currency", "value"],
+                      },
+                    },
+                    required: [
+                      "category_id",
+                      "descriptor",
+                      "quantity",
+                      "price",
+                    ],
+                  },
                 },
-                {
-                  $data: "/confirm/0/message/order/@ondc~1org~1linked_order",
+                provider: {
+                  type: "object",
+                  properties: {
+                    descriptor: {
+                      type: "object",
+                      properties: {
+                        name: {
+                          type: "string",
+                        },
+                      },
+                      required: ["name"],
+                    },
+                    address: {
+                      type: "object",
+                      properties: {
+                        name: {
+                          type: "string",
+                        },
+                        locality: {
+                          type: "string",
+                        },
+                        city: {
+                          type: "string",
+                        },
+                        state: {
+                          type: "string",
+                        },
+                        area_code: {
+                          type: "string",
+                        },
+                      },
+
+                      required: [
+                        "name",
+                        "locality",
+                        "city",
+                        "state",
+                        "area_code",
+                      ],
+                    },
+                  },
+                  required: ["descriptor", "address"],
                 },
-              ],
+                order: {
+                  type: "object",
+                  properties: {
+                    id: {
+                      type: "string",
+                      const: {
+                        $data:
+                          "/confirm/0/message/order/@ondc~1org~1linked_order/order/id",
+                      },
+                    },
+                    weight: {
+                      type: "object",
+                      properties: {
+                        unit: {
+                          type: "string",
+                          enum: constants.UNITS_WEIGHT,
+                        },
+                        value: {
+                          type: "number",
+                          const: {
+                            $data:
+                            "/confirm/0/message/order/@ondc~1org~1linked_order/order/weight/value",
+                          },
+                          errorMessage:
+                            "Payload weight mismatches from /search",
+                        },
+                      },
+                      required: ["unit", "value"],
+                    },
+                    dimensions: {
+                      type: "object",
+                      properties: {
+                        length: {
+                          type: "object",
+                          properties: {
+                            unit: {
+                              type: "string",
+                              enum: constants.UNITS_DIMENSIONS,
+                            },
+                            value: {
+                              type: "number",
+                            },
+                          },
+                          required: ["unit", "value"],
+                        },
+                        breadth: {
+                          type: "object",
+                          properties: {
+                            unit: {
+                              type: "string",
+                              enum: constants.UNITS_DIMENSIONS,
+                            },
+                            value: {
+                              type: "number",
+                            },
+                          },
+                          required: ["unit", "value"],
+                        },
+                        height: {
+                          type: "object",
+                          properties: {
+                            unit: {
+                              type: "string",
+                              enum: constants.UNITS_DIMENSIONS,
+                            },
+                            value: {
+                              type: "number",
+                            },
+                          },
+                          required: ["unit", "value"],
+                        },
+                      },
+                      required: ["length", "breadth", "height"],
+                    },
+                  },
+                  required: ["id", "weight"],
+                },
+              },
+              required: ["items", "provider", "order"],
             },
             created_at: {
               type: "string",
@@ -890,10 +1075,9 @@ module.exports = {
             },
             updated_at: {
               type: "string",
-              not:{const: { $data: "/confirm/0/message/order/created_at" }},
-              errorMessage:"should not be same as 'created_at'"
+              not: { const: { $data: "/confirm/0/message/order/created_at" } },
+              errorMessage: "should not be same as 'created_at'",
             },
-          
           },
           required: [
             "id",

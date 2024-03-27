@@ -33,6 +33,11 @@ const checkOnConfirm = (data, msgIdSet) => {
   try {
     console.log(`checking start and end time range in fulfillments`);
     fulfillments.forEach((fulfillment) => {
+      let avgPickupTime= fulfillment?.start?.time?.duration;
+console.log(avgPickupTime,dao.getValue(`${fulfillment?.id}-avgPickupTime`));
+    if(avgPickupTime && dao.getValue(`${fulfillment?.id}-avgPickupTime`) && avgPickupTime!==dao.getValue(`${fulfillment?.id}-avgPickupTime`)){
+      onCnfrmObj.avgPckupErr=`Average Pickup Time ${avgPickupTime} (fulfillments/start/time/duration) mismatches from the one provided in /on_search (${dao.getValue(`${fulfillment?.id}-avgPickupTime`)})`
+    }
       if(categoryId==='Immediate Delivery' && fulfillment.tracking !== true){
         onCnfrmObj.trckErr= `tracking should be enabled (true) for hyperlocal (Immediate Delivery)`
       }
