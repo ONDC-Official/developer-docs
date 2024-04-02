@@ -66,4 +66,13 @@
       }
     ]
   }
-}'```
+  }'
+  ```
+
+### Create Auth Header 
+To generate the auth header kindly use the following curl request:
+```
+curl --location 'localhost:8080/create-header' \
+--header 'Content-Type: application/json' \
+--data '{"value":{"abc":"test"},"private_key":"your_signing_private_key"}'
+```

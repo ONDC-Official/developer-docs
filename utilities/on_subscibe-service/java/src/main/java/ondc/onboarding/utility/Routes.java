@@ -8,9 +8,12 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Arrays;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
+import java.util.Date;
 import java.util.Map;
+import java.util.TimeZone;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.json.JSONException;
@@ -42,11 +45,24 @@ public class Routes extends  Utils{
 
     @Autowired
     private String gatewayUrl;
-    private Logger logger =  LoggerFactory.getLogger(Routes.class);;
+    private final Logger logger =  LoggerFactory.getLogger(Routes.class);;
 
     @GetMapping("/get-keys")
     public ResponseEntity<Map<String,byte[]>> getKeys (){
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(keys);
+    }
+
+    @PostMapping("/create-header")
+    public
+    String createHeader(@RequestBody JsonNode req) throws Exception {
+        long created = System.currentTimeMillis() / 1000L;
+        long expires = created + 300000;
+        String hashedReq = hashMassage(req.get("value").toString(),created,expires);
+        String signature = sign(Base64.getDecoder().decode(req.get("private_key").asText()),hashedReq.getBytes());
+        String subscriberId = "altiux.com";
+        String uniqueKeyId = "c9aa1b41-04e9-43e2-bd89-9ddcdecbf4cf";
+
+        return "Signature keyId=\"" + subscriberId + "|" + uniqueKeyId + "|" + "ed25519\"" + ",algorithm=\"ed25519\"," + "created=\"" + created + "\",expires=\"" + expires + "\",headers=\"(created) (expires)" + " digest\",signature=\"" + signature + "\"";
     }
 
     @PostMapping("/subscribe")
