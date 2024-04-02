@@ -1,3 +1,5 @@
+const constants = require("../../../utils/constants");
+
 module.exports = {
   $id: "http://example.com/schema/onSearchSchema",
   type: "object",
@@ -40,7 +42,7 @@ module.exports = {
         },
         version: {
           type: "string",
-          const: "2.0.2",
+          const: "2.0.0",
         },
         bap_id: {
           type: "string",
@@ -83,6 +85,7 @@ module.exports = {
         },
         ttl: {
           type: "string",
+          const: "PT30S",
         },
       },
       required: [
@@ -116,7 +119,7 @@ module.exports = {
                   },
                   type: {
                     type: "string",
-                    enum: ["Delivery", "Self-Pickup"],
+                    enum: constants.SRV_FULFILLMENT_TYPE,
                   },
                 },
                 required: ["id", "type"],
@@ -132,16 +135,8 @@ module.exports = {
                   },
                   type: {
                     type: "string",
-                    enum: [
-                      "PRE-FULFILLMENT",
-                      "ON-FULFILLMENT",
-                      "POST-FULFILLMENT",
-                    ],
+                    enum: constants.SRV_PAYMENT_TYPE,
                   },
-                  collected_by:{
-                    type: "string",
-                    enum: ["BAP","BPP"]
-                  }
                 },
                 required: ["id", "type"],
               },
@@ -196,18 +191,6 @@ module.exports = {
                       long_desc: {
                         type: "string",
                       },
-                      additional_desc: {
-                        type: "object",
-                        properties: {
-                          url: {
-                            type: "string",
-                          },
-                          content_type: {
-                            type: "string",
-                          },
-                        },
-                        required: ["url", "content_type"],
-                      },
                       images: {
                         type: "array",
                         items: {
@@ -221,14 +204,61 @@ module.exports = {
                         },
                       },
                     },
-                    required: ["name", "code"],
+                    required: [
+                      "name",
+                      "code",
+                      "short_desc",
+                      "long_desc",
+                      "images",
+                    ],
                   },
                   rating: {
                     type: "string",
                   },
                   ttl: {
                     type: "string",
-                    format: "duration",
+                  },
+                  time: {
+                    type: "object",
+                    properties: {
+                      label: {
+                        type: "string",
+                      },
+                      range: {
+                        type: "object",
+                        properties: {
+                          start: {
+                            type: "string",
+                          },
+                          end: {
+                            type: "string",
+                          },
+                        },
+                        required: ["start", "end"],
+                      },
+                      schedule: {
+                        type: "object",
+                        properties: {
+                          frequency: {
+                            type: "string",
+                          },
+                          holidays: {
+                            type: "array",
+                            items: {
+                              type: "string",
+                            },
+                          },
+                          times: {
+                            type: "array",
+                            items: {
+                              type: "string",
+                            },
+                          },
+                        },
+                        required: ["holidays"],
+                      },
+                    },
+                    required: ["label", "schedule"],
                   },
                   locations: {
                     type: "array",
@@ -240,10 +270,6 @@ module.exports = {
                         },
                         gps: {
                           type: "string",
-                          pattern:
-                            "^(-?[0-9]{1,3}(?:.[0-9]{6,15})?),( )*?(-?[0-9]{1,3}(?:.[0-9]{6,15})?)$",
-                          errorMessage:
-                            "Incorrect gps value (minimum of six decimal places are required)",
                         },
                         address: {
                           type: "string",
@@ -282,7 +308,6 @@ module.exports = {
                           type: "string",
                         },
                       },
-                      additionalProperties: false,
                       required: [
                         "id",
                         "gps",
@@ -304,17 +329,77 @@ module.exports = {
                         },
                         type: {
                           type: "string",
-                          enum: ["License", "Badge", "Permit", "Certificate"],
                         },
                         desc: {
                           type: "string",
                         },
                         url: {
                           type: "string",
-                          format: "uri",
                         },
                       },
                       required: ["id", "type", "desc", "url"],
+                    },
+                  },
+                  categories: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        id: {
+                          type: "string",
+                        },
+                        descriptor: {
+                          type: "object",
+                          properties: {
+                            name: {
+                              type: "string",
+                            },
+                            code: {
+                              type: "string",
+                            },
+                          },
+                          required: ["name", "code"],
+                        },
+                        tags: {
+                          type: "array",
+                          items: {
+                            type: "object",
+                            properties: {
+                              descriptor: {
+                                type: "object",
+                                properties: {
+                                  code: {
+                                    type: "string",
+                                  },
+                                },
+                                required: ["code"],
+                              },
+                              list: {
+                                type: "array",
+                                items: {
+                                  type: "object",
+                                  properties: {
+                                    descriptor: {
+                                      type: "object",
+                                      properties: {
+                                        code: {
+                                          type: "string",
+                                        },
+                                      },
+                                      required: ["code"],
+                                    },
+                                    value: {
+                                      type: "string",
+                                    },
+                                  },
+                                  required: ["descriptor", "value"],
+                                },
+                              },
+                            },
+                            required: ["descriptor", "list"],
+                          },
+                        },
+                      },
                     },
                   },
                   tags: {
@@ -323,11 +408,13 @@ module.exports = {
                       type: "object",
                       properties: {
                         descriptor: {
+                          type: "object",
                           properties: {
                             code: {
                               type: "string",
                             },
                           },
+                          required: ["code"],
                         },
                         list: {
                           type: "array",
@@ -335,11 +422,13 @@ module.exports = {
                             type: "object",
                             properties: {
                               descriptor: {
+                                type: "object",
                                 properties: {
                                   code: {
                                     type: "string",
                                   },
                                 },
+                                required: ["code"],
                               },
                               value: {
                                 type: "string",
@@ -445,7 +534,12 @@ module.exports = {
                                       type: "string",
                                     },
                                   },
-                                  required: ["address", "phone"],
+                                  required: [
+                                    "name",
+                                    "address",
+                                    "phone",
+                                    "email",
+                                  ],
                                 },
                               },
                               required: ["name", "contact"],
@@ -469,130 +563,7 @@ module.exports = {
                               type: "string",
                             },
                           },
-                          required: ["currency", "value", "maximum_value"],
-                        },
-                        quantity: {
-                          type: "object",
-                          properties: {
-                            unitized: {
-                              type: "object",
-                              properties: {
-                                measure: {
-                                  type: "object",
-                                  properties: {
-                                    unit: {
-                                      type: "string",
-                                      enum: [
-                                        "unit",
-                                        "dozen",
-                                        "gram",
-                                        "kilogram",
-                                        "tonne",
-                                        "litre",
-                                        "millilitre",
-                                      ],
-                                    },
-                                    value: {
-                                      type: "string",
-                                    },
-                                  },
-                                  required: ["unit", "value"],
-                                },
-                              },
-                              required: ["measure"],
-                            },
-                            available: {
-                              type: "object",
-                              properties: {
-                                measure: {
-                                  type: "object",
-                                  properties: {
-                                    unit: {
-                                      type: "string",
-                                      enum: [
-                                        "unit",
-                                        "dozen",
-                                        "gram",
-                                        "kilogram",
-                                        "tonne",
-                                        "litre",
-                                        "millilitre",
-                                      ],
-                                    },
-                                    value: {
-                                      type: "string",
-                                    },
-                                  },
-                                  required: ["unit", "value"],
-                                },
-                                count: {
-                                  type: "integer",
-                                },
-                              },
-                              required: ["measure", "count"],
-                            },
-                            maximum: {
-                              type: "object",
-                              properties: {
-                                measure: {
-                                  type: "object",
-                                  properties: {
-                                    unit: {
-                                      type: "string",
-                                      enum: [
-                                        "unit",
-                                        "dozen",
-                                        "gram",
-                                        "kilogram",
-                                        "tonne",
-                                        "litre",
-                                        "millilitre",
-                                      ],
-                                    },
-                                    value: {
-                                      type: "string",
-                                    },
-                                  },
-                                  required: ["unit", "value"],
-                                },
-                                count: {
-                                  type: "integer",
-                                },
-                              },
-                              required: ["measure", "count"],
-                            },
-                            minimum: {
-                              type: "object",
-                              properties: {
-                                measure: {
-                                  type: "object",
-                                  properties: {
-                                    unit: {
-                                      type: "string",
-                                      enum: [
-                                        "unit",
-                                        "dozen",
-                                        "gram",
-                                        "kilogram",
-                                        "tonne",
-                                        "litre",
-                                        "millilitre",
-                                      ],
-                                    },
-                                    value: {
-                                      type: "string",
-                                    },
-                                  },
-                                  required: ["unit", "value"],
-                                },
-                                count: {
-                                  type: "integer",
-                                },
-                              },
-                              required: ["measure", "count"],
-                            },
-                          },
-                          required: ["unitized", "available"],
+                          required: ["currency", "value"],
                         },
                         category_ids: {
                           type: "array",
@@ -618,73 +589,6 @@ module.exports = {
                             type: "string",
                           },
                         },
-                        add_ons: {
-                          type: "array",
-                          items: {
-                            type: "object",
-                            properties: {
-                              id: {
-                                type: "string",
-                              },
-                              descriptor: {
-                                type: "object",
-                                properties: {
-                                  name: {
-                                    type: "string",
-                                  },
-                                  short_desc: {
-                                    type: "string",
-                                  },
-                                  long_desc: {
-                                    type: "string",
-                                  },
-                                  images: {
-                                    type: "array",
-                                    items: {
-                                      type: "object",
-                                      properties: {
-                                        url: {
-                                          type: "string",
-                                        },
-                                      },
-                                      required: ["url"],
-                                    },
-                                  },
-                                },
-                                required: [
-                                  "name",
-                                  "short_desc",
-                                  "long_desc",
-                                  "images",
-                                ],
-                              },
-                              price: {
-                                type: "object",
-                                properties: {
-                                  currency: {
-                                    type: "string",
-                                  },
-                                  value: {
-                                    type: "string",
-                                  },
-                                  offered_value: {
-                                    type: "string",
-                                  },
-                                  maximum_value: {
-                                    type: "string",
-                                  },
-                                },
-                                required: [
-                                  "currency",
-                                  "value",
-                                  "offered_value",
-                                  "maximum_value",
-                                ],
-                              },
-                            },
-                            required: ["id", "descriptor", "price"],
-                          },
-                        },
                         cancellation_terms: {
                           type: "array",
                           items: {
@@ -705,107 +609,64 @@ module.exports = {
                                 },
                                 required: ["descriptor"],
                               },
-                              reason_required: {
-                                type: "boolean",
-                              },
                               cancellation_fee: {
                                 type: "object",
-                                maxProperties: 1,
                                 properties: {
-                                  percentage: {
-                                    type: "string",
-                                  },
                                   amount: {
                                     type: "object",
                                     properties: {
-                                      currency: {
-                                        type: "string",
-                                      },
                                       value: {
                                         type: "string",
                                       },
                                     },
-                                    required: ["currency", "value"],
+                                    required: ["value"],
+                                  },
+                                  percentage: {
+                                    type: "string",
                                   },
                                 },
-                                required: [],
                               },
                             },
-                            additionalProperties: false,
-                            required: [
-                              "fulfillment_state",
-                              "reason_required",
-                              "cancellation_fee",
-                            ],
+                            required: ["fulfillment_state", "cancellation_fee"],
                           },
                         },
-                        return_terms: {
-                          type: "array",
-                          items: {
-                            properties: {
-                              fulfillment_state: {
-                                type: "object",
-                                properties: {
-                                  descriptor: {
-                                    type: "object",
-                                    properties: {
-                                      code: {
-                                        type: "string",
-                                      },
-                                    },
-                                    required: ["code"],
-                                  },
-                                },
-                                required: ["descriptor"],
-                              },
-                              return_eligible: {
-                                type: "boolean",
-                              },
-                              return_time: {
-                                type: "object",
-                                properties: {
-                                  duration: {
-                                    type: "string",
-                                  },
-                                },
-                                required: ["duration"],
-                              },
-                              return_location: {
-                                type: "object",
-                                properties: {
-                                  address: {
-                                    type: "string",
-                                  },
-                                  gps: {
-                                    type: "string",
-                                  },
-                                },
-                                required: ["address", "gps"],
-                              },
-                              fulfillment_managed_by: {
-                                type: "string",
-                              },
-                            },
-                            required: [
-                              "fulfillment_state",
-                              "return_eligible",
-                              "return_time",
-                              "return_location",
-                              "fulfillment_managed_by",
-                            ],
-                          },
-                        },
-
-                        replacement_terms: {
+                        tags: {
                           type: "array",
                           items: {
                             type: "object",
                             properties: {
-                              replace_within: {
-                                type: "string",
+                              descriptor: {
+                                type: "object",
+                                properties: {
+                                  code: {
+                                    type: "string",
+                                  },
+                                },
+                                required: ["code"],
+                              },
+                              list: {
+                                type: "array",
+                                items: {
+                                  type: "object",
+                                  properties: {
+                                    descriptor: {
+                                      type: "object",
+                                      properties: {
+                                        code: {
+                                          type: "string",
+                                        },
+                                      },
+                                      required: ["code"],
+                                    },
+                                    value: {
+                                      type: "string",
+                                    },
+                                  },
+                                  required: ["descriptor", "value"],
+                                },
                               },
                             },
-                            required: ["replace_within"],
+                            required: ["descriptor", "list"],
                           },
                         },
                         time: {
@@ -826,8 +687,29 @@ module.exports = {
                               },
                               required: ["start", "end"],
                             },
+                            schedule: {
+                              type: "object",
+                              properties: {
+                                frequency: {
+                                  type: "string",
+                                },
+                                holidays: {
+                                  type: "array",
+                                  items: {
+                                    type: "string",
+                                  },
+                                },
+                                times: {
+                                  type: "array",
+                                  items: {
+                                    type: "string",
+                                  },
+                                },
+                              },
+                              required: ["holidays"],
+                            },
                           },
-                          required: ["label", "range"],
+                          required: ["label", "schedule"],
                         },
                         matched: {
                           type: "boolean",
@@ -835,60 +717,36 @@ module.exports = {
                         recommended: {
                           type: "boolean",
                         },
-                        tags: {
-                          type: "array",
-                          items: {
-                            type: "object",
-                            properties: {
-                              descriptor: {
-                                properties: {
-                                  code: {
-                                    type: "string",
-                                  },
-                                },
-                              },
-
-                              list: {
-                                type: "array",
-                                items: {
-                                  type: "object",
-                                  properties: {
-                                    descriptor: {
-                                      properties: {
-                                        code: {
-                                          type: "string",
-                                        },
-                                      },
-                                    },
-                                    value: {
-                                      type: "string",
-                                    },
-                                  },
-                                  required: ["descriptor", "value"],
-                                },
-                              },
-                            },
-                            required: ["descriptor", "list"],
-                          },
-                        },
                       },
-                      additionalProperties: false,
-                      required: [
-                        "id",
-                        "descriptor",
-                        "creator",
-                        "price",
-                        "quantity",
-                        "category_ids",
-                        "fulfillment_ids",
-                        "location_ids",
-                        "payment_ids",
-                        "cancellation_terms",
-                        "return_terms",
-                        "replacement_terms",
-                        "matched",
-                        "recommended",
-                      ],
+                      if: { properties: { parent_item_id: { const: "" } } },
+                      then: {
+                        required: [
+                          "id",
+                          "parent_item_id",
+                          "descriptor",
+                          "creator",
+                          "price",
+                          "category_ids",
+                          "fulfillment_ids",
+                          "location_ids",
+                          "payment_ids",
+                          "cancellation_terms",
+                          "tags",
+                          "time",
+                          "matched",
+                          "recommended",
+                        ],
+                      },
+                      else: {
+                        required: [
+                          "id",
+                          "parent_item_id",
+                          "descriptor",
+                          "price",
+                          "category_ids",
+                          "tags",
+                        ],
+                      },
                     },
                   },
                   offers: {
@@ -937,15 +795,21 @@ module.exports = {
                         },
                         location_ids: {
                           type: "array",
-                          items: {},
+                          items: {
+                            type: "string",
+                          },
                         },
                         category_ids: {
                           type: "array",
-                          items: {},
+                          items: {
+                            type: "string",
+                          },
                         },
                         item_ids: {
                           type: "array",
-                          items: {},
+                          items: {
+                            type: "string",
+                          },
                         },
                         time: {
                           type: "object",
@@ -968,6 +832,45 @@ module.exports = {
                           },
                           required: ["label", "range"],
                         },
+                        tags: {
+                          type: "array",
+                          items: {
+                            type: "object",
+                            properties: {
+                              descriptor: {
+                                type: "object",
+                                properties: {
+                                  code: {
+                                    type: "string",
+                                  },
+                                },
+                                required: ["code"],
+                              },
+                              list: {
+                                type: "array",
+                                items: {
+                                  type: "object",
+                                  properties: {
+                                    descriptor: {
+                                      type: "object",
+                                      properties: {
+                                        code: {
+                                          type: "string",
+                                        },
+                                      },
+                                      required: ["code"],
+                                    },
+                                    value: {
+                                      type: "string",
+                                    },
+                                  },
+                                  required: ["descriptor", "value"],
+                                },
+                              },
+                            },
+                            required: ["descriptor", "list"],
+                          },
+                        },
                       },
                       required: [
                         "id",
@@ -976,6 +879,7 @@ module.exports = {
                         "category_ids",
                         "item_ids",
                         "time",
+                        "tags"
                       ],
                     },
                   },
@@ -1000,35 +904,13 @@ module.exports = {
                       required: ["contact"],
                     },
                   },
-                  payments: {
-                    type: "array",
-                    items: {
-                      type: "object",
-                      properties: {
-                        id: {
-                          type: "string",
-                        },
-                        type: {
-                          type: "string",
-                          enum: [
-                            "PRE-FULFILLMENT",
-                            "ON-FULFILLMENT",
-                            "POST-FULFILLMENT",
-                          ],
-                        },
-                        collected_by:{
-                          type: "string",
-                          enum: ["BAP","BPP"]
-                        }
-                      },
-                      required: ["id", "type"],
-                    },
-                  },
                 },
                 required: [
                   "id",
                   "descriptor",
+                  "rating",
                   "ttl",
+                  "time",
                   "locations",
                   "tags",
                   "items",
@@ -1037,17 +919,10 @@ module.exports = {
               },
             },
           },
-          additionalProperties: false,
           required: ["fulfillments", "payments", "descriptor", "providers"],
         },
       },
       required: ["catalog"],
-    },
-    search: {
-      type: "array",
-      items: {
-        $ref: "searchSchema#",
-      },
     },
   },
   required: ["context", "message"],

@@ -17,6 +17,9 @@ const sortMerge = (domain, directory, destination) => {
       case "b2b":
         map = constants.B2B_SORTED_INDEX;
         break;
+      case "services":
+        map = constants.SRV_SORTED_INDEX;
+        break;
     }
 
     mergedlogs = files.reduce((acc, item) => {

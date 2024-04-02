@@ -12,7 +12,7 @@ const checkInit = (data, msgIdSet) => {
   const selectedItems = dao.getValue("onSlctdItemsArray");
 
   try {
-    console.log("Comparing items object with /select");
+    console.log("Comparing items object with /on_select");
     const itemDiff = utils.findDifferencesInArrays(items, selectedItems);
     console.log(itemDiff);
     itemDiff.forEach((item, i) => {
@@ -20,7 +20,7 @@ const checkInit = (data, msgIdSet) => {
       let itemkey = `item-${i}-DiffErr`;
       initObj[
         itemkey
-      ] = `In /items, '${item.attributes}' mismatch from /select`;
+      ] = `In /items, '${item.attributes}' mismatch from /on_select for item with id ${item.index}`;
     }
     });
   } catch (error) {

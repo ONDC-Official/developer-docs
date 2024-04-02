@@ -33,6 +33,11 @@ const checkOnConfirm = (data, msgIdSet) => {
   try {
     console.log(`checking start and end time range in fulfillments`);
     fulfillments.forEach((fulfillment) => {
+      let avgPickupTime= fulfillment?.start?.time?.duration;
+console.log(avgPickupTime,dao.getValue(`${fulfillment?.id}-avgPickupTime`));
+    if(avgPickupTime && dao.getValue(`${fulfillment?.id}-avgPickupTime`) && avgPickupTime!==dao.getValue(`${fulfillment?.id}-avgPickupTime`)){
+      onCnfrmObj.avgPckupErr=`Average Pickup Time ${avgPickupTime} (fulfillments/start/time/duration) mismatches from the one provided in /on_search (${dao.getValue(`${fulfillment?.id}-avgPickupTime`)})`
+    }
       if(categoryId==='Immediate Delivery' && fulfillment.tracking !== true){
         onCnfrmObj.trckErr= `tracking should be enabled (true) for hyperlocal (Immediate Delivery)`
       }
@@ -55,20 +60,30 @@ const checkOnConfirm = (data, msgIdSet) => {
   try {
     console.log("checking linked order in /confirm");
 
-    const orderWeight =linkedOrder?.order?.weight?.value;
+    let orderWeight =linkedOrder?.order?.weight?.value;
+    const unit = linkedOrder?.order?.weight?.unit;
+
+    if(unit === 'kilogram'){
+      orderWeight = orderWeight*1000;
+    }
+
 
     let totalUnitWeight=0;
-
+    let quantityUnit;
     linkedOrder?.items.forEach(item=>{
-      const quantity = item?.quantity?.measure?.value
+      let quantity = item?.quantity?.measure?.value
+       quantityUnit = item?.quantity?.measure?.unit
+      if(quantityUnit === 'kilogram'){
+        quantity = quantity*1000;
+      }
       const count = item?.quantity?.count
       
       const unitWeight = (quantity*count)
        totalUnitWeight+=unitWeight;
     })
 
-    if(totalUnitWeight.toFixed(2)!=orderWeight.toFixed(2)){
-      onCnfrmObj.weightErr=`Total order weight '${orderWeight} does not match the total unit weight of items '${totalUnitWeight}'`
+    if(totalUnitWeight.toFixed(2)!=orderWeight.toFixed(2) && quantityUnit!== 'unit'){
+      onCnfrmObj.weightErr=`Total order weight '${orderWeight}' does not match the total unit weight of items '${totalUnitWeight}'`
     }
   } catch (error) {
     console.log(error);

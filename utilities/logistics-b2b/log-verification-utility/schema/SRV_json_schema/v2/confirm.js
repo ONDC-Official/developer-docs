@@ -1,7 +1,5 @@
-const constants = require("../../../utils/constants");
-
 module.exports = {
-  $id: "http://example.com/schema/initSchema",
+  $id: "http://example.com/schema/confirmSchema",
   type: "object",
   properties: {
     context: {
@@ -18,7 +16,6 @@ module.exports = {
               properties: {
                 code: {
                   type: "string",
-                  const: { $data: "/search/0/context/location/city/code" },
                 },
               },
               required: ["code"],
@@ -28,7 +25,6 @@ module.exports = {
               properties: {
                 code: {
                   type: "string",
-                  const: { $data: "/search/0/context/location/country/code" },
                 },
               },
               required: ["code"],
@@ -38,11 +34,10 @@ module.exports = {
         },
         action: {
           type: "string",
-          const: "init",
         },
         version: {
           type: "string",
-          const: "2.0.2",
+          const: "2.0.0"
         },
         bap_id: {
           type: "string",
@@ -80,7 +75,6 @@ module.exports = {
         },
         ttl: {
           type: "string",
-          const: "PT30S",
         },
       },
       required: [
@@ -104,12 +98,18 @@ module.exports = {
         order: {
           type: "object",
           properties: {
+            id: {
+              type: "string",
+            },
+            status: {
+              type: "string",
+              enum: ["Created"]
+            },
             provider: {
               type: "object",
               properties: {
                 id: {
                   type: "string",
-                  const: { $data: "/select/0/message/order/provider/id" },
                 },
                 locations: {
                   type: "array",
@@ -118,10 +118,6 @@ module.exports = {
                     properties: {
                       id: {
                         type: "string",
-                        const: {
-                          $data:
-                            "/select/0/message/order/provider/locations/0/id",
-                        },
                       },
                     },
                     required: ["id"],
@@ -129,7 +125,6 @@ module.exports = {
                 },
               },
               required: ["id", "locations"],
-              additionalProperties: false,
             },
             items: {
               type: "array",
@@ -137,6 +132,9 @@ module.exports = {
                 type: "object",
                 properties: {
                   id: {
+                    type: "string",
+                  },
+                  parent_item_id: {
                     type: "string",
                   },
                   fulfillment_ids: {
@@ -157,82 +155,28 @@ module.exports = {
                         },
                         required: ["count"],
                       },
-                    },
-                    required: ["selected"],
-                  },
-                  "add-ons": {
-                    type: "array",
-                    items: {
-                      type: "object",
-                      properties: {
-                        id: {
-                          type: "string",
-                        },
-                      },
-                      required: ["id"],
-                    },
-                  },
-                  tags: {
-                    type: "array",
-                    items: {
-                      type: "object",
-                      properties: {
-                        descriptor: {
-                          type: "object",
-                          properties: {
-                            code: {
-                              type: "string",
-                              enum: ["BUYER_TERMS"],
-                            },
+                      measure: {
+                        type: "object",
+                        properties: {
+                          unit: {
+                            type: "string",
                           },
-                          required: ["code"],
-                        },
-                        list: {
-                          type: "array",
-                          items: {
-                            type: "object",
-                            properties: {
-                              descriptor: {
-                                type: "object",
-                                properties: {
-                                  code: {
-                                    type: "string",
-                                    enum: ["ITEM_REQ", "PACKAGING_REQ"],
-                                  },
-                                },
-                                required: ["code"],
-                              },
-                              value: {
-                                type: "string",
-                                anyOf: [
-                                  {
-                                    const: {
-                                      $data:
-                                        "/select/0/message/order/items/0/tags/0/list/0/value",
-                                    },
-                                    errorMessage:
-                                      "Buyer terms should be same as provided in /select",
-                                  },
-                                  {
-                                    const: {
-                                      $data:
-                                        "/select/0/message/order/items/0/tags/0/list/1/value",
-                                    },
-                                    errorMessage:
-                                      "Buyer terms should be same as provided in /select",
-                                  },
-                                ],
-                              },
-                            },
-                            required: ["descriptor", "value"],
+                          value: {
+                            type: "string",
                           },
                         },
+                        required: ["unit", "value"],
                       },
-                      required: ["descriptor", "list"],
                     },
+                    required: ["selected", "measure"],
                   },
                 },
-                required: ["id", "fulfillment_ids", "quantity"],
+                required: [
+                  "id",
+                  "parent_item_id",
+                  "fulfillment_ids",
+                  "quantity",
+                ],
               },
             },
             billing: {
@@ -240,16 +184,20 @@ module.exports = {
               properties: {
                 name: {
                   type: "string",
-                  minLength: 3,
+                  const: { $data: "/init/0/message/order/billing/name" },
                 },
                 address: {
                   type: "string",
+                  const: { $data: "/init/0/message/order/billing/address" },
                 },
                 state: {
                   type: "object",
                   properties: {
                     name: {
                       type: "string",
+                      const: {
+                        $data: "/init/0/message/order/billing/state/name",
+                      },
                     },
                   },
                   required: ["name"],
@@ -259,32 +207,28 @@ module.exports = {
                   properties: {
                     name: {
                       type: "string",
+                      const: {
+                        $data: "/init/0/message/order/billing/city/name",
+                      },
                     },
                   },
                   required: ["name"],
                 },
                 tax_id: {
                   type: "string",
-                  pattern: "^[0-9]{2}[A-Z]{5}[0-9]{4}[0-9A-Z]{4}$",
-                  errorMessage: "should be valid",
+                  const: { $data: "/init/0/message/order/billing/tax_id" },
                 },
                 email: {
                   type: "string",
+                  const: { $data: "/init/0/message/order/billing/email" },
                 },
                 phone: {
                   type: "string",
-                  pattern: "^[0-9]{10}$",
-                  errorMessage: `should match the format of a 10 digit phone number`
-                },
-                created_at: {
-                  type: "string",
-                },
-                updated_at: {
-                  type: "string",
+                  const: { $data: "/init/0/message/order/billing/phone" },
                 },
               },
-              additionalProperties: false,
-              required: ["name", "address", "state", "city", "tax_id", "phone"],
+
+              required: ["name", "address", "state", "city", "phone"],
             },
             fulfillments: {
               type: "array",
@@ -296,6 +240,9 @@ module.exports = {
                   },
                   type: {
                     type: "string",
+                  },
+                  tracking: {
+                    type: "boolean",
                   },
                   stops: {
                     type: "array",
@@ -310,10 +257,6 @@ module.exports = {
                           properties: {
                             gps: {
                               type: "string",
-                              pattern:
-                                "^(-?[0-9]{1,3}(?:.[0-9]{6,15})?),( )*?(-?[0-9]{1,3}(?:.[0-9]{6,15})?)$",
-                              errorMessage:
-                                "Incorrect gps value (minimum of six decimal places are required)",
                             },
                             address: {
                               type: "string",
@@ -363,59 +306,189 @@ module.exports = {
                           properties: {
                             phone: {
                               type: "string",
-                              pattern: "^[0-9]{10}$",
-                              errorMessage: `should match the format of a 10 digit phone number`
+                            },
+                            email: {
+                              type: "string",
                             },
                           },
-                          required: ["phone"],
+                          required: ["phone", "email"],
                         },
-                      },
-                      required: ["type", "location", "contact"],
-                    },
-                  },
-                  customer: {
-                    type: "object",
-                    properties: {
-                      person: {
-                        type: "object",
-                        properties: {
-                          creds: {
-                            type: "array",
-                            items: {
+                        time: {
+                          type: "object",
+                          properties: {
+                            label: {
+                              type: "string",
+                            },
+                            range: {
                               type: "object",
                               properties: {
-                                id: {
+                                start: {
                                   type: "string",
                                 },
-                                type: {
+                                end: {
                                   type: "string",
-                                  enum: [
-                                    "License",
-                                    "Badge",
-                                    "Permit",
-                                    "Certificate",
-                                  ],
-                                },
-                                desc: {
-                                  type: "string",
-                                },
-                                icon: {
-                                  type: "string",
-                                },
-                                url: {
-                                  type: "string",
-                                  pattern:
-                                    "^https://[\\w.-]+(\\.[a-zA-Z]{2,})?(:[0-9]+)?(/\\S*)?$",
                                 },
                               },
-                              required: ["id", "type", "desc", "icon", "url"],
+                              required: ["start", "end"],
+                            },
+                         
+                          },
+                          required: ["label", "range"],
+                        },
+                        customer: {
+                          type: "object",
+                          properties: {
+                            person: {
+                              type: "object",
+                              properties: {
+                                name: {
+                                  type: "string",
+                                },
+                              },
+                              required: ["name"],
                             },
                           },
+                          required: ["person"],
                         },
-                        required: ["creds"],
+                      },
+                      required: [
+                        "type",
+                        "location",
+                        "contact",
+                        "time",
+                        "customer",
+                      ],
+                    },
+                  },
+                },
+                required: ["id", "type", "tracking", "stops"],
+              },
+            },
+            quote: {
+              type: "object",
+              properties: {
+                price: {
+                  type: "object",
+                  properties: {
+                    currency: {
+                      type: "string",
+                    },
+                    value: {
+                      type: "string",
+                    },
+                  },
+                  required: ["currency", "value"],
+                },
+                breakup: {
+                  type: "array",
+                  items: {
+                    type: "object",
+                    properties: {
+                      title: {
+                        type: "string",
+                      },
+                      price: {
+                        type: "object",
+                        properties: {
+                          currency: {
+                            type: "string",
+                          },
+                          value: {
+                            type: "string",
+                          },
+                        },
+                        required: ["currency", "value"],
+                      },
+                      item: {
+                        type: "object",
+                        properties: {
+                          id: {
+                            type: "string",
+                          },
+                          quantity: {
+                            type: "object",
+                            properties: {
+                              selected: {
+                                type: "object",
+                                properties: {
+                                  count: {
+                                    type: "integer",
+                                  },
+                                },
+                                required: ["count"],
+                              },
+                            },
+                          },
+                          price: {
+                            type: "object",
+                            properties: {
+                              currency: {
+                                type: "string",
+                              },
+                              value: {
+                                type: "string",
+                              },
+                            },
+                            required: ["currency", "value"],
+                          },
+                        },
+                        required: ["id", "quantity", "price"],
                       },
                     },
-                    required: ["person"],
+                    required: ["title", "price", "item"],
+                  },
+                },
+                ttl: {
+                  type: "string",
+                },
+              },
+              required: ["price", "breakup", "ttl"],
+            },
+            payments: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  id: {
+                    type: "string",
+                  },
+                  collected_by: {
+                    type: "string",
+                    enum: ["BAP", "BPP"],
+                  },
+                  params: {
+                    type: "object",
+                    properties: {
+                      amount: {
+                        type: "string",
+                      },
+                      currency: {
+                        type: "string",
+                      },
+                      transaction_id: {
+                        type: "string",
+                      },
+                      bank_account_number: {
+                        type: "string",
+                      },
+                      virtual_payment_address: {
+                        type: "string",
+                      },
+                    },
+                    required: [
+                      "amount",
+                      "currency",
+                      "transaction_id",
+                      "bank_account_number",
+                      "virtual_payment_address",
+                    ],
+                  },
+                  status: {
+                    type: "string",
+                  },
+                  type: {
+                    type: "string",
+                    const: { $data: "/select/0/message/order/payments/0/type" },
                   },
                   tags: {
                     type: "array",
@@ -427,7 +500,6 @@ module.exports = {
                           properties: {
                             code: {
                               type: "string",
-                              enum: ["DELIVERY_TERMS"],
                             },
                           },
                           required: ["code"],
@@ -442,37 +514,12 @@ module.exports = {
                                 properties: {
                                   code: {
                                     type: "string",
-                                    enum: [
-                                      "INCOTERMS",
-                                      "NAMED_PLACE_OF_DELIVERY",
-                                    ],
                                   },
                                 },
                                 required: ["code"],
                               },
                               value: {
                                 type: "string",
-                              },
-                            },
-                            if: {
-                              properties: {
-                                descriptor: {
-                                  properties: { code: { const: "INCOTERMS" } },
-                                },
-                              },
-                            },
-                            then: {
-                              properties: {
-                                value: {
-                                  enum: [
-                                    "DPU",
-                                    "CIF",
-                                    "EXW",
-                                    "FOB",
-                                    "DAP",
-                                    "DDP",
-                                  ],
-                                },
                               },
                             },
                             required: ["descriptor", "value"],
@@ -483,87 +530,65 @@ module.exports = {
                     },
                   },
                 },
-                required: ["id", "type", "stops"],
+                required: [
+                  "id",
+                  "collected_by",
+                  "params",
+                  "status",
+                  "type",
+                  "tags",
+                ],
               },
             },
-            payments: {
-              type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  type: {
-                    type: "string",
-                    enum: [
-                      "PRE-FULFILLMENT",
-                      "ON-FULFILLMENT",
-                      "POST-FULFILLMENT",
-                    ],
-                    const: { $data: "/select/0/message/order/payments/0/type" },
-                  },
-                  collected_by: {
-                    type: "string",
-                    enum: ["BAP", "BPP"],
-                    const: {
-                      $data:
-                        "/on_select/0/message/order/payments/0/collected_by",
-                    },
-                  },
-                },
-                required: ["type", "collected_by"],
-              },
+            created_at: {
+              type: "string",
             },
-            tags: {
-              type: "array",
-              minItems: 1,
-              items: {
-                type: "object",
-                properties: {
-                  descriptor: {
-                    properties: {
-                      code: {
-                        type: "string",
-                        enum: constants.TERMS,
-                      },
+            updated_at: {
+              type: "string",
+            },
+            xinput: {
+              type: "object",
+              properties: {
+                form: {
+                  type: "object",
+                  properties: {
+                    url: {
+                      type: "string",
+                    },
+                    mimetype: {
+                      type: "string",
+                    },
+                    submission_id: {
+                      type: "string",
+                    },
+                    status: {
+                      type: "string",
                     },
                   },
-                  list: {
-                    type: "array",
-                    items: {
-                      type: "object",
-                      properties: {
-                        descriptor: {
-                          properties: {
-                            code: {
-                              type: "string",
-                              enum: constants.B2B_BPP_TERMS,
-                            },
-                          },
-                        },
-                        value: {
-                          type: "string",
-                        },
-                      },
-                      required: ["descriptor", "value"],
-                    },
-                  },
+                  required: ["url", "mimetype", "submission_id", "status"],
                 },
-                required: ["descriptor", "list"],
               },
+              required: ["form"],
             },
           },
-          additionalProperties: false,
           required: [
+            "id",
+            "status",
             "provider",
             "items",
             "billing",
             "fulfillments",
+            "quote",
             "payments",
-            "tags",
+            "created_at",
+            "updated_at",
+            "xinput",
           ],
         },
       },
       required: ["order"],
     },
   },
+  isFutureDated: true,
   required: ["context", "message"],
 };

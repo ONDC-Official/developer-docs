@@ -46,7 +46,7 @@ const checkOnCancel = (data, msgIdSet) => {
   }
 
   if (onSearchItemsArr) {
-     selectedItem = onSearchItemsArr.filter(
+    selectedItem = onSearchItemsArr.filter(
       (element) => element?.parent_item_id === dao.getValue("selectedItem")
     );
     selectedItem = selectedItem[0];
@@ -100,9 +100,9 @@ const checkOnCancel = (data, msgIdSet) => {
             }
             let fulTags = fulfillment?.tags;
             if (!fulTags) {
-              onCancelObj.msngflfllmntTags = `fulfillments/tags are required in case of RTO (rto_event, pre_cancel_state)`;
+              onCancelObj.msngflfllmntTags = `fulfillments/tags are required in case of RTO (rto_event, precancel_state)`;
             } else {
-              let rtoID;
+              let rtoID, reasonId,preCnclState;
 
               fulTags.forEach((tag) => {
                 if (tag.code === "rto_event") {
@@ -111,8 +111,27 @@ const checkOnCancel = (data, msgIdSet) => {
                     if (list.code === "rto_id") {
                       rtoID = list.value;
 
-                      if (rtoID !== selectedItem.fulfillment_id) {
-                        onCancelObj.rtoIdTagsErr = `rto_id '${rtoID}' in fulfillments/tags does not match with the one provided in on_search '${selectedItem.fulfillment_id}' in /fulfillments`;
+                      if (rtoID !== selectedItem?.fulfillment_id) {
+                        onCancelObj.rtoIdTagsErr = `rto_id '${rtoID}' in fulfillments/tags does not match with the one provided in on_search '${selectedItem?.fulfillment_id}' in /fulfillments`;
+                      }
+                    }
+                    if (list.code === "cancellation_reason_id") {
+                      reasonId = list.value;
+                      if (reasonId !== on_cancel?.cancellation?.reason?.id) {
+                        onCancelObj.rsnIdTagsErr = `Cancellation reason id in /fulfillments/tags does not match with order/cancellation/reason/id`;
+                      }
+                    }
+                  });
+                }
+                if(tag.code === "precancel_state"){
+                  
+                  const lists = tag.list;
+                  lists.forEach((list) => {
+                    if (list.code === "fulfillment_state") {
+                      preCnclState = list.value;
+                      
+                      if (!constants.FULFILLMENT_STATE.includes(preCnclState)) {
+                        onCancelObj.preCnclStateErr = `${preCnclState} is not a valid precancel state in fulfillments/tags`;
                       }
                     }
                   });
@@ -126,8 +145,8 @@ const checkOnCancel = (data, msgIdSet) => {
           onCancelObj.ordrStatErr = `Order state should be 'Cancelled' for fulfillment state - ${ffState}`;
         }
         console.log(fulfillment.id, selectedItem?.fulfillment_id);
-        if (fulfillment.id !== selectedItem.fulfillment_id) {
-          onCancelObj.rtoIdErr = `RTO id - '${fulfillment.id}' of fulfillment type 'RTO' does not match with the one provided in on_search '${selectedItem.fulfillment_id}' in /fulfillments`;
+        if (fulfillment.id !== selectedItem?.fulfillment_id) {
+          onCancelObj.rtoIdErr = `RTO id - '${fulfillment.id}' of fulfillment type 'RTO' does not match with the one provided in on_search '${selectedItem?.fulfillment_id}' in /fulfillments`;
         }
         if (ffState === "RTO-Initiated") {
           RtoPickupTime = fulfillment?.start?.time?.timestamp;
@@ -144,7 +163,7 @@ const checkOnCancel = (data, msgIdSet) => {
       }
     });
   } catch (error) {
-    console.trace(`Error checking fulfillments/start in /on_cancel`);
+    console.trace(`Error checking fulfillments/start in /on_cancel`,error);
   }
 
   return onCancelObj;

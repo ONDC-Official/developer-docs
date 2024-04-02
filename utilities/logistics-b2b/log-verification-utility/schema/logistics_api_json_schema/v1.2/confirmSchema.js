@@ -188,7 +188,7 @@ module.exports = {
                     required: ["label", "duration", "timestamp"],
                   },
                 },
-                required: ["id", "category_id", "descriptor", "fulfillment_id"],
+                required: ["id", "category_id", "descriptor","time", "fulfillment_id"],
                 // anyOf: [
                 //   {
                 //     allOf: [
@@ -434,7 +434,7 @@ module.exports = {
                                   maxLength: 6,
                                   pattern: "^[a-zA-Z0-9]{1,6}$",
                                   errorMessage:
-                                    "should not be an empty string or have more than 6 digits",
+                                    "should not be an empty string or have more than 6 alphanumeric",
                                 },
                               },
                             },
@@ -529,6 +529,9 @@ module.exports = {
                         properties: {
                           short_desc: {
                             type: "string",
+                            not: { const: { $data: "3/start/instructions/short_desc" } },
+                                errorMessage:
+                                  "PCC should not be same as DCC ${3/start/instructions/short_desc}",
                           },
                           long_desc: {
                             type: "string",
@@ -561,7 +564,7 @@ module.exports = {
                                   maxLength: 6,
                                   pattern: "^[a-zA-Z0-9]{1,6}$",
                                   errorMessage:
-                                    "should not be an empty string or have more than 6 digits",
+                                    "should not be an empty string or have more than 6 alphanumeric",
                                 },
                               },
                               required: ["short_desc"],

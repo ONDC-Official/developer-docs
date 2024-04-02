@@ -12,8 +12,8 @@ const checkOnSelect = async (data, msgIdSet) => {
   let fulfillments = onSelect?.fulfillments;
   let ffState, ffId;
   let deliveryQuoteItem = false;
-  let deliveryCharge = 0
-  dao.setValue("onSlctdItemsArray", items)
+  let deliveryCharge = 0;
+  dao.setValue("onSlctdItemsArray", items);
   const selectedItems = dao.getValue("slctdItemsArray");
   try {
     console.log("Checking fulfillment object in /on_select");
@@ -31,18 +31,22 @@ const checkOnSelect = async (data, msgIdSet) => {
     console.log("Comparing items object with /select");
     const itemDiff = utils.findDifferencesInArrays(items, selectedItems);
     console.log(itemDiff);
+
     itemDiff.forEach((item, i) => {
-      if(item?.attributes?.length>0){
-      let itemkey = `item-${i}-DiffErr`;
-      onSelectObj[
-        itemkey
-      ] = `In /items, '${item.attributes}' mismatch from /select`;
-    }
+      let index = item.attributes.indexOf("fulfillment_ids");
+      if (index !== -1) {
+        item.attributes.splice(index, 1);
+      }
+      if (item.attributes?.length > 0) {
+        let itemkey = `item-${i}-DiffErr`;
+        onSelectObj[
+          itemkey
+        ] = `In /items, '${item.attributes}' mismatch from /select for item with id ${item.index}`;
+      }
     });
   } catch (error) {
     console.log(error);
   }
-
 
   try {
     console.log(`Checking quote object in /on_select api`);
@@ -56,8 +60,8 @@ const checkOnSelect = async (data, msgIdSet) => {
         breakup["@ondc/org/item_id"] === ffId
       ) {
         deliveryQuoteItem = true;
-        deliveryCharge= breakup?.price?.value
-        console.log("deliverycharge",deliveryCharge);
+        deliveryCharge = breakup?.price?.value;
+        console.log("deliverycharge", deliveryCharge);
       }
       if (
         breakup["@ondc/org/title_type"] === "item" &&
@@ -86,7 +90,11 @@ const checkOnSelect = async (data, msgIdSet) => {
     if (!deliveryQuoteItem && ffState === "Serviceable") {
       onSelectObj.deliveryQuoteErr = `Delivery charges should be provided in quote/breakup when fulfillment is 'Serviceable'`;
     }
-    if (deliveryQuoteItem && deliveryCharge!=0 && ffState === "Non-serviceable") {
+    if (
+      deliveryQuoteItem &&
+      deliveryCharge != 0 &&
+      ffState === "Non-serviceable"
+    ) {
       onSelectObj.deliveryQuoteErr = `Delivery charges are not required or should be zero in quote/breakup when fulfillment is 'Non-serviceable'`;
     }
 

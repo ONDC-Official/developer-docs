@@ -7,7 +7,7 @@ const checkConfirm = async (data, msgIdSet) => {
   const cnfrmObj = {};
   let confirm = data;
   confirm = confirm.message.order;
-  let orderState = confirm.state;
+  let orderState = confirm.status;
   let payments = confirm?.payments;
 
   let items = confirm.items;
@@ -32,22 +32,34 @@ const checkConfirm = async (data, msgIdSet) => {
   try {
     console.log(`Checking payment object in /confirm api`);
     payments.forEach((payment) => {
-      let feeType = payment["@ondc/org/buyer_app_finder_fee_type"];
-      let feeAmount = payment["@ondc/org/buyer_app_finder_fee_amount"];
+
       let paymentStatus = payment?.status;
       let paymentType = payment?.type;
+      let payment_collected = payment?.collected_by;
       let params = payment?.params;
-
-      if (feeType != dao.getValue("buyerFinderFeeType")) {
-        cnfrmObj.feeTypeErr = `Buyer Finder Fee type mismatches from /search`;
-      }
-      if (
-        parseFloat(feeAmount) !=
-        parseFloat(dao.getValue("buyerFinderFeeAmount"))
-      ) {
-        cnfrmObj.feeTypeErr = `Buyer Finder Fee amount mismatches from /search`;
-      }
-
+      let feeType,feeAmount;
+      let tags = payment.tags;
+      tags.forEach((tag) => {
+        if (tag?.descriptor?.code === "Buyer_Finder_Fee" && tag?.list) {
+          tag.list.forEach((val) => {
+            if (val?.descriptor?.code === "Buyer_Finder_Fee_Type") {
+              feeType = val?.value;
+            }
+            if (val?.descriptor?.code === "Buyer_Finder_Fee_Amount") {
+              feeAmount = val?.value;
+            }
+          });
+        }
+        if (feeType != dao.getValue("buyerFinderFeeType")) {
+          cnfrmObj.feeTypeErr = `Buyer Finder Fee type mismatches from /search`;
+        }
+        if (
+          parseFloat(feeAmount) !=
+          parseFloat(dao.getValue("buyerFinderFeeAmount"))
+        ) {
+          cnfrmObj.feeTypeErr = `Buyer Finder Fee amount mismatches from /search`;
+        }
+      });
       if (paymentStatus === "PAID" && !params?.transaction_id) {
         cnfrmObj.pymntErr = `Transaction ID in payments/params is required when the payment status is 'PAID'`;
       }
@@ -61,10 +73,11 @@ const checkConfirm = async (data, msgIdSet) => {
       ) {
         cnfrmObj.pymntstsErr = `Payment status will be 'PAID' once the order is 'Completed' for payment type 'ON-FULFILLMENT'`;
       }
+
     });
   } catch (error) {
     console.log(
-      `!!Error while checking providers array in /confirm api`,
+      `!!Error while checking payment object in /confirm api`,
       error
     );
   }
