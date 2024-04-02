@@ -743,7 +743,6 @@ module.exports = {
                           "parent_item_id",
                           "descriptor",
                           "price",
-                          "quantity",
                           "category_ids",
                           "tags",
                         ],
@@ -880,6 +879,7 @@ module.exports = {
                         "category_ids",
                         "item_ids",
                         "time",
+                        "tags"
                       ],
                     },
                   },

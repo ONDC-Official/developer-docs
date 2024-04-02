@@ -7,7 +7,7 @@ const checkConfirm = async (data, msgIdSet) => {
   const cnfrmObj = {};
   let confirm = data;
   confirm = confirm.message.order;
-  let orderState = confirm.state;
+  let orderState = confirm.status;
   let payments = confirm?.payments;
 
   let items = confirm.items;
@@ -37,7 +37,7 @@ const checkConfirm = async (data, msgIdSet) => {
       let paymentType = payment?.type;
       let payment_collected = payment?.collected_by;
       let params = payment?.params;
-
+      let feeType,feeAmount;
       let tags = payment.tags;
       tags.forEach((tag) => {
         if (tag?.descriptor?.code === "Buyer_Finder_Fee" && tag?.list) {

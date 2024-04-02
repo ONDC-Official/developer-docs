@@ -11,7 +11,7 @@ const checkOnStatus = (data, msgIdSet) => {
 
   on_status = on_status.message.order;
   let ffState;
-  let orderState = on_status.state;
+  let orderState = on_status.status;
   let items = on_status.items;
   let fulfillments = on_status.fulfillments;
   let pickupTime, deliveryTime;
@@ -75,7 +75,7 @@ const checkOnStatus = (data, msgIdSet) => {
         if (ffState === "In-Transit") {
          
           if (orderState !== "In-progress") {
-            onStatusObj.ordrStatErr = `Order state should be 'In-progress' for fulfillment state - ${ffState}`;
+            onStatusObj.ordrStatErr = `Order status should be 'In-progress' for fulfillment state - ${ffState}`;
           }
           fulfillment.stops.forEach((stop) => {
             if (stop.type === "start") {
@@ -103,7 +103,7 @@ const checkOnStatus = (data, msgIdSet) => {
         if (ffState === "At-Location") {
           
           if (orderState !== "In-progress") {
-            onStatusObj.ordrStatErr = `Order state should be 'In-progress' for fulfillment state - ${ffState}`;
+            onStatusObj.ordrStatErr = `Order status should be 'In-progress' for fulfillment state - ${ffState}`;
           }
           fulfillment.stops.forEach((stop) => {
             if (stop.type === "start") {
@@ -132,7 +132,7 @@ const checkOnStatus = (data, msgIdSet) => {
         if (ffState === "Completed") {
          
           if (orderState !== "Completed") {
-            onStatusObj.ordrStatErr = `Order state should be 'Completed' for fulfillment state - ${ffState}`;
+            onStatusObj.ordrStatErr = `Order status should be 'Completed' for fulfillment state - ${ffState}`;
           }
           fulfillment.stops.forEach((stop) => {
             if (stop.type === "start") {
