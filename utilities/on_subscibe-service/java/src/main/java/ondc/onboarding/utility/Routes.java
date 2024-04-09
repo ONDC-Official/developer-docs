@@ -57,12 +57,34 @@ public class Routes extends  Utils{
     String createHeader(@RequestBody JsonNode req) throws Exception {
         long created = System.currentTimeMillis() / 1000L;
         long expires = created + 300000;
+        logger.info(toBase64(generateBlakeHash(req.get("value").toString())));
+        logger.info(req.get("value").toString());
         String hashedReq = hashMassage(req.get("value").toString(),created,expires);
         String signature = sign(Base64.getDecoder().decode(req.get("private_key").asText()),hashedReq.getBytes());
-        String subscriberId = "altiux.com";
-        String uniqueKeyId = "c9aa1b41-04e9-43e2-bd89-9ddcdecbf4cf";
+        String subscriberId = req.get("subscriber_id").asText();
+        String uniqueKeyId = req.get("unique_key_id").asText();
 
         return "Signature keyId=\"" + subscriberId + "|" + uniqueKeyId + "|" + "ed25519\"" + ",algorithm=\"ed25519\"," + "created=\"" + created + "\",expires=\"" + expires + "\",headers=\"(created) (expires)" + " digest\",signature=\"" + signature + "\"";
+    }
+
+    @PostMapping("/verify-header")
+    public boolean isValidHeader(@RequestBody JsonNode req) throws Exception {
+        long currentTimestamp = System.currentTimeMillis() / 1000L;
+        String authHeader = req.get("header").asText();
+        String signature = authHeader.split(",")[5].split("=")[1].replaceAll("\"","");
+        long expires = Long.parseLong(authHeader.split(",")[3].split("=")[1].replaceAll("\"",""));
+        long created = Long.parseLong(authHeader.split(",")[2].split("=")[1].replaceAll("\"",""));
+        if ((created > currentTimestamp) || currentTimestamp > expires){
+            logger.info("Timestamp should be Created < CurrentTimestamp < Expires");
+            return false;
+        }
+        String hashedReq = hashMassage(req.get("value").toString(),created,expires);
+        logger.info(hashedReq);
+        return verify(
+                fromBase64(signature),
+                hashedReq.getBytes(),
+                fromBase64(req.get("public_key").asText())
+        );
     }
 
     @PostMapping("/subscribe")
