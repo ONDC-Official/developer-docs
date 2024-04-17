@@ -1,1 +1,1 @@
-from .core import generate_deep_link, generate_qr_code
+from .core import generate_deep_link, generate_qr_code, bulk_read

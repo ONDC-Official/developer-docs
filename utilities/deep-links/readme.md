@@ -10,17 +10,20 @@ Please refer to the detailed [concept note](https://docs.google.com/document/d/1
 
 ### Install dependencies:
 
-```
-pip3 install qrcode
-```
-
-### Generate query string based on the use case:
-
-**For the use cases:**
-
-#### Catalog Access through Seller-Generated QR Codes
+```bash
+pip3 install -r requirements.txt
 
 ```
+
+**Usage - The utility can be used to generate singlw QR code or bulk QR codes.**
+
+### Generate Single QR code:
+
+Create query string for generating single QR code based on use case
+
+##### Catalog Access through Seller-Generated QR Codes
+
+```python
 query_string = {
         "context.bpp_id": "webapi.magicpin.in",
         "message.intent.provider.id": "P1",
@@ -28,9 +31,9 @@ query_string = {
     }
 ```
 
-#### Category-Specific Browsing via Seller-Generated QR Codes
+##### Category-Specific Browsing via Seller-Generated QR Codes
 
-```
+```python
 query_string = {
         "context.bpp_id": "sellerapp.com",
         "message.intent.provider.id": "P1",
@@ -39,21 +42,23 @@ query_string = {
     }
 ```
 
-#### And so on for the rest of the use cases...
+##### And so on for the rest of the use cases...
 
-### Run this utility
+**Run this utility**
 
-Option 1:
+**Pass the query_string data as a data argument**
 
-**Pass the query_string data as an argument**
-
-```
-python3 qr_generate.py '{"context.bpp_id": "sellerapp.com", "message.intent.provider.id": "P1", "context.domain": "RET10", "message.intent.category.id": "Foodgrains"}'
+```bash
+python3 qr_generate.py --data '{"context.bpp_id": "sellerapp.com", "message.intent.provider.id": "P1", "context.domain": "RET10", "message.intent.category.id": "Foodgrains"}'
 ```
 
-Option 2:
+### Generate Bulk QR codes:
 
-**Define the query_string in qr_generate.py**
+**Pass the csv file as a file argument**
+
+```bash
+python3 qr_generate.py --file data.csv
+```
 
 ## Buyer App Platform Integration
 
