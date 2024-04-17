@@ -17,9 +17,13 @@ const validateLogs = async (domain, dirPath, outputDestination = "") => {
   console.log("MERGE FILE PATH", mergefile);
   ErrorObj["Flow Error"] = sortMerge(domain, dirPath, mergefile);
 
-  //  Log Validation
-  await Validate(domain, mergefile, msgIdSet, ErrorObj);
-  // console.log("ERROR object in validateLogUtil", ErrorObj);
+  try {
+    //  Log Validation
+    await Validate(domain, mergefile, msgIdSet, ErrorObj);
+    // console.log("ERROR object in validateLogUtil", ErrorObj);
+  } catch (error) {
+    console.trace("Error", error);
+  }
 
   // Cleaning output report
   let log = clean(ErrorObj);

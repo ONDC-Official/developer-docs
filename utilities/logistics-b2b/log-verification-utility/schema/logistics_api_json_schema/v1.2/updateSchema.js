@@ -374,49 +374,6 @@ module.exports = {
                     ],
                   },
                 },
-                provider: {
-                  type: "object",
-                  properties: {
-                    descriptor: {
-                      type: "object",
-                      properties: {
-                        name: {
-                          type: "string",
-                        },
-                      },
-                      required: ["name"],
-                    },
-                    address: {
-                      type: "object",
-                      properties: {
-                        name: {
-                          type: "string",
-                        },
-                        locality: {
-                          type: "string",
-                        },
-                        city: {
-                          type: "string",
-                        },
-                        state: {
-                          type: "string",
-                        },
-                        area_code: {
-                          type: "string",
-                        },
-                      },
-
-                      required: [
-                        "name",
-                        "locality",
-                        "city",
-                        "state",
-                        "area_code",
-                      ],
-                    },
-                  },
-                  required: ["descriptor", "address"],
-                },
                 order: {
                   type: "object",
                   properties: {
@@ -485,7 +442,7 @@ module.exports = {
                   required: ["id", "weight"],
                 },
               },
-              required: ["items", "provider", "order"],
+              required: ["items", "order"],
             },
             updated_at: {
               type: "string",

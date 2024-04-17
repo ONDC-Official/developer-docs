@@ -760,6 +760,7 @@ module.exports = {
                   },
                   label: {
                     type: "string",
+                    enum:["PROFORMA_INVOICE","Invoice","INVOICE"]
                   },
                 },
                 required: ["url", "label"],

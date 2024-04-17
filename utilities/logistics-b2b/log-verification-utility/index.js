@@ -19,7 +19,7 @@ try {
   fs.readdir(logpath, (err, files) => {
     try {
       if (err) {
-        console.log(`Some error occurred while reading files from ${path}`);
+        console.trace(`Some error occurred while reading files from ${path}`);
       } else if (!files.length) {
         console.log(`${path} folder is empty!!`);
       } else {
@@ -27,7 +27,7 @@ try {
         validateLog(domain, logpath);
       }
     } catch (error) {
-      console.log(`Error while reading logs folder`, error);
+      console.trace(`Error while reading logs folder`, error);
     }
   });
 } catch (error) {

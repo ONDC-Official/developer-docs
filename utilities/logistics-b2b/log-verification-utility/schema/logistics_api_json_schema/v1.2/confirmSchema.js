@@ -908,6 +908,12 @@ module.exports = {
                           },
                           value: {
                             type: "string",
+                            const: {
+                              $data:
+                                "/search/0/message/intent/@ondc~1org~1payload_details/value/value",
+                            },
+                            errorMessage:
+                              "order price mismatches from /search",
                           },
                         },
                         required: ["currency", "value"],

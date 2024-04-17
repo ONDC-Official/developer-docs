@@ -1,3 +1,5 @@
+const constants = require("../../../utils/constants");
+
 module.exports = {
   $id: "http://example.com/schema/onSearchSchema",
   type: "object",
@@ -698,6 +700,7 @@ module.exports = {
                                     properties: {
                                       code: {
                                         type: "string",
+                                        enum: constants.FULFILLMENT_STATE
                                       },
                                     },
                                     required: ["code"],
@@ -720,6 +723,7 @@ module.exports = {
                                     properties: {
                                       currency: {
                                         type: "string",
+                                        enum: constants.CURRENCY
                                       },
                                       value: {
                                         type: "string",
@@ -751,6 +755,7 @@ module.exports = {
                                     properties: {
                                       code: {
                                         type: "string",
+                                        enum: constants.FULFILLMENT_STATE
                                       },
                                     },
                                     required: ["code"],

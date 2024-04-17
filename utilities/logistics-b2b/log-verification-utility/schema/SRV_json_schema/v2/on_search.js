@@ -724,7 +724,6 @@ module.exports = {
                           "id",
                           "parent_item_id",
                           "descriptor",
-                          "creator",
                           "price",
                           "category_ids",
                           "fulfillment_ids",

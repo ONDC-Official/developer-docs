@@ -62,6 +62,32 @@ const checkOnSearch = async (data, msgIdSet) => {
         }
       }
 
+      try {
+        console.log("Checking provider serviceability");
+
+        let providerTags = provider?.tags;
+        if (providerTags) {
+          providerTags.forEach((tag) => {
+            if (tag?.descriptor?.code === "serviceability" && tag?.list) {
+              mandatoryTags = constants.SERVICEABILITY;
+              let missingTags = utils.findMissingTags(
+                tag?.list,
+                "serviceability",
+                mandatoryTags
+              );
+              if (missingTags.length > 0) {
+                onSrchObj.mssngTagErr = `'${missingTags}' code/s required in providers/tags for serviceability`;
+              }
+            }
+          });
+        } else {
+          onSrchObj.servcbltyErr =
+            "serviceability tag is required for a provider in providers/tags";
+        }
+      } catch (error) {
+        console.log(error);
+      }
+
       //checking mandatory attributes for fashion and electronics
 
       provider.items.forEach((item) => {
@@ -72,8 +98,10 @@ const checkOnSearch = async (data, msgIdSet) => {
 
         itemTags.forEach((tag) => {
           let { descriptor, list } = tag;
-          if (descriptor?.code === "attribute" && constants.ATTR_DOMAINS.includes(domain)) {
-
+          if (
+            descriptor?.code === "attribute" &&
+            constants.ATTR_DOMAINS.includes(domain)
+          ) {
             if (domain === "ONDC:RET12") {
               mandatoryAttr = constants.FASHION_ATTRIBUTES;
             }
@@ -83,7 +111,12 @@ const checkOnSearch = async (data, msgIdSet) => {
             if (domain === "ONDC:RET12") {
               mandatoryAttr = constants.FASHION_ATTRIBUTES;
             }
-            if (domain === "ONDC:RET1A"||domain === "ONDC:RET1B"||domain === "ONDC:RET1C"||domain === "ONDC:RET1D") {
+            if (
+              domain === "ONDC:RET1A" ||
+              domain === "ONDC:RET1B" ||
+              domain === "ONDC:RET1C" ||
+              domain === "ONDC:RET1D"
+            ) {
               mandatoryAttr = constants.MANDATORY_ATTRIBUTES;
             }
             attrPresent = true;
@@ -114,7 +147,6 @@ const checkOnSearch = async (data, msgIdSet) => {
           onSrchObj.attrMissing = `code = 'attribute' is missing in /items/tags for domain ${domain}`;
         }
       });
-     
     }
   }
 
