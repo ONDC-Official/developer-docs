@@ -139,6 +139,21 @@ module.exports = {
                       type: "string",
                     },
                   },
+                  quantity: {
+                    type: "object",
+                    properties: {
+                      selected: {
+                        type: "object",
+                        properties: {
+                          count: {
+                            type: "integer",
+                          },
+                        },
+                        required: ["count"],
+                      },
+                    },
+                    required: ["selected"],
+                  },
                   time: {
                     type: "object",
                     properties: {
