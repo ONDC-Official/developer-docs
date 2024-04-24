@@ -6,11 +6,20 @@ const utils = require("../utils");
 const checkOnInit = async (data, msgIdSet) => {
   const onInitObj = {};
   let onInit = data;
+  let citycode = onInit?.context?.location?.city?.code;
   onInit = onInit.message.order;
   let quote = onInit?.quote;
+  let fulfillments= onInit.fulfillments
   let payments = onInit?.payments;
   let rfq = dao.getValue("rfq");
 
+  fulfillments.forEach((fulfillment, i) => {
+    let fulfillmentTags = fulfillment?.tags;
+
+    if (citycode === "std:999" && !fulfillmentTags) {
+      selectObj.fullfntTagErr = `Delivery terms (INCOTERMS) are required for exports in /fulfillments/tags`;
+    }
+  });
   try {
     console.log(`Checking payment object in /on_init api`);
     payments.forEach((payment) => {

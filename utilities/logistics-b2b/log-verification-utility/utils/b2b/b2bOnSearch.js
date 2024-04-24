@@ -114,7 +114,7 @@ const checkOnSearch = async (data, msgIdSet) => {
         }
 
         if (domain === "ONDC:RET10" || domain === "ONDC:RET11") {
-          if (!providerTagSet.has("FSSAI_LICENSE_NO")) {
+          if (!providerTagSet.has("FSSAI_LICENSE_NO") && citycode!=="std:999") {
             onSrchObj.fssaiErr = `For food businesses, FSSAI_LICENSE_NO is required in providers/tags`;
           }
         }

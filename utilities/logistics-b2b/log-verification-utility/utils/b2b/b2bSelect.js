@@ -6,17 +6,19 @@ const utils = require("../utils");
 const checkSelect = async (data, msgIdSet) => {
   const selectObj = {};
   let select = data;
+  let citycode = select?.context?.location?.city?.code;
   select = select.message.order;
   let fulfillments = select?.fulfillments;
+
   let providersArr = dao.getValue("providersArr");
   let fulfillmentsArr = dao.getValue("fulfillmentsArr");
   let itemsArr = select.items;
-  dao.setValue("slctdItemsArray",itemsArr)
+  dao.setValue("slctdItemsArray", itemsArr);
   let rfq = false;
 
-  if(select?.provider?.ttl) rfq = true
+  if (select?.provider?.ttl) rfq = true;
 
-  dao.setValue("rfq",rfq)
+  dao.setValue("rfq", rfq);
 
   // provider check
   try {
@@ -108,6 +110,11 @@ const checkSelect = async (data, msgIdSet) => {
 
         //checking fulfillments
         fulfillments.forEach((fulfillment, i) => {
+          let fulfillmentTags = fulfillment?.tags;
+          
+          if (citycode === "std:999" && !fulfillmentTags) {
+            selectObj.fullfntTagErr = `Delivery terms (INCOTERMS) are required for exports in /fulfillments/tags`;
+          }
           let bppfulfillment = fulfillmentsArr?.find(
             (element) => element.id === fulfillment.id
           );

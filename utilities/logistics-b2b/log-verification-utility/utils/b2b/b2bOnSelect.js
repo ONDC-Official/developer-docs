@@ -6,6 +6,7 @@ const utils = require("../utils");
 const checkOnSelect = async (data, msgIdSet) => {
   const onSelectObj = {};
   let onSelect = data;
+  let citycode = onSelect?.context?.location?.city?.code;
   onSelect = onSelect.message.order;
   let quote = onSelect?.quote;
   const items = onSelect.items;
@@ -19,6 +20,11 @@ const checkOnSelect = async (data, msgIdSet) => {
     console.log("Checking fulfillment object in /on_select");
     if (fulfillments) {
       fulfillments.forEach((fulfillment) => {
+        let fulfillmentTags = fulfillment?.tags;
+          
+        if (citycode === "std:999" && !fulfillmentTags) {
+          onSelectObj.fullfntTagErr = `Delivery terms (INCOTERMS) are required for exports in /fulfillments/tags`;
+        }
         ffId = fulfillment?.id;
         ffState = fulfillment?.state?.descriptor?.code;
       });
