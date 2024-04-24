@@ -12,6 +12,11 @@ const checkSelect = async (data, msgIdSet) => {
   let fulfillmentsArr = dao.getValue("fulfillmentsArr");
   let itemsArr = select.items;
   dao.setValue("slctdItemsArray",itemsArr)
+  let rfq = false;
+
+  if(select?.provider?.ttl) rfq = true
+
+  dao.setValue("rfq",rfq)
 
   // provider check
   try {

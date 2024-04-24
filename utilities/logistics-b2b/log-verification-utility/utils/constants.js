@@ -189,6 +189,11 @@ module.exports = Object.freeze({
   B2B_BPP_TERMS:["buyer_id_code","buyer_id_no","max_liability","max_liability_cap","mandatory_arbitration","court_jurisdiction","delay_interest","accept_bpp_terms"],
   ATTR_DOMAINS:["ONDC:RET12","ONDC:RET14","ONDC:RET1A","ONDC:RET1B","ONDC:RET1C","ONDC:RET1D"],
   G2TAGS:["time_to_ship","cancellable","tax_rate"],
+  VALIDCOUNTRYCODES:["IND","SGP","AUS","ARE","USA","GBR"],
+  BPP_PAYMENT_TAGS:["signature","dsa","ttl"],
+  ON_SEEARCH_ITEMTAGS:["g2","g3","back_image","origin","price_slab"],
+  ON_SEARCH_PROVIDERTAGS:["serviceability","seller_id","seller_terms"],
+
 
   //services
   SRV_FULFILLMENT_TYPE:["Home-Service","Store-Service"],
@@ -197,6 +202,6 @@ module.exports = Object.freeze({
   SRV_ORDER_STATE:["Created","Accepted","In-progress","Completed","Cancelled","Pending"],
   GPS_PATTERN: "^(-?[0-9]{1,3}(?:.[0-9]{6,15})?),( )*?(-?[0-9]{1,3}(?:.[0-9]{6,15})?)$",
   SERVICEABILITY:["location","category","type","val","unit"],
-  RESCHEDULE_TERMS:["fulfillment_state","reschedule_eligible","reschedule_fee","reschedule_within"]
+  RESCHEDULE_TERMS:["fulfillment_state","reschedule_eligible","reschedule_fee","reschedule_within"],
 
 });

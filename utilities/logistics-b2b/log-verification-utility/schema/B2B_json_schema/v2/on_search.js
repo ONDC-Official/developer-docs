@@ -276,6 +276,7 @@ module.exports = {
                           properties: {
                             code: {
                               type: "string",
+                              enum: constants.VALIDCOUNTRYCODES
                             },
                           },
                           required: ["code"],

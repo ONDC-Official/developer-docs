@@ -85,6 +85,7 @@ module.exports = {
         ttl: {
           type: "string",
           format: "duration",
+          const:"PT30S"
         },
       },
       required: [

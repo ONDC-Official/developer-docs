@@ -35,8 +35,8 @@ const b2bVal = (element, action, msgIdSet) => {
     case "confirm":
       return checkConfirm(element, msgIdSet);
 
-    // case "on_confirm":
-    //   return checkOnConfirm(element, msgIdSet);
+    case "on_confirm":
+      return checkOnConfirm(element, msgIdSet);
 
     // case "update":
     //   return checkUpdate(element,msgIdSet);
