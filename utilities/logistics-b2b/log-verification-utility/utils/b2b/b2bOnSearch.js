@@ -30,6 +30,7 @@ const checkOnSearch = async (data, msgIdSet) => {
 
       dao.setValue("providersArr", providers);
       providers.forEach((provider, i) => {
+    
         console.log(citycode, provider?.creds);
         if (citycode === "std:999" && !provider.creds) {
           onSrchObj.msngCreds = `Creds are required for exports in /providers`;
@@ -108,7 +109,8 @@ const checkOnSearch = async (data, msgIdSet) => {
         }
 
         if (missingTags.length > 0) {
-          onSrchObj.missingPRVDRTags = `${missingTags} are required in /providers/tags`;
+          let itemKey = `missingPRVDRTags-${i}-err`
+          onSrchObj[itemKey] = `${missingTags} are required in /providers/tags`;
         }
 
         if (domain === "ONDC:RET10" || domain === "ONDC:RET11") {
@@ -121,10 +123,11 @@ const checkOnSearch = async (data, msgIdSet) => {
       }
 
       //checking mandatory attributes for fashion and electronics
-
-      provider.items.forEach((item) => {
+      let locations = provider.locations;
+      provider.items.forEach((item,k) => {
         let payment_ids = item.payment_ids;
         let fulfillment_ids = item.fulfillment_ids;
+        let location_ids= item.location_ids
         let itemTags = item?.tags;
         let mandatoryAttr = [];
         let attrPresent = false;
@@ -151,12 +154,40 @@ const checkOnSearch = async (data, msgIdSet) => {
           }
 
           if (missingIds.length > 0) {
-            onSrchObj.missingFlmntIds = `Fulfillment id/s ${missingIds} in /items does not exist in /fulfillments`;
+            let itemKey = `missingFlmntIds-${k}-err`
+            onSrchObj[itemKey] = `Fulfillment id/s ${missingIds} in /items does not exist in /fulfillments`;
           }
         } catch (error) {
           console.log(error);
         }
 
+        try {
+          console.log(
+            "Comparing location_ids in /items and /providers/locations in /on_search"
+          );
+
+        
+          let locationSet = new Set();
+
+          for (let loc of locations) {
+            locationSet.add(loc?.id);
+          }
+
+          let missingIds = [];
+
+          for (let id of location_ids) {
+            if (!locationSet.has(id)) {
+              missingIds.push(id);
+            }
+          }
+
+          if (missingIds.length > 0) {
+            let itemKey = `missingLoc-${k}-err`
+            onSrchObj[itemKey] = `Location id/s ${missingIds} in /items does not exist in /providers/locations`;
+          }
+        } catch (error) {
+          console.log(error);
+        }
         try {
           console.log(
             "Comparing payment_ids in /items and /payments in /on_search"
@@ -177,7 +208,8 @@ const checkOnSearch = async (data, msgIdSet) => {
           }
 
           if (missingIds.length > 0) {
-            onSrchObj.missingpymntIds = `Payment id/s ${missingIds} in /items does not exist in /payments`;
+            let itemKey = `missingpymntIds-${k}-err`
+            onSrchObj[itemKey] = `Payment id/s ${missingIds} in /items does not exist in /payments`;
           }
         } catch (error) {
           console.log(error);
@@ -190,7 +222,7 @@ const checkOnSearch = async (data, msgIdSet) => {
             itemTagsSet.has(descriptor?.code) &&
             descriptor?.code !== "price_slab"
           ) {
-            let itemKey = `duplicateTag${i}`;
+            let itemKey = `duplicateTag${k}`;
             onSrchObj[
               itemKey
             ] = `${descriptor?.code} is a duplicate tag in /items/tags`;
@@ -227,7 +259,8 @@ const checkOnSearch = async (data, msgIdSet) => {
             );
 
             if (missingAttr.length > 0) {
-              onSrchObj.mssngAttrErr = `'${missingAttr}' attribute/s required in items/tags for ${domain} domain`;
+              let itemKey = `mssngAttrErr-${k}-err`
+              onSrchObj[itemKey] = `'${missingAttr}' attribute/s required in items/tags for ${domain} domain`;
             }
           }
           if (descriptor?.code === "g2") {
@@ -239,7 +272,8 @@ const checkOnSearch = async (data, msgIdSet) => {
             );
 
             if (missingAttr.length > 0) {
-              onSrchObj.missingTagErr = `'${missingAttr}' required for 'g2' tag in items/tags`;
+              let itemKey = `missingTagErr-${k}-err`
+              onSrchObj[itemKey] = `'${missingAttr}' required for 'g2' tag in items/tags`;
             }
           }
           if (descriptor?.code === "origin") {
@@ -251,7 +285,8 @@ const checkOnSearch = async (data, msgIdSet) => {
                   onSrchObj.originFrmtErr = `Country of origin should be in a valid 'ISO 3166-1 alpha-3' format e.g. IND, SGP`;
                 } else {
                   if (!constants.VALIDCOUNTRYCODES.includes(tag?.value)) {
-                    onSrchObj.originFrmtErr1 = `'${tag?.value}' is not a valid 'ISO 3166-1 alpha-3' country code`;
+                    let itemKey = `originFrmtErr1-${k}-err`
+                    onSrchObj[itemKey] = `'${tag?.value}' is not a valid 'ISO 3166-1 alpha-3' country code`;
                   }
                 }
               }
@@ -268,10 +303,12 @@ const checkOnSearch = async (data, msgIdSet) => {
         }
 
         if (missingTags.length > 0) {
-          onSrchObj.missingPymntTags = `'${missingTags}' tag/s  required in /items/tags`;
+          let itemKey = `missingItemTags-${k}-err`
+          onSrchObj[itemKey] = `'${missingTags}' tag/s  required in /items/tags`;
         }
         if (constants.ATTR_DOMAINS.includes(domain) && !attrPresent) {
-          onSrchObj.attrMissing = `code = 'attribute' is missing in /items/tags for domain ${domain}`;
+          let itemKey = `attrMissing-${k}-err`
+          onSrchObj[itemKey] = `code = 'attribute' is missing in /items/tags for domain ${domain}`;
         }
       });
     }

@@ -17,6 +17,7 @@ const checkOnStatus = (data, msgIdSet) => {
   let pickupTime, deliveryTime, RtoPickupTime, RtoDeliveredTime;
   let payments = on_status?.payments;
   let invoice = on_status?.documents;
+  let rfq= dao.getValue("rfq")
 
   try {
     console.log(`Checking payment object in /on_status`);
@@ -70,7 +71,7 @@ const checkOnStatus = (data, msgIdSet) => {
               }
             }
           });
-          if(invoice) onStatusObj.invoiceErr=`/documents (Invoice) is not required before order is picked up for Non RFQ Flow.`
+          if(invoice && !rfq) onStatusObj.invoiceErr=`/documents (Invoice) is not required before order is picked up for Non RFQ Flow.`
         }
         //Order-picked-up
 
