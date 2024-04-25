@@ -310,7 +310,7 @@ module.exports = {
                           required: ["descriptor", "list"],
                         },
                       },
-                      required: ["type", "location", "time", "tags"],
+                      required: ["type", "location", "time"],
                     },
                   },
                 },
