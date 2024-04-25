@@ -181,6 +181,7 @@ module.exports = Object.freeze({
   ],
   CURRENCY:["INR","AUD","USD","SGD"],
   CANCELLATION_TAGS_CODES:["rto_event","precancel_state"],
+  RTO_EVENT_TAGS:["retry_count","rto_id","cancellation_reason_id","cancelled_by"],
   CANCELLATION_TAGS_LIST:["retry_count","rto_id","cancellation_reason_id","sub_reason_id","cancelled_by","fulfillment_state","updated_at"],
   FASHION_ATTRIBUTES : ["brand","colour","size","gender","material"],
   ELECTRONICS_ATTRIBUTES: ["brand","model"],

@@ -18,7 +18,7 @@ const checkOnCancel = (data, msgIdSet) => {
   let items = on_cancel.items;
   let fulfillments = on_cancel.fulfillments;
   let RtoPickupTime;
-
+  let missingTags = [];
   const created_at = on_cancel.created_at;
   const updated_at = on_cancel.updated_at;
 
@@ -51,9 +51,11 @@ const checkOnCancel = (data, msgIdSet) => {
     );
     selectedItem = selectedItem[0];
   }
-
+  let fulfillmentTagSet = new Set();
   try {
-    fulfillments.forEach((fulfillment) => {
+    fulfillments.forEach((fulfillment, i) => {
+      let fulfillmentTags = fulfillment?.tags;
+
       ffState = fulfillment?.state?.descriptor?.code;
       console.log(
         `Comparing pickup and delivery timestamps for on_cancel_${ffState}`
@@ -102,7 +104,7 @@ const checkOnCancel = (data, msgIdSet) => {
             if (!fulTags) {
               onCancelObj.msngflfllmntTags = `fulfillments/tags are required in case of RTO (rto_event, precancel_state)`;
             } else {
-              let rtoID, reasonId,preCnclState;
+              let rtoID, reasonId, preCnclState;
 
               fulTags.forEach((tag) => {
                 if (tag.code === "rto_event") {
@@ -123,13 +125,12 @@ const checkOnCancel = (data, msgIdSet) => {
                     }
                   });
                 }
-                if(tag.code === "precancel_state"){
-                  
+                if (tag.code === "precancel_state") {
                   const lists = tag.list;
                   lists.forEach((list) => {
                     if (list.code === "fulfillment_state") {
                       preCnclState = list.value;
-                      
+
                       if (!constants.FULFILLMENT_STATE.includes(preCnclState)) {
                         onCancelObj.preCnclStateErr = `${preCnclState} is not a valid precancel state in fulfillments/tags`;
                       }
@@ -161,9 +162,44 @@ const checkOnCancel = (data, msgIdSet) => {
           }
         }
       }
+
+      //checking tags
+      let rtoEventTagSet = new Set();
+      if (fulfillmentTags) {
+        fulfillmentTags.forEach((tag, i) => {
+          let { code, list } = tag;
+          fulfillmentTagSet.add(code);
+          if (code === "rto_event") {
+            list.forEach((childTag) => {
+              rtoEventTagSet.add(childTag.code);
+            });
+
+            missingTags = utils.findRequiredTags(
+              rtoEventTagSet,
+              constants.RTO_EVENT_TAGS
+            );
+            if (missingTags.length > 0) {
+              let itemKey = `missingRtoEventTags-${i}-err`;
+              onCancelObj[
+                itemKey
+              ] = `'${missingTags}' tag/s required in rto_event tag in /fulfillments/tags`;
+            }
+          }
+        });
+        missingTags = utils.findRequiredTags(
+          fulfillmentTagSet,
+          constants.CANCELLATION_TAGS_CODES
+        );
+        if (missingTags.length > 0) {
+          let itemKey = `missingFlmntTags-${i}-err`;
+          onCancelObj[
+            itemKey
+          ] = `'${missingTags}' tag/s required in /fulfillments/tags`;
+        }
+      }
     });
   } catch (error) {
-    console.trace(`Error checking fulfillments/start in /on_cancel`,error);
+    console.trace(`Error checking fulfillments/start in /on_cancel`, error);
   }
 
   return onCancelObj;

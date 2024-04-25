@@ -8,6 +8,7 @@ const checkConfirm = (data, msgIdSet) => {
   let confirm = data;
   const contextTimestamp= confirm.context.timestamp
   let version = confirm.context.core_version;
+  let missingTags =[];
   let onSearchProvArr = dao.getValue("providersArr");
   confirm = confirm.message.order;
   let rts;
@@ -71,7 +72,9 @@ const checkConfirm = (data, msgIdSet) => {
   let fulfillments = confirm.fulfillments;
 
   let p2h2p = dao.getValue("p2h2p");
-  fulfillments.forEach((fulfillment) => {
+  let fulfillmentTagSet = new Set();
+  fulfillments.forEach((fulfillment,i) => {
+    let fulfillmentTags = fulfillment?.tags;
     let avgPickupTime= fulfillment?.start?.time?.duration;
 console.log(avgPickupTime,dao.getValue(`${fulfillment?.id}-avgPickupTime`));
     if(avgPickupTime && dao.getValue(`${fulfillment?.id}-avgPickupTime`) && avgPickupTime!==dao.getValue(`${fulfillment?.id}-avgPickupTime`)){
@@ -80,6 +83,22 @@ console.log(avgPickupTime,dao.getValue(`${fulfillment?.id}-avgPickupTime`));
     if (fulfillment["@ondc/org/awb_no"] && p2h2p) awbNo = true;
     if (rts === "yes" && !fulfillment?.start?.instructions?.short_desc) {
       cnfrmObj.instructionsErr = `fulfillments/start/instructions are required when ready_to_ship = 'yes'`;
+    }
+     reqFulTags = ["rto_action","state"]
+    //checking tags
+    if (fulfillmentTags) {
+      fulfillmentTags.forEach((tag) => {
+        let { code, list } = tag;
+        fulfillmentTagSet.add(code);
+      })
+
+      missingTags= utils.findRequiredTags(fulfillmentTagSet,reqFulTags)
+       if (missingTags.length > 0) {
+        let itemKey = `missingFlmntTags-${i}-err`;
+        cnfrmObj[
+          itemKey
+        ] = `'${missingTags}' tag/s required in /fulfillments/tags`;
+      }
     }
   });
 
