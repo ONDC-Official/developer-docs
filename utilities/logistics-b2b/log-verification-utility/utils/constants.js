@@ -191,8 +191,9 @@ module.exports = Object.freeze({
   G2TAGS:["time_to_ship","cancellable","tax_rate"],
   VALIDCOUNTRYCODES:["IND","SGP","AUS","ARE","USA","GBR"],
   BPP_PAYMENT_TAGS:["signature","dsa","ttl"],
-  ON_SEEARCH_ITEMTAGS:["g2","g3","back_image","origin","price_slab"],
+  ON_SEEARCH_ITEMTAGS:["g2","g3","back_image","origin"],
   ON_SEARCH_PROVIDERTAGS:["serviceability","seller_id","seller_terms"],
+  B2B_PAYMENT_TYPE:["PRE-FULFILLMENT","ON-FULFILLMENT"],
 
 
   //services

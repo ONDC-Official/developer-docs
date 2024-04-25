@@ -70,7 +70,7 @@ module.exports = {
         },
         ttl: {
           type: "string",
-          const:"PT30S"
+          const: "PT30S",
         },
       },
       required: [
@@ -546,9 +546,6 @@ module.exports = {
               items: {
                 type: "object",
                 properties: {
-                  id: {
-                    type: "string",
-                  },
                   params: {
                     type: "object",
                     properties: {
@@ -560,6 +557,9 @@ module.exports = {
                       },
                       amount: {
                         type: "string",
+                        const: { $data: "4/quote/price/value" },
+                        errorMessage:
+                          "should be updated to updated quote price - ${4/quote/price/value}",
                       },
                     },
                     required: ["currency", "amount"],
@@ -570,11 +570,7 @@ module.exports = {
                   },
                   type: {
                     type: "string",
-                    enum: [
-                      "PRE-FULFILLMENT",
-                      "ON-FULFILLMENT",
-                      "POST-FULFILLMENT",
-                    ],
+                    enum: constants.B2B_PAYMENT_TYPE,
 
                     const: {
                       $data: "/on_confirm/0/message/order/payments/0/type",
@@ -700,7 +696,6 @@ module.exports = {
                   },
                 },
                 required: [
-                  "id",
                   "params",
                   "status",
                   "type",

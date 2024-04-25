@@ -134,11 +134,7 @@ module.exports = {
                   },
                   type: {
                     type: "string",
-                    enum: [
-                      "PRE-FULFILLMENT",
-                      "ON-FULFILLMENT",
-                      "POST-FULFILLMENT",
-                    ],
+                    enum: constants.B2B_PAYMENT_TYPE
                   },
                   collected_by:{
                     type: "string",
@@ -1016,11 +1012,7 @@ module.exports = {
                         },
                         type: {
                           type: "string",
-                          enum: [
-                            "PRE-FULFILLMENT",
-                            "ON-FULFILLMENT",
-                            "POST-FULFILLMENT",
-                          ],
+                          enum: constants.B2B_PAYMENT_TYPE
                         },
                         collected_by:{
                           type: "string",

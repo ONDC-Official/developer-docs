@@ -30,7 +30,6 @@ const checkOnSearch = async (data, msgIdSet) => {
 
       dao.setValue("providersArr", providers);
       providers.forEach((provider, i) => {
-    
         console.log(citycode, provider?.creds);
         if (citycode === "std:999" && !provider.creds) {
           onSrchObj.msngCreds = `Creds are required for exports in /providers`;
@@ -109,12 +108,15 @@ const checkOnSearch = async (data, msgIdSet) => {
         }
 
         if (missingTags.length > 0) {
-          let itemKey = `missingPRVDRTags-${i}-err`
+          let itemKey = `missingPRVDRTags-${i}-err`;
           onSrchObj[itemKey] = `${missingTags} are required in /providers/tags`;
         }
 
         if (domain === "ONDC:RET10" || domain === "ONDC:RET11") {
-          if (!providerTagSet.has("FSSAI_LICENSE_NO") && citycode!=="std:999") {
+          if (
+            !providerTagSet.has("FSSAI_LICENSE_NO") &&
+            citycode !== "std:999"
+          ) {
             onSrchObj.fssaiErr = `For food businesses, FSSAI_LICENSE_NO is required in providers/tags`;
           }
         }
@@ -124,10 +126,10 @@ const checkOnSearch = async (data, msgIdSet) => {
 
       //checking mandatory attributes for fashion and electronics
       let locations = provider.locations;
-      provider.items.forEach((item,k) => {
+      provider.items.forEach((item, k) => {
         let payment_ids = item.payment_ids;
         let fulfillment_ids = item.fulfillment_ids;
-        let location_ids= item.location_ids
+        let location_ids = item.location_ids;
         let itemTags = item?.tags;
         let mandatoryAttr = [];
         let attrPresent = false;
@@ -154,8 +156,10 @@ const checkOnSearch = async (data, msgIdSet) => {
           }
 
           if (missingIds.length > 0) {
-            let itemKey = `missingFlmntIds-${k}-err`
-            onSrchObj[itemKey] = `Fulfillment id/s ${missingIds} in /items does not exist in /fulfillments`;
+            let itemKey = `missingFlmntIds-${k}-err`;
+            onSrchObj[
+              itemKey
+            ] = `Fulfillment id/s ${missingIds} in /items does not exist in /fulfillments`;
           }
         } catch (error) {
           console.log(error);
@@ -166,7 +170,6 @@ const checkOnSearch = async (data, msgIdSet) => {
             "Comparing location_ids in /items and /providers/locations in /on_search"
           );
 
-        
           let locationSet = new Set();
 
           for (let loc of locations) {
@@ -182,8 +185,10 @@ const checkOnSearch = async (data, msgIdSet) => {
           }
 
           if (missingIds.length > 0) {
-            let itemKey = `missingLoc-${k}-err`
-            onSrchObj[itemKey] = `Location id/s ${missingIds} in /items does not exist in /providers/locations`;
+            let itemKey = `missingLoc-${k}-err`;
+            onSrchObj[
+              itemKey
+            ] = `Location id/s ${missingIds} in /items does not exist in /providers/locations`;
           }
         } catch (error) {
           console.log(error);
@@ -208,8 +213,10 @@ const checkOnSearch = async (data, msgIdSet) => {
           }
 
           if (missingIds.length > 0) {
-            let itemKey = `missingpymntIds-${k}-err`
-            onSrchObj[itemKey] = `Payment id/s ${missingIds} in /items does not exist in /payments`;
+            let itemKey = `missingpymntIds-${k}-err`;
+            onSrchObj[
+              itemKey
+            ] = `Payment id/s ${missingIds} in /items does not exist in /payments`;
           }
         } catch (error) {
           console.log(error);
@@ -259,8 +266,10 @@ const checkOnSearch = async (data, msgIdSet) => {
             );
 
             if (missingAttr.length > 0) {
-              let itemKey = `mssngAttrErr-${k}-err`
-              onSrchObj[itemKey] = `'${missingAttr}' attribute/s required in items/tags for ${domain} domain`;
+              let itemKey = `mssngAttrErr-${k}-err`;
+              onSrchObj[
+                itemKey
+              ] = `'${missingAttr}' attribute/s required in items/tags for ${domain} domain`;
             }
           }
           if (descriptor?.code === "g2") {
@@ -272,8 +281,10 @@ const checkOnSearch = async (data, msgIdSet) => {
             );
 
             if (missingAttr.length > 0) {
-              let itemKey = `missingTagErr-${k}-err`
-              onSrchObj[itemKey] = `'${missingAttr}' required for 'g2' tag in items/tags`;
+              let itemKey = `missingTagErr-${k}-err`;
+              onSrchObj[
+                itemKey
+              ] = `'${missingAttr}' required for 'g2' tag in items/tags`;
             }
           }
           if (descriptor?.code === "origin") {
@@ -285,8 +296,10 @@ const checkOnSearch = async (data, msgIdSet) => {
                   onSrchObj.originFrmtErr = `Country of origin should be in a valid 'ISO 3166-1 alpha-3' format e.g. IND, SGP`;
                 } else {
                   if (!constants.VALIDCOUNTRYCODES.includes(tag?.value)) {
-                    let itemKey = `originFrmtErr1-${k}-err`
-                    onSrchObj[itemKey] = `'${tag?.value}' is not a valid 'ISO 3166-1 alpha-3' country code`;
+                    let itemKey = `originFrmtErr1-${k}-err`;
+                    onSrchObj[
+                      itemKey
+                    ] = `'${tag?.value}' is not a valid 'ISO 3166-1 alpha-3' country code`;
                   }
                 }
               }
@@ -303,12 +316,16 @@ const checkOnSearch = async (data, msgIdSet) => {
         }
 
         if (missingTags.length > 0) {
-          let itemKey = `missingItemTags-${k}-err`
-          onSrchObj[itemKey] = `'${missingTags}' tag/s  required in /items/tags`;
+          let itemKey = `missingItemTags-${k}-err`;
+          onSrchObj[
+            itemKey
+          ] = `'${missingTags}' tag/s  required in /items/tags`;
         }
         if (constants.ATTR_DOMAINS.includes(domain) && !attrPresent) {
-          let itemKey = `attrMissing-${k}-err`
-          onSrchObj[itemKey] = `code = 'attribute' is missing in /items/tags for domain ${domain}`;
+          let itemKey = `attrMissing-${k}-err`;
+          onSrchObj[
+            itemKey
+          ] = `code = 'attribute' is missing in /items/tags for domain ${domain}`;
         }
       });
     }
