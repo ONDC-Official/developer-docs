@@ -174,7 +174,7 @@ module.exports = {
                           },
                           short_desc: {
                             type: "string",
-                            const: { $data: "/confirm/0/message/order/fulfillments/0/end/instructions/short_desc" }
+                            const: { $data: "/confirm/0/message/order/fulfillments/0/start/instructions/short_desc" }
                           },
                           long_desc: {
                             type: "string",

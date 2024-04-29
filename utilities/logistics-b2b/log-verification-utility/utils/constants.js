@@ -195,7 +195,11 @@ module.exports = Object.freeze({
   ON_SEEARCH_ITEMTAGS:["g2","g3","back_image","origin"],
   ON_SEARCH_PROVIDERTAGS:["serviceability","seller_id","seller_terms"],
   B2B_PAYMENT_TYPE:["PRE-FULFILLMENT","ON-FULFILLMENT"],
-
+  PRECANCEL_BEFORE_RTO:["Pending",
+  "Packed",
+  "Searching-for-Agent",
+  "Agent-assigned",
+  "Out-for-pickup"],
 
   //services
   SRV_FULFILLMENT_TYPE:["Home-Service","Store-Service"],

@@ -464,7 +464,6 @@ module.exports = {
                     required: [
                       "amount",
                       "currency",
-                      "transaction_id",
                       "bank_account_number",
                       "virtual_payment_address",
                     ],

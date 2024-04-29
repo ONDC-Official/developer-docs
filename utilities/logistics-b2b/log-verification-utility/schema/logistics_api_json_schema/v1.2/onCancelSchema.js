@@ -594,7 +594,7 @@ module.exports = {
                 },
               ],
             },
-            payments: {
+            payment: {
               type: "object",
               properties: {
                 "@ondc/org/collection_amount": {
@@ -737,7 +737,7 @@ module.exports = {
             "provider",
             "fulfillments",
             "billing",
-            "payments",
+            "payment",
             "@ondc/org/linked_order",
             "created_at",
             "updated_at",

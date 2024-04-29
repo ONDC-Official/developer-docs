@@ -19,6 +19,7 @@ const checkOnCancel = (data, msgIdSet) => {
   let fulfillments = on_cancel.fulfillments;
   let RtoPickupTime;
   let missingTags = [];
+  let rtoID, reasonId, preCnclState;
   const created_at = on_cancel.created_at;
   const updated_at = on_cancel.updated_at;
 
@@ -104,7 +105,7 @@ const checkOnCancel = (data, msgIdSet) => {
             if (!fulTags) {
               onCancelObj.msngflfllmntTags = `fulfillments/tags are required in case of RTO (rto_event, precancel_state)`;
             } else {
-              let rtoID, reasonId, preCnclState;
+             
 
               fulTags.forEach((tag) => {
                 if (tag.code === "rto_event") {
@@ -190,6 +191,10 @@ const checkOnCancel = (data, msgIdSet) => {
           fulfillmentTagSet,
           constants.CANCELLATION_TAGS_CODES
         );
+
+        if(missingTags.includes("rto_event") && constants.PRECANCEL_BEFORE_RTO.includes(preCnclState)){
+          missingTags= missingTags.filter(item => item!=='rto_event')
+        }
         if (missingTags.length > 0) {
           let itemKey = `missingFlmntTags-${i}-err`;
           onCancelObj[

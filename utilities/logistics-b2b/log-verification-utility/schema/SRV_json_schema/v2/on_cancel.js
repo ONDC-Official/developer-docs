@@ -379,13 +379,16 @@ module.exports = {
                           required: ["name"],
                         },
                       },
-                      required: [
-                        "type",
-                        "location",
-                        "time",
-                        "contact",
-                        "person",
-                      ],
+                      if: { properties: { type: { const: "end" } } },
+                      then: {
+                        required: [
+                          "type",
+                          "location",
+                          "contact",
+                          "time"
+                        ],
+                      },
+                      else: { required: ["type"] },
                     },
                   },
                 },
