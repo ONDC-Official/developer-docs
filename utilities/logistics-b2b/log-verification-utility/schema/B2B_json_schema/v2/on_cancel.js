@@ -110,6 +110,8 @@ module.exports = {
                   properties: {
                     id: {
                       type: "string",
+                      const: { $data: "/cancel/0/message/cancellation_reason_id" },
+                      errorMessage:`does not match the cancellation reason id in /cancel`
                     },
                   },
                   required: ["id"],
@@ -118,6 +120,24 @@ module.exports = {
                   type: "string",
                 },
               },
+              allOf: [
+                {
+                  if: {
+                    properties: {
+                      cancelled_by: { const: { $data: "4/context/bpp_id" } },
+                    },
+                  },
+                  then: {
+                    properties: {
+                      reason: {
+                        properties: {
+                          id: { enum: constants.BPP_CANCELLATION_CODES },
+                        },
+                      },
+                    },
+                  },
+                },
+              ],
               required: ["reason", "cancelled_by"],
             },
             provider: {

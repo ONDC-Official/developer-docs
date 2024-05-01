@@ -10,7 +10,7 @@ const checkOnSearch = async (data, msgIdSet) => {
   let citycode = onSearch?.context?.location?.city?.code;
   let domain = onSearch.context.domain;
   onSearch = onSearch.message.catalog;
-
+  let domCode = domain.split('ONDC:')[1];
   //saving fulfillments
   try {
     console.log("checking attr");
@@ -95,6 +95,14 @@ const checkOnSearch = async (data, msgIdSet) => {
               if (missingTags.length > 0) {
                 onSrchObj.mssngTagErr = `'${missingTags}' code/s required in providers/tags for serviceability`;
               }
+              tag?.list.forEach(list=>{
+                const {descriptor,value} = list;
+                if(descriptor.code==='category'){
+                  if(!value.startsWith(domCode)){
+                    onSrchObj.srvcCatgryErr=`Serviceability category must be defined for the same domain code as in context - ${domCode}`
+                  }
+                }
+              })
             }
           });
         }

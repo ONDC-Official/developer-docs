@@ -255,7 +255,7 @@ module.exports = {
                             },
                           },
                         },
-                        required: ["holidays"],
+                        required: ["frequency"],
                       },
                     },
                     required: ["label", "schedule"],
@@ -789,7 +789,6 @@ module.exports = {
                             "code",
                             "short_desc",
                             "long_desc",
-                            "images",
                           ],
                         },
                         location_ids: {
@@ -878,7 +877,7 @@ module.exports = {
                         "category_ids",
                         "item_ids",
                         "time",
-                        "tags"
+                        "tags",
                       ],
                     },
                   },

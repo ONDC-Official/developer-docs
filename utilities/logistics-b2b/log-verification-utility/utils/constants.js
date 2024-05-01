@@ -200,6 +200,8 @@ module.exports = Object.freeze({
   "Searching-for-Agent",
   "Agent-assigned",
   "Out-for-pickup"],
+  BPP_CANCELLATION_CODES:["002","005","011","012","013","014","015","018","019","022","998"],
+  BAP_CANCELLATION_CODES:["001","003","006","009","010","023","999"],
 
   //services
   SRV_FULFILLMENT_TYPE:["Home-Service","Store-Service"],

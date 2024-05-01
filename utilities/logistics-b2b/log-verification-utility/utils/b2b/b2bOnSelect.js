@@ -6,6 +6,7 @@ const utils = require("../utils");
 const checkOnSelect = async (data, msgIdSet) => {
   const onSelectObj = {};
   let onSelect = data;
+  let error = onSelect.error
   let citycode = onSelect?.context?.location?.city?.code;
   onSelect = onSelect.message.order;
   let quote = onSelect?.quote;
@@ -14,8 +15,11 @@ const checkOnSelect = async (data, msgIdSet) => {
   let ffState, ffId;
   let deliveryQuoteItem = false;
   let deliveryCharge = 0;
+  let outOfStock = false;
   dao.setValue("onSlctdItemsArray", items);
   const selectedItems = dao.getValue("slctdItemsArray");
+  
+  if(error && error.code ==='40002') outOfStock= true;
   try {
     console.log("Checking fulfillment object in /on_select");
     if (fulfillments) {
@@ -56,11 +60,14 @@ const checkOnSelect = async (data, msgIdSet) => {
 
   try {
     console.log(`Checking quote object in /on_select api`);
+   
     quote?.breakup.forEach((breakup, i) => {
       let itemPrice = parseFloat(breakup?.item?.price?.value);
       let available = Number(breakup?.item?.quantity?.available?.count);
       let quantity = breakup["@ondc/org/item_quantity"];
 
+
+    
       if (
         breakup["@ondc/org/title_type"] === "delivery" &&
         breakup["@ondc/org/item_id"] === ffId
@@ -92,7 +99,24 @@ const checkOnSelect = async (data, msgIdSet) => {
         ] = `@ondc/org/item_quantity for item with id ${breakup["@ondc/org/item_id"]} cannot be more than the available count (quantity/avaialble/count) in quote/breakup`;
       }
     });
+  
 
+    items.forEach(item=>{
+      let itemId= item?.id
+      let itemQuant = item?.quantity?.selected?.count
+
+      quote?.breakup.forEach(breakup=>{
+
+        if(breakup['@ondc/org/title_type']==='item' && breakup['@ondc/org/item_id']===itemId){
+          if(itemQuant===breakup['@ondc/org/item_quantity'].count && outOfStock == true){
+            onSelectObj.quoteItemQuantity=`In case of item quantity unavailable, item quantity in quote breakup should be updated to the available quantity`
+          }
+          if(itemQuant!==breakup['@ondc/org/item_quantity'].count && outOfStock == false){
+            onSelectObj.quoteItemQuantity=`Item quantity in quote breakup should be equal to the items/quantity/selected/count`
+          }
+        }
+      })
+    })
     if (!deliveryQuoteItem && ffState === "Serviceable") {
       onSelectObj.deliveryQuoteErr = `Delivery charges should be provided in quote/breakup when fulfillment is 'Serviceable'`;
     }

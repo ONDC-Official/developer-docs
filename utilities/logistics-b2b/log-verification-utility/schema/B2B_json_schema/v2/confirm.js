@@ -108,7 +108,8 @@ module.exports = {
               not: {
                 const: { $data: "3/context/transaction_id" },
               },
-              errorMessage:"Order ID must not be the same as Transaction ID - ${3/context/transaction_id}."
+              errorMessage:
+                "Order ID must not be the same as Transaction ID - ${3/context/transaction_id}.",
             },
             state: {
               type: "string",
@@ -211,6 +212,7 @@ module.exports = {
                               },
                               value: {
                                 type: "string",
+                                minLength: 1,
                                 anyOf: [
                                   {
                                     const: {
@@ -435,6 +437,7 @@ module.exports = {
                               },
                               value: {
                                 type: "string",
+                                minLength: 1,
                                 anyOf: [
                                   {
                                     const: {
@@ -634,7 +637,7 @@ module.exports = {
 
                   type: {
                     type: "string",
-                    enum : constants.B2B_PAYMENT_TYPE,
+                    enum: constants.B2B_PAYMENT_TYPE,
                     const: { $data: "/select/0/message/order/payments/0/type" },
                   },
                   collected_by: {
@@ -777,7 +780,7 @@ module.exports = {
                     properties: {
                       code: {
                         type: "string",
-                        enum: constants.TERMS
+                        enum: constants.TERMS,
                       },
                     },
                   },
@@ -790,12 +793,13 @@ module.exports = {
                           properties: {
                             code: {
                               type: "string",
-                              enum: constants.B2B_BPP_TERMS
+                              enum: constants.B2B_BPP_TERMS,
                             },
                           },
                         },
                         value: {
                           type: "string",
+                          minLength: 1,
                         },
                       },
                       required: ["descriptor", "value"],
@@ -827,7 +831,7 @@ module.exports = {
             "payments",
             "created_at",
             "updated_at",
-            "tags"
+            "tags",
           ],
         },
       },

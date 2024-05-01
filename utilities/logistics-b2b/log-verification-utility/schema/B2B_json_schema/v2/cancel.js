@@ -1,3 +1,4 @@
+const constants = require("../../../utils/constants");
 module.exports = {
   $id: "http://example.com/schema/cancelSchema",
   type: "object",
@@ -95,16 +96,13 @@ module.exports = {
           const: { $data: "/on_confirm/0/message/order/id" },
         },
         cancellation_reason_id: {
-          order_id: {
-            type: "string",
-          },
+          type: "string",
+          enum: constants.BAP_CANCELLATION_CODES,
         },
-       
       },
       additionalProperties: false,
       required: ["order_id", "cancellation_reason_id"],
     },
   },
   required: ["context", "message"],
-
 };

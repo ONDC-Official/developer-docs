@@ -204,6 +204,7 @@ module.exports = {
                               },
                               value: {
                                 type: "string",
+                                "minLength": 1,
                                 anyOf: [
                                   {
                                     const: {
@@ -452,6 +453,7 @@ module.exports = {
                               },
                               value: {
                                 type: "string",
+                                "minLength": 1
                               },
                             },
                             if: {
@@ -537,6 +539,7 @@ module.exports = {
                         },
                         value: {
                           type: "string",
+                          "minLength": 1
                         },
                       },
                       required: ["descriptor", "value"],

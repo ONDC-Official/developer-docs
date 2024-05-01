@@ -6,6 +6,8 @@ const utils = require("../utils");
 const checkSelect = async (data, msgIdSet) => {
   const selectObj = {};
   let select = data;
+  let rfq = false;
+  if (select?.context?.ttl!=='PT30S') rfq = true;
   let citycode = select?.context?.location?.city?.code;
   select = select.message.order;
   let fulfillments = select?.fulfillments;
@@ -14,9 +16,9 @@ const checkSelect = async (data, msgIdSet) => {
   let fulfillmentsArr = dao.getValue("fulfillmentsArr");
   let itemsArr = select.items;
   dao.setValue("slctdItemsArray", itemsArr);
-  let rfq = false;
 
-  if (select?.provider?.ttl) rfq = true;
+
+ 
 
   dao.setValue("rfq", rfq);
 
@@ -70,6 +72,11 @@ const checkSelect = async (data, msgIdSet) => {
     console.log(`Comparing item object in /select and /on_search`);
 
     itemsArr?.forEach((item, i) => {
+      let itemTags = item?.tags;
+
+      if(itemTags && !rfq){
+        selectObj.itemTagErr=`items/tags (BUYER TERMS) should not be provided for Non-RFQ Flow`
+      }
       let itemExists = false;
       onSearchitemsArr?.forEach((element) => {
         if (item.id === element.id) itemExists = true;
