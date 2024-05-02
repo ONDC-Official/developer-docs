@@ -208,8 +208,7 @@ module.exports = {
                       "name",
                       "code",
                       "short_desc",
-                      "long_desc",
-                      "images",
+                      "long_desc"
                     ],
                   },
                   rating: {
@@ -500,52 +499,8 @@ module.exports = {
                             "code",
                             "short_desc",
                             "long_desc",
-                            "images",
+                            "images"
                           ],
-                        },
-                        creator: {
-                          type: "object",
-                          properties: {
-                            descriptor: {
-                              type: "object",
-                              properties: {
-                                name: {
-                                  type: "string",
-                                },
-                                contact: {
-                                  type: "object",
-                                  properties: {
-                                    name: {
-                                      type: "string",
-                                    },
-                                    address: {
-                                      type: "object",
-                                      properties: {
-                                        full: {
-                                          type: "string",
-                                        },
-                                      },
-                                      required: ["full"],
-                                    },
-                                    phone: {
-                                      type: "string",
-                                    },
-                                    email: {
-                                      type: "string",
-                                    },
-                                  },
-                                  required: [
-                                    "name",
-                                    "address",
-                                    "phone",
-                                    "email",
-                                  ],
-                                },
-                              },
-                              required: ["name", "contact"],
-                            },
-                          },
-                          required: ["descriptor"],
                         },
                         price: {
                           type: "object",
@@ -789,6 +744,7 @@ module.exports = {
                             "code",
                             "short_desc",
                             "long_desc",
+                            "images"
                           ],
                         },
                         location_ids: {
