@@ -196,7 +196,7 @@ module.exports = Object.freeze({
   "EGY", "NGA", "KEN", "ETH", "GHA", "UGA", "TZA", "MAR", "DZA", "CMR",
   "ZMB", "ZWE", "MOZ", "GRC", "PRT", "CZE", "HUN", "SGP", "ISR", "ARE"],
   BPP_PAYMENT_TAGS:["signature","dsa","ttl"],
-  ON_SEEARCH_ITEMTAGS:["g2","g3","back_image","origin"],
+  ON_SEEARCH_ITEMTAGS:["g2","g3","origin"],
   ON_SEARCH_PROVIDERTAGS:["serviceability","seller_id","seller_terms"],
   B2B_PAYMENT_TYPE:["PRE-FULFILLMENT","ON-FULFILLMENT"],
   PRECANCEL_BEFORE_RTO:["Pending",
@@ -206,6 +206,8 @@ module.exports = Object.freeze({
   "Out-for-pickup"],
   BPP_CANCELLATION_CODES:["002","005","011","012","013","014","015","018","019","022","998"],
   BAP_CANCELLATION_CODES:["001","003","006","009","010","023","999"],
+  LBNP_CANCELLATION_CODES:["007","996"],
+  LSP_CANCELLATION_CODES:["008","011","012","013","014","015","016","017","020","021","997"],
 
   //services
   SRV_FULFILLMENT_TYPE:["Home-Service","Store-Service"],

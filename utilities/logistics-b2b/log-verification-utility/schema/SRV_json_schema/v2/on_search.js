@@ -743,8 +743,7 @@ module.exports = {
                             "name",
                             "code",
                             "short_desc",
-                            "long_desc",
-                            "images"
+                            "long_desc"
                           ],
                         },
                         location_ids: {

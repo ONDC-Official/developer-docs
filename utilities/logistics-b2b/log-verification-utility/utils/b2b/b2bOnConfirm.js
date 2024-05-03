@@ -8,11 +8,31 @@ const checkOnConfirm = async (data, msgIdSet) => {
   let onConfirm = data;
   onConfirm = onConfirm.message.order;
   let quote = onConfirm?.quote;
+  let prvdrLocation = onConfirm?.provider?.locations
   let payments = onConfirm?.payments;
+  let fulfillments = onConfirm?.fulfillments
   let rfq = dao.getValue("rfq");
+  prvdrLocation=prvdrLocation[0]
 
   try {
+    console.log("Checking fulfillments in /on_confirm");
+    fulfillments.forEach(fulfillment=>{
+        let stops = fulfillment?.stops
+
+        stops.forEach(stop=>{
+            if(stop?.type==='start'){
+                if(stop?.location?.id!==prvdrLocation?.id){
+                 onConfirmObj.strtlctnErr=`fulfillments/start/location/id - ${stop?.location?.id} is not matching with the provider location id - ${prvdrLocation?.id} provided in /on_search`
+                }
+            }
+        })
+    })
+  } catch (error) {
+    console.log("ERROR",error);
+  }
+  try {
     console.log(`Checking payment object in /on_confirm api`);
+
     payments.forEach((payment) => {
       let type = payment?.type;
       let collectedBy = payment?.collected_by;

@@ -190,6 +190,7 @@ module.exports = {
                 },
                 breakup: {
                   type: "array",
+                  minItems:1,
                   items: {
                     type: "object",
                     properties: {
@@ -214,10 +215,10 @@ module.exports = {
               },
               required: ["price", "breakup"],
               isQuoteMatching: true,
-              
             },
             fulfillments: {
               type: "array",
+              minItems:1,
               items: {
                 type: "object",
                 properties: {
@@ -354,7 +355,6 @@ module.exports = {
                               },
                             },
                             isLengthValid: true,
-                            
                           },
                         },
                         required: ["gps", "address"],
@@ -480,7 +480,6 @@ module.exports = {
                               },
                             },
                             isLengthValid: true,
-                            
                           },
                         },
                         required: ["gps", "address"],
@@ -528,36 +527,47 @@ module.exports = {
                   },
                 },
 
-                if: { properties: { type: { const: "Delivery" } } },
-                then: {
-                  properties: {
-                    start: {
+                allOf: [
+                  {
+                    if: { properties: { type: { const: "Delivery" } } },
+                    then: {
                       properties: {
-                        time: { required: ["range"] },
-                      },
-                      required: ["time", "person", "location", "contact"],
-                    },
+                        start: {
+                          properties: {
+                            time: { required: ["range"] },
+                          },
+                          required: ["time", "person", "location", "contact"],
+                        },
 
-                    end: {
-                      properties: {
-                        time: { required: ["range"] },
+                        end: {
+                          properties: {
+                            time: { required: ["range"] },
+                          },
+                          required: ["time", "person", "location", "contact"],
+                        },
                       },
-                      required: ["time", "person", "location", "contact"],
+                      required: [
+                        "id",
+                        "type",
+                        "state",
+                        "tracking",
+                        "start",
+                        "end",
+                      ],
+                    },
+                    else: {
+                      properties: {
+                        start: {
+                          properties: {
+                            time: { required: ["timestamp"] },
+                          },
+                          required: ["time"],
+                        },
+                      },
+                      required: ["id", "type", "state", "start"],
                     },
                   },
-                  required: ["id", "type", "state", "tracking", "start", "end"],
-                },
-                else: {
-                  properties: {
-                    start: {
-                      properties: {
-                        time: { required: ["timestamp"] },
-                      },
-                      required: ["time"],
-                    },
-                  },
-                  required: ["id", "type", "state", "start"],
-                },
+                ],
               },
             },
             payment: {
@@ -647,9 +657,9 @@ module.exports = {
                   collected_by: {
                     const: "BAP",
                   },
-                  status:{
-                    const:"PAID"
-                  }
+                  status: {
+                    const: "PAID",
+                  },
                 },
               },
 
@@ -659,12 +669,12 @@ module.exports = {
                   collected_by: {
                     const: "BAP",
                   },
-                  status:{
-                    const:"NOT-PAID"
-                  }
+                  status: {
+                    const: "NOT-PAID",
+                  },
                 },
               },
-              required: ["type", "collected_by","status"],
+              required: ["type", "collected_by", "status"],
             },
             billing: {
               type: "object",

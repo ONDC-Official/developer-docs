@@ -120,14 +120,40 @@ module.exports = {
             cancellation: {
               type: "object",
               properties: {
-                cancelled_by: { type: "string" },
                 reason: {
                   type: "object",
                   properties: {
-                    id: { type: "string", enum: CANCELLATION_CODE },
+                    id: {
+                      type: "string",
+                      const: { $data: "/cancel/0/message/cancellation_reason_id" },
+                      errorMessage:`does not match the cancellation reason id in /cancel`
+                    },
                   },
+                  required: ["id"],
+                },
+                cancelled_by: {
+                  type: "string",
                 },
               },
+              allOf: [
+                {
+                  if: {
+                    properties: {
+                      cancelled_by: { const: { $data: "4/context/bpp_id" } },
+                    },
+                  },
+                  then: {
+                    properties: {
+                      reason: {
+                        properties: {
+                          id: { enum: constants.LSP_CANCELLATION_CODES },
+                        },
+                      },
+                    },
+                  },
+                },
+              ],
+              required: ["reason", "cancelled_by"],
             },
             items: {
               type: "array",
@@ -186,6 +212,7 @@ module.exports = {
                 },
                 breakup: {
                   type: "array",
+                  minItems:1,
                   items: {
                     type: "object",
                     properties: {
@@ -214,6 +241,7 @@ module.exports = {
 
             fulfillments: {
               type: "array",
+              minItems:1,
               items: {
                 type: "object",
                 properties: {
@@ -577,10 +605,13 @@ module.exports = {
                       properties: {
                         time: { required: ["timestamp"] },
                       },
-                      required: ["time"],
+                      required: ["time","location"],
+                    },
+                    end: {
+                      required: ["location"],
                     },
                   },
-                  required: ["id", "type", "state", "start"],
+                  required: ["id", "type", "state", "start","end"],
                 },
               },
             },

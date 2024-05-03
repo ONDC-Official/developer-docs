@@ -112,7 +112,10 @@ const checkOnSelect = async (data, msgIdSet) => {
             onSelectObj.quoteItemQuantity=`In case of item quantity unavailable, item quantity in quote breakup should be updated to the available quantity`
           }
           if(itemQuant!==breakup['@ondc/org/item_quantity'].count && outOfStock == false){
-            onSelectObj.quoteItemQuantity=`Item quantity in quote breakup should be equal to the items/quantity/selected/count`
+            onSelectObj.quoteItemQuantity1=`Item quantity in quote breakup should be equal to the items/quantity/selected/count`
+          }
+          if(itemQuant>breakup['@ondc/org/item_quantity'].count && outOfStock==false){
+            onSelectObj.outOfStockErr=`Error object with appropriate error code should be sent when the selected item quantity is not available`
           }
         }
       })
