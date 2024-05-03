@@ -16,6 +16,8 @@ const checkOnStatus = (data, msgIdSet) => {
   let fulfillments = on_status.fulfillments;
   let pickupTime, deliveryTime, RtoPickupTime, RtoDeliveredTime;
   let paymentStatus = on_status?.payment?.status;
+  let trackingEnabled= false;
+
 
   if (on_status.state === "Complete" && payment.type === "ON-FULFILLMENT") {
     if (paymentStatus !== "PAID") {
@@ -51,15 +53,21 @@ const checkOnStatus = (data, msgIdSet) => {
   try {
     fulfillments.forEach((fulfillment) => {
       ffState = fulfillment?.state?.descriptor?.code;
+      let fulfillmentTags= fulfillment?.tags
       console.log(
         `Comparing pickup and delivery timestamps for on_status_${ffState}`
       );
-
       if (
         fulfillment.type === "Prepaid" ||
         fulfillment.type === "CoD" ||
         fulfillment.type === "Delivery"
       ) {
+
+        if(fulfillmentTags){
+          fulfillmentTags.forEach(tag=>{
+            if(tag.code==='tracking') trackingEnabled = true
+          })
+        }
         if (
           categoryId === "Immediate Delivery" &&
           fulfillment.tracking !== true && ffState!=='Cancelled'
@@ -81,6 +89,9 @@ const checkOnStatus = (data, msgIdSet) => {
           }
         }
         if (ffState === "Order-picked-up") {
+          if(!trackingEnabled){
+            onStatusObj.trackingTagErr=`tracking tag to be provided in fulfillments/tags`
+          }
           if (orderState !== "In-progress") {
             onStatusObj.ordrStatErr = `Order state should be 'In-progress' for fulfillment state - ${ffState}`;
           }
