@@ -6,13 +6,13 @@ const utils = require("../utils.js");
 const checkConfirm = (data, msgIdSet) => {
   let cnfrmObj = {};
   let confirm = data;
-  const contextTimestamp= confirm.context.timestamp
+  const contextTimestamp = confirm.context.timestamp;
   let version = confirm.context.core_version;
-  let missingTags =[];
+  let missingTags = [];
   let onSearchProvArr = dao.getValue("providersArr");
   confirm = confirm.message.order;
   let rts;
-  let linkedOrder = confirm["@ondc/org/linked_order"]
+  let linkedOrder = confirm["@ondc/org/linked_order"];
   if (confirm?.updated_at > contextTimestamp) {
     cnfrmObj.updatedAtErr = `order/updated_at cannot be future dated w.r.t context/timestamp`;
   }
@@ -73,27 +73,34 @@ const checkConfirm = (data, msgIdSet) => {
 
   let p2h2p = dao.getValue("p2h2p");
   let fulfillmentTagSet = new Set();
-  fulfillments.forEach((fulfillment,i) => {
+  fulfillments.forEach((fulfillment, i) => {
     let fulfillmentTags = fulfillment?.tags;
-    let avgPickupTime= fulfillment?.start?.time?.duration;
-console.log(avgPickupTime,dao.getValue(`${fulfillment?.id}-avgPickupTime`));
-    if(avgPickupTime && dao.getValue(`${fulfillment?.id}-avgPickupTime`) && avgPickupTime!==dao.getValue(`${fulfillment?.id}-avgPickupTime`)){
-      cnfrmObj.avgPckupErr=`Average Pickup Time (fulfillments/start/time/duration) mismatches from the one provided in /on_search`
+    let avgPickupTime = fulfillment?.start?.time?.duration;
+    console.log(
+      avgPickupTime,
+      dao.getValue(`${fulfillment?.id}-avgPickupTime`)
+    );
+    if (
+      avgPickupTime &&
+      dao.getValue(`${fulfillment?.id}-avgPickupTime`) &&
+      avgPickupTime !== dao.getValue(`${fulfillment?.id}-avgPickupTime`)
+    ) {
+      cnfrmObj.avgPckupErr = `Average Pickup Time (fulfillments/start/time/duration) mismatches from the one provided in /on_search`;
     }
     if (fulfillment["@ondc/org/awb_no"] && p2h2p) awbNo = true;
     if (rts === "yes" && !fulfillment?.start?.instructions?.short_desc) {
       cnfrmObj.instructionsErr = `fulfillments/start/instructions are required when ready_to_ship = 'yes'`;
     }
-     reqFulTags = ["rto_action","state"]
+    reqFulTags = ["rto_action", "state"];
     //checking tags
     if (fulfillmentTags) {
       fulfillmentTags.forEach((tag) => {
         let { code, list } = tag;
         fulfillmentTagSet.add(code);
-      })
+      });
 
-      missingTags= utils.findRequiredTags(fulfillmentTagSet,reqFulTags)
-       if (missingTags.length > 0) {
+      missingTags = utils.findRequiredTags(fulfillmentTagSet, reqFulTags);
+      if (missingTags.length > 0) {
         let itemKey = `missingFlmntTags-${i}-err`;
         cnfrmObj[
           itemKey
@@ -104,32 +111,44 @@ console.log(avgPickupTime,dao.getValue(`${fulfillment?.id}-avgPickupTime`));
 
   try {
     console.log("checking linked order in /confirm");
+    let orderPrice = 0;
+    let orderItems = linkedOrder?.items;
 
-    let orderWeight =linkedOrder?.order?.weight?.value;
+    orderItems.forEach((item) => {
+      console.log(parseFloat(item?.price?.value));
+      orderPrice += parseFloat(item?.price?.value);
+    });
+    if(orderPrice>dao.getValue('orderPrice')){
+      cnfrmObj.ordrPrice=`Linked order price value - ${orderPrice} cannot be more than the one provided in /search in Payload details - ${dao.getValue("orderPrice")}`
+    }
+    let orderWeight = linkedOrder?.order?.weight?.value;
     const unit = linkedOrder?.order?.weight?.unit;
 
-    if(unit === 'kilogram'){
-      orderWeight = orderWeight*1000;
+    if (unit === "kilogram") {
+      orderWeight = orderWeight * 1000;
     }
 
-    let totalUnitWeight=0;
+    let totalUnitWeight = 0;
     let quantityUnit;
 
-    linkedOrder?.items.forEach(item=>{
-      let quantity = item?.quantity?.measure?.value
-       quantityUnit = item?.quantity?.measure?.unit
-      if(quantityUnit === 'kilogram'){
-        quantity = quantity*1000;
+    linkedOrder?.items.forEach((item) => {
+      let quantity = item?.quantity?.measure?.value;
+      quantityUnit = item?.quantity?.measure?.unit;
+      if (quantityUnit === "kilogram") {
+        quantity = quantity * 1000;
       }
-      const count = item?.quantity?.count
-      
-      const unitWeight = (quantity*count)
-       totalUnitWeight+=unitWeight;
-    })
+      const count = item?.quantity?.count;
 
-    console.log(totalUnitWeight,orderWeight);
-    if(totalUnitWeight.toFixed(2)!=orderWeight.toFixed(2) && quantityUnit!== 'unit'){
-      cnfrmObj.weightErr=`Total order weight '${orderWeight}' does not match the total unit weight of items '${totalUnitWeight}'`
+      const unitWeight = quantity * count;
+      totalUnitWeight += unitWeight;
+    });
+
+    console.log(totalUnitWeight, orderWeight);
+    if (
+      totalUnitWeight.toFixed(2) != orderWeight.toFixed(2) &&
+      quantityUnit !== "unit"
+    ) {
+      cnfrmObj.weightErr = `Total order weight '${orderWeight}' does not match the total unit weight of items '${totalUnitWeight}'`;
     }
   } catch (error) {
     console.log(error);

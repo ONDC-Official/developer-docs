@@ -11,7 +11,9 @@ const checkSearch = async (data, msgIdSet) => {
   let search = data;
   let contextTime = search.context.timestamp;
   search = search.message.intent;
-
+  let linkedOrder = search['@ondc/org/payload_details']
+  let orderPrice = linkedOrder?.value?.value
+  dao.setValue("orderPrice",orderPrice)
   const {
     start: { location: startLocation },
     end: { location: endLocation },
