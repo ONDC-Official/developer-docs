@@ -6,6 +6,7 @@ const utils = require("../utils");
 const checkOnConfirm = async (data, msgIdSet) => {
   const onConfirmObj = {};
   let onConfirm = data;
+  let errorObj = onConfirm.error;
   onConfirm = onConfirm.message.order;
   let quote = onConfirm?.quote;
   let prvdrLocation = onConfirm?.provider?.locations
@@ -13,6 +14,10 @@ const checkOnConfirm = async (data, msgIdSet) => {
   let fulfillments = onConfirm?.fulfillments
   let rfq = dao.getValue("rfq");
   prvdrLocation=prvdrLocation[0]
+
+  if(onConfirm.state==='Cancelled' && !errorObj){
+    onConfirmObj.errObj=`Error object is missing in case of PO rejection`
+  }
 
   try {
     console.log("Checking fulfillments in /on_confirm");
