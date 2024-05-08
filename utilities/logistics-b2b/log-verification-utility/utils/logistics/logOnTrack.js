@@ -23,25 +23,25 @@ const checkOnTrack = (data, msgIdSet) => {
           }
         });
       }
-
+      let attrVal;
       if (tag?.code === "config") {
         tag?.list.forEach((listTag) => {
-          let attrVal;
+        
           if (listTag?.code === "attr") {
             attrVal = listTag?.value;
           }
           if (listTag?.code === "type" && listTag?.value === "live_poll") {
             if (!on_track?.location?.gps)
-              onTrackObj.locationErr = `tracking/location/gps is required for live_poll`;
+              onTrackObj.locationErr = `tracking.location.gps is required for live_poll`;
             if (attrVal !== "tracking.location.gps")
-              onTrackObj.attrErr = `attr value should be 'tracking/location/gps' for live_poll`;
+              onTrackObj.attrErr = `attr value should be 'tracking.location.gps' for live_poll`;
           }
 
           if (listTag?.code === "type" && listTag?.value === "deferred") {
             if (!on_track?.url)
               onTrackObj.locationErr = `tracking/url is required for non hyperlocal tracking`;
             if (attrVal !== "tracking.url")
-              onTrackObj.attrErr = `attr value should be 'tracking/url' for deferred tracking`;
+              onTrackObj.attrErr = `attr value should be 'tracking.url' for deferred tracking`;
           }
         });
       }
