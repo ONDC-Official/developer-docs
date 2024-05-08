@@ -191,6 +191,7 @@ module.exports = {
             },
             fulfillments: {
               type: "array",
+              minItems:1,
               items: {
                 type: "object",
                 properties: {

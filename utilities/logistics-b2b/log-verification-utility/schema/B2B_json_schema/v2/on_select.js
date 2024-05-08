@@ -84,6 +84,7 @@ module.exports = {
         },
         ttl: {
           type: "string",
+          const:"PT30S"
         },
       },
       required: [
@@ -229,6 +230,9 @@ module.exports = {
                   id: {
                     type: "string",
                   },
+                  type: {
+                    type: "string",
+                  },
                   "@ondc/org/provider_name": {
                     type: "string",
                   },
@@ -325,6 +329,7 @@ module.exports = {
                     },
                   },
                 },
+                additionalProperties: false,
                 required: [
                   "id",
                   "@ondc/org/provider_name",
@@ -466,11 +471,7 @@ module.exports = {
                 properties: {
                   type: {
                     type: "string",
-                    enum: [
-                      "PRE-FULFILLMENT",
-                      "ON-FULFILLMENT",
-                      "POST-FULFILLMENT",
-                    ],
+                    enum : constants.B2B_PAYMENT_TYPE,
                     const: { $data: "/select/0/message/order/payments/0/type" },
                   },
                   collected_by: {

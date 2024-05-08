@@ -84,6 +84,7 @@ module.exports = {
         },
         ttl: {
           type: "string",
+          const:"PT30S"
         },
       },
       required: [
@@ -308,6 +309,7 @@ module.exports = {
                         properties: {
                           code: {
                             type: "string",
+                            enum: ["Pending"]
                           },
                         },
                         required: ["code"],
@@ -317,6 +319,7 @@ module.exports = {
                   },
                   type: {
                     type: "string",
+                    enum:["Delivery","Self-Pickup"]
                   },
                   tracking: {
                     type: "boolean",
@@ -506,6 +509,7 @@ module.exports = {
                     },
                   },
                 },
+                additionalProperties: false,
                 required: [
                   "id",
                   "@ondc/org/provider_name",
@@ -659,11 +663,7 @@ module.exports = {
                   },
                   type: {
                     type: "string",
-                    enum: [
-                      "PRE-FULFILLMENT",
-                      "ON-FULFILLMENT",
-                      "POST-FULFILLMENT",
-                    ],
+                    enum : constants.B2B_PAYMENT_TYPE,
                     const: { $data: "/select/0/message/order/payments/0/type" },
                   },
                   collected_by: {

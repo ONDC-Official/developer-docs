@@ -37,7 +37,7 @@ module.exports = {
         },
         version: {
           type: "string",
-          const: "2.0.0"
+          const: "2.0.0",
         },
         bap_id: {
           type: "string",
@@ -103,7 +103,7 @@ module.exports = {
             },
             status: {
               type: "string",
-              enum: ["Created"]
+              enum: ["Created"],
             },
             provider: {
               type: "object",
@@ -155,28 +155,11 @@ module.exports = {
                         },
                         required: ["count"],
                       },
-                      measure: {
-                        type: "object",
-                        properties: {
-                          unit: {
-                            type: "string",
-                          },
-                          value: {
-                            type: "string",
-                          },
-                        },
-                        required: ["unit", "value"],
-                      },
                     },
-                    required: ["selected", "measure"],
+                    required: ["selected"],
                   },
                 },
-                required: [
-                  "id",
-                  "parent_item_id",
-                  "fulfillment_ids",
-                  "quantity",
-                ],
+                required: ["id", "fulfillment_ids", "quantity"],
               },
             },
             billing: {
@@ -331,7 +314,6 @@ module.exports = {
                               },
                               required: ["start", "end"],
                             },
-                         
                           },
                           required: ["label", "range"],
                         },
@@ -351,13 +333,17 @@ module.exports = {
                           required: ["person"],
                         },
                       },
-                      required: [
-                        "type",
-                        "location",
-                        "contact",
-                        "time",
-                        "customer",
-                      ],
+                      if: { properties: { type: { const: "end" } } },
+                      then: {
+                        required: [
+                          "type",
+                          "location",
+                          "contact",
+                          "time",
+                          "customer",
+                        ],
+                      },
+                      else: { required: ["type"] },
                     },
                   },
                 },
@@ -432,7 +418,7 @@ module.exports = {
                             required: ["currency", "value"],
                           },
                         },
-                        required: ["id", "quantity", "price"],
+                        required: ["id"],
                       },
                     },
                     required: ["title", "price", "item"],
@@ -478,7 +464,6 @@ module.exports = {
                     required: [
                       "amount",
                       "currency",
-                      "transaction_id",
                       "bank_account_number",
                       "virtual_payment_address",
                     ],

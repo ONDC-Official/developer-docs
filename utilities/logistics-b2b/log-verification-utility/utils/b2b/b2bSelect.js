@@ -6,12 +6,21 @@ const utils = require("../utils");
 const checkSelect = async (data, msgIdSet) => {
   const selectObj = {};
   let select = data;
+  let rfq = false;
+  if (select?.context?.ttl!=='PT30S') rfq = true;
+  let citycode = select?.context?.location?.city?.code;
   select = select.message.order;
   let fulfillments = select?.fulfillments;
+
   let providersArr = dao.getValue("providersArr");
   let fulfillmentsArr = dao.getValue("fulfillmentsArr");
   let itemsArr = select.items;
-  dao.setValue("slctdItemsArray",itemsArr)
+  dao.setValue("slctdItemsArray", itemsArr);
+
+
+ 
+
+  dao.setValue("rfq", rfq);
 
   // provider check
   try {
@@ -63,6 +72,11 @@ const checkSelect = async (data, msgIdSet) => {
     console.log(`Comparing item object in /select and /on_search`);
 
     itemsArr?.forEach((item, i) => {
+      let itemTags = item?.tags;
+
+      if(itemTags && !rfq){
+        selectObj.itemTagErr=`items/tags (BUYER TERMS) should not be provided for Non-RFQ Flow`
+      }
       let itemExists = false;
       onSearchitemsArr?.forEach((element) => {
         if (item.id === element.id) itemExists = true;
@@ -103,6 +117,11 @@ const checkSelect = async (data, msgIdSet) => {
 
         //checking fulfillments
         fulfillments.forEach((fulfillment, i) => {
+          let fulfillmentTags = fulfillment?.tags;
+          
+          if (citycode === "std:999" && !fulfillmentTags) {
+            selectObj.fullfntTagErr = `Delivery terms (INCOTERMS) are required for exports in /fulfillments/tags`;
+          }
           let bppfulfillment = fulfillmentsArr?.find(
             (element) => element.id === fulfillment.id
           );

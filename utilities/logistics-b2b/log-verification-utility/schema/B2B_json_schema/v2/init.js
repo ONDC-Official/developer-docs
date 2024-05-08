@@ -204,6 +204,7 @@ module.exports = {
                               },
                               value: {
                                 type: "string",
+                                "minLength": 1,
                                 anyOf: [
                                   {
                                     const: {
@@ -452,6 +453,7 @@ module.exports = {
                               },
                               value: {
                                 type: "string",
+                                "minLength": 1
                               },
                             },
                             if: {
@@ -493,11 +495,7 @@ module.exports = {
                 properties: {
                   type: {
                     type: "string",
-                    enum: [
-                      "PRE-FULFILLMENT",
-                      "ON-FULFILLMENT",
-                      "POST-FULFILLMENT",
-                    ],
+                    enum : constants.B2B_PAYMENT_TYPE,
                     const: { $data: "/select/0/message/order/payments/0/type" },
                   },
                   collected_by: {
@@ -541,6 +539,7 @@ module.exports = {
                         },
                         value: {
                           type: "string",
+                          "minLength": 1
                         },
                       },
                       required: ["descriptor", "value"],

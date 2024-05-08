@@ -1,3 +1,4 @@
+const constants = require("../../../utils/constants");
 module.exports = {
   $id: "http://example.com/schema/selectSchema",
   type: "object",
@@ -207,6 +208,7 @@ module.exports = {
                               },
                               value: {
                                 type: "string",
+                                "minLength": 1
                               },
                             },
                             required: ["descriptor", "value"],
@@ -338,6 +340,7 @@ module.exports = {
                               },
                               value: {
                                 type: "string",
+                                "minLength": 1
                               },
                             },
                             if: {
@@ -382,11 +385,7 @@ module.exports = {
                 properties: {
                   type: {
                     type: "string",
-                    enum: [
-                      "PRE-FULFILLMENT",
-                      "ON-FULFILLMENT",
-                      "POST-FULFILLMENT",
-                    ],
+                    enum : constants.B2B_PAYMENT_TYPE,
                   },
                 },
                 required: ["type"],
@@ -424,6 +423,7 @@ module.exports = {
                         },
                         value: {
                           type: "string",
+                          "minLength": 1
                         },
                       },
                       required: ["descriptor", "value"],

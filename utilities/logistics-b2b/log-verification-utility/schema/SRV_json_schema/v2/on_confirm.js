@@ -164,25 +164,12 @@ module.exports = {
                         },
                         required: ["count"],
                       },
-                      measure: {
-                        type: "object",
-                        properties: {
-                          unit: {
-                            type: "string",
-                          },
-                          value: {
-                            type: "string",
-                          },
-                        },
-                        required: ["unit", "value"],
-                      },
                     },
-                    required: ["selected", "measure"],
+                    required: ["selected"],
                   },
                 },
                 required: [
                   "id",
-                  "parent_item_id",
                   "fulfillment_ids",
                   "quantity",
                 ],
@@ -373,14 +360,16 @@ module.exports = {
                           required: ["name"],
                         },
                       },
-                      required: [
-                        "id",
-                        "type",
-                        "location",
-                        "time",
-                        "contact",
-                        "person",
-                      ],
+                      if: { properties: { type: { const: "end" } } },
+                      then: {
+                        required: [
+                          "type",
+                          "location",
+                          "contact",
+                          "time"
+                        ],
+                      },
+                      else: { required: ["type"] },
                     },
                   },
                   rateable: {
@@ -465,7 +454,7 @@ module.exports = {
                             required: ["currency", "value"],
                           },
                         },
-                        required: ["id", "quantity", "price"],
+                        required: ["id"],
                       },
                       tags: {
                         type: "array",

@@ -1,3 +1,5 @@
+const constants = require("../../../utils/constants");
+
 module.exports = {
   $id: "http://example.com/schema/onSearchSchema",
   type: "object",
@@ -132,11 +134,7 @@ module.exports = {
                   },
                   type: {
                     type: "string",
-                    enum: [
-                      "PRE-FULFILLMENT",
-                      "ON-FULFILLMENT",
-                      "POST-FULFILLMENT",
-                    ],
+                    enum: constants.B2B_PAYMENT_TYPE
                   },
                   collected_by:{
                     type: "string",
@@ -274,6 +272,7 @@ module.exports = {
                           properties: {
                             code: {
                               type: "string",
+                              enum: constants.VALIDCOUNTRYCODES
                             },
                           },
                           required: ["code"],
@@ -343,6 +342,7 @@ module.exports = {
                               },
                               value: {
                                 type: "string",
+                                minLength: 1,
                               },
                             },
                             required: ["descriptor", "value"],
@@ -698,6 +698,7 @@ module.exports = {
                                     properties: {
                                       code: {
                                         type: "string",
+                                        enum: constants.FULFILLMENT_STATE
                                       },
                                     },
                                     required: ["code"],
@@ -720,6 +721,7 @@ module.exports = {
                                     properties: {
                                       currency: {
                                         type: "string",
+                                        enum: constants.CURRENCY
                                       },
                                       value: {
                                         type: "string",
@@ -751,6 +753,7 @@ module.exports = {
                                     properties: {
                                       code: {
                                         type: "string",
+                                        enum: constants.FULFILLMENT_STATE
                                       },
                                     },
                                     required: ["code"],
@@ -862,6 +865,7 @@ module.exports = {
                                     },
                                     value: {
                                       type: "string",
+                                      minLength: 1,
                                     },
                                   },
                                   required: ["descriptor", "value"],
@@ -1010,11 +1014,7 @@ module.exports = {
                         },
                         type: {
                           type: "string",
-                          enum: [
-                            "PRE-FULFILLMENT",
-                            "ON-FULFILLMENT",
-                            "POST-FULFILLMENT",
-                          ],
+                          enum: constants.B2B_PAYMENT_TYPE
                         },
                         collected_by:{
                           type: "string",

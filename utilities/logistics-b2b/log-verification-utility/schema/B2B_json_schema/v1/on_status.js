@@ -600,11 +600,7 @@ module.exports = {
                     const: {
                       $data: "/on_confirm/0/message/order/payments/0/type",
                     },
-                    enum: [
-                      "PRE-FULFILLMENT",
-                      "ON-FULFILLMENT",
-                      "POST-FULFILLMENT",
-                    ],
+                    enum : constants.B2B_PAYMENT_TYPE,
                   },
                   collected_by: {
                     type: "string",

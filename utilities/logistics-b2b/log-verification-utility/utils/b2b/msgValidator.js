@@ -3,6 +3,8 @@ const checkInit = require("./b2bInit");
 const checkSelect = require("./b2bSelect");
 const checkOnInit = require("./b2bOnInit");
 const checkOnConfirm = require("./b2bOnConfirm");
+const checkCancel = require("./b2bCancel");
+const checkOnCancel = require("./b2bonCancel");
 const checkOnSelect = require("./b2bOnSelect");
 const checkOnSearch = require("./b2bOnSearch");
 const checkOnUpdate = require("./b2bOnUpdate");
@@ -35,8 +37,14 @@ const b2bVal = (element, action, msgIdSet) => {
     case "confirm":
       return checkConfirm(element, msgIdSet);
 
-    // case "on_confirm":
-    //   return checkOnConfirm(element, msgIdSet);
+    case "on_confirm":
+      return checkOnConfirm(element, msgIdSet);
+
+    case "on_cancel":
+      return checkOnCancel(element, msgIdSet);
+
+    case "cancel":
+      return checkCancel(element, msgIdSet);
 
     // case "update":
     //   return checkUpdate(element,msgIdSet);
@@ -45,7 +53,7 @@ const b2bVal = (element, action, msgIdSet) => {
     //   return checkOnUpdate(element,msgIdSet)
 
     case "on_status":
-      return checkOnStatus(element,msgIdSet)
+      return checkOnStatus(element, msgIdSet);
   }
   return busnsErr;
 };

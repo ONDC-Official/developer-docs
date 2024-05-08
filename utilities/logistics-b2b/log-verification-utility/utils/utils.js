@@ -408,7 +408,16 @@ function findDifferencesInArrays(array1, array2) {
 
   return differences;
 }
+const findRequiredTags=(list,mandatory)=>{
+  let missingTags = [];
 
+  for (let id of mandatory) {
+    if (!list.has(id)) {
+      missingTags.push(id);
+    }
+  }
+  return missingTags;
+}
 const findMissingTags = (list, code, mandatoryAttr) => {
   const encounteredAttr = [];
   list.map(({ descriptor, value }) => {
@@ -448,5 +457,6 @@ module.exports = {
   findDifferencesInArrays,
   grocery_categories_id,
   fnb_categories_id,
+  findRequiredTags,
   findMissingTags,
 };

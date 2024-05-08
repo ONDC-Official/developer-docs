@@ -70,6 +70,7 @@ module.exports = {
         },
         ttl: {
           type: "string",
+          const: "PT30S",
         },
       },
       required: [
@@ -109,6 +110,8 @@ module.exports = {
                   properties: {
                     id: {
                       type: "string",
+                      const: { $data: "/cancel/0/message/cancellation_reason_id" },
+                      errorMessage:`does not match the cancellation reason id in /cancel`
                     },
                   },
                   required: ["id"],
@@ -117,6 +120,24 @@ module.exports = {
                   type: "string",
                 },
               },
+              allOf: [
+                {
+                  if: {
+                    properties: {
+                      cancelled_by: { const: { $data: "4/context/bpp_id" } },
+                    },
+                  },
+                  then: {
+                    properties: {
+                      reason: {
+                        properties: {
+                          id: { enum: constants.BPP_CANCELLATION_CODES },
+                        },
+                      },
+                    },
+                  },
+                },
+              ],
               required: ["reason", "cancelled_by"],
             },
             provider: {
@@ -545,9 +566,6 @@ module.exports = {
               items: {
                 type: "object",
                 properties: {
-                  id: {
-                    type: "string",
-                  },
                   params: {
                     type: "object",
                     properties: {
@@ -559,6 +577,9 @@ module.exports = {
                       },
                       amount: {
                         type: "string",
+                        const: { $data: "4/quote/price/value" },
+                        errorMessage:
+                          "should be updated to updated quote price - ${4/quote/price/value}",
                       },
                     },
                     required: ["currency", "amount"],
@@ -569,11 +590,7 @@ module.exports = {
                   },
                   type: {
                     type: "string",
-                    enum: [
-                      "PRE-FULFILLMENT",
-                      "ON-FULFILLMENT",
-                      "POST-FULFILLMENT",
-                    ],
+                    enum: constants.B2B_PAYMENT_TYPE,
 
                     const: {
                       $data: "/on_confirm/0/message/order/payments/0/type",
@@ -699,7 +716,6 @@ module.exports = {
                   },
                 },
                 required: [
-                  "id",
                   "params",
                   "status",
                   "type",

@@ -1,3 +1,4 @@
+
 const {
   PCC_CODE,
   DCC_CODE,
@@ -142,6 +143,7 @@ module.exports = {
             },
             fulfillments: {
               type: "array",
+              minItems:1,
               items: {
                 type: "object",
                 properties: {
@@ -173,7 +175,7 @@ module.exports = {
                           },
                           short_desc: {
                             type: "string",
-                            const: { $data: "/confirm/0/message/order/fulfillments/0/end/instructions/short_desc" }
+                            const: { $data: "/confirm/0/message/order/fulfillments/0/start/instructions/short_desc" }
                           },
                           long_desc: {
                             type: "string",
@@ -374,49 +376,6 @@ module.exports = {
                     ],
                   },
                 },
-                provider: {
-                  type: "object",
-                  properties: {
-                    descriptor: {
-                      type: "object",
-                      properties: {
-                        name: {
-                          type: "string",
-                        },
-                      },
-                      required: ["name"],
-                    },
-                    address: {
-                      type: "object",
-                      properties: {
-                        name: {
-                          type: "string",
-                        },
-                        locality: {
-                          type: "string",
-                        },
-                        city: {
-                          type: "string",
-                        },
-                        state: {
-                          type: "string",
-                        },
-                        area_code: {
-                          type: "string",
-                        },
-                      },
-
-                      required: [
-                        "name",
-                        "locality",
-                        "city",
-                        "state",
-                        "area_code",
-                      ],
-                    },
-                  },
-                  required: ["descriptor", "address"],
-                },
                 order: {
                   type: "object",
                   properties: {
@@ -485,7 +444,7 @@ module.exports = {
                   required: ["id", "weight"],
                 },
               },
-              required: ["items", "provider", "order"],
+              required: ["items", "order"],
             },
             updated_at: {
               type: "string",

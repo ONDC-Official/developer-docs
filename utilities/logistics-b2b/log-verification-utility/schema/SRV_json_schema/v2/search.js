@@ -226,7 +226,7 @@ module.exports = {
               },
             },
           },
-          required: [ "fulfillment", "payment", "tags"],
+          required: [ "fulfillment", "tags"],
         },
       },
       required: ["intent"],

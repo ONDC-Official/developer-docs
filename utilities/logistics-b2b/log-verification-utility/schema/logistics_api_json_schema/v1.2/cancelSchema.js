@@ -1,3 +1,4 @@
+const constants = require("../../../utils/constants");
 module.exports = {
   $id: "http://example.com/schema/cancelSchema",
   type: "object",
@@ -86,6 +87,7 @@ module.exports = {
         },
         cancellation_reason_id: {
           type: "string",
+          enum: constants.LBNP_CANCELLATION_CODES
         },
       },
       required: ["order_id", "cancellation_reason_id"],

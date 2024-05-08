@@ -159,25 +159,12 @@ module.exports = {
                         },
                         required: ["count"],
                       },
-                      measure: {
-                        type: "object",
-                        properties: {
-                          unit: {
-                            type: "string",
-                          },
-                          value: {
-                            type: "string",
-                          },
-                        },
-                        required: ["unit", "value"],
-                      },
                     },
-                    required: ["selected", "measure"],
+                    required: ["selected"],
                   },
                 },
                 required: [
                   "id",
-                  "parent_item_id",
                   "fulfillment_ids",
                   "quantity",
                 ],
@@ -369,13 +356,16 @@ module.exports = {
                           required: ["name"],
                         },
                       },
-                      required: [
-                        "type",
-                        "location",
-                        "time",
-                        "contact",
-                        "person",
-                      ],
+                      if: { properties: { type: { const: "end" } } },
+                      then: {
+                        required: [
+                          "type",
+                          "location",
+                          "contact",
+                          "time"
+                        ],
+                      },
+                      else: { required: ["type"] },
                     },
                   },
                 },
@@ -450,7 +440,7 @@ module.exports = {
                             required: ["currency", "value"],
                           },
                         },
-                        required: ["id", "quantity", "price"],
+                        required: ["id"],
                       },
                       tags: {
                         type: "array",
@@ -622,8 +612,8 @@ module.exports = {
             updated_at: {
               type: "string",
               format: "date-time",
-              not: { const: { $data: "/confirm/0/message/order/created_at" } },
-              errorMessage: "should not be same as 'created_at'",
+              not: { const: { $data: "1/created_at" } },
+              errorMessage: "should not be same as 'created_at - ${1/created_at}'",
             },
           },
           required: [

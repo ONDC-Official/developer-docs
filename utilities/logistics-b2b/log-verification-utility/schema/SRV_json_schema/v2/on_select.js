@@ -139,6 +139,21 @@ module.exports = {
                       type: "string",
                     },
                   },
+                  quantity: {
+                    type: "object",
+                    properties: {
+                      selected: {
+                        type: "object",
+                        properties: {
+                          count: {
+                            type: "integer",
+                          },
+                        },
+                        required: ["count"],
+                      },
+                    },
+                    required: ["selected"],
+                  },
                   time: {
                     type: "object",
                     properties: {
@@ -295,7 +310,7 @@ module.exports = {
                           required: ["descriptor", "list"],
                         },
                       },
-                      required: ["type", "location", "time", "tags"],
+                      required: ["type", "location", "time"],
                     },
                   },
                 },

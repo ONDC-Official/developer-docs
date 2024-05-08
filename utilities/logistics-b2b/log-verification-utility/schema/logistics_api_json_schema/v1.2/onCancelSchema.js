@@ -120,14 +120,40 @@ module.exports = {
             cancellation: {
               type: "object",
               properties: {
-                cancelled_by: { type: "string" },
                 reason: {
                   type: "object",
                   properties: {
-                    id: { type: "string", enum: CANCELLATION_CODE },
+                    id: {
+                      type: "string",
+                      const: { $data: "/cancel/0/message/cancellation_reason_id" },
+                      errorMessage:`does not match the cancellation reason id in /cancel`
+                    },
                   },
+                  required: ["id"],
+                },
+                cancelled_by: {
+                  type: "string",
                 },
               },
+              allOf: [
+                {
+                  if: {
+                    properties: {
+                      cancelled_by: { const: { $data: "4/context/bpp_id" } },
+                    },
+                  },
+                  then: {
+                    properties: {
+                      reason: {
+                        properties: {
+                          id: { enum: constants.LSP_CANCELLATION_CODES },
+                        },
+                      },
+                    },
+                  },
+                },
+              ],
+              required: ["reason", "cancelled_by"],
             },
             items: {
               type: "array",
@@ -186,6 +212,7 @@ module.exports = {
                 },
                 breakup: {
                   type: "array",
+                  minItems:1,
                   items: {
                     type: "object",
                     properties: {
@@ -210,11 +237,11 @@ module.exports = {
               },
               required: ["price", "breakup"],
               isQuoteMatching: true,
-              
             },
 
             fulfillments: {
               type: "array",
+              minItems:1,
               items: {
                 type: "object",
                 properties: {
@@ -233,10 +260,7 @@ module.exports = {
                         properties: {
                           code: {
                             type: "string",
-                            enum: [
-                              "Cancelled",
-                              "RTO-Initiated"
-                            ],
+                            enum: ["Cancelled", "RTO-Initiated"],
                           },
                         },
                         required: ["code"],
@@ -265,21 +289,27 @@ module.exports = {
                             properties: {
                               start: {
                                 type: "string",
-                                pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
-                                errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
+                                pattern:
+                                  "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:
+                                  "should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format",
                               },
                               end: {
                                 type: "string",
-                                pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
-                                errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
+                                pattern:
+                                  "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:
+                                  "should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format",
                               },
                             },
                             required: ["start"],
                           },
                           timestamp: {
                             type: "string",
-                            pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
-                            errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
+                            pattern:
+                              "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                            errorMessage:
+                              "should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format",
                           },
                         },
                       },
@@ -354,7 +384,6 @@ module.exports = {
                               },
                             },
                             isLengthValid: true,
-                            
                           },
                         },
                         required: ["gps", "address"],
@@ -386,21 +415,27 @@ module.exports = {
                             properties: {
                               start: {
                                 type: "string",
-                                pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
-                                errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
+                                pattern:
+                                  "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:
+                                  "should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format",
                               },
                               end: {
                                 type: "string",
-                                pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
-                                errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
+                                pattern:
+                                  "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                                errorMessage:
+                                  "should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format",
                               },
                             },
                             required: ["start"],
                           },
                           timestamp: {
                             type: "string",
-                            pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
-                            errorMessage:"should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format"
+                            pattern:
+                              "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                            errorMessage:
+                              "should be in RFC 3339 (YYYY-MM-DDTHH:MN:SS.MSSZ) Format",
                           },
                         },
                       },
@@ -475,7 +510,6 @@ module.exports = {
                               },
                             },
                             isLengthValid: true,
-                            
                           },
                         },
                         required: ["gps", "address"],
@@ -553,7 +587,7 @@ module.exports = {
                       properties: {
                         time: { required: ["range"] },
                       },
-                      required: [ "person", "location", "contact"],
+                      required: ["person", "location", "contact"],
                     },
 
                     end: {
@@ -571,10 +605,13 @@ module.exports = {
                       properties: {
                         time: { required: ["timestamp"] },
                       },
-                      required: ["time"],
+                      required: ["time","location"],
+                    },
+                    end: {
+                      required: ["location"],
                     },
                   },
-                  required: ["id", "type", "state", "start"],
+                  required: ["id", "type", "state", "start","end"],
                 },
               },
             },
@@ -610,6 +647,19 @@ module.exports = {
                     $data: "/on_confirm/0/message/order/payment/collected_by",
                   },
                 },
+                params: {
+                  type: "object",
+                  properties: {
+                    amount: {
+                      type: "string",
+                    },
+                    currency: {
+                      type: "string",
+                    },
+                  },
+                  required: ["amount", "currency"],
+                },
+
                 time: {
                   type: "object",
                   properties: {

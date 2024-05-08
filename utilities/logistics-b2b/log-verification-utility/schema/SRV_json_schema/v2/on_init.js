@@ -38,7 +38,7 @@ module.exports = {
         },
         version: {
           type: "string",
-          const: "2.0.0"
+          const: "2.0.0",
         },
         bap_id: {
           type: "string",
@@ -154,28 +154,11 @@ module.exports = {
                         },
                         required: ["count"],
                       },
-                      measure: {
-                        type: "object",
-                        properties: {
-                          unit: {
-                            type: "string",
-                          },
-                          value: {
-                            type: "string",
-                          },
-                        },
-                        required: ["unit", "value"],
-                      },
                     },
-                    required: ["selected", "measure"],
+                    required: ["selected"],
                   },
                 },
-                required: [
-                  "id",
-                  "parent_item_id",
-                  "fulfillment_ids",
-                  "quantity",
-                ],
+                required: ["id", "fulfillment_ids", "quantity"],
               },
             },
             billing: {
@@ -327,7 +310,6 @@ module.exports = {
                               },
                               required: ["start", "end"],
                             },
-                          
                           },
                           required: ["label", "range"],
                         },
@@ -368,7 +350,13 @@ module.exports = {
                           required: ["descriptor", "list"],
                         },
                       },
-                      required: ["type", "location", "contact", "time", "tags"],
+                      if: { properties: { type: { const: "end" } } },
+                      then: {
+                        required: ["type", "location", "contact", "time"],
+                      },
+                      else: {
+                        required: ["type"],
+                      },
                     },
                   },
                 },
@@ -443,7 +431,7 @@ module.exports = {
                             required: ["currency", "value"],
                           },
                         },
-                        required: ["id", "quantity", "price"],
+                        required: ["id"],
                       },
                       tags: {
                         type: "array",
@@ -494,6 +482,65 @@ module.exports = {
               },
               required: ["price", "breakup", "ttl"],
             },
+            cancellation_terms: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  fulfillment_state: {
+                    type: "object",
+                    properties: {
+                      descriptor: {
+                        type: "object",
+                        properties: {
+                          code: {
+                            type: "string",
+                          },
+                        },
+                        required: ["code"],
+                      },
+                    },
+                    required: ["descriptor"],
+                  },
+                  cancel_by: {
+                    type: "object",
+                    properties: {
+                      duration: {
+                        type: "string",
+                      },
+                    },
+                    required: ["duration"],
+                  },
+                  cancellation_fee: {
+                    type: "object",
+                    properties: {
+                      amount: {
+                        type: "object",
+                        properties: {
+                          value: {
+                            type: "string",
+                          },
+                        },
+                        required: ["value"],
+                      },
+                      percentage: {
+                        type: "string",
+                      },
+                    },
+                  },
+                  reason_required: {
+                    type: "boolean",
+                  },
+                },
+                required: [
+                  "fulfillment_state",
+                  "cancel_by",
+                  "cancellation_fee",
+                  "reason_required",
+                ],
+              },
+            },
+
             payments: {
               type: "array",
               items: {
@@ -602,10 +649,11 @@ module.exports = {
             "provider",
             "locations",
             "items",
+            "cancellation_terms",
             "billing",
             "fulfillments",
             "quote",
-            "payments"
+            "payments",
           ],
         },
       },

@@ -85,6 +85,7 @@ module.exports = {
         ttl: {
           type: "string",
           format: "duration",
+          const:"PT30S"
         },
       },
       required: [
@@ -598,11 +599,7 @@ module.exports = {
                 properties: {
                   type: {
                     type: "string",
-                    enum: [
-                      "PRE-FULFILLMENT",
-                      "ON-FULFILLMENT",
-                      "POST-FULFILLMENT",
-                    ],
+                    enum : constants.B2B_PAYMENT_TYPE,
                     const: { $data: "/select/0/message/order/payments/0/type" },
               
                   },

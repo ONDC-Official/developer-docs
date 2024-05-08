@@ -1,3 +1,4 @@
+const constants = require("../../../utils/constants");
 module.exports = {
   $id: "http://example.com/schema/onStatusSchema",
   type: "object",
@@ -69,6 +70,7 @@ module.exports = {
         },
         ttl: {
           type: "string",
+          const:"PT30S"
         },
       },
       required: [
@@ -607,11 +609,7 @@ module.exports = {
                   },
                   type: {
                     type: "string",
-                    enum: [
-                      "PRE-FULFILLMENT",
-                      "ON-FULFILLMENT",
-                      "POST-FULFILLMENT",
-                    ],
+                    enum : constants.B2B_PAYMENT_TYPE,
 
                     const: {
                       $data: "/on_confirm/0/message/order/payments/0/type",
@@ -760,6 +758,7 @@ module.exports = {
                   },
                   label: {
                     type: "string",
+                    enum:["PROFORMA_INVOICE","Invoice","INVOICE"]
                   },
                 },
                 required: ["url", "label"],

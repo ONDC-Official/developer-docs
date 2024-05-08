@@ -9,7 +9,7 @@ const checkConfirm = async (data, msgIdSet) => {
   confirm = confirm.message.order;
   let orderState = confirm.state;
   let payments = confirm?.payments;
-
+  let orderTags = confirm?.tags
   let items = confirm.items;
   const selectedItems = dao.getValue("onSlctdItemsArray");
 
@@ -67,6 +67,27 @@ const checkConfirm = async (data, msgIdSet) => {
       `!!Error while checking providers array in /confirm api`,
       error
     );
+  }
+
+  try {
+    console.log("Checking order tags");
+
+    if(orderTags){
+      orderTags.forEach(tag=>{
+        const {descriptor,list}= tag
+        if(descriptor.code==='bap_terms'){
+          list.forEach(listTag=>{
+            let enums=["Y","N"]
+            const {descriptor,value}= listTag;
+            if(descriptor.code==='accept_bpp_terms' && !enums.includes(value) ){
+               cnfrmObj.invalidVal=`Invalid value for 'accept_bpp_terms' tag in order/tags/bap_terms`
+            }
+          })
+        }
+      })
+    }
+  } catch (error) {
+    console.log(error);
   }
 
   return cnfrmObj;

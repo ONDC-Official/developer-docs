@@ -137,8 +137,23 @@ module.exports = {
                       type: "string",
                     },
                   },
+                  quantity: {
+                    type: "object",
+                    properties: {
+                      selected: {
+                        type: "object",
+                        properties: {
+                          count: {
+                            type: "integer",
+                          },
+                        },
+                        required: ["count"],
+                      },
+                    },
+                    required: ["selected"],
+                  },
                 },
-                required: ["id", "parent_item_id", "location_ids"],
+                required: ["id", "location_ids"],
               },
             },
             fulfillments: {
@@ -186,10 +201,7 @@ module.exports = {
                               required: ["start", "end"],
                             },
                             days: {
-                              type: "array",
-                              items: {
-                                type: "string",
-                              },
+                              type: "string",
                             },
                           },
                           required: ["label", "range"],

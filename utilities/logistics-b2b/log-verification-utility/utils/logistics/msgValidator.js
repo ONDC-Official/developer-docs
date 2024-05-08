@@ -7,6 +7,7 @@ const checkOnUpdate = require("./logOnUpdate");
 const checkUpdate = require("./logUpdate");
 const checkOnStatus = require("./logOnStatus");
 const checkOnCancel = require("./logOnCancel");
+const checkTrack = require("./logTrack");
 const checkOnTrack = require("./logOnTrack");
 const checkSearch = require("./logSearch");
 const _ = require("lodash");
@@ -46,6 +47,9 @@ const logisticsVal = async (element, action, msgIdSet) => {
 
     case "on_track":
       return checkOnTrack(element, msgIdSet);
+
+    case "track":
+      return checkTrack(element, msgIdSet);
   }
   return busnsErr;
 };
