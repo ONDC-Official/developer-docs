@@ -98,7 +98,7 @@ const verifyMessage = async ({ signedString, signingString, publicKey }: IVerify
 
 const verifyHeader = async ({ headerParts, body, publicKey }: IVerifyHeader) => {
   const { signingString } = await createSigningString({
-    message: JSON.stringify(body),
+    message: body,
     created: headerParts?.created,
     expires: headerParts?.expires,
   });
