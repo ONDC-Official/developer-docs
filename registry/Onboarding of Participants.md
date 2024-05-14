@@ -25,7 +25,7 @@ To join the ONDC network, Network Participants (NPs) need to be included in the 
 1. Generate Signing Key Pair (ed25519 Algorithm) - signing_public_key and signing_private_key; (base64 encoded) 
 > Refer utility below in step 2
 2. Generate Encryption Key Pair (X25519 Algorithm) - encryption_public_key (ASN.1 Der format-> base64 encoded) and encryption_private_key (base64 encoded). Use the utilities provided below to generate signing and encryption key pairs:
-   - [Java](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/ondc-crypto-utility-master)
+   - [Java](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/on_subscibe-service/java)
    - [Python](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/signing_and_verification)
    - [GoLang](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/signing_and_verification/golang)
      Note:
@@ -74,15 +74,9 @@ To join the ONDC network, Network Participants (NPs) need to be included in the 
 >
 > 1. ops_no : 1 - Buyer App Registration
 > 2. ops_no : 2 - Seller App Registration
-> 3. ops_no : 3 - MSN Seller App Registration
 > 4. ops_no : 4 - Buyer & Seller App Registration
-> 5. ops_no : 5 - Buyer & MSN Seller App Registration
 >
-> Note: ops_no 3 & 5 will be deprecated as per the dates below as feature of Seller On Record (SOR) in registry will be obsolete. 
->
-> Staging: 29/12/2023,
-> Pre Prod: TBD,
-> Production: TBD,
+> Note: ops_no 3 & 5 is deprecated as feature of Seller On Record (SOR) in registry is obsolete. 
 
 9. Create /subscribe request as follows:
 
@@ -193,7 +187,7 @@ https://prod.registry.ondc.org/vlookup
 	curl --location 'https://preprod.registry.ondc.org/ondc/vlookup' \
 		--header 'Content-Type: application/json' \
 		--data '{
-		    "sender_subscriber_id": "pilot-gateway-1.beckn.nsdl.co.in/option8",
+		    "sender_subscriber_id": "your_sub_id",
 		    "request_id": "27baa06d-f90a-486c-85e5-cc621b787f04",
 		    "timestamp": "2022-09-13T20:45:07.060Z",
 		    "signature": "UNC7Wy8WZ5iQYNBUnHu1wsCtRhZ0P+I4NO5CpP03cNZ+jYuVtXyeMKQs1coU9Q9fpXIJupB8uRVJ5KPbl/x3Bg==",
@@ -202,13 +196,13 @@ https://prod.registry.ondc.org/vlookup
 			"domain": "ONDC:RET10",
 			"type": "sellerApp",
 			"city":"std:080",
-			"subscriber_id": "ondc.org"
+			"subscriber_id": "counter_party_sub_id"
 		    }
 		}'
 
 - sender_subscriber_id: subscriber id of request initiator
 - request_id: unique identifier for request
-- timestamp: timestamp in RFC3339 format
+- timestamp: current timestamp in RFC3339 format
 - signature: search_parameters signed using private key of request initiator: sign(country|domain|type|city|subscriber_id) => - sign(IND|ONDC:RET10|sellerApp|std:080|ondc.org)
 - type: enums are "buyerApp", "sellerApp", "gateway"
 
@@ -248,7 +242,7 @@ https://prod.registry.ondc.org/vlookup
 
 Resolution:
 
-Please connect with ONDC (tech@ondc.org) and get your subscriber ID whitelisted
+Please connect with ONDC (techsupport@ondc.org) and get your subscriber ID whitelisted
 
 ### Timestamp is invalid
 
