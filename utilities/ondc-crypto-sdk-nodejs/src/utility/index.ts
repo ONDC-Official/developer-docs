@@ -53,7 +53,7 @@ export const createAuthorizationHeader = async ({
     expires: expiresT,
     created: createdT,
   } = await createSigningString({
-    message: JSON.stringify(body),
+    message: body,
     created,
     expires,
   });

@@ -35,11 +35,11 @@ export interface IVerifyHeader {
 
 export interface IsHeaderValid {
   header: string;
-  body: any;
+  body: string;
   publicKey: string;
 }
 export interface ICreateAuthorizationHeader {
-  body: GenericObject;
+  body: string;
   privateKey: string;
   subscriberId: string;
   subscriberUniqueKeyId: string;

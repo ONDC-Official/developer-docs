@@ -1,6 +1,6 @@
 {
   "name": "ondc-crypto-sdk-nodejs",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A crypto utility for exposing signing and verification functions by ONDC",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
