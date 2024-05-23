@@ -62,7 +62,7 @@ function create_authorisation_header(string $request_body, string $created = nul
     $subscriber_id = $_ENV['SUBSCRIBER_ID'];
     $unique_key_id = $_ENV['UNIQUE_KEY_ID'];
 
-    $header = "Signature keyId=\"$subscriber_id|$unique_key_id|ed25519\",algorithm=\"ed25519\",created=\"$created\",expires=\"$expires\",headers=\"($created) ($expires) digest\",signature=\"$signature\"";
+    $header = "Signature keyId=\"$subscriber_id|$unique_key_id|ed25519\",algorithm=\"ed25519\",created=\"$created\",expires=\"$expires\",headers=\"(created) (expires) digest\",signature=\"$signature\"";
     return $header;
 }
 
