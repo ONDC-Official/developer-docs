@@ -1,6 +1,6 @@
 {
   "name": "ondc-crypto-sdk-nodejs",
-  "version": "1.0.4",
+  "version": "2.1.0",
   "description": "A crypto utility for exposing signing and verification functions by ONDC",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "run": "tsc && node lib/index.js",
-    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "format": "prettier --write \"src/**/*.ts\" \"lib/**/*.js\"",
     "lint": "tslint -p tsconfig.json",
     "prepare": "npm run build",
     "prepublishOnly": "npm run lint",
