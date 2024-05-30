@@ -15,6 +15,8 @@ from Cryptodome.Util.Padding import pad,unpad
 
 f = open(os.getenv("REQUEST_BODY_PATH", "request_body_raw_text.txt"), "r")
 request_body_raw_text = f.read()
+request_body_raw_text = json.loads(request_body_raw_text) # parse the string into a python dictionary object
+request_body_raw_text = json.dumps(request_body_raw_text, separators=(',', ':')) #minify the payload to remove any extra spaces and line breaks 
 
 def hash_message(msg: str):
     HASHER = nacl.hash.blake2b
