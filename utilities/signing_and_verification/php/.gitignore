@@ -471,3 +471,5 @@ composer.lock
 .sass-cache/
 *.css.map
 *.sass.map
+
+.env
