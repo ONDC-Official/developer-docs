@@ -1,0 +1,27 @@
+{
+    "name": "charnpreet/subscription",
+    "type": "project",
+    "autoload": {
+      "psr-4": {
+        "Charnpreet\\Subscription\\": "src/",
+        "Custom\\AlgorithmIdentifier\\Asymmetric\\": "src/utils"
+      }
+    },
+    "authors": [
+      {
+        "name": "b"
+      }
+    ],
+    "require": {
+      "sop/crypto-types": "^0.3.0",
+      "phpseclib/phpseclib": "^3.0",
+      "vlucas/phpdotenv": "^5.6",
+      "ramsey/uuid": "^4.7",
+        "sop/asn1": "^4.1",
+        "sop/crypto-encoding": "^0.3.0",
+        "sop/x501": "^0.6.1"         
+    },
+    "scripts": {
+      "start": "php -f src/index.php --"
+    }
+  }

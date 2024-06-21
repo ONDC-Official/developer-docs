@@ -4,7 +4,7 @@ include_once "vendor/autoload.php";
 
 use phpseclib3\Crypt\AES;
 use Sop\ASN1\Type\Primitive\BitString;
-use Sop\CryptoTypes\AlgorithmIdentifier\Asymmetric\X25519AlgorithmIdentifier;
+use Custom\AlgorithmIdentifier\Asymmetric\X25519AlgorithmIdentifier;
 use Sop\CryptoTypes\Asymmetric\OneAsymmetricKey;
 use Sop\CryptoTypes\Asymmetric\PublicKeyInfo;
 
@@ -40,8 +40,24 @@ function sign_response(string $signing_key, string $private_key): string
 
 function verify_response(string $signature, string $signing_key, string $public_key): bool
 {
-    return sodium_crypto_sign_verify_detached(base64_decode($signature), $signing_key, base64_decode($public_key));
+    $decoded_public_key = base64_decode($public_key);
+
+    if ($decoded_public_key === false) {
+        throw new Exception('Failed to decode public key from base64.');
+    }
+    
+    // Check if the public key has the correct length
+    if (strlen($decoded_public_key) !== SODIUM_CRYPTO_SIGN_PUBLICKEYBYTES) {
+        throw new Exception('The public key is not the correct length.');
+    }
+
+    // Verify the signature
+    $verification_result = sodium_crypto_sign_verify_detached(base64_decode($signature), $signing_key, $decoded_public_key);
+    echo "Verification Result: ", $verification_result ? 'True' : 'False', PHP_EOL;
+
+    return $verification_result;
 }
+
 
 function create_authorisation_header(string $request_body, string $created = null, string $expires = null)
 {
@@ -81,15 +97,17 @@ function get_filter_dict(string $filter_string)
 
 function verify_authorisation_header(string $auth_header, string $request_body_str, string $public_key): bool
 {
-    $auth_header = str_replace("Signature ", "", $auth_header);
+    $auth_header = str_replace("Signature ", "", $_ENV['AUTH_HEADER']);
     $header_parts = get_filter_dict($auth_header);
     $created = (int) $header_parts["created"];
     $expires = (int) $header_parts["expires"];
 
     $now = new DateTime();
     if ($created <= $now->getTimestamp() && $expires >= $now->getTimestamp()) {
-        $signing_key = create_signing_string(hash_msg($request_body_str), $created, $expires);
+        $signing_key = create_signing_string(hash_msg($_ENV['REQUEST_BODY']), $created, $expires);
         return verify_response($header_parts['signature'], $signing_key, $public_key);
+    }else{
+        throw new Exception('The signature has expired.');
     }
     return false;
 }
@@ -150,16 +168,16 @@ function main(array $args)
             gen_keys();
             break;
         case "-e":
-            echo encrypt($_ENV['ENC_PRIV_KEY'], $_ENV['COUNTERPARTY_PUB_KEY'], $args[2]);
+            echo encrypt($_ENV['ENC_PRIV_KEY'], $_ENV['ENC_PUB_KEY'], $args[2]);
             break;
         case "-d":
-            echo decrypt($_ENV['ENC_PRIV_KEY'], $_ENV['ENC_PUB_KEY'], $args[2]);
+            echo decrypt($_ENV['ENC_PRIV_KEY'], $_ENV['COUNTERPARTY_PUB_KEY'], $args[2]);
             break;
         case "-s":
             echo create_authorisation_header($_ENV['REQUEST_BODY']);
             break;
         case "-v":
-            echo verify_authorisation_header($_ENV['AUTH_HEADER'] || '', $_ENV['REQUEST_BODY'] || '', $_ENV["COUNTERPARTY_SIGNING_PUB_KEY"]);
+            echo verify_authorisation_header($_ENV['AUTH_HEADER'] || '', $_ENV['REQUEST_BODY'] || '', $_ENV["SIGNING_PUB_KEY"]);
             break;
         default:
             echo "$args[1] is not a valid argument: please check" . "\n";
