@@ -186,21 +186,17 @@ public class Routes extends  Utils{
 
     @PostMapping("/vlookup")
     public ResponseEntity<String> vLookup(@RequestBody JsonNode request) throws IOException, InterruptedException {
-        // Log the received JSON request
         String requestString = request.toString();
         System.out.println("Received request: " + requestString);
 
-        // Prepare HTTP request to vlookupUrl
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .uri(URI.create(vlookupUrl))
                 .POST(HttpRequest.BodyPublishers.ofString(requestString))
                 .build();
 
-        // Send HTTP request and get the response
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
-        // Return the response from vlookupUrl back to the user
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(httpResponse.body());
