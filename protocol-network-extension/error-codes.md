@@ -154,4 +154,4 @@ CC-BY-ND
   ## Acknowledgements
   This document has been adapted from the [Error Codes draft document](https://github.com/beckn/protocol-specifications/blob/draft/docs/protocol-drafts/BECKN-RFC-005-Error-Codes-Draft-01.md) from the Beckn Foundation.
 
-*Copyright (c) 2023 ONDC. All rights reserved.*
+*Copyright (c) 2024 ONDC. All rights reserved.*
