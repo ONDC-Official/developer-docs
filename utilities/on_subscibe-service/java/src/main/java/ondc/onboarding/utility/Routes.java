@@ -40,6 +40,10 @@ public class Routes extends  Utils{
 
     @Autowired
     private String ondcPublicKey;
+
+    @Autowired
+    private String vlookupUrl;
+
     @Autowired
     private String requestId;
 
@@ -149,5 +153,52 @@ public class Routes extends  Utils{
         response.put("answer", new String(decryptedData));
         logger.info(response.toString());
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(response.toString());
+    }
+
+    @PostMapping("/sign")
+    public ResponseEntity<String> sign(@RequestBody JsonNode request) {
+
+        JsonNode searchParamsNode = request.get("search_parameters");
+        if (searchParamsNode == null) {
+            return ResponseEntity.badRequest()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body("{\"error\": \"search_parameters not found in request\"}");
+        }
+
+        String country = searchParamsNode.get("country").asText();
+        String domain = searchParamsNode.get("domain").asText();
+        String type = searchParamsNode.get("type").asText();
+        String city = searchParamsNode.get("city").asText();
+        String subscriberId = searchParamsNode.get("subscriber_id").asText();
+
+        String formattedString = String.format("%s|%s|%s|%s|%s", country, domain, type, city, subscriberId);
+
+        String privateKeyBase64 = request.get("privatekey").asText();
+        byte[] privateKeyBytes = Base64.getDecoder().decode(privateKeyBase64);
+
+        String signature = sign(privateKeyBytes, formattedString.getBytes());
+
+        String jsonResponse = String.format("{\"signature\": \"%s\"}", signature);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(jsonResponse);
+    }
+
+    @PostMapping("/vlookup")
+    public ResponseEntity<String> vLookup(@RequestBody JsonNode request) throws IOException, InterruptedException {
+        String requestString = request.toString();
+        System.out.println("Received request: " + requestString);
+
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(URI.create(vlookupUrl))
+                .POST(HttpRequest.BodyPublishers.ofString(requestString))
+                .build();
+
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(httpResponse.body());
     }
 }

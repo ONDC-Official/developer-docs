@@ -45,4 +45,17 @@ public class AppConfig {
     public String gatewayUrl(){
         return "https://staging.registry.ondc.org/subscribe";
     }
+
+    @Bean
+    public String vlookupUrl(){
+        //Staging
+        return "https://staging.registry.ondc.org/vlookup";
+
+        //Preprod
+        //return "https://preprod.registry.ondc.org/ondc/vlookup";
+
+        //Prod
+        //return "https://prod.registry.ondc.org/vlookup";
+    }
 }
+

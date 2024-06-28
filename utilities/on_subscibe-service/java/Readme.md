@@ -89,3 +89,39 @@ curl --location 'localhost:8080/verify-header' \
 --data-raw '{"value":{"test":"test"}},"public_key":"public_key","header":"Signature keyId=\"abc.com|ukid|ed25519\",algorithm=\"ed25519\",created=\"1712239689\",expires=\"1712539689\",headers=\"(created) (expires) digest\",signature=\"Gy5wiiJYGeNOBsiXJKo4OF7fSKR65zkxa/FJjgBgenmRplhq9vNewz/ivXDFegSnrdQK9U9T19Ta55J7Aa6RBw==\""
 }'
 ```
+
+### How to generate vlookup signature
+To generate sigature for vlookup kindly use the following curl request:
+```
+curl --location 'localhost:8080/sign' \
+--header 'Content-Type: application/json' \
+--data '{
+    "privatekey": "private_key",
+    "search_parameters": {
+        "country": "IND",
+        "domain": "ONDC:RET11",
+        "type": "sellerApp",
+        "city": "std:079",
+        "subscriber_id": "subscriber_id"
+    }
+}'
+```
+
+To Use vlookup
+```
+curl --location 'localhost:8080/vlookup' \
+--header 'Content-Type: application/json' \
+--data '{
+    "sender_subscriber_id": "sender_sigature_id",
+    "request_id": "LUmqWztvAH/S9UBqiYUMN/iwvYcYRz5mC/vVSTfxaYzafs8NCd94UcK2UQSa4lvw4y8WWjacJfxvDzEQGnmgAQ==",
+    "timestamp": "2024-06-26T16:45:46.745Z",
+    "signature": "BJkw0KsxSBTD4gJ0TwJpyOgM+seqbn9CdvOYQ/HUHvod38qazTYZBZ3gUsvYvQFlrKKU/vitUUXCDKlAgwoDCQ==",
+    "search_parameters": {
+        "country": "IND",
+        "domain": "ONDC:RET11",
+        "type": "sellerApp",
+        "city": "std:079",
+        "subscriber_id": "subscriber_id"
+    }
+}'
+```
