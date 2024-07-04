@@ -1,0 +1,8 @@
+pybase64
+datetime
+uuid
+requests
+PyNaCl
+fastapi
+uvicorn
+pydantic
