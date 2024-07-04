@@ -23,7 +23,7 @@ This repository contains a simple FASTAPI server that facilitates the ONDC (Open
 
 ### VLookup
 
-Perform a VLookup operation by sending a POST request to `http://localhost:9900/vlookup`. The payload should be in the following format:
+Perform a VLookup operation by sending a POST request to `http://localhost:8000/vlookup`. The payload should be in the following format:
 
 ```json
 {
