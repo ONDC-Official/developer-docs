@@ -1,0 +1,17 @@
+{
+  "name": "subscription_utility",
+  "version": "1.0.0",
+  "description": "This Node.js package facilitates the subscription process within the network. It includes hosting an HTML file and providing an on_subscribe endpoint.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "crypto": "^1.0.1",
+    "express": "^4.19.2",
+    "libsodium-wrappers": "^0.7.14"
+  }
+}
