@@ -82,7 +82,7 @@ const splitAuthHeader = (authHeader: string): GenericObject | IHeaderParts => {
   return parts;
 };
 
-const verifyMessage = async ({ signedString, signingString, publicKey }: IVerifyMessage) => {
+export const verifyMessage = async ({ signedString, signingString, publicKey }: IVerifyMessage) => {
   try {
     await _sodium.ready;
     const sodium = _sodium;
