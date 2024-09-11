@@ -1,63 +1,65 @@
-# Onboarding of Network Participants 
+# Onboarding Network Participants
 
-To join the ONDC network, Network Participants (NPs) need to be included in the ONDC registry. The prerequisites and steps for an NP to be onboarded onto the ONDC Registry (Staging, Pre Production, Production) are as follows:
+To join the ONDC network, Network Participants (NPs) must be registered in the ONDC registry. Follow these prerequisites and steps to complete your onboarding for Staging, Pre-Production, and Production environments:
 
 ## Prerequisites
 
-1. Network Participant (NP) shall have a valid domain (FQDN/DNS) name. This becomes part of your subscriber ID (subscriber_id).
-
+1. **Domain Name**: Ensure your Network Participant (NP) has a valid Fully Qualified Domain Name (FQDN/DNS) that will be included in your subscriber ID (subscriber_id).  
    ```
-   eg: prod.ondcapp.com
+   e.g., prod.ondcapp.com
    ```
 
-2. NP shall have a valid SSL certificate for your domain. This will be used while performing Online Certificate Status Protocol (OCSP) validation.
-3. Get your Staging, Preprod and Production subscriber_id whitelisted/approved by ONDC by raising the request on Network Participant Portal:
+2. **SSL Certificate**: Obtain a valid SSL certificate for your domain. This certificate is used for Online Certificate Status Protocol (OCSP) validation.
 
-   1. Please sign up on Network Participant Portal [here](https://portal.ondc.org) and raise the request
-   2. Please go through the self help guide [here](https://sites.google.com/ondc.org/portal-help)
+3. **Whitelisting**: Get approval for your Staging, Pre-Production, and Production subscriber_id by submitting a request on the Network Participant Portal:
+   1. Sign up on the Network Participant Portal [here](https://portal.ondc.org) and submit your request.
+   2. Complete your profile 100% after signing up.
+   3. From the home menu, find and raise a request for whitelisting under "environment access request." Approval may take 6 to 48 hours.
+   4. Review the self-help guide [here](https://sites.google.com/ondc.org/portal-help).
 
-4. Configure your system with domain name and SSL. All communication with ONDC Network should happen through this domain.
+4. **System Configuration**: Configure your system with the domain name and SSL certificate. All communications with the ONDC Network must occur through this domain.
 
 ## Steps
 
-> Steps 4 to 7 can be done using the utility [here](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/on_subscibe-service). Every Participant shall perform Steps 1 and 2 to generate keys as below.
+### Steps 1 and 2: Key Generation
 
-1. Generate Signing Key Pair (ed25519 Algorithm) - signing_public_key and signing_private_key; (base64 encoded) 
-> Refer utility below in step 2
-2. Generate Encryption Key Pair (X25519 Algorithm) - encryption_public_key (ASN.1 Der format-> base64 encoded) and encryption_private_key (base64 encoded). Use the utilities provided below to generate signing and encryption key pairs:
+You can use the utility [here](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/signing_and_verification) to perform these steps. Choose from the following technologies for generating key pairs:
+
    - [Java](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/on_subscibe-service/java)
    - [Python](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/signing_and_verification/python)
    - [GoLang](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/signing_and_verification/golang)
    - [NodeJS](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/signing_and_verification/node)
    - [PHP](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/signing_and_verification/php)
-     Note:
-     [Libsodium library](https://libsodium.gitbook.io/doc/bindings_for_other_languages) can be utilised to generate the key pairs.
-     For NodeJS: Inbuilt Crypto library should be used instead of Libsodium library. The generated encryption public key is already encoded in the ASN.1 DER format.
-   - You can refer to the documentation for information on the format and generation of keys [here](./key-format-generation.md).
-3. Generate Unique Request ID (request_id). It should be unique for a network participant. It can be in any format. For example - it can be UUID or a simple number or alphanumeric format.
-4. Generate SIGNED_UNIQUE_REQ_ID => Sign request_id using signing_private_key generated in step 1 (signed using ed25519 algorithm without hashing).
 
-   The [on_subscribe utility](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/on_subscibe-service) has methods implemented to sign the message (request_id).
+1. **Generate Signing Key Pair**: Create a Signing Key Pair using the Ed25519 Algorithm. This will include a `signing_public_key` and a `signing_private_key` (both base64 encoded).
 
-5. Create `ondc-site-verification.html` and place it at subscriber_id by adding SIGNED_UNIQUE_REQ_ID generated in step 4. Registry shall check existence of ondc-site-verification.html at
+2. **Generate Encryption Key Pair**: Create an Encryption Key Pair using the X25519 Algorithm. This includes an `encryption_public_key` (in ASN.1 DER format -> base64 encoded) and an `encryption_private_key` (base64 encoded).
+   - **Note**: Use the [Libsodium library](https://libsodium.gitbook.io/doc/bindings_for_other_languages) for key pair generation. For NodeJS, use the inbuilt Crypto library instead of Libsodium. Ensure the encryption public key is in ASN.1 DER format. Refer to the key format and generation documentation [here](./key-format-generation.md).
+
+### Steps 3 to 7: Endpoint Setup
+
+You can perform these steps using the utility [here](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/on_subscibe-service). If a utility is not available for your tech stack, you may create one following the outlined steps.
+
+3. **Generate Unique Request ID**: Create a unique Request ID (`request_id`). This ID must be unique for each network participant and can be any format (e.g., UUID, number, or alphanumeric).
+
+4. **Generate SIGNED_UNIQUE_REQ_ID**: Sign the `request_id` using the `signing_private_key` from Step 1. The signature should be created using the Ed25519 algorithm without hashing. The [on_subscribe utility](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/on_subscibe-service) can help with this.
+
+5. **Create `ondc-site-verification.html`**: Place this file at the subscriber_id path and include the `SIGNED_UNIQUE_REQ_ID` generated in Step 4. The registry will check for this file at:
    `https://<subscriber_id>/ondc-site-verification.html`
+   ```
+   <!-- Contents of ondc-site-verification.html -->
+   <!-- Replace SIGNED_UNIQUE_REQ_ID with the actual value -->
+   <html>
+       <head>
+           <meta name='ondc-site-verification' content='SIGNED_UNIQUE_REQ_ID' />
+       </head>
+       <body>
+           ONDC Site Verification Page
+       </body>
+   </html>
+   ```
 
-
-```
-<!--Contents of ondc-site-verification.html. -->
-<!--Please replace SIGNED_UNIQUE_REQ_ID with an actual value-->
-<html>
-    <head>
-        <meta name='ondc-site-verification' content='SIGNED_UNIQUE_REQ_ID' />
-    </head>
-    <body>
-        ONDC Site Verification Page
-    </body>
-</html>
-```
-
-6. Configure developed /on_subscribe implementation.
-   Create encryption shared key using: encryption private key (generated in step 2) and ONDC public key to decrypt the challenge_string (received in the on_susbcribe call) using AES algorithm.
+6. **Configure `/on_subscribe` Endpoint**: Create the encryption shared key using the `encryption_private_key` (from Step 2) and the ONDC public key to decrypt the `challenge_string` received in the `/on_subscribe` call using the AES algorithm.
 
    ```
    ONDC public key (prod) = "MCowBQYDK2VuAyEAvVEyZY91O2yV8w8/CAwVDAnqIZDJJUPdLUUKwLo3K0M="
@@ -65,10 +67,10 @@ To join the ONDC network, Network Participants (NPs) need to be included in the 
    ONDC public key (staging) = "MCowBQYDK2VuAyEAduMuZgmtpjdCuxv+Nc49K0cB6tL/Dj3HZetvVN7ZekM="
    ```
 
-7. Host /on_subscribe endpoint :
-
-   1. `https://<subscriber_id>/<callback_url>/on_subscribe `
-      The (Node.JS/Python) [utility](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/on_subscibe-service) can be used to implement the /on_subscribe endpoint.
+7. **Host `/on_subscribe` Post Endpoint**: Deploy the `/on_subscribe` endpoint at:
+   `https://<subscriber_id>/<callback_url>/on_subscribe`
+   
+   Use the (Node.JS/Python) [utility](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/on_subscibe-service) to implement this endpoint.
 
 8. Refer [swaggerhub document](https://app.swaggerhub.com/apis-docs/ONDC/ONDC-Registry-Onboarding/2.0.5#/ONDC%20Network%20Participant%20Onboarding/post_subscriber_url_on_subscribe) for request body and response of /subscribe API.
 
