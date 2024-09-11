@@ -26,8 +26,10 @@ To join the ONDC network, Network Participants (NPs) need to be included in the 
 > Refer utility below in step 2
 2. Generate Encryption Key Pair (X25519 Algorithm) - encryption_public_key (ASN.1 Der format-> base64 encoded) and encryption_private_key (base64 encoded). Use the utilities provided below to generate signing and encryption key pairs:
    - [Java](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/on_subscibe-service/java)
-   - [Python](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/signing_and_verification)
+   - [Python](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/signing_and_verification/python)
    - [GoLang](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/signing_and_verification/golang)
+   - [NodeJS](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/signing_and_verification/node)
+   - [PHP](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/signing_and_verification/php)
      Note:
      [Libsodium library](https://libsodium.gitbook.io/doc/bindings_for_other_languages) can be utilised to generate the key pairs.
      For NodeJS: Inbuilt Crypto library should be used instead of Libsodium library. The generated encryption public key is already encoded in the ASN.1 DER format.
