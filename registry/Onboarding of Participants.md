@@ -15,7 +15,6 @@ To join the ONDC network, Network Participants (NPs) must be registered in the O
    1. Sign up on the Network Participant Portal [here](https://portal.ondc.org) and submit your request.
    2. Complete your profile 100% after signing up.
    3. From the home menu, find and raise a request for whitelisting under "environment access request." Approval may take 6 to 48 hours.
-   4. Review the self-help guide [here](https://sites.google.com/ondc.org/portal-help).
 
 4. **System Configuration**: Configure your system with the domain name and SSL certificate. All communications with the ONDC Network must occur through this domain.
 
@@ -70,9 +69,14 @@ You can perform these steps using the utility [here](https://github.com/ONDC-Off
 7. **Host `/on_subscribe` Post Endpoint**: Deploy the `/on_subscribe` endpoint at:
    `https://<subscriber_id>/<callback_url>/on_subscribe`
    
-   Use the (Node.JS/Python) [utility](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/on_subscibe-service) to implement this endpoint.
+   Use the (Node.JS, JAVA, Node, PHP) [utility](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/on_subscibe-service) to implement this endpoint.
 
-8. Refer [swaggerhub document](https://app.swaggerhub.com/apis-docs/ONDC/ONDC-Registry-Onboarding/2.0.5#/ONDC%20Network%20Participant%20Onboarding/post_subscriber_url_on_subscribe) for request body and response of /subscribe API.
+**8. Refer to the SwaggerHub document and FAQs for `/subscribe` API**
+
+> - **SwaggerHub Documentation**: [Request Body and Response](https://app.swaggerhub.com/apis-docs/ONDC/ONDC-Registry-Onboarding/2.0.5#/ONDC%20Network%20Participant%20Onboarding/post_subscriber_url_on_subscribe)
+> - **FAQs for Subscribe Payload**: [FAQs Document](https://docs.google.com/document/d/15Dpy02lqtcU9tslyMqaI4UtnD2rtwnjAbn1narO0364/edit#heading=h.69ojsi3hg052)
+
+---
 
 > ### Supported Registrations
 >
