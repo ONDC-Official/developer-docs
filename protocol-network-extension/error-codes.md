@@ -63,7 +63,7 @@ CC-BY-ND
   |25001|BNP|Order Confirm Failure|Buyer App cannot confirm order as no response from Seller App|
   |27501|BNP|Terms and Conditions unacceptable|Seller App terms and conditions not acceptable to Buyer App|
   |27502|BNP|Order terminated|Order terminated as Seller App did not accept terms and conditions proposed by Buyer App|
-  |30000|BNP|Invalid request|Invalid request does not meet API contract specifications|
+  |30000|SNP|Invalid request|Invalid request does not meet API contract specifications|
   |30001|SNP|Provider not found|When Seller App is unable to find the provider id sent by the Buyer App|
   |30002|SNP|Provider location not found|When Seller App is unable to find the provider location id sent by the Buyer App|
   |30003|SNP|Provider category not found|When Seller App is unable to find the provider category id sent by the Buyer App|
