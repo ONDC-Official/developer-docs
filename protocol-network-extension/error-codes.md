@@ -137,6 +137,8 @@ CC-BY-ND
   |62509|LBNP|Invalid Cancellation Terms|Cancellation terms are different from what was quoted earlier|
   |62510|LBNP|Expired authorization|Authorization code has expired|
   |62511|LBNP|Invalid authorization|Authorization code is invalid|
+  |62512|LBNP|Pickup status rejected|Pickup auth enabled but not yet complete|
+  |62513|LBNP|Delivery status rejected|Delivery auth enabled but not yet complete|
   |63001|LBNP|Internal Error|Cannot process response due to internal error, please retry|
   |63002|LBNP|Order validation failure|Order validation failure|
   |64001|LBNP|Feature not supported|Feature not supported|
