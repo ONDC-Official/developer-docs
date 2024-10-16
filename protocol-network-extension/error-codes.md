@@ -147,6 +147,7 @@ CC-BY-ND
   |65002|LSP|Order terminated|Order terminated as Logistics Buyer did not accept terms proposed by Logistics Provider|
   |65003|LSP|Stale Request|Cannot process stale request|
   |65004|LSP|Terms unacceptable|Logistics Buyer terms not acceptable to Logistics Provider|
+  |65005|LSP|Invalid fulfillment terms|Immediate delivery fulfillment requires RTS at order confirm|
   |66001|LSP|Internal Error|Cannot process request due to internal error, please retry|
   |66002|LSP|Order validation failure|Order validation failure|
   |66003|LSP|Order processing in progress|Order processing in progress|
