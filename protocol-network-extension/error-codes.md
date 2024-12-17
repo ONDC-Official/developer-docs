@@ -129,7 +129,7 @@ CC-BY-ND
   |62501|LBNP|Terms and Conditions unacceptable|Logistics Provider terms & conditions not acceptable to Logistics Buyer|
   |62502|LBNP|Order terminated|Order terminated as Logistics Provider did not accept terms proposed by Logistics Buyer|
   |62503|LBNP|RTO rejected|RTO request rejected as quote does not match the quote provided in catalog|
-  |62504|LBNP|Weight differential cost rejected|Weight differential cost is rejected|
+  |62504|LBNP|Differential cost rejected|Differential cost is rejected|
   |62505|LBNP|Cancellation terms unacceptable|Logistics Provider cancellation terms not acceptable to Logistics Buyer|
   |62506|LBNP|Invalid Fulfillment TAT|Fulfillment TAT is different from what was quoted earlier|
   |62507|LBNP|Difference in packaging details|Weight and / or dimensions provided is different from what was originally provided|
