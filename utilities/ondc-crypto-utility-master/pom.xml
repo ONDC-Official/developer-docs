@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.ondc</groupId>
+	<artifactId>ondc-crypto-util</artifactId>
+	<version>0.1-GA</version>
+
+
+
+	<name>${project.groupId}:${project.artifactId}</name>
+	<description>This project has been created with an intension to help and assist ONDC Network Participants to build their own crypto libraries that are required for interaction in ONDC Network It covers key generation, signing, verification, encryption and decryption.</description>
+	<url>https://github.com/protean-ondc/ondc-crypto-utility</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.9.0</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk15on</artifactId>
+			<version>1.69</version>
+		</dependency>
+	</dependencies>
+<!-- 	<distributionManagement>
+	  <snapshotRepository>
+	    <id>ossrh</id>
+	    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+	  </snapshotRepository>
+	</distributionManagement> -->
+	<distributionManagement>
+	  <snapshotRepository>
+	    <id>ossrh</id>
+	    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+	  </snapshotRepository>
+	  <repository>
+	    <id>ossrh</id>
+	    <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+	  </repository>
+	</distributionManagement>
+	<build>
+		<pluginManagement><!-- lock down plugins versions to avoid using Maven 
+				defaults (may be moved to parent pom) -->
+			<plugins>
+				<!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
+				<plugin>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>3.1.0</version>
+				</plugin>
+				<!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
+				<plugin>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>3.0.2</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.8.0</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.22.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>3.0.2</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-install-plugin</artifactId>
+					<version>2.5.2</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>2.8.2</version>
+				</plugin>
+				<!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
+				<plugin>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>3.7.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-project-info-reports-plugin</artifactId>
+					<version>3.0.0</version>
+				</plugin>
+				<plugin>
+			      <groupId>org.sonatype.plugins</groupId>
+			      <artifactId>nexus-staging-maven-plugin</artifactId>
+			      <version>1.6.7</version>
+			      <extensions>true</extensions>
+			      <configuration>
+			        <serverId>ossrh</serverId>
+			        <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+			        <autoReleaseAfterClose>true</autoReleaseAfterClose>
+			      </configuration>
+    			</plugin>
+    			 <plugin>
+			      <groupId>org.apache.maven.plugins</groupId>
+			      <artifactId>maven-source-plugin</artifactId>
+			      <version>2.2.1</version>
+			      <executions>
+			        <execution>
+			          <id>attach-sources</id>
+			          <goals>
+			            <goal>jar-no-fork</goal>
+			          </goals>
+			        </execution>
+			      </executions>
+			    </plugin>
+			    <plugin>
+			      <groupId>org.apache.maven.plugins</groupId>
+			      <artifactId>maven-javadoc-plugin</artifactId>
+			      <version>2.9.1</version>
+			      <executions>
+			        <execution>
+			          <id>attach-javadocs</id>
+			          <goals>
+			            <goal>jar</goal>
+			          </goals>
+			        </execution>
+			      </executions>
+			    </plugin>
+			    <plugin>
+			      <groupId>org.apache.maven.plugins</groupId>
+			      <artifactId>maven-gpg-plugin</artifactId>
+			      <version>1.5</version>
+			      <executions>
+			        <execution>
+			          <id>sign-artifacts</id>
+			          <phase>verify</phase>
+			          <goals>
+			            <goal>sign</goal>
+			          </goals>
+			        </execution>
+			      </executions>
+			    </plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	<licenses>
+  <license>
+    <name>CC BY-ND 2.0</name>
+    <url>https://creativecommons.org/licenses/by-nd/2.0/</url>
+  </license>
+</licenses>
+ <developers>
+    <developer>
+      <name>Sujeet Suryawanshi</name>
+      <email>sujeets@proteantech.in</email>
+      <organization>ONDC</organization>
+      <organizationUrl>http://ondc.org</organizationUrl>
+    </developer>
+  </developers>
+  <scm>
+  <connection>scm:git:git://github.com/protean-ondc/ondc-crypto-utility.git</connection>
+  <developerConnection>scm:git:ssh://github.com/protean-ondc/ondc-crypto-utility.git</developerConnection>
+  <url>https://github.com/protean-ondc/ondc-crypto-utility.git</url>
+	</scm>
+
+</project>

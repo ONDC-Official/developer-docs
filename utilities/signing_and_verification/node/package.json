@@ -1,0 +1,15 @@
+{
+  "name": "generate-key-pairs",
+  "version": "1.0.0",
+  "description": "This Node.js script generates key pairs for signing and encryption using the `tweetnacl` and `crypto` library.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "tweetnacl": "^1.0.3"
+  }
+}

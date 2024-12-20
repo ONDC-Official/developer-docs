@@ -67,5 +67,3 @@ c. Reference buyer app
 ## SwaggerHub links
 
 `https://app.swaggerhub.com/organizations/ONDC`
-
-
