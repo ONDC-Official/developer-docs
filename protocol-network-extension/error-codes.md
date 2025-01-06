@@ -104,6 +104,7 @@ CC-BY-ND
   |40011|SNP|Invalid authorization|Authorization code is invalid|
   |40012|SNP|Minimum order qty required|Minimum order qty required|
   |41001|SNP|Finder fee not acceptable|Buyer finder fee is not acceptable|
+  |41002|SNP|Differential weight charges rejected|Differential weight charges rejected|
   |50000|SNP|Policy Error|Generic Policy Error|
   |50001|SNP|Cancellation not possible|When the Seller App is unable to cancel the order due to it's cancellation policy|
   |50002|SNP|Updation not possible|When the Seller App is unable to update the order due to it's updation policy|
@@ -129,7 +130,7 @@ CC-BY-ND
   |62501|LBNP|Terms and Conditions unacceptable|Logistics Provider terms & conditions not acceptable to Logistics Buyer|
   |62502|LBNP|Order terminated|Order terminated as Logistics Provider did not accept terms proposed by Logistics Buyer|
   |62503|LBNP|RTO rejected|RTO request rejected as quote does not match the quote provided in catalog|
-  |62504|LBNP|Differential cost rejected|Differential cost is rejected|
+  |62504|LBNP|Differential weight charges rejected|Differential weight charges rejected|
   |62505|LBNP|Cancellation terms unacceptable|Logistics Provider cancellation terms not acceptable to Logistics Buyer|
   |62506|LBNP|Invalid Fulfillment TAT|Fulfillment TAT is different from what was quoted earlier|
   |62507|LBNP|Difference in packaging details|Weight and / or dimensions provided is different from what was originally provided|
