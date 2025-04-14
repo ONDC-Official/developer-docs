@@ -162,7 +162,7 @@ https://prod.registry.ondc.org/subscribe
 https://staging.registry.ondc.org/v2.0/lookup
 
 # For Pre-Prod
-https://preprod.registry.ondc.org/ondc/v2.0/lookup
+https://preprod.registry.ondc.org/v2.0/lookup
 
 # For PROD
 https://prod.registry.ondc.org/v2.0/lookup
