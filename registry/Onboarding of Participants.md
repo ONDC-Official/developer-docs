@@ -154,8 +154,39 @@ https://prod.registry.ondc.org/subscribe
 ```
 
 13. Check your record in registry lookup
-    
-> 1. /lookup
+
+> 1. **/v2.0/lookup** (Recommended)
+
+```
+# For Staging
+https://staging.registry.ondc.org/v2.0/lookup
+
+# For Pre-Prod
+https://preprod.registry.ondc.org/v2.0/lookup
+
+# For PROD
+https://prod.registry.ondc.org/v2.0/lookup
+```
+
+The new version supports secure access using Authorization headers.
+
+```
+curl --location 'https://prod.registry.ondc.org/v2.0/lookup' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Signature keyId="example-bap.com|bap1234|ed25519", algorithm="ed25519", created="<timestamp>", expires="<timestamp>", headers="(created)(expires)digest", signature="<signature>"' \
+--data '{
+  "country": "IND",
+  "domain": "ONDC:RET10"
+}'
+```
+
+### Useful References
+
+- [Signing & Verification Process](https://github.com/ONDC-Official/developer-docs/blob/main/registry/signing-verification.md)
+- [Reference Utility - Signing & Lookup](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/signing_and_verification)
+- [SwaggerHub - Registry Lookup API](https://app.swaggerhub.com/apis/ONDC/ONDC-Registry-Onboarding/2.1.0#/ONDC%20Network%20Participant%20Onboarding/post_v2_lookup)
+
+> 2. **/lookup** (To be deprecated)
 
 ```
 # For Staging
@@ -168,17 +199,7 @@ https://preprod.registry.ondc.org/ondc/lookup
 https://prod.registry.ondc.org/lookup
 ```
 
-```
-	curl --location --request POST 'https://preprod.registry.ondc.org/ondc/lookup' \
-	--header 'Content-Type: application/json' \
-	--data-raw '{
-
-	    "country": "IND",
-	    "domain":"ONDC:RET10"
-
-	}'
-```
->2. /vlookup
+> 3. **/vlookup** (To be deprecated)
 
 ```
 # For Staging
@@ -190,7 +211,6 @@ https://preprod.registry.ondc.org/ondc/vlookup
 # For PROD
 https://prod.registry.ondc.org/vlookup
 ```
-
 ```
 	curl --location 'https://preprod.registry.ondc.org/ondc/vlookup' \
 		--header 'Content-Type: application/json' \
@@ -213,6 +233,20 @@ https://prod.registry.ondc.org/vlookup
 - timestamp: current timestamp in RFC3339 format
 - signature: search_parameters signed using private key of request initiator: sign(country|domain|type|city|subscriber_id) => - sign(IND|ONDC:RET10|sellerApp|std:080|ondc.org)
 - type: enums are "buyerApp", "sellerApp", "gateway"
+
+```
+
+Note: If the API rate limit is exceeded, you may receive HTTP 429 responses. Recommended registry limits:
+
+| Endpoint                | Limit     |
+|-------------------------|-----------|
+| `/subscribe`            | 10 RPM    |
+| `/lookup`               | 7600 RPM  |
+| `/vlookup`              | 2100 RPM  |
+| `/search`               | 2100 RPM  |
+| `/v2.0/lookup`          | TBD       |
+
+Ensure that your systems are rate-limit aware and gracefully handle retries.
 
 ```
 14. In case you are not able to find your record in lookup and vlookup, please report to techsupport@ondc.org
