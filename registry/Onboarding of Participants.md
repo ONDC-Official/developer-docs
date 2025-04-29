@@ -186,7 +186,7 @@ curl --location 'https://prod.registry.ondc.org/v2.0/lookup' \
 - [Reference Utility - Signing & Lookup](https://github.com/ONDC-Official/reference-implementations/tree/main/utilities/signing_and_verification)
 - [SwaggerHub - Registry Lookup API](https://app.swaggerhub.com/apis/ONDC/ONDC-Registry-Onboarding/2.1.0#/ONDC%20Network%20Participant%20Onboarding/post_v2_lookup)
 
-> 2. **/lookup** (To be deprecated)
+> 2. **/lookup** (Deprecated)
 
 ```
 # For Staging
@@ -199,7 +199,7 @@ https://preprod.registry.ondc.org/ondc/lookup
 https://prod.registry.ondc.org/lookup
 ```
 
-> 3. **/vlookup** (To be deprecated)
+> 3. **/vlookup** (Deprecated)
 
 ```
 # For Staging
