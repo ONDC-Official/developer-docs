@@ -1,0 +1,15 @@
+[submodule "protocol-layer/python-based-protocol-layer"]
+	path = protocol-layer/python-based-buyer-app-side-protocol-layer
+	url = https://github.com/Open-network-for-digital-commerce/py-protocol-layer.git
+[submodule "protocol-layer/kotlin-based-buyer-app-side-protocol-layer"]
+	path = protocol-layer/kotlin-based-buyer-app-side-protocol-layer
+	url = https://github.com/beckn/biab-bap-protocol.git
+[submodule "server-side-clients/node-js-based-buyer-app-client"]
+	path = server-side-clients/node-js-based-buyer-app-client
+	url = https://github.com/Open-network-for-digital-commerce/biap-client-node-js.git
+[submodule "server-side-clients/kotlin-based-buyer-app-client"]
+	path = server-side-clients/kotlin-based-buyer-app-client
+	url = https://github.com/beckn/biab-bap-client.git
+[submodule "frontend-ui/frontend-react-js-based-buyer-app"]
+	path = frontend-ui/frontend-react-js-based-buyer-app
+	url = https://github.com/Open-network-for-digital-commerce/biap-app-ui-front.git
