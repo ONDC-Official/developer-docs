@@ -4,9 +4,11 @@
 
 a. Registry end point
 
-`https://prod.registry.ondc.org/lookup`
+`https://prod.registry.ondc.org/v2.0/lookup`
 
-`https://prod.registry.ondc.org/vlookup`
+`https://prod.registry.ondc.org/lookup` (To be deprecated)
+
+`https://prod.registry.ondc.org/vlookup` (To be deprecated)
 
 b. Gateway end point
 
@@ -18,9 +20,11 @@ b. Gateway end point
 
 a. Registry end point
 
-`https://preprod.registry.ondc.org/ondc/lookup`
+`https://preprod.registry.ondc.org/v2.0/lookup`
 
-`https://preprod.registry.ondc.org/ondc/vlookup`
+`https://preprod.registry.ondc.org/ondc/lookup` (Deprecated)
+
+`https://preprod.registry.ondc.org/ondc/vlookup` (Deprecated)
 
 b. Gateway end point
 
@@ -36,9 +40,11 @@ c. Retail reference buyer app
 
 a. Registry end point
 
-`https://staging.registry.ondc.org/lookup`
+`https://staging.registry.ondc.org/v2.0/lookup`
 
-`https://staging.registry.ondc.org/vlookup`
+`https://staging.registry.ondc.org/lookup` (Deprecated)
+
+`https://staging.registry.ondc.org/vlookup` (Deprecated)
 
 b. Gateway end point
 
