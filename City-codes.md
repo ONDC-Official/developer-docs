@@ -1,1 +1,1 @@
->Current list of city codes are [here](https://docs.google.com/spreadsheets/d/1BtABwe4CXgN_sHIvDH51dJeYzRWdAhedYtzx10apOTs/edit#gid=0)
+>Current list of city codes are [here](https://docs.google.com/spreadsheets/d/12A_B-nDtvxyFh_FWDfp85ss2qpb65kZ7/edit?usp=sharing&ouid=118227851397691643336&rtpof=true&sd=true)
