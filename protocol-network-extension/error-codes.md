@@ -127,6 +127,9 @@ CC-BY-ND
   |60011|LSP|Difference in packaging details|Weight and / or dimensions provided is different from what was originally provided|
   |60012|LSP|Tracking not enabled|Tracking not enabled for any fulfillment in the order|
   |61001|LSP|Feature not supported|Feature not supported|
+  |61002|LSP|PCC OTP Retrigger Request|Logistics Provider requests Logistics Buyer to retrigger Pickup (PCC) OTP|
+  |61003|LSP|DCC OTP Retrigger Request|Logistics Provider requests Logistics Buyer to retrigger Delivery (DCC) OTP|
+  |61004|LSP|LSP Requests LBNP for Support Callback|When Rider (or LSP) wants customer support callback from Logistics Buyer|
   |62501|LBNP|Terms and Conditions unacceptable|Logistics Provider terms & conditions not acceptable to Logistics Buyer|
   |62502|LBNP|Order terminated|Order terminated as Logistics Provider did not accept terms proposed by Logistics Buyer|
   |62503|LBNP|RTO rejected|RTO request rejected as quote does not match the quote provided in catalog|
