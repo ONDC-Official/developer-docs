@@ -61,9 +61,8 @@ You can perform these steps using the utility [here](https://github.com/ONDC-Off
 6. **Configure `/on_subscribe` Endpoint**: Create the encryption shared key using the `encryption_private_key` (from Step 2) and the ONDC public key to decrypt the `challenge_string` received in the `/on_subscribe` call using the AES algorithm.
 
    ```
-   ONDC public key (prod) = "MCowBQYDK2VuAyEAvVEyZY91O2yV8w8/CAwVDAnqIZDJJUPdLUUKwLo3K0M="
-   ONDC public key (pre-prod) = "MCowBQYDK2VuAyEAa9Wbpvd9SsrpOZFcynyt/TO3x0Yrqyys4NUGIvyxX2Q="
-   ONDC public key (staging) = "MCowBQYDK2VuAyEAduMuZgmtpjdCuxv+Nc49K0cB6tL/Dj3HZetvVN7ZekM="
+   ONDC public key (prod) = "MCowBQYDK2VuAyEAwASk2D4O3p/tuD8f9sNQAQlwOU2w3DAumcOK9qHCFwI="
+   ONDC public key (pre-prod) = "MCowBQYDK2VuAyEARa/WcMCzNQp4DWjvTI4DK7vHL6EdaHqN4GjFIu9wxxM="
    ```
 
 7. **Host `/on_subscribe` Post Endpoint**: Deploy the `/on_subscribe` endpoint at:
@@ -102,7 +101,7 @@ https://app.swaggerhub.com/apis-docs/ONDC/ONDC-Registry-Onboarding/2.0.5
 10. Send created request to URL for /subscribe as below
 
 ```
-# For Staging Onboarding
+# For Staging Onboarding (DECOMMISSIONED — staging environment has been retired)
 https://staging.registry.ondc.org/subscribe
 
 # For PreProd Onboarding
@@ -158,7 +157,7 @@ https://prod.registry.ondc.org/subscribe
 > 1. **/v2.0/lookup** (Recommended)
 
 ```
-# For Staging
+# For Staging (DECOMMISSIONED — staging environment has been retired)
 https://staging.registry.ondc.org/v2.0/lookup
 
 # For Pre-Prod
@@ -189,7 +188,7 @@ curl --location 'https://prod.registry.ondc.org/v2.0/lookup' \
 > 2. **/lookup** (Deprecated)
 
 ```
-# For Staging
+# For Staging (DECOMMISSIONED — staging environment has been retired)
 https://staging.registry.ondc.org/lookup
 
 # For Pre-prod
@@ -202,7 +201,7 @@ https://prod.registry.ondc.org/lookup
 > 3. **/vlookup** (Deprecated)
 
 ```
-# For Staging
+# For Staging (DECOMMISSIONED — staging environment has been retired)
 https://staging.registry.ondc.org/vlookup
 
 # For Pre-prod
